@@ -3,12 +3,13 @@ import { Collection, Seq, is } from 'immutable';
 import { sum as arraySum } from 'lodash';
 
 import { BaseOperator } from './base-operator';
-import { AccessorOperator, Path } from './accessor-operator';
-import { ChainOperator } from './chain-operator';
-import { CombineOperator } from './combine-operator';
-import { IdentityOperator } from './identity-operator';
-import { IdGeneratorOperator } from './id-generator-operator';
-import { MapOperator } from './map-operator';
+
+import { AutoIdOperator } from './generating/auto-id';
+import { AccessorOperator, Path } from './extracting/accessor';
+import { ChainOperator } from './grouping/chain';
+import { CombineOperator } from './grouping/combine';
+import { IdentityOperator } from './extracting/identity';
+import { MapOperator } from './transforming/map';
 
 
 interface OperatorConstructor<In, Out> {
@@ -43,7 +44,7 @@ export class Operator<In, Out> extends BaseOperator<In, Out> {
   }
 
   static idGenerator(prefix?: string, start?: number): Operator<any, string> {
-    return create(IdGeneratorOperator, prefix, start);
+    return create(AutoIdOperator, prefix, start);
   }
 
   static sum<In = any>(

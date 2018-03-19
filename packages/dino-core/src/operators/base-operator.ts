@@ -1,4 +1,4 @@
-import { Collection, is } from 'immutable';
+import { Collection, List, is } from 'immutable';
 import { uniqueId } from 'lodash';
 
 
@@ -10,7 +10,11 @@ export abstract class BaseOperator<In, Out> {
 
   // Methods to override in subclasses
   protected abstract getImpl(data: In): Out;
-  protected abstract getStateImpl(): Collection<any, any>;
+  protected getStateImpl(): Collection<any, any> {
+    // Instance equality is the default
+    return List.of(this.id);
+  }
+
   public unwrap(): BaseOperator<In, Out> {
     return this;
   }
@@ -21,13 +25,7 @@ export abstract class BaseOperator<In, Out> {
   }
 
   getState(): Collection<any, any> {
-    if (this.cachedState) {
-      return this.cachedState;
-    } else if (this.cachable) {
-      return (this.cachedState = this.getStateImpl());
-    } else {
-      return this.getStateImpl();
-    }
+    return this.cachedState || (this.cachedState = this.getStateImpl());
   }
 
   // equals and hashCode for use in immutable.js

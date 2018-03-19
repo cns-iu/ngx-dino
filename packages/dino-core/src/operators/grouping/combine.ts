@@ -7,7 +7,7 @@ import {
   cloneDeepWith
 } from 'lodash';
 
-import { BaseOperator } from './base-operator';
+import { BaseOperator } from '../base-operator';
 
 
 export type Path = List<string | number>;
@@ -22,6 +22,22 @@ const validSchemaTypes: List<(obj: any) => boolean> = List.of(
 
 function isSchema(obj: any): obj is Schema {
   return validSchemaTypes.some((test) => test(obj));
+}
+
+function isCachableSchema(schema: any): boolean {
+  let cachable = true;
+  cloneDeepWith(schema, (value: any) => {
+    if (value instanceof BaseOperator) {
+      cachable = cachable && value.cachable;
+    }
+
+    // As soon a cachable is false return null to shorted the cloning process
+    if (!cachable) {
+      return null;
+    }
+  });
+
+  return cachable;
 }
 
 
@@ -52,7 +68,7 @@ function cloneDeepReplaceCycles(obj: any): any {
 }
 
 
-// Operator replacement
+// Operator manipulation
 function cloneDeepUnwrapOperator(obj: any): any {
   return cloneDeepWith(obj, (value: any) => {
     if (value instanceof BaseOperator) {
@@ -74,7 +90,7 @@ export class CombineOperator<In, Out> extends BaseOperator<In, Out> {
   readonly schema: Schema;
 
   constructor(schema: Schema) {
-    super(true);
+    super(isCachableSchema(schema));
 
     if (!isSchema(schema)) {
       throw Error('Invalid schema type');

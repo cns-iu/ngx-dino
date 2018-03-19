@@ -1,10 +1,10 @@
 import { Collection, List } from 'immutable';
 
-import { BaseOperator } from './base-operator';
-import { IdentityOperator } from './identity-operator';
+import { BaseOperator } from '../base-operator';
+import { IdentityOperator } from '../extract/identity';
 
 
-function normalizeOperator(
+function normalizeOperators(
   op: BaseOperator<any, any>
 ): Iterable<BaseOperator<any, any>> {
   op = op.unwrap();
@@ -23,9 +23,9 @@ export class ChainOperator<In, Out> extends BaseOperator<In, Out> {
   readonly operators: List<BaseOperator<any, any>>;
 
   constructor(...operators: BaseOperator<any, any>[]) {
-    super(true);
+    super(operators.every((op) => op.cachable));
 
-    this.operators = List(List(operators).flatMap(normalizeOperator));
+    this.operators = List(List(operators).flatMap(normalizeOperators));
   }
 
   protected getImpl(data: In): Out {

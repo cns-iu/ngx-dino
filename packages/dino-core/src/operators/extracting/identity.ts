@@ -1,9 +1,10 @@
 import { Collection, List } from 'immutable';
 
-import { BaseOperator } from './base-operator';
+import { BaseOperator } from '../base-operator';
 
 
-const uniqueObject = {};
+// A shared state makes all instances equal
+const sharedState = List.of({});
 
 export class IdentityOperator<T> extends BaseOperator<T, T> {
   constructor() {
@@ -15,6 +16,6 @@ export class IdentityOperator<T> extends BaseOperator<T, T> {
   }
 
   protected getStateImpl(): Collection<any, any> {
-    return List.of(uniqueObject);
+    return sharedState;
   }
 }

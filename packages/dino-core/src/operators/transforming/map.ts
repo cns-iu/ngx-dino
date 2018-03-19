@@ -1,6 +1,6 @@
 import { Collection, List } from 'immutable';
 
-import { BaseOperator } from './base-operator';
+import { BaseOperator } from '../base-operator';
 
 
 export class MapOperator<In, Out> extends BaseOperator<In, Out> {

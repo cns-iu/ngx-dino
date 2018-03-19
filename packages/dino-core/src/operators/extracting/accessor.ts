@@ -1,7 +1,7 @@
 import { Collection, List } from 'immutable';
 import { get, toPath } from 'lodash';
 
-import { BaseOperator } from './base-operator';
+import { BaseOperator } from '../base-operator';
 
 
 export type Path = number | string | (number | string)[];

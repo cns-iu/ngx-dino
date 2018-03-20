@@ -10,6 +10,7 @@ import { ChainOperator } from './grouping/chain';
 import { CombineOperator, Schema as CombineSchema } from './grouping/combine';
 import { ConstantOperator } from './generating/constant';
 import { IdentityOperator } from './extracting/identity';
+import { LookupOperator, MappingArg as LookupMappingArg } from './extracting/lookup';
 import { MapOperator } from './transforming/map';
 
 
@@ -61,6 +62,12 @@ export class Operator<In, Out> extends BaseOperator<In, Out> {
     return this;
   }
 
+  lookup<NewOut>(
+    mapping: LookupMappingArg<Out, NewOut>, defaultValue?: NewOut
+  ): Operator<In, NewOut> {
+    return this.chain(Operator.lookup(mapping, defaultValue));
+  }
+
   map<NewOut>(mapper: (data: Out) => NewOut): Operator<In, NewOut> {
     return this.chain(Operator.map(mapper));
   }
@@ -71,8 +78,8 @@ export class Operator<In, Out> extends BaseOperator<In, Out> {
 }
 
 
-// Static function on Operator class
 export namespace Operator {
+  // Internal Utility
   interface OperatorConstructor<In, Out> {
     new (...args: any[]): BaseOperator<In, Out>;
   }
@@ -83,6 +90,7 @@ export namespace Operator {
     return new Operator(new type(...args));
   }
 
+  // Static function on Operator class
   export function access<In = any, Out = any>(
     path: AccessorPath, defaultValue?: Out
   ): Operator<In, Out> {
@@ -129,6 +137,12 @@ export namespace Operator {
 
   export function identity<T = any>(): Operator<T, T> {
     return create(IdentityOperator);
+  }
+
+  export function lookup<In, Out>(
+    mapping: LookupMappingArg<In, Out>, defaultValue?: Out
+  ): Operator<In, Out> {
+    return create(LookupOperator, mapping, defaultValue);
   }
 
   export function map<In, Out>(mapper: (data: In) => Out): Operator<In, Out> {

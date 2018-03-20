@@ -19,13 +19,12 @@ export class ScatterplotDataService {
   fetchData(
     stream: Observable<Changes<any>>,
     pointIDField: IField<string>,
-    showPersonaField: IField<boolean>,
     xField: IField<number | string>,
     yField: IField<number | string>,
     colorField: IField<string>,
     shapeField: IField<string>,
-    sizeField: IField<string>
-  ): this {
+    sizeField: IField<string>,
+    strokeColorField: IField<string>): this {
     this.pointProcessor = new FieldProcessor<Point>(stream, {
       id: pointIDField,
       x: xField,
@@ -33,7 +32,7 @@ export class ScatterplotDataService {
       color: colorField,
       shape: shapeField,
       size: sizeField,
-      showPersona: showPersonaField
+      stroke: strokeColorField
     });
 
     if (this.streamSubscription) {

@@ -5,5 +5,5 @@ export interface Point {
   color: string;
   shape: string;
   size: string;
-  showPersona: boolean;
+  stroke: string;
 }

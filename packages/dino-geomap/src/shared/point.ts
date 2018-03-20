@@ -6,4 +6,5 @@ export interface Point {
   size: number;
   color: string;
   shape: string;
+  stroke: string;
 }

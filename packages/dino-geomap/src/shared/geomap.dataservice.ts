@@ -38,6 +38,7 @@ export class GeomapDataService {
   fetchData(
     pointStream: Observable<Changes<any>>,
     stateStream: Observable<Changes<any>>,
+    strokeColorField: IField<string>,
     stateField: IField<string>,
     stateColorField: IField<string>,
     stateIdField: IField<number>,
@@ -52,7 +53,8 @@ export class GeomapDataService {
       lat_long: pointLatLongField,
       size: pointSizeField,
       color: pointColorField,
-      shape: pointShapeField
+      shape: pointShapeField,
+      stroke: strokeColorField
     }, {
         latitude: computedPointLatitudeField,
         longitude: computedPointLongitudeField

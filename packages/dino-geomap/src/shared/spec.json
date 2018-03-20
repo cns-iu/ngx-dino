@@ -121,6 +121,12 @@
           },
           "fill": {
             "field": "color"
+          },
+          "stroke": {
+            "field": "stroke"
+          },
+          "strokeWidth": {
+            "value": 2
           }
         }
       }

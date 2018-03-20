@@ -14,11 +14,11 @@ class Cache<T> {
   cacheChanges(changes: Changes<T>): void {
     this.cache = this.cache.withMutations((cache) => {
       changes.add.forEach((datum) => {
-        cache.set(getDatumId(datum, this.idField), datum);
+        cache.set(getDatumId(datum, this.idField), datum)
       });
 
       changes.remove.forEach((datum) => {
-        cache.delete(getDatumId(datum, this.idField));
+        cache.delete(getDatumId(datum, this.idField))
       });
 
       changes.update.forEach(([datumOrId, update]) => {

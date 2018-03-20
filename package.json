@@ -1,11 +1,9 @@
 {
-	"private": "true",
+	"private": true,
 	"devDependencies": {
 		"lerna": "^2.8.0"
 	},
-	"dependencies": {
-		"bootstrap": "^4.0.0"
-	},
+	"dependencies": { },
 	"workspaces": [
     "packages/*"
   ]

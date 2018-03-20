@@ -1,7 +1,7 @@
 import { Collection, List } from 'immutable';
 
 import { BaseOperator } from '../base-operator';
-import { IdentityOperator } from '../extract/identity';
+import { IdentityOperator } from '../extracting/identity';
 
 
 function normalizeOperators(

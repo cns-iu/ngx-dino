@@ -11,7 +11,11 @@
   "ngPackage": {
     "lib": {
       "entryFile": "index.ts",
-      "languageLevel": ["es2017", "dom", "esnext"]
+      "languageLevel": [
+        "es2017",
+        "dom",
+        "esnext"
+      ]
     }
   },
   "dependencies": {
@@ -30,6 +34,8 @@
     "@angular/cli": "^1.6.1",
     "@angular/compiler-cli": "^5.0.0",
     "@angular/language-service": "^5.0.0",
+    "@types/jasmine": "^2.8.6",
+    "babel-polyfill": "^6.26.0",
     "codelyzer": "^4.0.1",
     "jasmine-core": "~2.6.2",
     "jasmine-spec-reporter": "~4.1.0",

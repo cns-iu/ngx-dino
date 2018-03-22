@@ -8,8 +8,8 @@ export enum DataType {
 }
 
 
-type MappingArg<In, Out> = Iterable<[string, Operator<In, Out>]> |
-  {[key: string]: Operator<In, Out>};
+type MappingArg<In, Out> = [string, Operator<In, Out> | true][] |
+  {[key: string]: Operator<In, Out> | true};
 
 export interface FieldArgs<R> {
   id: string;
@@ -37,8 +37,9 @@ export class Field<T> {
       initialOp: this.initialOp = Operator.identity()
     } = args);
 
-    this.mapping = Map(Map(args.mapping || {}).map((op: Operator<any, T>) => {
-      return new BoundField(this, this.initialOp.chain(op));
+    this.mapping = Map(Map(args.mapping || {}).map((op: Operator<any, T> | true) => {
+      op = op === true ? Operator.identity() : this.initialOp.chain(op);
+      return new BoundField(this, op);
     }));
   }
 

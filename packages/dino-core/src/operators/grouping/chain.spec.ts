@@ -1,18 +1,8 @@
 /// <reference path="../../../../../node_modules/@types/jasmine/index.d.ts" />
 
 import { ChainOperator } from './chain';
+import { ConstantOperator } from '../generating/constant';
 
-
-function createOperatorSpy(getFunc?: (value: any) => any): any {
-  const spy = jasmine.createSpyObj('Operator', ['get', 'unwrap']);
-
-  spy['unwrap'].and.returnValue(spy);
-  if (getFunc) {
-    spy['get'].and.callFake(getFunc);
-  }
-
-  return spy;
-}
 
 describe('operators', () => { // Prevent deep indentation
 describe('grouping', () => { // Prevent deep indentation
@@ -30,41 +20,44 @@ describe('ChainOperator', () => {
   });
 
   it('should pass the value through each operator', () => {
-    const spy1 = createOperatorSpy();
-    const spy2 = createOperatorSpy();
-    const op = new ChainOperator(spy1, spy2);
+    const cop1 = new ConstantOperator(0);
+    const cop2 = new ConstantOperator(1);
+    const op = new ChainOperator(cop1, cop2);
+
+    spyOn(cop1, 'get');
+    spyOn(cop2, 'get');
 
     op.get(undefined);
-    expect(spy1['get'].calls.any()).toBeTruthy();
-    expect(spy2['get'].calls.any()).toBeTruthy();
+    expect(cop1.get).toHaveBeenCalled();
+    expect(cop2.get).toHaveBeenCalled();
   });
 
   it('should be equal if the same operators', () => {
-    const spy1 = createOperatorSpy();
-    const spy2 = createOperatorSpy();
+    const cop1 = new ConstantOperator(0);
+    const cop2 = new ConstantOperator(1);
 
-    const op1 = new ChainOperator(spy1, spy2);
-    const op2 = new ChainOperator(spy1, spy2);
+    const op1 = new ChainOperator(cop1, cop2);
+    const op2 = new ChainOperator(cop1, cop2);
 
     expect(op1.equals(op2)).toBeTruthy();
   });
 
   it('should not be equal if different operators', () => {
-    const spy1 = createOperatorSpy();
-    const spy2 = createOperatorSpy();
+    const cop1 = new ConstantOperator(0);
+    const cop2 = new ConstantOperator(1);
 
-    const op1 = new ChainOperator(spy1);
-    const op2 = new ChainOperator(spy2);
+    const op1 = new ChainOperator(cop1);
+    const op2 = new ChainOperator(cop2);
 
     expect(op1.equals(op2)).toBeFalsy();
   });
 
   it('should not be equal if same operators different order', () => {
-    const spy1 = createOperatorSpy();
-    const spy2 = createOperatorSpy();
+    const cop1 = new ConstantOperator(0);
+    const cop2 = new ConstantOperator(1);
 
-    const op1 = new ChainOperator(spy1, spy2);
-    const op2 = new ChainOperator(spy2, spy1);
+    const op1 = new ChainOperator(cop1, cop2);
+    const op2 = new ChainOperator(cop2, cop1);
 
     expect(op1.equals(op2)).toBeFalsy();
   });

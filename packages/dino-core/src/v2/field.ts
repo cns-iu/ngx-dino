@@ -38,7 +38,7 @@ export class Field<T> {
     } = args);
 
     this.mapping = Map(Map(args.mapping || {}).map((op: Operator<any, T> | true) => {
-      op = op === true ? Operator.identity() : this.initialOp.chain(op);
+      op = op === true ? this.initialOp : this.initialOp.chain(op);
       return new BoundField(this, op);
     }));
   }

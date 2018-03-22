@@ -32,7 +32,11 @@ describe('Field', () => {
   });
 
   it('should return Operator for valid selectors', () => {
-    expect(simpleField.getOperator('ident')).toEqual(jasmine.any(Operator));
+    expect(simpleField.getOperator('size')).toEqual(jasmine.any(Operator));
+  });
+
+  it('should return initialOp for mappings with value `true`', () => {
+    expect(simpleField.getOperator('ident')).toBe(simpleField.initialOp);
   });
 
   it('should return undefined for invalid selectors', () => {

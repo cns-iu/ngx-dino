@@ -6,7 +6,8 @@
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "scripts": {
-    "build": "ng-packagr -p package.json"
+    "build": "ng-packagr -p package.json",
+    "test": "ng test"
   },
   "ngPackage": {
     "lib": {

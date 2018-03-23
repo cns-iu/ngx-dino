@@ -149,7 +149,7 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
       .call(d3Drag.drag()
         .on('start', this.dragstarted)
         .on('drag', this.dragged)
-        .on('end', this.dragended));
+        .on('end', this.dragended)); // TODO drag needs fixing
     
     this.labels = this.svgContainer.append('g').attr('class', 'labels')
       .selectAll('text').data(data.nodes.data, node => node[this.nodeIDField])
@@ -190,7 +190,9 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
   }
 
   dragended(d) {
-    this.simulation.alphaTarget(0);
+    if (!d3Selection.event.active) {
+      this.simulation.alphaTarget(0);
+    }
     d.fx = null;
     d.fy = null;
   }

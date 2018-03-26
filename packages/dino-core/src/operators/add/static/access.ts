@@ -11,7 +11,7 @@ function staticAccess<In = any, Out = any>(
 
 
 // Export onto Operator
-declare module '../../Operator' {
+declare module '../../operator' {
   namespace Operator {
     let access: typeof staticAccess;
   }

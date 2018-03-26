@@ -3,7 +3,7 @@ import { Path } from '../../extracting/accessor';
 import '../static/access';
 
 
-declare module '../../Operator' {
+declare module '../../operator' {
   interface Operator<In, Out> {
     access<NewOut>(path: Path, defaultValue?: NewOut): Operator<In, NewOut>;
   }

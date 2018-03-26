@@ -1,7 +1,7 @@
 import { Operator as OperatorClass } from '../../operator';
 
 
-declare module '../../Operator' {
+declare module '../../operator' {
   interface Operator<In, Out> {
     identity(): Operator<In, Out>;
   }

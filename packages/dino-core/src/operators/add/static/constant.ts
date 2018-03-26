@@ -9,7 +9,7 @@ function staticConstant<T>(value: T): OperatorClass<any, T> {
 
 
 // Export onto Operator
-declare module '../../Operator' {
+declare module '../../operator' {
   namespace Operator {
     let constant: typeof staticConstant;
   }

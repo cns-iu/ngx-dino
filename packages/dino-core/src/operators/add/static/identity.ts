@@ -9,7 +9,7 @@ function staticIdentity<T = any>(): OperatorClass<T, T> {
 
 
 // Export onto Operator
-declare module '../../Operator' {
+declare module '../../operator' {
   namespace Operator {
     let identity: typeof staticIdentity;
   }

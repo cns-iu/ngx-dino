@@ -4,7 +4,7 @@ import '../static/combine';
 import './chain';
 
 
-declare module '../../Operator' {
+declare module '../../operator' {
   interface Operator<In, Out> {
     combine<NewOut = any>(schema: Schema): Operator<In, NewOut>;
   }

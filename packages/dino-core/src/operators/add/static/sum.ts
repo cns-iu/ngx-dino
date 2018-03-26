@@ -25,7 +25,7 @@ function staticSum<In = any>(
 
 
 // Export onto Operator
-declare module '../../Operator' {
+declare module '../../operator' {
   namespace Operator {
     let sum: typeof staticSum;
   }

@@ -2,7 +2,7 @@ import { Operator as OperatorClass } from '../../operator';
 import './map';
 
 
-declare module '../../Operator' {
+declare module '../../operator' {
   interface Operator<In, Out> {
     construct<NewOut>(type: {new (args: Out): NewOut}): Operator<In, NewOut>;
   }

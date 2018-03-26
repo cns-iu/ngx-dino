@@ -24,7 +24,7 @@ function staticChain(...ops: OperatorClass<any, any>[]): OperatorClass<any, any>
 
 
 // Export onto Operator
-declare module '../../Operator' {
+declare module '../../operator' {
   namespace Operator {
     let chain: typeof staticChain;
   }

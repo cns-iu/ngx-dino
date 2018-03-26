@@ -9,7 +9,7 @@ function staticConstruct<In, Out>(
 
 
 // Export onto Operator
-declare module '../../Operator' {
+declare module '../../operator' {
   namespace Operator {
     let construct: typeof staticConstruct;
   }

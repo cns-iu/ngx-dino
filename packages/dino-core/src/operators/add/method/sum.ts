@@ -4,7 +4,7 @@ import { Operator as OperatorClass } from '../../operator';
 import './map';
 
 
-declare module '../../Operator' {
+declare module '../../operator' {
   interface Operator<In, Out> {
     sum(): Operator<In, number>;
   }

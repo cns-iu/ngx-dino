@@ -3,7 +3,7 @@ import '../static/map';
 import './chain';
 
 
-declare module '../../Operator' {
+declare module '../../operator' {
   interface Operator<In, Out> {
     map<NewOut>(mapper: (data: Out) => NewOut): Operator<In, NewOut>;
   }

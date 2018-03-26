@@ -10,7 +10,7 @@ function staticCombine<In = any, Out = any>(
 }
 
 
-declare module '../../Operator' {
+declare module '../../operator' {
   namespace Operator {
     let combine: typeof staticCombine;
   }

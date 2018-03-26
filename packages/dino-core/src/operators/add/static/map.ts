@@ -11,7 +11,7 @@ function staticMap<In, Out>(
 
 
 // Export onto Operator
-declare module '../../Operator' {
+declare module '../../operator' {
   namespace Operator {
     let map: typeof staticMap;
   }

@@ -4,7 +4,7 @@ import '../static/lookup';
 import './chain';
 
 
-declare module '../../Operator' {
+declare module '../../operator' {
   interface Operator<In, Out> {
     lookup<NewOut>(
       mapping: MappingArg<Out, NewOut>, defaultValue?: NewOut

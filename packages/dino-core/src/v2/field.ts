@@ -1,6 +1,8 @@
 import { Map } from 'immutable';
 
 import { Operator } from '../operators';
+import '../operators/add/static/identity';
+import '../operators/add/method/chain';
 
 
 export enum DataType {
@@ -38,8 +40,8 @@ export class Field<T> {
     } = args);
 
     this.mapping = Map(Map(args.mapping || {}).map((op: Operator<any, T> | true) => {
-      op = op === true ? this.initialOp : this.initialOp.chain(op);
-      return new BoundField(this, op);
+      const newOp = op === true ? this.initialOp : this.initialOp.chain(op);
+      return new BoundField(this, newOp);
     }));
   }
 

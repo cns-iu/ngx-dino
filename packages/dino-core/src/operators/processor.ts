@@ -2,6 +2,8 @@ import { Map, Set } from 'immutable';
 import { isFunction, isUndefined, defaultsDeep } from 'lodash';
 
 import { Operator } from './operator';
+import './add/static/identity';
+import './add/method/combine';
 
 export type CommonKeys<R1, R2> = keyof R1 & keyof R2;
 export type OperatorMap<R1, R2 extends any, K extends string = keyof R2> =

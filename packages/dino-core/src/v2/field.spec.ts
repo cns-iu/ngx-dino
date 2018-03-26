@@ -2,6 +2,8 @@
 
 import { Operator } from '../operators';
 import { Field, BoundField } from './field';
+import '../operators/add/static/access';
+import '../operators/add/method/map';
 
 
 describe('fields', () => { // Prevent deep indentation

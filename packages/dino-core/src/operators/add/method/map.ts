@@ -6,7 +6,7 @@ import './chain';
 declare module '../../operator' {
   interface Operator<In, Out> {
     map<NewOut>(
-      mapper: (data: Out) => NewOut, ...args: any[]
+      mapper: (data: Out, ...args: any[]) => NewOut, ...args: any[]
     ): Operator<In, NewOut>;
   }
 }

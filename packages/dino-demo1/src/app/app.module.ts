@@ -1,9 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { WrapperModule } from './wrapper/wrapper.module';
 
 import { AppComponent } from './app.component';
-import { DinoForceNetworkModule } from '@ngx-dino/force-network';
 
 @NgModule({
   declarations: [
@@ -11,8 +10,7 @@ import { DinoForceNetworkModule } from '@ngx-dino/force-network';
   ],
   imports: [
     BrowserModule,
-    // DinoScatterplotModule
-    DinoForceNetworkModule
+    WrapperModule
   ],
   providers: [],
   bootstrap: [AppComponent]

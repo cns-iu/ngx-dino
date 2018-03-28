@@ -1,0 +1,2791 @@
+{
+  "records": {
+    "schema": [
+      {
+        "name": "subd_id",
+        "type": "numeric"
+      },
+      {
+        "name": "subd_name",
+        "type": "string"
+      },
+      {
+        "name": "disc_id",
+        "type": "numeric"
+      }
+    ],
+    "data": [
+      {
+        "subd_id": 1,
+        "subd_name": "Clinical Cancer Research",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 2,
+        "subd_name": "Circulation",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 3,
+        "subd_name": "Data Mining",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 4,
+        "subd_name": "Protein Science",
+        "disc_id": 2
+      },
+      {
+        "subd_id": 5,
+        "subd_name": "Signal Processing",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 6,
+        "subd_name": "Neuroscience; Molecular & Cellular",
+        "disc_id": 8
+      },
+      {
+        "subd_id": 7,
+        "subd_name": "Anesthetics & Analgesics",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 8,
+        "subd_name": "Urology",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 9,
+        "subd_name": "Immunology",
+        "disc_id": 10
+      },
+      {
+        "subd_id": 10,
+        "subd_name": "Macromolecules & Polymers",
+        "disc_id": 5
+      },
+      {
+        "subd_id": 11,
+        "subd_name": "Affective Disorders",
+        "disc_id": 8
+      },
+      {
+        "subd_id": 12,
+        "subd_name": "Oncology",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 13,
+        "subd_name": "Surface Science",
+        "disc_id": 11
+      },
+      {
+        "subd_id": 14,
+        "subd_name": "Nonlinear Analysis",
+        "disc_id": 11
+      },
+      {
+        "subd_id": 15,
+        "subd_name": "Hospital Financial Management",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 16,
+        "subd_name": "Rheumatology",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 17,
+        "subd_name": "Occupational Health",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 18,
+        "subd_name": "Organic Chemistry",
+        "disc_id": 5
+      },
+      {
+        "subd_id": 19,
+        "subd_name": "Leukemia",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 20,
+        "subd_name": "Virology",
+        "disc_id": 10
+      },
+      {
+        "subd_id": 21,
+        "subd_name": "Plant Physiology",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 22,
+        "subd_name": "Allergy & Clinical Immunology",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 23,
+        "subd_name": "Material Science",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 24,
+        "subd_name": "Dermatology",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 25,
+        "subd_name": "Kidney",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 26,
+        "subd_name": "Pharmacology Science",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 27,
+        "subd_name": "Law",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 28,
+        "subd_name": "Medical Imaging",
+        "disc_id": 8
+      },
+      {
+        "subd_id": 29,
+        "subd_name": "Bacteriology",
+        "disc_id": 10
+      },
+      {
+        "subd_id": 30,
+        "subd_name": "Marine Biology",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 31,
+        "subd_name": "Developmental Biology",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 32,
+        "subd_name": "Digestion",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 33,
+        "subd_name": "Toxicology Applied Pharmacology",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 34,
+        "subd_name": "Transportation Research",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 35,
+        "subd_name": "Inorganic Chemistry",
+        "disc_id": 5
+      },
+      {
+        "subd_id": 36,
+        "subd_name": "Chemical Engineering",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 37,
+        "subd_name": "Pharmaceutical Research",
+        "disc_id": 5
+      },
+      {
+        "subd_id": 38,
+        "subd_name": "Semiconducting Materials",
+        "disc_id": 11
+      },
+      {
+        "subd_id": 39,
+        "subd_name": "Diabetes Care",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 40,
+        "subd_name": "Clinical Neurophysiology",
+        "disc_id": 8
+      },
+      {
+        "subd_id": 41,
+        "subd_name": "Ophthalmology",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 42,
+        "subd_name": "Nutrition",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 43,
+        "subd_name": "Finance",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 44,
+        "subd_name": "Neurosurgery",
+        "disc_id": 8
+      },
+      {
+        "subd_id": 45,
+        "subd_name": "Fertility",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 46,
+        "subd_name": "Applied Optics",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 47,
+        "subd_name": "Nuclear Engineering",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 48,
+        "subd_name": "Molecular Cell Biology",
+        "disc_id": 10
+      },
+      {
+        "subd_id": 49,
+        "subd_name": "Food Chemistry",
+        "disc_id": 5
+      },
+      {
+        "subd_id": 50,
+        "subd_name": "Obstetrics",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 51,
+        "subd_name": "Chest & Respiratory",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 52,
+        "subd_name": "Earthquake Engineering",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 53,
+        "subd_name": "Zoology",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 54,
+        "subd_name": "Pharmaceutical Design",
+        "disc_id": 5
+      },
+      {
+        "subd_id": 55,
+        "subd_name": "AntiMicrobial Agents",
+        "disc_id": 10
+      },
+      {
+        "subd_id": 56,
+        "subd_name": "Systems Software",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 57,
+        "subd_name": "Decision Support Systems",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 58,
+        "subd_name": "Business Ethics",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 59,
+        "subd_name": "Vascular Surgery",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 60,
+        "subd_name": "Pulp & Paper",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 61,
+        "subd_name": "Seismology",
+        "disc_id": 6
+      },
+      {
+        "subd_id": 62,
+        "subd_name": "Bone Joint Surgery",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 63,
+        "subd_name": "Neurology",
+        "disc_id": 8
+      },
+      {
+        "subd_id": 64,
+        "subd_name": "Algebra",
+        "disc_id": 11
+      },
+      {
+        "subd_id": 65,
+        "subd_name": "Antenna",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 66,
+        "subd_name": "Circuit Systems",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 67,
+        "subd_name": "Nursing Specialists",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 68,
+        "subd_name": "Retinal Surgery",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 69,
+        "subd_name": "Psychopharmacology",
+        "disc_id": 8
+      },
+      {
+        "subd_id": 70,
+        "subd_name": "Aeronautics & Astronautics",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 71,
+        "subd_name": "Psychoanalysis",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 72,
+        "subd_name": "Oceanography",
+        "disc_id": 6
+      },
+      {
+        "subd_id": 73,
+        "subd_name": "Sports Medicine",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 74,
+        "subd_name": "Operations Research",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 75,
+        "subd_name": "Chromatography; Electrophoresis",
+        "disc_id": 5
+      },
+      {
+        "subd_id": 76,
+        "subd_name": "Pediatrics",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 77,
+        "subd_name": "Cardiovascular",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 78,
+        "subd_name": "Paleobiology",
+        "disc_id": 6
+      },
+      {
+        "subd_id": 79,
+        "subd_name": "Economics",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 80,
+        "subd_name": "Hypertension",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 81,
+        "subd_name": "Human Molecular Genetics",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 82,
+        "subd_name": "Clinical Endocrinology",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 83,
+        "subd_name": "Dietetics",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 84,
+        "subd_name": "Clinical Microbiology",
+        "disc_id": 10
+      },
+      {
+        "subd_id": 85,
+        "subd_name": "Hospital Pharmacy",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 86,
+        "subd_name": "Gas Turbines",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 87,
+        "subd_name": "Remote Sensing",
+        "disc_id": 6
+      },
+      {
+        "subd_id": 88,
+        "subd_name": "Computational Chemistry",
+        "disc_id": 5
+      },
+      {
+        "subd_id": 89,
+        "subd_name": "Surgery",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 90,
+        "subd_name": "Ceramics",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 91,
+        "subd_name": "AIDS Research",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 92,
+        "subd_name": "Military Aviation",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 93,
+        "subd_name": "Medical Records",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 94,
+        "subd_name": "Statistics",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 95,
+        "subd_name": "Applied Economics",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 96,
+        "subd_name": "Automatic Control",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 97,
+        "subd_name": "Atmospheric Science",
+        "disc_id": 6
+      },
+      {
+        "subd_id": 98,
+        "subd_name": "Automotive Engineering",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 99,
+        "subd_name": "BioStatistics",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 100,
+        "subd_name": "Employee Health Benefit Plans",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 101,
+        "subd_name": "Transplantation",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 102,
+        "subd_name": "Alloys",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 103,
+        "subd_name": "Astronomy & Astrophysics",
+        "disc_id": 11
+      },
+      {
+        "subd_id": 104,
+        "subd_name": "Substance-abuse Treatment",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 105,
+        "subd_name": "Research Policy; Technology Management",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 106,
+        "subd_name": "Drug Discovery",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 107,
+        "subd_name": "Animal Science",
+        "disc_id": 10
+      },
+      {
+        "subd_id": 108,
+        "subd_name": "Chaos Fractals & Complexity",
+        "disc_id": 11
+      },
+      {
+        "subd_id": 109,
+        "subd_name": "Environmental Contamination",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 110,
+        "subd_name": "Otolaryngology; Laryngoscope",
+        "disc_id": 8
+      },
+      {
+        "subd_id": 111,
+        "subd_name": "Mechanical Design Engineering",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 112,
+        "subd_name": "Classics",
+        "disc_id": 9
+      },
+      {
+        "subd_id": 113,
+        "subd_name": "Biological Conservation",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 114,
+        "subd_name": "Thoracic Surgery",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 115,
+        "subd_name": "Phytochemistry",
+        "disc_id": 5
+      },
+      {
+        "subd_id": 116,
+        "subd_name": "Tropical Medicine",
+        "disc_id": 10
+      },
+      {
+        "subd_id": 117,
+        "subd_name": "Food Protection",
+        "disc_id": 2
+      },
+      {
+        "subd_id": 118,
+        "subd_name": "Broadband Communication",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 119,
+        "subd_name": "Energy Fuel",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 120,
+        "subd_name": "Soil Quality",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 121,
+        "subd_name": "Integrated Circuit Design",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 122,
+        "subd_name": "Philosophy Psychology",
+        "disc_id": 9
+      },
+      {
+        "subd_id": 123,
+        "subd_name": "Construction & Project Management",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 124,
+        "subd_name": "Social Psychology",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 125,
+        "subd_name": "High Energy Physics",
+        "disc_id": 11
+      },
+      {
+        "subd_id": 126,
+        "subd_name": "Strategic Management",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 127,
+        "subd_name": "Genomics & Nucleic Acids",
+        "disc_id": 2
+      },
+      {
+        "subd_id": 128,
+        "subd_name": "Heat Transfer",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 129,
+        "subd_name": "Cement & Concrete",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 130,
+        "subd_name": "Pathology",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 131,
+        "subd_name": "Pest Management Science",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 132,
+        "subd_name": "Corrosion",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 133,
+        "subd_name": "Veterinary Science",
+        "disc_id": 10
+      },
+      {
+        "subd_id": 134,
+        "subd_name": "Teacher Education; Evaluation",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 135,
+        "subd_name": "Stem Cells",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 136,
+        "subd_name": "Image Processing",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 137,
+        "subd_name": "Neural Networks",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 138,
+        "subd_name": "Nursing Education",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 139,
+        "subd_name": "Intensive Care",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 140,
+        "subd_name": "Alternative Complementary Medicine",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 141,
+        "subd_name": "Petroleum Engineering",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 142,
+        "subd_name": "Music & Theatre",
+        "disc_id": 9
+      },
+      {
+        "subd_id": 143,
+        "subd_name": "Memory & Cognition",
+        "disc_id": 8
+      },
+      {
+        "subd_id": 144,
+        "subd_name": "Vision",
+        "disc_id": 8
+      },
+      {
+        "subd_id": 145,
+        "subd_name": "Communication Research",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 146,
+        "subd_name": "BioInformatics",
+        "disc_id": 2
+      },
+      {
+        "subd_id": 147,
+        "subd_name": "Mechanics of Solids & Structures",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 148,
+        "subd_name": "Pharmacy",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 149,
+        "subd_name": "Geomorphology",
+        "disc_id": 6
+      },
+      {
+        "subd_id": 150,
+        "subd_name": "Psychosis; Schizophrenia",
+        "disc_id": 8
+      },
+      {
+        "subd_id": 151,
+        "subd_name": "BioEthics",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 152,
+        "subd_name": "Parallel Computing",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 153,
+        "subd_name": "Power Distribution",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 154,
+        "subd_name": "Gerontology",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 155,
+        "subd_name": "Wood",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 156,
+        "subd_name": "Discrete Applied Mathematics",
+        "disc_id": 11
+      },
+      {
+        "subd_id": 157,
+        "subd_name": "Geology & Tectonics",
+        "disc_id": 6
+      },
+      {
+        "subd_id": 158,
+        "subd_name": "GeoChemistry",
+        "disc_id": 6
+      },
+      {
+        "subd_id": 159,
+        "subd_name": "Mobile Networks",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 160,
+        "subd_name": "Artificial Intelligence",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 161,
+        "subd_name": "Electro Analytical Chemistry",
+        "disc_id": 5
+      },
+      {
+        "subd_id": 162,
+        "subd_name": "Dental Education",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 163,
+        "subd_name": "Enzyme Microbiological Techniques",
+        "disc_id": 2
+      },
+      {
+        "subd_id": 164,
+        "subd_name": "Library Science; Information Retrieval",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 165,
+        "subd_name": "Biomaterials",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 166,
+        "subd_name": "Quaternary Research",
+        "disc_id": 6
+      },
+      {
+        "subd_id": 167,
+        "subd_name": "Endoscopic Surgery",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 168,
+        "subd_name": "Composites",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 169,
+        "subd_name": "Language Learning",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 170,
+        "subd_name": "American History",
+        "disc_id": 9
+      },
+      {
+        "subd_id": 171,
+        "subd_name": "Leadership & Organizational Behavior",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 172,
+        "subd_name": "Agricultural Engineering",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 173,
+        "subd_name": "Computer-Aided Process Planning",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 174,
+        "subd_name": "Geriatrics",
+        "disc_id": 8
+      },
+      {
+        "subd_id": 175,
+        "subd_name": "Solid State Electronics",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 176,
+        "subd_name": "Optics & Lasers",
+        "disc_id": 11
+      },
+      {
+        "subd_id": 177,
+        "subd_name": "Wool",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 178,
+        "subd_name": "Biomechanics",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 179,
+        "subd_name": "Molecular Physics",
+        "disc_id": 5
+      },
+      {
+        "subd_id": 180,
+        "subd_name": "Comparative Animal Physiology",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 181,
+        "subd_name": "Political Science",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 182,
+        "subd_name": "Science History",
+        "disc_id": 9
+      },
+      {
+        "subd_id": 183,
+        "subd_name": "Poetry",
+        "disc_id": 9
+      },
+      {
+        "subd_id": 184,
+        "subd_name": "Nuclear Medicine",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 185,
+        "subd_name": "Nanotechnology",
+        "disc_id": 5
+      },
+      {
+        "subd_id": 186,
+        "subd_name": "Speech Recognition",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 187,
+        "subd_name": "Fluid Mechanics",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 188,
+        "subd_name": "Computer Graphics",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 189,
+        "subd_name": "Filtration Membrane",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 190,
+        "subd_name": "Clinical Infectious Disease",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 191,
+        "subd_name": "Prosthetic Dentistry",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 192,
+        "subd_name": "Orthodontics",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 193,
+        "subd_name": "Robotic Systems",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 194,
+        "subd_name": "Dental Research",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 195,
+        "subd_name": "Atomic Spectrometry",
+        "disc_id": 5
+      },
+      {
+        "subd_id": 196,
+        "subd_name": "Botany",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 197,
+        "subd_name": "Public Health Service",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 198,
+        "subd_name": "Political Geography",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 199,
+        "subd_name": "Catalysis",
+        "disc_id": 5
+      },
+      {
+        "subd_id": 200,
+        "subd_name": "Radiation Protection",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 201,
+        "subd_name": "Machine Tools",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 202,
+        "subd_name": "Veterinary Medicine",
+        "disc_id": 10
+      },
+      {
+        "subd_id": 203,
+        "subd_name": "Periodontology",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 204,
+        "subd_name": "Birth Defects",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 205,
+        "subd_name": "Thrombosis",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 206,
+        "subd_name": "Freshwater Biology",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 207,
+        "subd_name": "Mental Health Nursing",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 208,
+        "subd_name": "Artificial Evolution",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 209,
+        "subd_name": "English Literature",
+        "disc_id": 9
+      },
+      {
+        "subd_id": 210,
+        "subd_name": "Plastic Surgery",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 211,
+        "subd_name": "Nursing Administration",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 212,
+        "subd_name": "Higher Education",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 213,
+        "subd_name": "Ecology",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 214,
+        "subd_name": "Modern Language",
+        "disc_id": 9
+      },
+      {
+        "subd_id": 215,
+        "subd_name": "Neurophysiology & Neuroscience",
+        "disc_id": 8
+      },
+      {
+        "subd_id": 216,
+        "subd_name": "Mining",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 217,
+        "subd_name": "Aquaculture",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 218,
+        "subd_name": "Molecular Biological Evolution",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 219,
+        "subd_name": "Photonics",
+        "disc_id": 11
+      },
+      {
+        "subd_id": 220,
+        "subd_name": "Urban Studies",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 221,
+        "subd_name": "Functional Analysis",
+        "disc_id": 11
+      },
+      {
+        "subd_id": 222,
+        "subd_name": "Linguistics",
+        "disc_id": 9
+      },
+      {
+        "subd_id": 223,
+        "subd_name": "Photo-Optics",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 224,
+        "subd_name": "Spine",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 225,
+        "subd_name": "Robotics",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 226,
+        "subd_name": "Audiology",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 227,
+        "subd_name": "Soil Science",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 228,
+        "subd_name": "Simulation",
+        "disc_id": 11
+      },
+      {
+        "subd_id": 229,
+        "subd_name": "Nuclear Instrumentation",
+        "disc_id": 11
+      },
+      {
+        "subd_id": 230,
+        "subd_name": "Hispanic Studies",
+        "disc_id": 9
+      },
+      {
+        "subd_id": 231,
+        "subd_name": "Forest Science",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 232,
+        "subd_name": "Plasma Physics",
+        "disc_id": 11
+      },
+      {
+        "subd_id": 233,
+        "subd_name": "Proteomics",
+        "disc_id": 2
+      },
+      {
+        "subd_id": 234,
+        "subd_name": "Symbolic Interaction",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 235,
+        "subd_name": "Child & Adolescent Psychiatry",
+        "disc_id": 8
+      },
+      {
+        "subd_id": 236,
+        "subd_name": "General Practice",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 237,
+        "subd_name": "Environmental Management",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 238,
+        "subd_name": "Diabetes Metabolism",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 239,
+        "subd_name": "Geotechnical Engineering",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 240,
+        "subd_name": "Instrumentation",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 241,
+        "subd_name": "Clinical Chemistry",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 242,
+        "subd_name": "Fluid Engineering",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 243,
+        "subd_name": "Arthroscopy",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 244,
+        "subd_name": "Eating Disorders; Sex Roles",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 245,
+        "subd_name": "Water Quality & Resource Management",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 246,
+        "subd_name": "Ethnic Migration",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 247,
+        "subd_name": "Geriatric Psychiatry",
+        "disc_id": 8
+      },
+      {
+        "subd_id": 248,
+        "subd_name": "Sound & Vibration",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 249,
+        "subd_name": "Ore Processing",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 250,
+        "subd_name": "Ethnology",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 251,
+        "subd_name": "Prenatal Diagnostics",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 252,
+        "subd_name": "Cancer (translated)",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 253,
+        "subd_name": "Dielectrics",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 254,
+        "subd_name": "Atmospheric GeoPhysics",
+        "disc_id": 6
+      },
+      {
+        "subd_id": 255,
+        "subd_name": "Flavors & Fragrance",
+        "disc_id": 5
+      },
+      {
+        "subd_id": 256,
+        "subd_name": "Numerical Methods in Engineering",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 257,
+        "subd_name": "EthnoPharmacology",
+        "disc_id": 5
+      },
+      {
+        "subd_id": 258,
+        "subd_name": "Electrocardiography",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 259,
+        "subd_name": "International Development",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 260,
+        "subd_name": "Electrochemistry",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 261,
+        "subd_name": "Political Studies",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 262,
+        "subd_name": "Molecular Endocrinology",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 263,
+        "subd_name": "Surface Coating Technology",
+        "disc_id": 11
+      },
+      {
+        "subd_id": 264,
+        "subd_name": "Molecular Biochemical Parasitology",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 265,
+        "subd_name": "Vocational Counseling",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 266,
+        "subd_name": "Oil & Natural Gas",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 267,
+        "subd_name": "International Conflict",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 268,
+        "subd_name": "Art History",
+        "disc_id": 9
+      },
+      {
+        "subd_id": 269,
+        "subd_name": "Applied Catalysis",
+        "disc_id": 5
+      },
+      {
+        "subd_id": 270,
+        "subd_name": "Agricultural Economics",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 271,
+        "subd_name": "Social Work",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 272,
+        "subd_name": "Medical Insurance",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 273,
+        "subd_name": "Fluid Phase Equilibrium",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 274,
+        "subd_name": "Biotechnology Trends",
+        "disc_id": 2
+      },
+      {
+        "subd_id": 275,
+        "subd_name": "Air Quality",
+        "disc_id": 6
+      },
+      {
+        "subd_id": 276,
+        "subd_name": "Search Engines; Web Crawling",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 277,
+        "subd_name": "Colloid",
+        "disc_id": 5
+      },
+      {
+        "subd_id": 278,
+        "subd_name": "Applied Physiology; Muscle",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 279,
+        "subd_name": "Biblical Literature",
+        "disc_id": 9
+      },
+      {
+        "subd_id": 280,
+        "subd_name": "Fault Tolerant Computing",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 281,
+        "subd_name": "Third World Political Economics",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 282,
+        "subd_name": "Public Hospitals",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 283,
+        "subd_name": "Sociology",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 284,
+        "subd_name": "Horticulture",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 285,
+        "subd_name": "Bone & Osteoporosis",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 286,
+        "subd_name": "Radiation Therapy",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 287,
+        "subd_name": "Water Treatment",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 288,
+        "subd_name": "Spyware; Malware",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 289,
+        "subd_name": "Behavioral Research Therapy",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 290,
+        "subd_name": "Science Education",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 291,
+        "subd_name": "Design & Analysis of Algorithms",
+        "disc_id": 11
+      },
+      {
+        "subd_id": 292,
+        "subd_name": "Hospice Care",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 293,
+        "subd_name": "Climatology",
+        "disc_id": 6
+      },
+      {
+        "subd_id": 294,
+        "subd_name": "Crop Science",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 295,
+        "subd_name": "Fuzzy Sets",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 296,
+        "subd_name": "Vehicle System Design",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 297,
+        "subd_name": "Transfusion",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 298,
+        "subd_name": "AIDS Treatment",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 299,
+        "subd_name": "Wireless Communication",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 300,
+        "subd_name": "Atherosclerosis",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 301,
+        "subd_name": "Region & Medical Ethics",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 302,
+        "subd_name": "Speech Language & Hearing",
+        "disc_id": 8
+      },
+      {
+        "subd_id": 303,
+        "subd_name": "Thoracic & Respiratory",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 304,
+        "subd_name": "Veterinary Microbiology",
+        "disc_id": 10
+      },
+      {
+        "subd_id": 305,
+        "subd_name": "Environmental Protection",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 306,
+        "subd_name": "Computer Systems Design",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 307,
+        "subd_name": "Environmental Pollution",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 308,
+        "subd_name": "Electrical Networks",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 309,
+        "subd_name": "Endoscopy",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 310,
+        "subd_name": "Chemistry & Material Science",
+        "disc_id": 5
+      },
+      {
+        "subd_id": 311,
+        "subd_name": "Medical Screening & Epidemiology",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 312,
+        "subd_name": "Child Development",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 313,
+        "subd_name": "Pain",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 314,
+        "subd_name": "Public Administration",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 315,
+        "subd_name": "Soil Analysis",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 316,
+        "subd_name": "Safety Management",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 317,
+        "subd_name": "Pattern Recognition",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 318,
+        "subd_name": "Mental Health Assessment",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 319,
+        "subd_name": "Clinical Medicine (translated)",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 320,
+        "subd_name": "Mutation; DNA Repair",
+        "disc_id": 10
+      },
+      {
+        "subd_id": 321,
+        "subd_name": "Human Evolution",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 322,
+        "subd_name": "Space Research",
+        "disc_id": 11
+      },
+      {
+        "subd_id": 323,
+        "subd_name": "Entomology",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 324,
+        "subd_name": "Epilepsy",
+        "disc_id": 8
+      },
+      {
+        "subd_id": 325,
+        "subd_name": "Plant Ecology",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 326,
+        "subd_name": "Computer Aided Molecular Design",
+        "disc_id": 5
+      },
+      {
+        "subd_id": 327,
+        "subd_name": "Criminology",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 328,
+        "subd_name": "Forensic Psychiatry",
+        "disc_id": 8
+      },
+      {
+        "subd_id": 329,
+        "subd_name": "Personality",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 330,
+        "subd_name": "Test Equipment",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 331,
+        "subd_name": "Logic",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 332,
+        "subd_name": "Pulp Paper Science",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 333,
+        "subd_name": "Textiles",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 334,
+        "subd_name": "Contemporary Philosophy",
+        "disc_id": 9
+      },
+      {
+        "subd_id": 335,
+        "subd_name": "Hydrology Soil Contamination",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 336,
+        "subd_name": "Child Abuse",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 337,
+        "subd_name": "Mathematics Research",
+        "disc_id": 11
+      },
+      {
+        "subd_id": 338,
+        "subd_name": "Geology (International)",
+        "disc_id": 6
+      },
+      {
+        "subd_id": 339,
+        "subd_name": "Environmental Chemistry",
+        "disc_id": 5
+      },
+      {
+        "subd_id": 340,
+        "subd_name": "Parasitology",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 341,
+        "subd_name": "Dairy Science",
+        "disc_id": 10
+      },
+      {
+        "subd_id": 342,
+        "subd_name": "Water Policy",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 343,
+        "subd_name": "Fish Research",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 344,
+        "subd_name": "Printing",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 345,
+        "subd_name": "Genetics",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 346,
+        "subd_name": "Industrial Chemistry",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 347,
+        "subd_name": "Obesity",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 348,
+        "subd_name": "Literary Criticism",
+        "disc_id": 9
+      },
+      {
+        "subd_id": 349,
+        "subd_name": "Hepatology",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 350,
+        "subd_name": "Physical Therapy; Brain Injury",
+        "disc_id": 8
+      },
+      {
+        "subd_id": 351,
+        "subd_name": "Computational Math",
+        "disc_id": 11
+      },
+      {
+        "subd_id": 352,
+        "subd_name": "World Health Organization",
+        "disc_id": 10
+      },
+      {
+        "subd_id": 353,
+        "subd_name": "Geophysical Science",
+        "disc_id": 11
+      },
+      {
+        "subd_id": 354,
+        "subd_name": "Forensic Medicine",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 355,
+        "subd_name": "Psychiatric Services",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 356,
+        "subd_name": "Software Design and Development",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 357,
+        "subd_name": "Wildlife Management",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 358,
+        "subd_name": "Ocean Coastal Management",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 359,
+        "subd_name": "Database Design & Management",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 360,
+        "subd_name": "Financial Accounting",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 361,
+        "subd_name": "Microbiology Biotechnology",
+        "disc_id": 2
+      },
+      {
+        "subd_id": 362,
+        "subd_name": "Water Utilities",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 363,
+        "subd_name": "Sedimentary Geology",
+        "disc_id": 6
+      },
+      {
+        "subd_id": 364,
+        "subd_name": "Geodesy",
+        "disc_id": 6
+      },
+      {
+        "subd_id": 365,
+        "subd_name": "Surfactants",
+        "disc_id": 5
+      },
+      {
+        "subd_id": 366,
+        "subd_name": "Eye",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 367,
+        "subd_name": "Addictive Behavior",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 368,
+        "subd_name": "Naval Architecture",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 369,
+        "subd_name": "Environmental Microbiology",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 370,
+        "subd_name": "Electronic Imaging",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 371,
+        "subd_name": "Functional Programing",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 372,
+        "subd_name": "Applied Genetics",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 373,
+        "subd_name": "Plant Disease",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 374,
+        "subd_name": "Water Resource",
+        "disc_id": 6
+      },
+      {
+        "subd_id": 375,
+        "subd_name": "Developmental Economics",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 376,
+        "subd_name": "Nuclear Physics",
+        "disc_id": 11
+      },
+      {
+        "subd_id": 377,
+        "subd_name": "International Economics",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 378,
+        "subd_name": "Radiology",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 379,
+        "subd_name": "German Studies",
+        "disc_id": 9
+      },
+      {
+        "subd_id": 380,
+        "subd_name": "Medieval History",
+        "disc_id": 9
+      },
+      {
+        "subd_id": 381,
+        "subd_name": "Philosophy of Education",
+        "disc_id": 9
+      },
+      {
+        "subd_id": 382,
+        "subd_name": "Oceanographic Instrumentation",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 383,
+        "subd_name": "Foreign Policy",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 384,
+        "subd_name": "Gut",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 385,
+        "subd_name": "Microwaves; Radio Frequencies",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 386,
+        "subd_name": "School Psychology",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 387,
+        "subd_name": "Vaccines",
+        "disc_id": 10
+      },
+      {
+        "subd_id": 388,
+        "subd_name": "Environmental Law",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 389,
+        "subd_name": "Mass Spectrometry",
+        "disc_id": 5
+      },
+      {
+        "subd_id": 390,
+        "subd_name": "Psychiatric Nursing",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 391,
+        "subd_name": "Asian Studies",
+        "disc_id": 9
+      },
+      {
+        "subd_id": 392,
+        "subd_name": "Optimization Theory",
+        "disc_id": 11
+      },
+      {
+        "subd_id": 393,
+        "subd_name": "Mathematical Science (Russia)",
+        "disc_id": 11
+      },
+      {
+        "subd_id": 394,
+        "subd_name": "Gene Therapy",
+        "disc_id": 10
+      },
+      {
+        "subd_id": 395,
+        "subd_name": "Security; Cryptography",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 396,
+        "subd_name": "Materials Processing",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 397,
+        "subd_name": "Rural Health Care",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 398,
+        "subd_name": "Power Systems",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 399,
+        "subd_name": "Surgical Oncology",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 400,
+        "subd_name": "Chip Design & Manufacturing",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 401,
+        "subd_name": "Sociobiology",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 402,
+        "subd_name": "Molecular Medicine",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 403,
+        "subd_name": "Human Resource Management",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 404,
+        "subd_name": "Ecological Modeling",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 405,
+        "subd_name": "Clinical Rehabilitation",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 406,
+        "subd_name": "Metallurgy",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 407,
+        "subd_name": "Ethics",
+        "disc_id": 9
+      },
+      {
+        "subd_id": 408,
+        "subd_name": "Marital & Family Therapy",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 409,
+        "subd_name": "Aerospace",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 410,
+        "subd_name": "Critical Studies",
+        "disc_id": 9
+      },
+      {
+        "subd_id": 411,
+        "subd_name": "Econometrics",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 412,
+        "subd_name": "Neuroscience Methods",
+        "disc_id": 8
+      },
+      {
+        "subd_id": 413,
+        "subd_name": "Mineralogy",
+        "disc_id": 6
+      },
+      {
+        "subd_id": 414,
+        "subd_name": "Trauma",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 415,
+        "subd_name": "Thermal Analysis",
+        "disc_id": 5
+      },
+      {
+        "subd_id": 416,
+        "subd_name": "Solar & Wind Power",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 417,
+        "subd_name": "Ocean Engineering",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 418,
+        "subd_name": "Educational Psychology",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 419,
+        "subd_name": "Mycology",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 420,
+        "subd_name": "Semiotics",
+        "disc_id": 9
+      },
+      {
+        "subd_id": 421,
+        "subd_name": "Dyes & Pigments",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 422,
+        "subd_name": "Drug Safety",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 423,
+        "subd_name": "Molecular Ecology",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 424,
+        "subd_name": "Cytogenetics & Genome Mapping",
+        "disc_id": 10
+      },
+      {
+        "subd_id": 425,
+        "subd_name": "Clinical Psychiatry",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 426,
+        "subd_name": "Paleogeography",
+        "disc_id": 6
+      },
+      {
+        "subd_id": 427,
+        "subd_name": "Water Waste",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 428,
+        "subd_name": "Computer Networks",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 429,
+        "subd_name": "Weed Management",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 430,
+        "subd_name": "User Interface Design",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 431,
+        "subd_name": "Public Policy",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 432,
+        "subd_name": "Liquid Crystals",
+        "disc_id": 5
+      },
+      {
+        "subd_id": 433,
+        "subd_name": "Control Systems",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 434,
+        "subd_name": "Environmental Policy",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 435,
+        "subd_name": "Topology",
+        "disc_id": 11
+      },
+      {
+        "subd_id": 436,
+        "subd_name": "Construction",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 437,
+        "subd_name": "Dams & Tunnels",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 438,
+        "subd_name": "Regional Studies",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 439,
+        "subd_name": "Electrochemical Development",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 440,
+        "subd_name": "Digital Printing",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 441,
+        "subd_name": "Peptides",
+        "disc_id": 10
+      },
+      {
+        "subd_id": 442,
+        "subd_name": "Applied Geophysics",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 443,
+        "subd_name": "Sexually Transmitted Diseases",
+        "disc_id": 10
+      },
+      {
+        "subd_id": 444,
+        "subd_name": "Engineering Education",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 445,
+        "subd_name": "NeuroImmunology",
+        "disc_id": 8
+      },
+      {
+        "subd_id": 446,
+        "subd_name": "Machine Learning",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 447,
+        "subd_name": "Geriatric Nursing",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 448,
+        "subd_name": "Sensors & Actuators",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 449,
+        "subd_name": "Systematics & Evolutionary Microbiology",
+        "disc_id": 2
+      },
+      {
+        "subd_id": 450,
+        "subd_name": "Medical Image Processing",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 451,
+        "subd_name": "Medical Education",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 452,
+        "subd_name": "Magnetic Resonance Imagery",
+        "disc_id": 8
+      },
+      {
+        "subd_id": 453,
+        "subd_name": "Hospital Management",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 454,
+        "subd_name": "Insect Physiology",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 455,
+        "subd_name": "Power Transmission",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 456,
+        "subd_name": "Food Engineering",
+        "disc_id": 2
+      },
+      {
+        "subd_id": 457,
+        "subd_name": "Oral Surgery",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 458,
+        "subd_name": "Computer Systems Theory",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 459,
+        "subd_name": "Combustion",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 460,
+        "subd_name": "Dermatological Surgery",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 461,
+        "subd_name": "Wildlife Research",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 462,
+        "subd_name": "Midwifery",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 463,
+        "subd_name": "Physics; Current Developments",
+        "disc_id": 11
+      },
+      {
+        "subd_id": 464,
+        "subd_name": "Pyschiatric & Behavioral Genetics",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 465,
+        "subd_name": "Fractures & Fatigue",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 466,
+        "subd_name": "Emergency Medicine",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 467,
+        "subd_name": "Cross Disciplinary Studies",
+        "disc_id": 9
+      },
+      {
+        "subd_id": 468,
+        "subd_name": "Archeological Science",
+        "disc_id": 6
+      },
+      {
+        "subd_id": 469,
+        "subd_name": "Preventive Medicine",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 470,
+        "subd_name": "Carbon",
+        "disc_id": 5
+      },
+      {
+        "subd_id": 471,
+        "subd_name": "Gynecology Oncology",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 472,
+        "subd_name": "Psychosomatic Medicine",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 473,
+        "subd_name": "Pharmaco Economics",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 474,
+        "subd_name": "Computer Modeling and Animation",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 475,
+        "subd_name": "Medical Practice",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 476,
+        "subd_name": "Cancer Statistics",
+        "disc_id": 11
+      },
+      {
+        "subd_id": 477,
+        "subd_name": "Consciousness",
+        "disc_id": 8
+      },
+      {
+        "subd_id": 478,
+        "subd_name": "Otolyngology; Head Neck",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 479,
+        "subd_name": "Heart Failure; Catheters",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 480,
+        "subd_name": "Wood Components",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 481,
+        "subd_name": "Circuits",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 482,
+        "subd_name": "Friction Lubrication & Wear",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 483,
+        "subd_name": "Superconductor Science",
+        "disc_id": 11
+      },
+      {
+        "subd_id": 484,
+        "subd_name": "Antennae; Mobile Radio",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 485,
+        "subd_name": "Headache",
+        "disc_id": 8
+      },
+      {
+        "subd_id": 486,
+        "subd_name": "Operations Management",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 487,
+        "subd_name": "Fish Biology",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 488,
+        "subd_name": "Social History",
+        "disc_id": 9
+      },
+      {
+        "subd_id": 489,
+        "subd_name": "Consumer Electronics",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 490,
+        "subd_name": "Menopause",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 491,
+        "subd_name": "Chemistry (Russia)",
+        "disc_id": 5
+      },
+      {
+        "subd_id": 492,
+        "subd_name": "GeoPolitics",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 493,
+        "subd_name": "Glaciology",
+        "disc_id": 6
+      },
+      {
+        "subd_id": 494,
+        "subd_name": "Medical Libraries",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 495,
+        "subd_name": "Opera",
+        "disc_id": 9
+      },
+      {
+        "subd_id": 496,
+        "subd_name": "Education",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 497,
+        "subd_name": "Acoustics",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 498,
+        "subd_name": "Pragmatics & Discourse",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 499,
+        "subd_name": "Reproduction Veterinary",
+        "disc_id": 10
+      },
+      {
+        "subd_id": 500,
+        "subd_name": "Crystallography",
+        "disc_id": 5
+      },
+      {
+        "subd_id": 501,
+        "subd_name": "Applied Math",
+        "disc_id": 11
+      },
+      {
+        "subd_id": 502,
+        "subd_name": "Socio-Cultural Anthropology",
+        "disc_id": 9
+      },
+      {
+        "subd_id": 503,
+        "subd_name": "Poultry Science",
+        "disc_id": 10
+      },
+      {
+        "subd_id": 504,
+        "subd_name": "Artificial Organs",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 505,
+        "subd_name": "Physical Therapy; Orthopedic",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 506,
+        "subd_name": "Pulmonary",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 507,
+        "subd_name": "Waste Management",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 508,
+        "subd_name": "Marine Pollution",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 509,
+        "subd_name": "Toxins",
+        "disc_id": 5
+      },
+      {
+        "subd_id": 510,
+        "subd_name": "Hearing Research",
+        "disc_id": 8
+      },
+      {
+        "subd_id": 511,
+        "subd_name": "Human Rights",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 512,
+        "subd_name": "Lung Cancer",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 513,
+        "subd_name": "Social Economics",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 514,
+        "subd_name": "Carbohydrate Research",
+        "disc_id": 5
+      },
+      {
+        "subd_id": 515,
+        "subd_name": "Biotechnology Bioengineering",
+        "disc_id": 2
+      },
+      {
+        "subd_id": 516,
+        "subd_name": "Rural Studies",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 517,
+        "subd_name": "Electronics",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 518,
+        "subd_name": "Defects & Diffusion in Materials",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 519,
+        "subd_name": "Forensic Science",
+        "disc_id": 8
+      },
+      {
+        "subd_id": 520,
+        "subd_name": "Rangeland Ecology",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 521,
+        "subd_name": "Welding",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 522,
+        "subd_name": "Reliability Engineering",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 523,
+        "subd_name": "Molecular Biology Methods",
+        "disc_id": 10
+      },
+      {
+        "subd_id": 524,
+        "subd_name": "Mammals",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 525,
+        "subd_name": "Impotence",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 526,
+        "subd_name": "Fuzzy Logic",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 527,
+        "subd_name": "Tourism",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 528,
+        "subd_name": "Aquatic Disease",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 529,
+        "subd_name": "Geographic Information Science",
+        "disc_id": 6
+      },
+      {
+        "subd_id": 530,
+        "subd_name": "Hormone Research",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 531,
+        "subd_name": "Public Health",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 532,
+        "subd_name": "Sleep",
+        "disc_id": 8
+      },
+      {
+        "subd_id": 533,
+        "subd_name": "Neurotoxicology",
+        "disc_id": 8
+      },
+      {
+        "subd_id": 534,
+        "subd_name": "Pediatric Research",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 535,
+        "subd_name": "Education Psychological Measures",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 536,
+        "subd_name": "Marketing",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 537,
+        "subd_name": "Clinical Medicine (Romania)",
+        "disc_id": 3
+      },
+      {
+        "subd_id": 538,
+        "subd_name": "Green Chemistry",
+        "disc_id": 5
+      },
+      {
+        "subd_id": 539,
+        "subd_name": "Optometry",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 540,
+        "subd_name": "Textile Art",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 541,
+        "subd_name": "Italian Studies",
+        "disc_id": 9
+      },
+      {
+        "subd_id": 542,
+        "subd_name": "Perception Motor Skills",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 543,
+        "subd_name": "World Trade; Law",
+        "disc_id": 13
+      },
+      {
+        "subd_id": 544,
+        "subd_name": "Insects",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 545,
+        "subd_name": "Australian Ecology",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 546,
+        "subd_name": "Paints & Coatings",
+        "disc_id": 5
+      },
+      {
+        "subd_id": 547,
+        "subd_name": "Nursing Theory",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 548,
+        "subd_name": "Crustaceans",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 549,
+        "subd_name": "Laser Surgery",
+        "disc_id": 12
+      },
+      {
+        "subd_id": 550,
+        "subd_name": "Bulk Solid Handling",
+        "disc_id": 4
+      },
+      {
+        "subd_id": 551,
+        "subd_name": "Wetlands",
+        "disc_id": 1
+      },
+      {
+        "subd_id": 552,
+        "subd_name": "GIS (non English)",
+        "disc_id": 6
+      },
+      {
+        "subd_id": 553,
+        "subd_name": "Hydraulics",
+        "disc_id": 7
+      },
+      {
+        "subd_id": 554,
+        "subd_name": "Agricultural Environmental Medicine",
+        "disc_id": 10
+      }
+    ]
+  },
+  "topology": "table"
+}

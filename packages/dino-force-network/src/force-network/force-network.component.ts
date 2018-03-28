@@ -113,7 +113,7 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
       .attr('width', this.width)
       .attr('height', this.height)
       .attr('class', 'container');
-    
+
     this.simulation = d3Force.forceSimulation(data.nodes.data)
       .force('charge', d3Force.forceManyBody().theta(0))
       .force('link', d3Force.forceLink().distance(50)
@@ -147,9 +147,10 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
       .attr('stroke', 'black') // no encoding on node stroke and stroke-size
       .attr('stroke-width', 1)
       .call(d3Drag.drag()
-        .on('start', this.dragstarted)
-        .on('drag', this.dragged)
-        .on('end', this.dragended)); // TODO drag needs fixing
+        .on('start', this.dragstarted.bind(this))
+        .on('drag', this.dragged.bind(this))
+        .on('end', this.dragended.bind(this))); // TODO drag needs fixing
+        // TODO zooming
     
     this.labels = this.svgContainer.append('g').attr('class', 'labels')
       .selectAll('text').data(data.nodes.data, node => node[this.nodeIDField])
@@ -162,7 +163,7 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
 
     this.simulation.nodes(data.nodes.data).on('tick', () => this.ticked()); // TODO data
     this.simulation.force('link').links(data.edges.data); // TODO data
-    this.simulation.restart();
+    this.simulation.restart();  
   }
   
   ticked() {
@@ -174,8 +175,7 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
     this.nodes.attr('cx', (d) => d.x).attr('cy', (d) => d.y);
     this.labels.attr('x', node => node.x).attr('y', node => node.y);
   }
-
-
+  
   dragstarted(d) {
     if (!d3Selection.event.active) {
       this.simulation.alphaTarget(0.3).restart();

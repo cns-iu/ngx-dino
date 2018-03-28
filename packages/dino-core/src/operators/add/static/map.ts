@@ -4,9 +4,9 @@ import { create } from '../internal/create';
 
 
 function staticMap<In, Out>(
-  mapper: (data: In) => Out
+  mapper: (data: In, ) => Out, ...args: any[]
 ): OperatorClass<In, Out> {
-  return create(MapOperator, mapper);
+  return create(MapOperator, mapper, ...args);
 }
 
 

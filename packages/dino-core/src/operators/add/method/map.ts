@@ -5,10 +5,12 @@ import './chain';
 
 declare module '../../operator' {
   interface Operator<In, Out> {
-    map<NewOut>(mapper: (data: Out) => NewOut): Operator<In, NewOut>;
+    map<NewOut>(
+      mapper: (data: Out) => NewOut, ...args: any[]
+    ): Operator<In, NewOut>;
   }
 }
 
-OperatorClass.prototype.map = function (mapper) {
-  return this.chain(OperatorClass.map(mapper));
+OperatorClass.prototype.map = function (mapper, ...args) {
+  return this.chain(OperatorClass.map(mapper, ...args));
 };

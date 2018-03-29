@@ -1,3 +1,11 @@
-<p>
-  datatable works!
-</p>
+<div class="datatable">
+  <mat-table [dataSource]="dataSource">
+    <ng-container *ngFor="let col of fields; index as index" [matColumnDef]="col.field.label">
+      <mat-header-cell *matHeaderCellDef>{{col.field.label}}</mat-header-cell>
+      <mat-cell *matCellDef="let item">{{item[index]}}</mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="columns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: columns;"></mat-row>
+  </mat-table>
+</div>

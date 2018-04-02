@@ -78,11 +78,29 @@ function cloneDeepUnwrapOperator(obj: any): any {
 }
 
 function cloneDeepEvaluate<In, Out>(obj: any, data: In): Out {
-  return cloneDeepWith(obj, (value: any, ...args) => {
-    if (value instanceof BaseOperator) {
-      return value.get(data);
+  const removed = Map<any, List<any>>().asMutable();
+  const result = cloneDeepWith(obj, (value: any, key: any, item: any, stack: any) => {
+    if (!(value instanceof BaseOperator)) {
+      return;
+    }
+
+    const replacement = value.get(data);
+    if (replacement !== undefined) {
+      return replacement;
+    }
+
+    removed.update(stack.get(item), (keys = List()) => keys.push(key));
+  });
+
+  removed.forEach((keys, item) => {
+    if (item.delete !== undefined) { // Map or Set
+      keys.forEach((key) => item.delete(key));
+    } else { // Object or Array
+      keys.forEach((key) => (delete item[key]));
     }
   });
+
+  return result;
 }
 
 

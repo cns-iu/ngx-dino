@@ -1,10 +1,13 @@
 import { Operator as OperatorClass } from '../../operator';
+import {
+  TypeConstructor, constructCallback
+} from '../internal/construct-callback';
 
 
 function staticConstruct<In, Out>(
-  type: {new (args: In): Out}
+  type: TypeConstructor<Out, In>
 ): OperatorClass<In, Out> {
-  return OperatorClass.map((args) => new type(args));
+  return OperatorClass.map<In, Out>(constructCallback, type);
 }
 
 

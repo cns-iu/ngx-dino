@@ -1,8 +1,24 @@
-// import { Operator } from '@ngx-dino/core/operators';
-// import { FieldV2, BoundField } from '@ngx-dino/core/v2/field';
+import { Operator } from '@ngx-dino/core/operators';
+import { FieldV2 as Field}  from '@ngx-dino/core';
 
-// // not user facing
-// export const nodeSizeField = new Field<string>({
-//   name: 'tableData', label: 'tableData',
-//   accessor: (item: any): string => item.raceTimestamp + item.persona.id
-// });
+
+export const subdisciplineSizeField = new Field<string>({
+  id: '1',
+  label: 'Subdiscipline Size',
+
+  initialOp: Operator.access('tableData'),
+  mapping: [
+    ['size', true]
+  ]
+});
+
+export const subdisciplineIDField = new Field<number|string>({
+  id: '1',
+  label: 'Subdiscipline ID',
+
+  initialOp: Operator.access('subd_id'),
+  mapping: [
+    ['id', true]
+  ]
+});
+

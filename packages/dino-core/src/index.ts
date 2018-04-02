@@ -7,5 +7,5 @@ export { FieldProcessor } from './shared/field-processor';
 export { StreamCache } from './shared/stream-cache';
 
 export { Operator, Processor } from './operators';
-import { Field as FieldV2 } from './v2/field';
-export { FieldV2 };
+import { Field as FieldV2, BoundField } from './v2/field';
+export { FieldV2, BoundField };

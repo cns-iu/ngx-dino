@@ -5,7 +5,7 @@ import {
   Input,
   OnChanges
 } from '@angular/core';
-import { Changes, StreamCache, IField } from '@ngx-dino/core';
+import { Changes, StreamCache, BoundField } from '@ngx-dino/core';
 
 import * as d3Selection from 'd3-selection';
 import { scaleLinear } from 'd3-scale';
@@ -22,16 +22,16 @@ import * as underlyingScimapData from '../shared/underlyingScimapData.json';
 })
 export class ScienceMapComponent implements OnInit, OnChanges {
   @Input() margin = { top: 20, right: 15, bottom: 60, left: 60 };
-  @Input() width = window.innerWidth; // initializing width for map container
-  @Input() height = window.innerHeight; // initializing height for map container
-  @Input() nodeSizeField: IField<number | string>; // TODO Field
-  @Input() edgeSizeField: IField<number | string>;
-  @Input() nodeSizeRange = [4, 15];
+  @Input() width = window.innerWidth - 20; // initializing width for map container
+  @Input() height = window.innerHeight - 100; // initializing height for map container
+  @Input() subdisciplineSizeField: BoundField<string>;
+  @Input() subdisciplineIDField: BoundField<number|string>;
 
   private parentNativeElement: any;
   private svgContainer: d3Selection.Selection<d3Selection.BaseType, any, HTMLElement, undefined>;
   private nodes: any;
   private defaultNodeSize = 4;
+  private defaultNodeSizeRange = [10, 20];
   private labels: any;
   private links: any;
   private translateXScale: any;
@@ -53,6 +53,11 @@ export class ScienceMapComponent implements OnInit, OnChanges {
     this.createLabels('black', 16);
     this.createLabels(' ', 16);
    
+    // function doit(data, stype) {
+    //   // data.weight
+    // }
+
+    // Operator.map(doit, stype).get(item);
   } 
 
   ngOnChanges() { }
@@ -74,7 +79,7 @@ export class ScienceMapComponent implements OnInit, OnChanges {
         });
         return <number>match.tableData.length;
       }))
-      .range(this.nodeSizeRange);
+      .range(this.defaultNodeSizeRange);
   }
 
   initVisualization() { 
@@ -97,7 +102,7 @@ export class ScienceMapComponent implements OnInit, OnChanges {
       .attr('class', (d) => 'wvf-node-g subd_id' + d.subd_id + ' disc_id' + d.disc_id)
       .attr('transform', (d) => 'translate(' + this.translateXScale(d.x) + ',' + this.translateYScale(d.y) + ')')
       .append('circle')
-      .attr('r', d => this.nodeSizeScale(d.tableData.length) || this.defaultNodeSize)
+      .attr('r', d => this.nodeSizeScale(this.subdisciplineSizeField.get(d)) || this.defaultNodeSize)
       .attr('class', (d) => {
         return 'wvf-node subd_id' + d.subd_id + ' disc_id' + d.disc_id;
       })
@@ -111,7 +116,8 @@ export class ScienceMapComponent implements OnInit, OnChanges {
       }
     )
       .attr('x', (d) => this.translateXScale(d.x))
-      .attr('y', (d) =>  this.translateYScale(d.y));
+      .attr('y', (d) =>  this.translateYScale(d.y))
+      .attr('stroke', 'black');
      
       this.svgContainer.append('g').attr('class', 'labels')
       .selectAll('text').data<any>(underlyingScimapData.nodes).enter()

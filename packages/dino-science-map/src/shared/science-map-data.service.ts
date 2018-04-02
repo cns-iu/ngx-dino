@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import * as d3Collection from 'd3-collection';
 import * as d3Array from 'd3-array';
 
+import { Operator } from '@ngx-dino/core';
 import * as discLookup from './disc_lookup.json';
 import * as data from './data.json'; // TODO data to be replaced with actual data
 import * as mappingJournal from './journalMapping.json';
@@ -11,11 +12,18 @@ import * as mappingJournal from './journalMapping.json';
 export class ScienceMapDataService {
   nestedData: any;
   filteredData = data;
+  
 
   constructor() {
+    // this.scaleOperator('linear'); 
+    // Operator.map(this.scaleOperator); // .get(item)
+
     this.preprocessData();
     this.nestedData = this.nestDiscChildData(this.nestDiscData(this.filteredData.records.data));
   }
+
+  // scaleOperator(scaleType: any) {  
+  // }
 
   preprocessData() {
     let foundCount = 0;

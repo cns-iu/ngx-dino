@@ -10,6 +10,7 @@ import { Changes, StreamCache, BoundField } from '@ngx-dino/core';
 import * as d3Selection from 'd3-selection';
 import { scaleLinear } from 'd3-scale';
 import * as d3Array from 'd3-array';
+import 'd3-transition'; 
 
 import { ScienceMapDataService } from '../shared/science-map-data.service';
 import * as underlyingScimapData from '../shared/underlyingScimapData.json';
@@ -52,12 +53,6 @@ export class ScienceMapComponent implements OnInit, OnChanges {
     this.createEdges();
     this.createLabels('black', 16);
     this.createLabels(' ', 16);
-   
-    // function doit(data, stype) {
-    //   // data.weight
-    // }
-
-    // Operator.map(doit, stype).get(item);
   } 
 
   ngOnChanges() { }
@@ -102,7 +97,7 @@ export class ScienceMapComponent implements OnInit, OnChanges {
       .attr('class', (d) => 'wvf-node-g subd_id' + d.subd_id + ' disc_id' + d.disc_id)
       .attr('transform', (d) => 'translate(' + this.translateXScale(d.x) + ',' + this.translateYScale(d.y) + ')')
       .append('circle')
-      .attr('r', d => this.nodeSizeScale(this.subdisciplineSizeField.get(d)) || this.defaultNodeSize)
+      .attr('r', (d) => this.nodeSizeScale(this.subdisciplineSizeField.get(d)) || this.defaultNodeSize)
       .attr('class', (d) => {
         return 'wvf-node subd_id' + d.subd_id + ' disc_id' + d.disc_id;
       })
@@ -117,17 +112,19 @@ export class ScienceMapComponent implements OnInit, OnChanges {
     )
       .attr('x', (d) => this.translateXScale(d.x))
       .attr('y', (d) =>  this.translateYScale(d.y))
-      .attr('stroke', 'black');
+      .attr('stroke', 'black')
+      .on('mouseover', (d) => this.onMouseOver(d))
+      .on('mouseout', (d) => this.onMouseOut(d));
      
       this.svgContainer.append('g').attr('class', 'labels')
       .selectAll('text').data<any>(underlyingScimapData.nodes).enter()
       .append('text')
       .attr('class', 'subd subd_label')
-      .text((d, i) =>  d.subd_name)
-      .attr('x', d => this.translateXScale(d.x))
-      .attr('y', d => this.translateYScale(d.y))
-      .attr('dx', 35)
-      .attr('dy', 5)
+      .text((d) =>  d.subd_name)
+      .attr('x', (d) => this.translateXScale(d.x))
+      .attr('y', (d) => this.translateYScale(d.y))
+      .attr('dx', 10)
+      .attr('dy', 30)
       .attr('font-size', 12)
       .attr('text-anchor', 'middle')
       .attr('display', 'none');
@@ -165,7 +162,7 @@ export class ScienceMapComponent implements OnInit, OnChanges {
       .attr('class', 'links')
       .data<any>(underlyingScimapData.edges)
       .enter().append('line')
-      .attr('class', (d1, i1) => 'wvf-edge s' + d1.subd_id1 + ' t' + d1.subd_id2)
+      .attr('class', (d1) => 'wvf-edge s' + d1.subd_id1 + ' t' + d1.subd_id2)
       .attr('stroke', '#9b9b9b')
       .attr('stroke-width', '1px')
       .attr('opacity', 0.5)
@@ -185,6 +182,26 @@ export class ScienceMapComponent implements OnInit, OnChanges {
         const node = this.svgContainer.selectAll('circle').nodes().filter((d2: any) => d2.classList.contains('subd_id'+ d.subd_id2));
         return this.translateYScale(node[0]['__data__'].y);
       });
+  }
+
+  onMouseOver(target: any) {
+    const selection = this.svgContainer.selectAll('circle')
+    .filter((d: any) => d.subd_id === target.subd_id);
+    selection.transition().attr('r', (d) => 2 * this.nodeSizeScale(this.subdisciplineSizeField.get(d)));
+    
+    const textSelection = this.svgContainer.selectAll('.subd_label')
+    .filter((d: any) => d.subd_id === target.subd_id);
+    textSelection.transition().attr('display', 'block');
+  }
+
+  onMouseOut(target: any) {
+    const selection = this.svgContainer.selectAll('circle')
+      .filter((d: any) => d.subd_id === target.subd_id);
+    selection.transition().attr('r', (d) => this.nodeSizeScale(this.subdisciplineSizeField.get(d)) || this.defaultNodeSize);  
+
+    const textSelection = this.svgContainer.selectAll('.subd_label')
+    .filter((d: any) => d.subd_id === target.subd_id);
+    textSelection.transition().attr('display', 'none');
   }
 
   calculateTableData() {

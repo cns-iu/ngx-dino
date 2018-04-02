@@ -29,7 +29,7 @@ import { BoundField } from '@ngx-dino/core';
       })),
       state('active',   style({
         display: 'block',
-        bottom: '216px'
+        'margin-top': '-166px'
       })),
       transition('inactive => active', animate('60ms ease-in')),
       transition('active => inactive', animate('60ms ease-out'))
@@ -39,7 +39,7 @@ import { BoundField } from '@ngx-dino/core';
         bottom: '0px'
       })),
       state('active',   style({
-        bottom: '216px'
+        'margin-top': '-206px'
       })),
       transition('inactive => active', animate('60ms ease-in')),
       transition('active => inactive', animate('60ms ease-out'))

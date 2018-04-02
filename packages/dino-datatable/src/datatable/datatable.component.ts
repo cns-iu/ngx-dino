@@ -1,7 +1,7 @@
 import {
-  Component, Input,
+  Component, Input, Output,
   OnInit, OnChanges,
-  SimpleChanges
+  SimpleChanges, EventEmitter
 } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
@@ -18,6 +18,7 @@ import { DatatableService } from '../shared/datatable.service';
 export class DatatableComponent implements OnInit, OnChanges {
   @Input() data: Observable<any[]>;
   @Input() fields: BoundField<any>[];
+  @Output() rowClick: Observable<number> = new EventEmitter();
 
   dataSource: Observable<any[][]>;
   get columns(): string[] {

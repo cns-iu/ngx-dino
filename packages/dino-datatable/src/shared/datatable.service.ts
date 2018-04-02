@@ -12,7 +12,7 @@ export class DatatableService {
   makeDataSource(
     data: Observable<any[]>, fields: BoundField<any>[]
   ): Observable<any[][]> {
-    const op = Operator.combine<any[], any[][]>(fields.map((f) => f.operator));
+    const op = Operator.combine<any, any[]>(fields.map((f) => f.operator));
     return data.map((items) => items.map(op.getter));
   }
 }

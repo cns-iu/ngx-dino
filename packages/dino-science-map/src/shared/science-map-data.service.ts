@@ -7,22 +7,33 @@ import { Operator } from '@ngx-dino/core';
 import * as discLookup from './disc_lookup.json';
 import * as data from './data.json'; // TODO data to be replaced with actual data
 import * as mappingJournal from './journalMapping.json';
+import * as underlyingScimapData from '../shared/underlyingScimapData.json';
 
 @Injectable()
 export class ScienceMapDataService {
   nestedData: any;
   filteredData = data;
-  
+
+  discIdToColor = underlyingScimapData.disciplines.reduce((map, d) => {
+    map[d.disc_id] = d.color;
+    return map;
+  }, {});
+
+  subdIdToPosition = underlyingScimapData.nodes.reduce((map, n) => {
+    map[n.subd_id] = {x: n.x, y: n.y};
+    return map;
+  }, {});
+
 
   constructor() {
-    // this.scaleOperator('linear'); 
+    // this.scaleOperator('linear');
     // Operator.map(this.scaleOperator); // .get(item)
 
     this.preprocessData();
     this.nestedData = this.nestDiscChildData(this.nestDiscData(this.filteredData.records.data));
   }
 
-  // scaleOperator(scaleType: any) {  
+  // scaleOperator(scaleType: any) {
   // }
 
   preprocessData() {
@@ -57,7 +68,7 @@ export class ScienceMapDataService {
     })
     this.filteredData.records.data = newData;
   }
-  
+
   nestDiscChildData(data: any) { // TODO can be improvised
     data.disc.forEach((d) => {
       d.value.nestedChildren = d3Collection.nest()
@@ -80,7 +91,7 @@ export class ScienceMapDataService {
       const disc = discLookup.records.data.filter((d1) => d.subd_id === d1.subd_id)
       d.disc_id = disc[0].disc_id;
     });
-    
+
     return {
         disc: d3Collection.nest()
           .key((d: any): any => Number.parseInt(d.disc_id))

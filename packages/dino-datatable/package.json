@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/ng-packagr/package.schema.json",
-  "name": "@ngx-dino/core",
+  "name": "@ngx-dino/datatable",
   "version": "0.0.0",
   "license": "MIT",
   "main": "dist/index.js",
@@ -20,11 +20,14 @@
     }
   },
   "dependencies": {
+    "@angular/cdk": "^5.2.4",
     "@angular/common": "^5.0.0",
     "@angular/compiler": "^5.0.0",
     "@angular/core": "^5.0.0",
+    "@angular/material": "^5.2.4",
     "@angular/platform-browser": "^5.0.0",
     "@angular/platform-browser-dynamic": "^5.0.0",
+    "@types/lodash": "^4.14.106",
     "core-js": "^2.4.1",
     "immutable": "^3.8.2",
     "lodash": "^4.11.1",
@@ -37,7 +40,7 @@
     "@angular/language-service": "^5.0.0",
     "@types/jasmine": "^2.8.6",
     "@types/jasminewd2": "^2.0.3",
-    "@types/lodash": "^4.14.106",
+    "@types/node": "^9.4.7",
     "babel-polyfill": "^6.26.0",
     "codelyzer": "^4.0.1",
     "jasmine-core": "~2.6.2",

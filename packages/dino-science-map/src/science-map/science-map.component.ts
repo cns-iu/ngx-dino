@@ -3,7 +3,8 @@ import {
   OnInit,
   ElementRef,
   Input,
-  OnChanges
+  Output,
+  EventEmitter
 } from '@angular/core';
 import { Changes, StreamCache, BoundField } from '@ngx-dino/core';
 
@@ -21,12 +22,13 @@ import * as underlyingScimapData from '../shared/underlyingScimapData.json';
   styleUrls: ['./science-map.component.sass'],
   providers: [ScienceMapDataService]
 })
-export class ScienceMapComponent implements OnInit, OnChanges {
+export class ScienceMapComponent implements OnInit {
   @Input() margin = { top: 20, right: 15, bottom: 60, left: 60 };
   @Input() width = window.innerWidth - 20; // initializing width for map container
   @Input() height = window.innerHeight - 100; // initializing height for map container
   @Input() subdisciplineSizeField: BoundField<string>;
   @Input() subdisciplineIDField: BoundField<number|string>;
+  @Output() nodeClicked = new EventEmitter<any>();
 
   private parentNativeElement: any;
   private svgContainer: d3Selection.Selection<d3Selection.BaseType, any, HTMLElement, undefined>;
@@ -54,8 +56,6 @@ export class ScienceMapComponent implements OnInit, OnChanges {
     this.createLabels('black', 16);
     this.createLabels(' ', 16);
   } 
-
-  ngOnChanges() { }
 
   setScales() {
     this.translateXScale = scaleLinear()
@@ -86,7 +86,7 @@ export class ScienceMapComponent implements OnInit, OnChanges {
       .attr('width', this.width)
       .attr('height', this.height)
       .style('background', 'white')
-      .attr('class', 'container');
+      .attr('id', 'scienceMapcontainer');
   }
 
   createNodes() {
@@ -108,11 +108,11 @@ export class ScienceMapComponent implements OnInit, OnChanges {
             }
         })
         return disc[0].color;
-      }
-    )
+      })
       .attr('x', (d) => this.translateXScale(d.x))
       .attr('y', (d) =>  this.translateYScale(d.y))
       .attr('stroke', 'black')
+      .on('click', (d) => this.nodeClicked.emit(d))
       .on('mouseover', (d) => this.onMouseOver(d))
       .on('mouseout', (d) => this.onMouseOut(d));
      

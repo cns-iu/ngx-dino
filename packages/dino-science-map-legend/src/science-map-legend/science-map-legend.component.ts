@@ -29,7 +29,7 @@ import { BoundField } from '@ngx-dino/core';
       })),
       state('active',   style({
         display: 'block',
-        'margin-top': '-166px'
+        'margin-top': '-15%'
       })),
       transition('inactive => active', animate('60ms ease-in')),
       transition('active => inactive', animate('60ms ease-out'))
@@ -39,7 +39,7 @@ import { BoundField } from '@ngx-dino/core';
         bottom: '0px'
       })),
       state('active',   style({
-        'margin-top': '-206px'
+        'margin-top': '-19.5%'
       })),
       transition('inactive => active', animate('60ms ease-in')),
       transition('active => inactive', animate('60ms ease-out'))
@@ -49,10 +49,10 @@ import { BoundField } from '@ngx-dino/core';
 export class ScienceMapLegendComponent implements OnInit {
   @Input() dataStream:Observable<any>; // TODO
   @Input() sizeField: BoundField<string>;
-  // legendImagePath = '/assets/discipline-legend.svg';
 
   legendState = 'inactive';
   buttonState = 'inactive';
+
   constructor() {
   }
 

@@ -13,7 +13,7 @@ import { Changes, StreamCache, BoundField } from '@ngx-dino/core';
 import * as d3Selection from 'd3-selection';
 import { scaleLinear } from 'd3-scale';
 import * as d3Array from 'd3-array';
-import 'd3-transition'; 
+import 'd3-transition';
 import * as d3Zoom from 'd3-zoom';
 
 import { ScienceMapDataService } from '../shared/science-map-data.service';
@@ -50,14 +50,14 @@ export class ScienceMapComponent implements OnInit, OnChanges {
   private subdIdToDisc: any;
   private discIdToColor: any;
   private subdIdToName: any;
-  private zoom = d3Zoom.zoom().scaleExtent([1, 10]).on('zoom', this.zoomed);
+  // private zoom = d3Zoom.zoom().scaleExtent([1, 10]).on('zoom', this.zoomed);
 
-  constructor(element: ElementRef, private dataService: ScienceMapDataService) { 
+  constructor(element: ElementRef, private dataService: ScienceMapDataService) {
     this.parentNativeElement = element.nativeElement; // to get native parent element of this component
   }
 
   ngOnInit() {
-  } 
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     for (const propName in changes) {
@@ -70,7 +70,7 @@ export class ScienceMapComponent implements OnInit, OnChanges {
       }
     }
   }
-  
+
   setScales() {
     this.translateXScale = scaleLinear()
       .domain(d3Array.extent(this.dataService.underlyingScimapData.nodes, (d: any) => <number>d.x))
@@ -79,13 +79,13 @@ export class ScienceMapComponent implements OnInit, OnChanges {
     this.translateYScale = scaleLinear()
       .domain(d3Array.extent(this.dataService.underlyingScimapData.nodes, (d: any) => <number>d.y))
       .range([this.height - 10, 10]);
-    
+
     this.nodeSizeScale = scaleLinear()
       .domain(d3Array.extent(this.data, (d: any) => parseInt(this.subdisciplineSizeField.get(d))))
       .range(this.defaultNodeSizeRange);
   }
 
-  initVisualization() { 
+  initVisualization() {
     d3Selection.select(this.parentNativeElement)
       .select('#scienceMapContainer').select('svg').remove();
     
@@ -97,8 +97,8 @@ export class ScienceMapComponent implements OnInit, OnChanges {
       .attr('width', this.width)
       .attr('height', this.height)
       .style('background', 'white')
-      .attr('id', 'scienceMapcontainer')
-      .call(this.zoom);
+      .attr('id', 'scienceMapcontainer');
+      // .call(this.zoom);
   }
 
   createNodes() {
@@ -110,7 +110,7 @@ export class ScienceMapComponent implements OnInit, OnChanges {
     
     this.nodes.enter().append('g')
       .attr('class', (d) => 'node-g subd_id' + this.subdisciplineIDField.get(d))
-      .attr('transform', (d) => 'translate(' + this.translateXScale(this.dataService.subdIdToPosition[this.subdisciplineIDField.get(d)].x) 
+      .attr('transform', (d) => 'translate(' + this.translateXScale(this.dataService.subdIdToPosition[this.subdisciplineIDField.get(d)].x)
           + ',' + this.translateYScale(this.dataService.subdIdToPosition[this.subdisciplineIDField.get(d)].y) + ')')
       .append('circle')
       .attr('r', (d) => this.nodeSizeScale(this.subdisciplineSizeField.get(d)) || this.defaultNodeSize)
@@ -186,7 +186,7 @@ export class ScienceMapComponent implements OnInit, OnChanges {
     const selection = this.svgContainer.selectAll('circle')
     .filter((d: any) => this.subdisciplineIDField.get(d) === targetID);
     selection.transition().attr('r', (d) => 2 * this.nodeSizeScale(this.subdisciplineSizeField.get(d) || 2 * this.defaultNodeSize));
-    
+
     const textSelection = this.svgContainer.selectAll('.subd_label')
       .filter((d: any) => this.subdisciplineIDField.get(d) == targetID); // TODO ==
     textSelection.transition().attr('display', 'block');

@@ -20,6 +20,7 @@ import { ScienceMapDataService } from '../shared/science-map-data.service';
 import { Observable } from 'apollo-link';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
+
 @Component({
   selector: 'dino-science-map',
   templateUrl: './science-map.component.html',
@@ -75,7 +76,7 @@ export class ScienceMapComponent implements OnInit, OnChanges {
     this.translateXScale = scaleLinear()
       .domain(d3Array.extent(this.dataService.underlyingScimapData.nodes, (d: any) => <number>d.x))
       .range([10, this.width - 10]);
-      
+
     this.translateYScale = scaleLinear()
       .domain(d3Array.extent(this.dataService.underlyingScimapData.nodes, (d: any) => <number>d.y))
       .range([this.height - 10, 10]);
@@ -118,7 +119,7 @@ export class ScienceMapComponent implements OnInit, OnChanges {
       .on('click', (d) => this.nodeClicked.emit(d))
       .on('mouseover', (d) => this.onMouseOver(d))
       .on('mouseout', (d) => this.onMouseOut(d));
-     
+
       this.svgContainer.append('g').attr('class', 'labels')
       .selectAll('text').data<any>(this.dataService.underlyingScimapData.nodes).enter()
       .append('text')

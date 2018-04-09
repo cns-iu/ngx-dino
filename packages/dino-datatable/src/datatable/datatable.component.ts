@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { BoundField } from '@ngx-dino/core';
 
+import { DataType } from '../shared/data-types';
 import { DatatableService } from '../shared/datatable.service';
 
 
@@ -17,10 +18,10 @@ import { DatatableService } from '../shared/datatable.service';
 })
 export class DatatableComponent implements OnInit, OnChanges {
   @Input() data: Observable<any[]>;
-  @Input() fields: BoundField<any>[];
+  @Input() fields: BoundField<DataType>[];
   @Output() rowClick: Observable<number> = new EventEmitter();
 
-  dataSource: Observable<any[][]>;
+  dataSource: Observable<DataType[][]>;
   get columns(): string[] {
     return this.fields.map((f) => f.field.label);
   }

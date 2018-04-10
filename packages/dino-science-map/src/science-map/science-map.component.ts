@@ -17,7 +17,6 @@ import 'd3-transition';
 import * as d3Zoom from 'd3-zoom';
 
 import { ScienceMapDataService } from '../shared/science-map-data.service';
-import { Observable } from 'apollo-link';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 

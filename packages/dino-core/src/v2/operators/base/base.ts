@@ -1,28 +1,23 @@
 import { Collection, is } from 'immutable';
 import { uniqueId } from 'lodash';
 
-import { OperatorFlags } from './operator-flags';
-import { IBaseOperator, ICache } from './ibase-operator';
+import { Flags } from './flags';
 
 
-export abstract class BaseOperator<In, Out> implements IBaseOperator<In, Out> {
+export abstract class BaseOperator<In, Out> {
   readonly id: string = uniqueId('operator_');
   private cachedState: Collection<any, any> = undefined;
 
-  constructor(readonly flags: OperatorFlags) { }
+  constructor(readonly flags: Flags = Flags.None) { }
 
 
   // Methods to override in derived classes
-  protected abstract getImpl(data: In, cache: ICache): Out;
+  protected abstract getImpl(data: In, cache: BaseCache): Out;
   protected abstract getStateImpl(): Collection<any, any>;
 
-  public rawBaseOperator(): BaseOperator<In, Out> {
-    return this;
-  }
 
-
-  // Implementation of Operator interface
-  get(data: In, cache: ICache): Out {
+  // Public interface
+  get(data: In, cache: BaseCache): Out {
     cache.enter();
     const result = this.getImpl(data, cache);
     cache.exit();
@@ -47,4 +42,14 @@ export abstract class BaseOperator<In, Out> implements IBaseOperator<In, Out> {
   hashCode(): number {
     return this.getState().hashCode();
   }
+}
+
+
+export abstract class BaseCache {
+  // Methods to override in derived classes
+  enter() { }
+  exit() { }
+
+  abstract get<In, Out>(op: BaseOperator<In, Out>, data: In): Out;
+  clear() { }
 }

@@ -1,7 +1,6 @@
 import { Collection } from 'immutable';
 
-import { ICache } from './base/ibase-operator';
-import { BaseOperator } from './base/base-operator';
+import { BaseOperator, BaseCache } from './base/base';
 import { NoopCache } from './caches/noop-cache';
 
 
@@ -11,7 +10,7 @@ export class Operator<In, Out> extends BaseOperator<In, Out> {
   constructor(readonly wrapped: BaseOperator<In, Out>) {
     super(wrapped.flags);
 
-    // No deep nesting
+    // No nesting wrapped operators
     if (wrapped instanceof Operator) {
       return wrapped;
     }
@@ -19,7 +18,7 @@ export class Operator<In, Out> extends BaseOperator<In, Out> {
 
 
   // Override base class methods
-  protected getImpl(data: In, cache: ICache): Out {
+  protected getImpl(data: In, cache: BaseCache): Out {
     return this.wrapped.get(data, cache);
   }
 
@@ -27,16 +26,13 @@ export class Operator<In, Out> extends BaseOperator<In, Out> {
     return this.wrapped.getState();
   }
 
-  rawBaseOperator(): BaseOperator<In, Out> {
-    return this.wrapped;
-  }
-
-  get(data: In, cache?: ICache): Out {
-    return (cache || NoopCache.instance).get(this.wrapped, data);
+  get(data: In, cache: BaseCache = new NoopCache()): Out {
+    return cache.get(this.wrapped, data);
   }
 
 
-  // Binding
+  // Binding for Operator#get. Makes it easier to use as a callback i.e.
+  // [...].map(op.getter)
   get getter(): (data: In) => Out {
     return this.cachedGetter || (this.cachedGetter = this.get.bind(this));
   }

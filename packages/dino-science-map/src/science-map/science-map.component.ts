@@ -88,7 +88,7 @@ export class ScienceMapComponent implements OnInit, OnChanges {
   initVisualization() {
     d3Selection.select(this.parentNativeElement)
       .select('#scienceMapContainer').select('svg').remove();
-    
+
     // initializing svg container
     let container = d3Selection.select(this.parentNativeElement)
       .select('#scienceMapContainer');
@@ -104,10 +104,10 @@ export class ScienceMapComponent implements OnInit, OnChanges {
   createNodes() {
     this.nodes = this.svgContainer.selectAll('.underlyingNodes')
       .data<any>(this.data, (d) => <any>this.subdisciplineIDField.get(d));
-    
+
     this.nodes.selectAll('circle')
       .transition().attr('r', (d) => this.nodeSizeScale(this.subdisciplineSizeField.get(d)));
-    
+
     this.nodes.enter().append('g')
       .attr('class', (d) => 'node-g subd_id' + this.subdisciplineIDField.get(d))
       .attr('transform', (d) => 'translate(' + this.translateXScale(this.dataService.subdIdToPosition[this.subdisciplineIDField.get(d)].x)
@@ -118,7 +118,7 @@ export class ScienceMapComponent implements OnInit, OnChanges {
       .attr('fill', (d) => this.dataService.underlyingScimapData.disciplines.filter(
         (d2) => d2.disc_id === this.dataService.subdIdToDisc[this.subdisciplineIDField.get(d)].disc_id)[0].color)
       .attr('stroke', 'black')
-      .on('click', (d) => this.nodeClicked.emit(d))
+      .on('click', (d) => this.nodeClicked.emit(this.dataForSubdiscipline(d.subd_id)))
       .on('mouseover', (d) => this.onMouseOver(<number>this.subdisciplineIDField.get(d)))
       .on('mouseout', (d) => this.onMouseOut(<number>this.subdisciplineIDField.get(d)));
 
@@ -195,15 +195,31 @@ export class ScienceMapComponent implements OnInit, OnChanges {
   onMouseOut(targetID: number) {
     const selection = this.svgContainer.selectAll('circle')
     .filter((d: any) => this.subdisciplineIDField.get(d) === targetID);
-    selection.transition().attr('r', (d) => this.nodeSizeScale(this.subdisciplineSizeField.get(d)) || this.defaultNodeSize);  
-    
+    selection.transition().attr('r', (d) => this.nodeSizeScale(this.subdisciplineSizeField.get(d)) || this.defaultNodeSize);
+
     const textSelection = this.svgContainer.selectAll('.subd_label')
-    .filter((d: any) => this.subdisciplineIDField.get(d) == targetID); // TODO == 
+    .filter((d: any) => this.subdisciplineIDField.get(d) == targetID); // TODO ==
     textSelection.transition().attr('display', 'none');
   }
 
   zoomed() {
     console.log('zooooomed!!');
-    }
+  }
 
+  dataForSubdiscipline(id: number): any {
+    const result = {
+      subd_id: id,
+      subd_name: this.dataService.subdIdToName[id].subd_name,
+      disc_name: undefined
+    };
+
+    const {disc_id} = this.dataService.subdIdToDisc[id];
+    const {disc_name} = (this.dataService.underlyingScimapData.disciplines as any[]).find(
+      (d) => d.disc_id == disc_id
+    );
+
+    result.disc_name = disc_name;
+
+    return result;
+  }
 }

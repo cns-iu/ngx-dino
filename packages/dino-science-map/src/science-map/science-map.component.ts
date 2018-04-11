@@ -60,7 +60,7 @@ export class ScienceMapComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     for (const propName in changes) {
-      if (propName === 'data' && this[propName] && !changes[propName].isFirstChange()) {
+      if (propName === 'data' && this[propName]) {
         this.setScales();
         this.initVisualization();
         this.createNodes();

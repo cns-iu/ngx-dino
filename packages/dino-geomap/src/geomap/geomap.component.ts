@@ -21,7 +21,7 @@ import * as geomapSpec from '../shared/spec.json';
 
 export class GeomapComponent implements OnInit, OnDestroy, OnChanges {
   @Input() stateDataStream: Observable<Changes>;
-  
+
   @Input() strokeColorField: IField<string>;
 
   @Input() stateField: IField<string>;
@@ -78,13 +78,10 @@ export class GeomapComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   updateStreamProcessor(update: string = null) {
-    if (this.pointStreamCache
-      && this.stateStreamCache
-      && this.stateColorField
-      && this.pointColorField
-      && this.pointShapeField
-      && this.pointSizeField) {
-        this.dataService.fetchData(
+    if (this.pointStreamCache && this.stateStreamCache &&
+        this.stateColorField && this.pointColorField &&
+        this.pointShapeField && this.pointSizeField) {
+      this.dataService.fetchData(
         this.pointStreamCache.asObservable(),
         this.stateStreamCache.asObservable(),
         this.strokeColorField,
@@ -98,6 +95,7 @@ export class GeomapComponent implements OnInit, OnDestroy, OnChanges {
         this.pointShapeField
       );
     }
+
     if (this.pointStreamCache && this.stateStreamCache && update) {
       if (update === 'point') {
         this.pointStreamCache.sendUpdate();

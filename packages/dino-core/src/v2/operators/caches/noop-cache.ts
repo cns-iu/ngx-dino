@@ -1,7 +1,7 @@
 import { BaseOperator, BaseCache } from '../base/base';
 
 
-export class NoopCache implements BaseCache {
+export class NoopCache extends BaseCache {
   enter(): void { }
   exit(): void { }
 

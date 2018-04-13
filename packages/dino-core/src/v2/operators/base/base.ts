@@ -33,7 +33,8 @@ export abstract class BaseOperator<In, Out> {
   // Implementation of immutable value interface
   equals(other: any): boolean {
     if (other instanceof BaseOperator) {
-      return is(this.getState(), other.getState());
+      return (is(this.flags, other.flags) &&
+              is(this.getState(), other.getState()));
     }
 
     return false;

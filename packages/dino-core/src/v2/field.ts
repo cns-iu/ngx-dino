@@ -41,7 +41,8 @@ export class Field<T> {
 
     this.mapping = Map(Map(args.mapping || {}).map((op: Operator<any, T> | true) => {
       const newOp = op === true ? this.initialOp : this.initialOp.chain(op);
-      return new BoundField(this, newOp);
+      // Casts to get around BoundField's constructor being marked as private
+      return (new (BoundField as any)(this, newOp)) as BoundField<T>;
     }));
   }
 
@@ -56,7 +57,10 @@ export class Field<T> {
 }
 
 export class BoundField<T> {
-  constructor(readonly field: Field<T>, readonly operator: Operator<any, T>) { }
+  private constructor(
+    readonly field: Field<T>,
+    readonly operator: Operator<any, T>
+  ) { }
 
   get(data: any): T {
     return this.operator.get(data);

@@ -1,16 +1,17 @@
 // tslint:disable:no-bitwise
 export class Flags {
-  // Stateless indicates that the operator always produces the same value for a
-  // specific input value and that the operation is side effect free.
+  // Operation always produces the same result for a given input.
   static Stateless = new Flags(1 << 0);
 
-  // InputIndependent indicates that the input is not used to produce a value
-  // and therefore can be replaced with any other input.
+  // Operations output does not depend on the input.
   static InputIndependent = new Flags(1 << 1);
+
+  // Operation has no side effects.
+  static SideEffectFree = new Flags(1 << 2);
 
   static None = new Flags(0);
   static All = new Flags(0).or(
-    Flags.Stateless, Flags.InputIndependent
+    Flags.Stateless, Flags.InputIndependent, Flags.SideEffectFree
   );
 
 

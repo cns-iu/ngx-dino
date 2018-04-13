@@ -7,8 +7,10 @@ describe('operators', () => {
 describe('base', () => {
 describe('Flags', () => {
   it('should have enum like class instances', () => {
-    expect(Flags.Cachable).toBeDefined();
+    expect(Flags.Stateless).toBeDefined();
     expect(Flags.InputIndependent).toBeDefined();
+    expect(Flags.SideEffectFree).toBeDefined();
+
     expect(Flags.None).toBeDefined();
     expect(Flags.All).toBeDefined();
   });

@@ -27,7 +27,7 @@ export class Operator<In, Out> extends BaseOperator<In, Out> {
   }
 
   get(data: In, cache: BaseCache = new NoopCache()): Out {
-    return cache.get(this.wrapped, data);
+    return super.get(data, cache);
   }
 
 

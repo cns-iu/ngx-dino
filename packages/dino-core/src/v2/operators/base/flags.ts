@@ -1,16 +1,16 @@
 // tslint:disable:no-bitwise
 export class Flags {
   // Operation always produces the same result for a given input.
-  static Stateless = new Flags(1 << 0);
+  static readonly Stateless = new Flags(1 << 0);
 
   // Operations output does not depend on the input.
-  static InputIndependent = new Flags(1 << 1);
+  static readonly InputIndependent = new Flags(1 << 1);
 
   // Operation has no side effects.
-  static SideEffectFree = new Flags(1 << 2);
+  static readonly SideEffectFree = new Flags(1 << 2);
 
-  static None = new Flags(0);
-  static All = new Flags(0).or(
+  static readonly None = new Flags(0);
+  static readonly All = new Flags(0).or(
     Flags.Stateless, Flags.InputIndependent, Flags.SideEffectFree
   );
 

@@ -80,6 +80,13 @@ describe('Operator', () => {
     expect(op.equals(mock2)).toBeTruthy();
     expect(op.equals(op2)).toBeTruthy();
   });
-  // TODO
+
+  it('should not compare equal if the wrapped BaseOperators do not compare equal', () => {
+    const mock2 = new MockOperator();
+    const op2 = new Operator(mock2);
+
+    expect(mock.equals(mock2)).toBeFalsy();
+    expect(op.equals(op2)).toBeFalsy();
+  });
 });
 });

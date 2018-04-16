@@ -20,6 +20,9 @@ import * as geomapSpec from '../shared/spec.json';
 })
 
 export class GeomapComponent implements OnInit, OnDestroy, OnChanges {
+  @Input() width: number = 900;
+  @Input() height: number = 560;
+
   @Input() stateDataStream: Observable<Changes>;
   @Input() stateField: IField<string>;
   @Input() stateColorField: IField<string>;
@@ -71,9 +74,22 @@ export class GeomapComponent implements OnInit, OnDestroy, OnChanges {
       }
     }
 
-    if ('stateDefaultColor' in changes && this.view) {
-      this.view.signal('stateDefaultColor', this.stateDefaultColor);
-      this.view.run();
+    if (this.view) {
+      let rerun = false;
+      if ('width' in changes || 'height' in changes) {
+        this.view.signal('width', this.width);
+        this.view.signal('height', this.height);
+        rerun = true;
+      }
+
+      if ('stateDefaultColor' in changes && this.view) {
+        this.view.signal('stateDefaultColor', this.stateDefaultColor);
+        rerun = true;
+      }
+
+      if (rerun) {
+        this.view.run();
+      }
     }
   }
 
@@ -120,7 +136,11 @@ export class GeomapComponent implements OnInit, OnDestroy, OnChanges {
       .insert('states', vega.read(us10m, {
         type: 'topojson',
         feature: 'states'
-      })).signal('stateDefaultColor', this.stateDefaultColor).run();
+      }))
+      .signal('width', this.width)
+      .signal('height', this.height)
+      .signal('stateDefaultColor', this.stateDefaultColor)
+      .run();
 
     this.statesSubscription = this.dataService.states.subscribe((change: Changes<State>) => {
       this.view.change('stateColorCoding', makeChangeSet<State>(change, 'id')).run();

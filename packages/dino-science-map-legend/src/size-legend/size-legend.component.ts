@@ -23,7 +23,7 @@ import { BoundField } from '@ngx-dino/core';
 })
 export class SizeLegendComponent implements OnInit, OnChanges {
   @Input() dataStream: any[];
-  @Input() sizeField: BoundField<string | number>;
+  @Input() sizeField: BoundField<string>;
   @Input() title: string = 'Weighted Journal Score';
   parentNativeElement: any;
   legendSizeScale: any;
@@ -31,6 +31,9 @@ export class SizeLegendComponent implements OnInit, OnChanges {
   max: number;
   mid: number;
   min: number;
+  maxLabel: string;
+  midLabel: string;
+  minLabel: string;
 
   constructor(element: ElementRef) {
     this.parentNativeElement = element.nativeElement; // to get native parent element of this component
@@ -39,17 +42,18 @@ export class SizeLegendComponent implements OnInit, OnChanges {
   ngOnInit() { }
 
   ngOnChanges(changes: SimpleChanges) {
-    for (const propName in changes) {
-      if (propName === 'dataStream' && this[propName] && !changes[propName].isFirstChange()) {
-        const values = changes[propName].currentValue;
-        this.max = Math.round(parseInt(d3Array.max(values, (d: any) => d.weight)));
-        this.min = Math.round(parseInt(d3Array.min(values, (d: any) => d.weight)));
+      if ('dataStream' in changes && this.dataStream) {
+        const values = changes['dataStream'].currentValue;
+        this.max = Math.round(parseInt(d3Array.max(values, (d: any) => this.sizeField.get(d))));
+        this.min = Math.round(parseInt(d3Array.min(values, (d: any) => this.sizeField.get(d))));
         this.mid = Math.round(this.max+ this.min)/2;
+        this.maxLabel = (!isNaN(this.max))? this.max.toString(): '';
+        this.midLabel = (!isNaN(this.mid))? this.mid.toString(): '';
+        this.minLabel = (!isNaN(this.min))? this.min.toString(): '';
         this.setScales();
         this.setSizes();
         this.setTexts();
       }
-    }
 
     if ('title' in changes) {
       d3Selection.select(this.parentNativeElement)
@@ -79,12 +83,12 @@ export class SizeLegendComponent implements OnInit, OnChanges {
       .select('#title').transition().text(this.title);
 
     d3Selection.select(this.parentNativeElement)
-      .select('#maxG').select('text').transition().text(this.max);
+      .select('#maxG').select('text').transition().text(this.maxLabel);
+    
+    d3Selection.select(this.parentNativeElement)
+      .select('#midG').select('text').transition().text(this.midLabel); 
 
     d3Selection.select(this.parentNativeElement)
-      .select('#midG').select('text').transition().text(this.mid);
-
-    d3Selection.select(this.parentNativeElement)
-      .select('#minG').select('text').transition().text(this.min);
+      .select('#minG').select('text').transition().text(this.minLabel);
   }
 }

@@ -30,9 +30,13 @@
             "color"
           ],
           "as": [
-            "colorValue"
-          ],
-          "default": "#bebebe"
+            "rawColorValue"
+          ]
+        },
+        {
+          "type": "formula",
+          "expr": "datum.rawColorValue !== null ? datum.rawColorValue : stateDefaultColor",
+          "as": "colorValue"
         }
       ]
     },
@@ -59,7 +63,12 @@
       ]
     }
   ],
-  "signals": [],
+  "signals": [
+    {
+      "name": "stateDefaultColor",
+      "value": "#bebebe"
+    }
+  ],
   "scales": [],
   "projections": [
     {

@@ -10,7 +10,7 @@ import {
 import * as d3Selection from 'd3-selection';
 import * as d3Array from 'd3-array';
 import { scaleLinear } from 'd3-scale';
-import 'd3-transition'; 
+import 'd3-transition';
 
 import  { Observable } from 'rxjs/Observable';
 import { BoundField } from '@ngx-dino/core';
@@ -24,6 +24,7 @@ import { BoundField } from '@ngx-dino/core';
 export class SizeLegendComponent implements OnInit, OnChanges {
   @Input() dataStream: any[];
   @Input() sizeField: BoundField<string | number>;
+  @Input() title: string = 'Weighted Journal Score';
   parentNativeElement: any;
   legendSizeScale: any;
   defaultSizeRange = [4, 14];
@@ -31,7 +32,7 @@ export class SizeLegendComponent implements OnInit, OnChanges {
   mid: number;
   min: number;
 
-  constructor(element: ElementRef) { 
+  constructor(element: ElementRef) {
     this.parentNativeElement = element.nativeElement; // to get native parent element of this component
   }
 
@@ -49,6 +50,11 @@ export class SizeLegendComponent implements OnInit, OnChanges {
         this.setTexts();
       }
     }
+
+    if ('title' in changes) {
+      d3Selection.select(this.parentNativeElement)
+        .select('#title').transition().text(this.title);
+    }
   }
 
   setScales() {
@@ -60,23 +66,23 @@ export class SizeLegendComponent implements OnInit, OnChanges {
   setSizes() {
     d3Selection.select(this.parentNativeElement)
       .select('#maxNode').transition().attr('r', this.legendSizeScale(this.max));
-    
+
     d3Selection.select(this.parentNativeElement)
       .select('#midNode').transition().attr('r', this.legendSizeScale(this.mid));
-    
+
       d3Selection.select(this.parentNativeElement)
       .select('#minNode').transition().attr('r', this.legendSizeScale(this.min));
   }
 
   setTexts() {
     d3Selection.select(this.parentNativeElement)
-      .select('#title').transition().text('Weighted Journal Score');
-    
+      .select('#title').transition().text(this.title);
+
     d3Selection.select(this.parentNativeElement)
       .select('#maxG').select('text').transition().text(this.max);
-    
+
     d3Selection.select(this.parentNativeElement)
-      .select('#midG').select('text').transition().text(this.mid); 
+      .select('#midG').select('text').transition().text(this.mid);
 
     d3Selection.select(this.parentNativeElement)
       .select('#minG').select('text').transition().text(this.min);

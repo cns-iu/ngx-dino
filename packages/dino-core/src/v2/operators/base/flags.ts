@@ -18,6 +18,11 @@ export class Flags {
   private constructor(private readonly bits: number) { }
 
 
+  static combine(...flags: Flags[]): Flags {
+    return Flags.None.or(...flags);
+  }
+
+
   has(...flags: Flags[]): boolean {
     return this.all(...flags);
   }

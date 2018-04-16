@@ -1,5 +1,3 @@
-/// <reference path="../../../../../../node_modules/@types/jasmine/index.d.ts" />
-
 import { Flags } from './flags';
 
 
@@ -25,6 +23,13 @@ describe('Flags', () => {
     expect(Flags.None.has(Flags.Stateless)).toBeFalsy();
     expect(Flags.None.all(Flags.Stateless)).toBeFalsy();
     expect(Flags.None.any(Flags.Stateless)).toBeFalsy();
+  });
+
+  it('should be combinable', () => {
+    const flag = Flags.combine(Flags.Stateless, Flags.SideEffectFree);
+
+    expect(flag).toEqual(jasmine.any(Flags));
+    expect(flag.all(Flags.Stateless, Flags.SideEffectFree)).toBeTruthy();
   });
 
   it('should be not-able', () => {

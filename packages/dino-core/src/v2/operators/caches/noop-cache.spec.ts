@@ -1,7 +1,4 @@
-/// <reference path="../../../../../../node_modules/@types/jasmine/index.d.ts" />
-
-import { MockOperator } from '../test-util/mock-operator';
-
+import { MockOperator } from '../test-util';
 import { NoopCache } from './noop-cache';
 
 

@@ -1,11 +1,6 @@
-/// <reference path="../../../../../node_modules/@types/jasmine/index.d.ts" />
-
 import { List } from 'immutable';
 
-import { MockOperator } from './test-util/mock-operator';
-
-import { Flags } from './base/flags';
-import { BaseOperator, BaseCache } from './base/base';
+import { Flags, BaseCache, MockOperator, create } from './test-util';
 import { Operator } from './operator';
 
 
@@ -19,8 +14,8 @@ describe('Operator', () => {
   let op: Operator<any, any>;
 
   beforeEach(() => {
-    mock = new MockOperator(mockValue, mockState, mockFlags);
-    op = new Operator(mock);
+    op = create(MockOperator, mockValue, mockState, mockFlags);
+    mock = op.wrapped as MockOperator;
   }, jasmine.DEFAULT_TIMEOUT_INTERVAL);
 
   it('should create', () => {
@@ -74,16 +69,16 @@ describe('Operator', () => {
   });
 
   it('should compare equal to other BaseOperator that compare equal to the wrapped BaseOperator', () => {
-    const mock2 = new MockOperator(mockValue, mockState, mockFlags);
-    const op2 = new Operator(mock2);
+    const op2 = create(MockOperator, mockValue, mockState, mockFlags);
+    const mock2 = op2.wrapped as MockOperator;
 
     expect(op.equals(mock2)).toBeTruthy();
     expect(op.equals(op2)).toBeTruthy();
   });
 
   it('should not compare equal if the wrapped BaseOperators do not compare equal', () => {
-    const mock2 = new MockOperator();
-    const op2 = new Operator(mock2);
+    const op2 = create(MockOperator);
+    const mock2 = op2.wrapped as MockOperator;
 
     expect(mock.equals(mock2)).toBeFalsy();
     expect(op.equals(op2)).toBeFalsy();

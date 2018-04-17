@@ -19,7 +19,7 @@ describe('Operator', () => {
   }, jasmine.DEFAULT_TIMEOUT_INTERVAL);
 
   it('should create', () => {
-    expect(op).toBeDefined();
+    expect(op).toEqual(jasmine.any(Operator));
   });
 
   it('should have a wrapped operator', () => {

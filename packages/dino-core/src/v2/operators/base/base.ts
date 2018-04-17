@@ -19,10 +19,11 @@ export abstract class BaseOperator<In, Out> {
   // Public interface
   get(data: In, cache: BaseCache): Out {
     cache.enter();
-    const result = this.getImpl(data, cache);
-    cache.exit();
-
-    return result;
+    try {
+      return this.getImpl(data, cache);
+    } finally {
+      cache.exit();
+    }
   }
 
   getState(): Collection<any, any> {

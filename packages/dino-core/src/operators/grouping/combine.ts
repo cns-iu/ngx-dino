@@ -90,6 +90,7 @@ function cloneDeepEvaluate<In, Out>(obj: any, data: In): Out {
     }
 
     removed.update(stack.get(item), (keys = List()) => keys.push(key));
+    return value;
   });
 
   removed.forEach((keys, item) => {

@@ -26,7 +26,8 @@ import * as data from '../shared/copi.json'; // TODO streaming data instead of j
   styleUrls: ['./force-network.component.sass']
 })
 export class ForceNetworkComponent implements OnInit, OnChanges {
-  // @Input() data: Array<number>; // TODO datastream
+  @Input() dataNodes: Array<any>; // TODO datastream
+  @Input() dataEdges: Array<any>;
   @Input() margin = { top: 20, right: 15, bottom: 60, left: 60 };
   @Input() width = window.innerWidth; // initializing width for map container
   @Input() height = window.innerHeight; // initializing height for map container

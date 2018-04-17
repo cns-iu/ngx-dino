@@ -95,7 +95,6 @@ export class ScienceMapComponent implements OnInit, OnChanges {
     this.svgContainer = container.append('svg')
       .attr('width', this.width)
       .attr('height', this.height)
-      .style('background', 'white')
       .attr('id', 'scienceMapcontainer');
       // .call(this.zoom);
   }
@@ -120,7 +119,7 @@ export class ScienceMapComponent implements OnInit, OnChanges {
       .on('click', (d) => this.nodeClicked.emit(this.dataForSubdiscipline(d.subd_id)))
       .on('mouseover', (d) => this.onMouseOver(<number>this.subdisciplineIDField.get(d)))
       .on('mouseout', (d) => this.onMouseOut(<number>this.subdisciplineIDField.get(d)));
-
+      
     this.nodes.exit().remove();
 
     const subd_labels = this.svgContainer.append('g').attr('class', 'labels')

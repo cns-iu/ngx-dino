@@ -4,6 +4,7 @@ import {
   SimpleChanges, EventEmitter
 } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
 
 import { BoundField } from '@ngx-dino/core';
 
@@ -17,7 +18,7 @@ import { DatatableService } from '../shared/datatable.service';
   styleUrls: ['./datatable.component.sass']
 })
 export class DatatableComponent implements OnInit, OnChanges {
-  @Input() data: Observable<any[]>;
+  @Input() data: any[] | Observable<any[]>;
   @Input() fields: BoundField<DataType>[];
   @Output() rowClick: Observable<number> = new EventEmitter();
 
@@ -32,6 +33,20 @@ export class DatatableComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.dataSource = this.service.makeDataSource(this.data, this.fields);
+    if ('data' in changes && this.data !== undefined) {
+      this.updateDataSource();
+    }
+  }
+
+  private updateDataSource(): void {
+    let dataObservable: Observable<any[]>;
+
+    if (this.data instanceof Observable) {
+      dataObservable = this.data;
+    } else {
+      dataObservable = Observable.of(this.data || []);
+    }
+
+    this.dataSource = this.service.makeDataSource(dataObservable, this.fields);
   }
 }

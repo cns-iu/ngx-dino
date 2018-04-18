@@ -3,10 +3,11 @@ import {
   OnInit,
   ElementRef,
   Input,
-  OnChanges
+  OnChanges,
+  SimpleChanges
 } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Changes, StreamCache } from '@ngx-dino/core';
+import { BoundField } from '@ngx-dino/core';
 
 import * as d3Selection from 'd3-selection';
 import * as d3Force from 'd3-force';
@@ -26,18 +27,18 @@ import * as data from '../shared/copi.json'; // TODO streaming data instead of j
   styleUrls: ['./force-network.component.sass']
 })
 export class ForceNetworkComponent implements OnInit, OnChanges {
-  @Input() dataNodes: Array<any>; // TODO datastream
-  @Input() dataEdges: Array<any>;
+  @Input() dataNodes: any[]; // TODO datastream
+  @Input() dataEdges: any[];
   @Input() margin = { top: 20, right: 15, bottom: 60, left: 60 };
   @Input() width = window.innerWidth; // initializing width for map container
   @Input() height = window.innerHeight; // initializing height for map container
-  @Input() nodeSizeField: string = 'number_of_grants'; // TODO Field
+  @Input() nodeSizeField: BoundField<string>; // TODO Field
   @Input() nodeColorField: string = 'total_amount'; // TODO Field
-  @Input() nodeIDField: string = 'id'; // TODO Field or via Operator
-  @Input() nodeLabelField: string = 'name'; // TODO Field
+  @Input() nodeIDField: BoundField<string>; // TODO Field or via Operator
+  @Input() nodeLabelField: string = 'id'; // TODO Field
   @Input() labelSizeField: string = 'total_amount'; // TODO Field
   @Input() linkIDField: string = 'id'; // TODO Field or via Operator
-  @Input() linkSizeField: string = 'number_of_grants'; // TODO Field
+  @Input() linkSizeField: string = 'count'; // TODO Field
   @Input() linkColorField: string; // TODO Field
   @Input() linkOpacityField: string; // TODO Field
   @Input() nodeSizeRange = [5, 17];
@@ -65,42 +66,52 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.setScales();
-    this.initVisualization();
-    this.plotForceNetwork();
+    // this.setScales();
+    // this.initVisualization();
+    // this.plotForceNetwork();
   }
 
-  ngOnChanges() { }
+  ngOnChanges(changes: SimpleChanges) {
+    if('dataNodes' in changes) {
+      console.log(changes.dataEdges);
+      this.setScales();
+      this.initVisualization();
+      this.plotForceNetwork();
+    }
+  }
 
   setScales() {
     this.nodeSizeScale = scaleLinear()
-    .domain([0, d3Array.max(data.nodes.data, (d) => Number(d[this.nodeSizeField]))])
+    .domain([0, d3Array.max(this.dataNodes, (d) => {
+      // console.log(this.nodeSizeField.get(d));
+      return Number(this.nodeSizeField.get(d))
+    })])
     .range(this.nodeSizeRange);
 
     this.labelSizeScale = scaleLinear()
-    .domain([0, d3Array.max(data.nodes.data, (d) => Number(d[this.labelSizeField]))])
+    .domain([0, d3Array.max(this.dataNodes, (d) => Number(d[this.labelSizeField]))])
     .range(this.labelSizeRange);
     
     this.nodeColorScale = scaleLinear<string>()
-     .domain([0, d3Array.max(data.nodes.data, 
+     .domain([0, d3Array.max(this.dataNodes, 
         (d) => Number(d[this.nodeColorField]))/2, 
-        d3Array.max(data.nodes.data, 
+        d3Array.max(this.dataNodes, 
         (d) => Number(d[this.nodeColorField]))])
       .range(this.nodeColorRange);
 
     this.linkSizeScale = scaleLinear()
-    .domain([0, d3Array.max(data.edges.data, (d) => Number(d[this.linkSizeField]))])
+    .domain([0, d3Array.max(this.dataEdges, (d) => Number(d[this.linkSizeField]))])
     .range(this.linkSizeRange);
 
     this.linkColorScale = scaleLinear<string>()
     .domain([0, d3Array.max(
-      data.edges.data, (d) => Number(d[this.linkColorField]))/2, 
-      d3Array.max(data.edges.data, 
+      this.dataEdges, (d) => Number(d[this.linkColorField]))/2, 
+      d3Array.max(this.dataEdges, 
       (d) => Number(d[this.linkColorField]))])
     .range(this.linkColorRange);
 
     this.linkOpacityScale = scaleLinear()
-    .domain([0, d3Array.max(data.edges.data, 
+    .domain([0, d3Array.max(this.dataEdges, 
       (d) => Number(d[this.linkOpacityField]) === undefined ? 1 : Number(d[this.linkOpacityField]))])
     .range(this.linkOpacityRange);
   }
@@ -115,7 +126,7 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
       .attr('height', this.height)
       .attr('class', 'container');
 
-    this.simulation = d3Force.forceSimulation(data.nodes.data)
+    this.simulation = d3Force.forceSimulation(this.dataNodes)
       .force('charge', d3Force.forceManyBody().theta(0))
       .force('link', d3Force.forceLink().distance(50)
         .id(link => link['id'])
@@ -130,7 +141,7 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
     this.links = this.svgContainer.append('g')
       .attr('class', 'links')
       .selectAll('line')
-      .data(data.edges.data)
+      .data(this.dataEdges)
       .enter().append('line')
       .attr('stroke-width', (d) => isNaN(this.linkSizeScale(d[this.linkSizeField])) ? 1 : this.linkSizeScale(d[this.linkSizeField]))
       .attr('stroke', (d) => this.linkColorScale(d[this.linkColorField]) === undefined ? 'black' : this.linkColorScale(d[this.linkColorField]))
@@ -141,9 +152,9 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
     this.nodes = this.svgContainer.append('g')
       .attr('class', 'nodes')
       .selectAll('circle')
-      .data(data.nodes.data)
+      .data(this.dataNodes)
       .enter().append('circle')
-      .attr('r', (d) => isNaN(this.nodeSizeScale(d[this.nodeSizeField])) ? 10 : this.nodeSizeScale(d[this.nodeSizeField]))
+      .attr('r', (d) => isNaN(this.nodeSizeScale(this.nodeSizeField.get(d))) ? 10 : this.nodeSizeScale(this.nodeSizeField.get(d)))
       .attr('fill', (d) => this.nodeColorScale(d[this.nodeColorField]) === undefined ? 'green': this.nodeColorScale(d[this.nodeColorField]))   
       .attr('stroke', 'black') // no encoding on node stroke and stroke-size
       .attr('stroke-width', 1)
@@ -154,7 +165,7 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
         // TODO zooming
     
     this.labels = this.svgContainer.append('g').attr('class', 'labels')
-      .selectAll('text').data(data.nodes.data, node => node[this.nodeIDField])
+      .selectAll('text').data(this.dataNodes, node => this.nodeIDField.get(node))
       .enter()
       .append('text')
       .text(node => this.toTitleCase(node[this.nodeLabelField]))
@@ -162,8 +173,8 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
       .attr('dx', 15) // label position encoding is not supported yet
       .attr('dy', 10)
 
-    this.simulation.nodes(data.nodes.data).on('tick', () => this.ticked()); // TODO data
-    this.simulation.force('link').links(data.edges.data); // TODO data
+    this.simulation.nodes(this.dataNodes).on('tick', () => this.ticked()); // TODO data
+    this.simulation.force('link').links(this.dataEdges); // TODO data
     this.simulation.restart();  
   }
   

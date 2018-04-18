@@ -46,7 +46,7 @@ export class SizeLegendComponent implements OnInit, OnChanges {
         const values = changes['dataStream'].currentValue;
         this.max = Math.round(parseInt(d3Array.max(values, (d: any) => this.sizeField.get(d))));
         this.min = Math.round(parseInt(d3Array.min(values, (d: any) => this.sizeField.get(d))));
-        this.mid = Math.round(this.max+ this.min)/2;
+        this.mid = Math.round((this.max+ this.min)/2);
         this.maxLabel = (!isNaN(this.max))? this.max.toString(): '';
         this.midLabel = (!isNaN(this.mid))? this.mid.toString(): '';
         this.minLabel = (!isNaN(this.min))? this.min.toString(): '';

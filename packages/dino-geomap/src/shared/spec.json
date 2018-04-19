@@ -61,6 +61,21 @@
           "as": "shape"
         }
       ]
+    },
+    {
+      "name": "pointTitles",
+      "source": "points",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum.title != null"
+        },
+        {
+          "type": "formula",
+          "expr": "-sqrt(datum.size)",
+          "as": "offset"
+        }
+      ]
     }
   ],
   "signals": [
@@ -138,6 +153,45 @@
           },
           "strokeWidth": {
             "value": 2
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {
+        "data": "pointTitles"
+      },
+      "encode": {
+        "enter": {
+          "align": {
+            "value": "center"
+          },
+          "fontSize": {
+            "value": 20
+          },
+          "stoke": {
+            "value": "white"
+          },
+          "strokeOpacity": {
+            "value": 0.5
+          },
+          "fill": {
+            "value": "black"
+          }
+        },
+        "update": {
+          "text": {
+            "field": "title"
+          },
+          "x": {
+            "field": "x"
+          },
+          "y": {
+            "field": "y"
+          },
+          "dy": {
+            "field": "offset"
           }
         }
       }

@@ -7,4 +7,5 @@ export interface Point {
   color: string;
   shape: string;
   stroke: string;
+  title?: string;
 }

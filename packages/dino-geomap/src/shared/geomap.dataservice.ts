@@ -46,7 +46,8 @@ export class GeomapDataService {
     pointLatLongField: IField<[number, number]>,
     pointSizeField: IField<number>,
     pointColorField: IField<string>,
-    pointShapeField: IField<string>
+    pointShapeField: IField<string>,
+    pointTitleField: IField<string>
   ): this {
     this.pointProcessor = new FieldProcessor<Point>(pointStream, {
       id: pointIdField,
@@ -54,7 +55,8 @@ export class GeomapDataService {
       size: pointSizeField,
       color: pointColorField,
       shape: pointShapeField,
-      stroke: strokeColorField
+      stroke: strokeColorField,
+      title: pointTitleField
     }, {
         latitude: computedPointLatitudeField,
         longitude: computedPointLongitudeField

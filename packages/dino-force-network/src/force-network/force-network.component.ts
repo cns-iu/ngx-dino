@@ -233,9 +233,9 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
 
     const textSelection = this.svgContainer.selectAll('text')
       .filter((d: any) => this.nodeIDField.get(d) == targetID);
-    textSelection.transition().style('font-size', (d) => {
-      return isNaN(this.labelSizeScale(d[this.labelSizeField])) ? '32px' : 2 * this.labelSizeScale(d[this.labelSizeField])
-    });
+    textSelection.transition().style('font-size', (d) => isNaN(this.labelSizeScale(d[this.labelSizeField])) ? '32px' : 2 * this.labelSizeScale(d[this.labelSizeField]))
+    .attr('dx', 30)
+    .attr('dy', 20);
   }
 
   onMouseOut(targetID: any) {
@@ -245,6 +245,8 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
 
     const textSelection = this.svgContainer.selectAll('text')
       .filter((d: any) => this.nodeIDField.get(d) == targetID);
-    textSelection.transition().style('font-size', (d) => isNaN(this.labelSizeScale(d[this.labelSizeField])) ? '16px' : this.labelSizeScale(d[this.labelSizeField]));
+    textSelection.transition().style('font-size', (d) => isNaN(this.labelSizeScale(d[this.labelSizeField])) ? '16px' : this.labelSizeScale(d[this.labelSizeField]))
+    .attr('dx', 15)
+    .attr('dy', 10);
   }
 }

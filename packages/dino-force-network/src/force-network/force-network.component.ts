@@ -16,6 +16,7 @@ import * as d3Array from 'd3-array';
 import * as d3Color from 'd3-color';
 import * as d3Drag from 'd3-drag';
 import * as d3Shape from 'd3-shape';
+import 'd3-transition';
 
 import * as data from '../shared/copi.json'; // TODO streaming data instead of json file
 
@@ -35,7 +36,7 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
   @Input() nodeIDField: BoundField<string>;
   @Input() nodeLabelField: BoundField<string>; // TODO Field
   @Input() labelSizeField: string = 'total_amount'; // TODO Field
-  @Input() linkIDField: string = 'id'; // TODO Field or via Operator
+  @Input() linkIDField: string = 'id'; // TODO Field
   @Input() linkSizeField: BoundField<number>;
   @Input() linkColorField: string; // TODO Field
   @Input() linkOpacityField: string; // TODO Field
@@ -58,6 +59,7 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
   private linkSizeScale: any; // TODO typings
   private linkColorScale: any; // TODO typings
   private linkOpacityScale: any; // TODO typings
+  private radius = 15
   
   constructor(element: ElementRef) {
     this.parentNativeElement = element.nativeElement; // to get native parent element of this component
@@ -154,6 +156,7 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
       .selectAll('circle')
       .data(this.dataNodes)
       .enter().append('circle')
+      .attr('id', (d) => this.nodeIDField.get(d))
       .attr('r', (d) => isNaN(this.nodeSizeScale(this.nodeSizeField.get(d))) ? 10 : this.nodeSizeScale(this.nodeSizeField.get(d)))
       .attr('fill', (d) => this.nodeColorScale(this.nodeSizeField.get(d)) === undefined ? 'green': this.nodeColorScale(this.nodeSizeField.get(d)))   
       .attr('stroke', 'black') // no encoding on node stroke and stroke-size
@@ -164,6 +167,9 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
         .on('end', this.dragended.bind(this))); // TODO drag needs fixing
         // TODO zooming
     
+    this.nodes.on('mouseover', (d) => this.onMouseOver(this.nodeIDField.get(d)));
+    this.nodes.on('mouseout', (d) => this.onMouseOut(this.nodeIDField.get(d)));
+
     this.labels = this.svgContainer.append('g').attr('class', 'labels')
       .selectAll('text').data(this.dataNodes, node => this.nodeIDField.get(node))
       .enter()
@@ -179,11 +185,11 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
   }
   
   ticked() {
-    this.nodes.attr('cx', (d) => Math.max(15, Math.min(this.width - 15, d.x)))
-      .attr('cy', (d) => Math.max(15, Math.min(this.height - 15, d.y)));
+    this.nodes.attr('cx', (d) => Math.max(this.radius, Math.min(this.width - this.radius, d.x)))
+      .attr('cy', (d) => Math.max(this.radius, Math.min(this.height - this.radius, d.y)));
     
-    this.labels.attr('x', node => Math.max(15, Math.min(this.width - 15, node.x)))
-      .attr('y', node => Math.max(15, Math.min(this.height - 15, node.y)));
+    this.labels.attr('x', node => Math.max(this.radius, Math.min(this.width - this.radius, node.x)))
+      .attr('y', node => Math.max(this.radius, Math.min(this.height - this.radius, node.y)));
     
     this.links.attr('x1', (d) => d.source.x)
     .attr('y1', (d) => d.source.y)
@@ -220,4 +226,25 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
     ).join(' ');
   }
 
+  onMouseOver(targetID: any) {
+    const selection = this.svgContainer.selectAll('circle')
+      .filter((d: any) => this.nodeIDField.get(d) === targetID);
+    selection.transition().attr('r', (d) => 2 * this.nodeSizeScale(this.nodeSizeField.get(d)));
+
+    const textSelection = this.svgContainer.selectAll('text')
+      .filter((d: any) => this.nodeIDField.get(d) == targetID);
+    textSelection.transition().style('font-size', (d) => {
+      return isNaN(this.labelSizeScale(d[this.labelSizeField])) ? '32px' : 2 * this.labelSizeScale(d[this.labelSizeField])
+    });
+  }
+
+  onMouseOut(targetID: any) {
+    const selection = this.svgContainer.selectAll('circle')
+      .filter((d: any) => this.nodeIDField.get(d) === targetID);
+    selection.transition().attr('r', (d) => this.nodeSizeScale(this.nodeSizeField.get(d)));
+
+    const textSelection = this.svgContainer.selectAll('text')
+      .filter((d: any) => this.nodeIDField.get(d) == targetID);
+    textSelection.transition().style('font-size', (d) => isNaN(this.labelSizeScale(d[this.labelSizeField])) ? '16px' : this.labelSizeScale(d[this.labelSizeField]));
+  }
 }

@@ -11,9 +11,7 @@ import { BoundField } from '@ngx-dino/core';
 
 import * as d3Selection from 'd3-selection';
 import * as d3Force from 'd3-force';
-import {
-  scaleLinear, scaleQuantize
-} from 'd3-scale';
+import { scaleLinear } from 'd3-scale';
 import * as d3Array from 'd3-array';
 import * as d3Color from 'd3-color';
 import * as d3Drag from 'd3-drag';
@@ -38,7 +36,7 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
   @Input() nodeLabelField: BoundField<string>; // TODO Field
   @Input() labelSizeField: string = 'total_amount'; // TODO Field
   @Input() linkIDField: string = 'id'; // TODO Field or via Operator
-  @Input() linkSizeField: string = 'count'; // TODO Field
+  @Input() linkSizeField: BoundField<number>;
   @Input() linkColorField: string; // TODO Field
   @Input() linkOpacityField: string; // TODO Field
   @Input() nodeSizeRange = [5, 17];
@@ -98,7 +96,7 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
       .range(this.nodeColorRange);
 
     this.linkSizeScale = scaleLinear()
-    .domain([0, d3Array.max(this.dataEdges, (d) => Number(d[this.linkSizeField]))])
+    .domain([0, d3Array.max(this.dataEdges, (d) => this.linkSizeField.get(d))])
     .range(this.linkSizeRange);
 
     this.linkColorScale = scaleLinear<string>()
@@ -128,7 +126,7 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
       .attr('class', 'container');
 
     this.simulation = d3Force.forceSimulation(this.dataNodes)
-      .force('charge', d3Force.forceManyBody().strength(-5))
+      .force('charge', d3Force.forceManyBody().strength(-10))
       .force('link', d3Force.forceLink().distance(75)
         .id(link => link['id'])
         .strength(1))
@@ -145,7 +143,7 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
       .selectAll('line')
       .data(this.dataEdges)
       .enter().append('line')
-      .attr('stroke-width', (d) => isNaN(this.linkSizeScale(d[this.linkSizeField])) ? 1 : this.linkSizeScale(d[this.linkSizeField]))
+      .attr('stroke-width', (d) => isNaN(this.linkSizeScale(this.linkSizeField.get(d))) ? 1 : this.linkSizeScale(this.linkSizeField.get(d)))
       .attr('stroke', (d) => this.linkColorScale(d[this.linkColorField]) === undefined ? 'black' : this.linkColorScale(d[this.linkColorField]))
       .attr('opacity', (d) => isNaN(this.linkOpacityScale(d[this.linkOpacityField])) ? 1 : this.linkOpacityScale(d[this.linkOpacityField]));
 

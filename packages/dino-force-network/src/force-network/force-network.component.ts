@@ -32,10 +32,10 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
   @Input() margin = { top: 20, right: 15, bottom: 60, left: 60 };
   @Input() width = window.innerWidth; // initializing width for map container
   @Input() height = window.innerHeight; // initializing height for map container
-  @Input() nodeSizeField: BoundField<string>; // TODO Field
-  @Input() nodeColorField: string = 'total_amount'; // TODO Field
-  @Input() nodeIDField: BoundField<string>; // TODO Field or via Operator
-  @Input() nodeLabelField: string = 'id'; // TODO Field
+  @Input() nodeSizeField: BoundField<string>;
+  @Input() nodeColorField: BoundField<number>; 
+  @Input() nodeIDField: BoundField<string>;
+  @Input() nodeLabelField: BoundField<string>; // TODO Field
   @Input() labelSizeField: string = 'total_amount'; // TODO Field
   @Input() linkIDField: string = 'id'; // TODO Field or via Operator
   @Input() linkSizeField: string = 'count'; // TODO Field
@@ -43,7 +43,7 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
   @Input() linkOpacityField: string; // TODO Field
   @Input() nodeSizeRange = [5, 17];
   @Input() labelSizeRange = [16, 22];
-  @Input() nodeColorRange = ['#FFFFFF','#3683BB','#3182BD'];
+  @Input() nodeColorRange: string[];
   @Input() linkSizeRange = [1, 8];
   @Input() linkColorRange = ['#FFFFFF','#3683BB','#3182BD'];
   @Input() linkOpacityRange = [.5, 1];
@@ -66,26 +66,24 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    // this.setScales();
-    // this.initVisualization();
-    // this.plotForceNetwork();
+    this.setScales();
+    this.initVisualization();
+    this.plotForceNetwork();
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if('dataNodes' in changes) {
-      console.log(changes.dataEdges);
-      this.setScales();
       this.initVisualization();
+      this.setScales();
       this.plotForceNetwork();
     }
   }
 
   setScales() {
     this.nodeSizeScale = scaleLinear()
-    .domain([0, d3Array.max(this.dataNodes, (d) => {
-      // console.log(this.nodeSizeField.get(d));
-      return Number(this.nodeSizeField.get(d))
-    })])
+    .domain([0, d3Array.max(
+      this.dataNodes, (d) => Number(this.nodeSizeField.get(d))
+    )])
     .range(this.nodeSizeRange);
 
     this.labelSizeScale = scaleLinear()
@@ -94,9 +92,9 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
     
     this.nodeColorScale = scaleLinear<string>()
      .domain([0, d3Array.max(this.dataNodes, 
-        (d) => Number(d[this.nodeColorField]))/2, 
+        (d) => this.nodeColorField.get(d)/2), 
         d3Array.max(this.dataNodes, 
-        (d) => Number(d[this.nodeColorField]))])
+        (d) => this.nodeColorField.get(d))])
       .range(this.nodeColorRange);
 
     this.linkSizeScale = scaleLinear()
@@ -117,6 +115,9 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
   }
 
   initVisualization() {
+    d3Selection.select(this.parentNativeElement)
+    .select('#forceNetworkContainer').select('svg').remove(); // remove and redraw, TODO needs changing
+    
     // initializing svg container
     let container = d3Selection.select(this.parentNativeElement)
       .select('#forceNetworkContainer');
@@ -127,13 +128,14 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
       .attr('class', 'container');
 
     this.simulation = d3Force.forceSimulation(this.dataNodes)
-      .force('charge', d3Force.forceManyBody().theta(0))
-      .force('link', d3Force.forceLink().distance(50)
+      .force('charge', d3Force.forceManyBody().strength(-5))
+      .force('link', d3Force.forceLink().distance(75)
         .id(link => link['id'])
-        .strength(0.9))
-      .force('center', d3Force.forceCenter(this.width/2.2, this.height/2));
+        .strength(1))
+      .force('center', d3Force.forceCenter(this.width/2.2, this.height/2))
     this.simulation.velocityDecay(0.4);  
     this.simulation.alpha(0.9);
+    this.simulation.restart();
     }
 
   plotForceNetwork() {
@@ -155,7 +157,7 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
       .data(this.dataNodes)
       .enter().append('circle')
       .attr('r', (d) => isNaN(this.nodeSizeScale(this.nodeSizeField.get(d))) ? 10 : this.nodeSizeScale(this.nodeSizeField.get(d)))
-      .attr('fill', (d) => this.nodeColorScale(d[this.nodeColorField]) === undefined ? 'green': this.nodeColorScale(d[this.nodeColorField]))   
+      .attr('fill', (d) => this.nodeColorScale(this.nodeSizeField.get(d)) === undefined ? 'green': this.nodeColorScale(this.nodeSizeField.get(d)))   
       .attr('stroke', 'black') // no encoding on node stroke and stroke-size
       .attr('stroke-width', 1)
       .call(d3Drag.drag()
@@ -168,29 +170,34 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
       .selectAll('text').data(this.dataNodes, node => this.nodeIDField.get(node))
       .enter()
       .append('text')
-      .text(node => this.toTitleCase(node[this.nodeLabelField]))
+      .text(node => this.toTitleCase(this.nodeLabelField.get(node)))
       .style('font-size', (d) => isNaN(this.labelSizeScale(d[this.labelSizeField])) ? 16 : this.labelSizeScale(d[this.labelSizeField]))
       .attr('dx', 15) // label position encoding is not supported yet
       .attr('dy', 10)
 
-    this.simulation.nodes(this.dataNodes).on('tick', () => this.ticked()); // TODO data
-    this.simulation.force('link').links(this.dataEdges); // TODO data
-    this.simulation.restart();  
+    this.simulation.nodes(this.dataNodes).on('tick', () => this.ticked());
+    this.simulation.force('link').links(this.dataEdges);
+    // this.simulation.restart();  
   }
   
   ticked() {
+    this.nodes.attr('cx', (d) => Math.max(15, Math.min(this.width - 15, d.x)))
+      .attr('cy', (d) => Math.max(15, Math.min(this.height - 15, d.y)));
+    
+    this.labels.attr('x', node => Math.max(15, Math.min(this.width - 15, node.x)))
+      .attr('y', node => Math.max(15, Math.min(this.height - 15, node.y)));
+    
     this.links.attr('x1', (d) => d.source.x)
     .attr('y1', (d) => d.source.y)
     .attr('x2', (d) => d.target.x)
     .attr('y2', (d) => d.target.y);
-    
-    this.nodes.attr('cx', (d) => d.x).attr('cy', (d) => d.y);
-    this.labels.attr('x', node => node.x).attr('y', node => node.y);
   }
   
   dragstarted(d) {
     if (!d3Selection.event.active) {
-      this.simulation.alphaTarget(0.3).restart();
+      this.simulation.alphaTarget(0.3)
+      .force('charge', d3Force.forceManyBody().strength(-5))
+      .restart();
     }
     d.fx = d.x;
     d.fy = d.y;

@@ -60,6 +60,7 @@ export class ScienceMapComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
       if ('data' in changes && this.data.length !== 0) {
+        this.data = this.data.concat([{subd_id: -1, weight: 500}, {subd_id: -2, weight: 500}]); // temporary
         this.setScales();
         this.initVisualization();
         this.createNodes();

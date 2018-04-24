@@ -5545,16 +5545,16 @@
             "subd_id": -2,
             "disc_id": 14,
             "size": 5.97,
-            "y": 110,
-            "x": 425
+            "y": 43,
+            "x": 110
         },
         {
             "subd_name": "Unclassified",
             "subd_id": -1,
             "disc_id": 15,
             "size": 5.97,
-            "y": 110,
-            "x": 147
+            "y": 80,
+            "x": 110
         }
     ],
     "edges": [
@@ -17206,15 +17206,15 @@
         {
             "disc_name": "Multidisciplinary",
             "color": "#000000",
-            "y": 92,
-            "x": 450,
+            "y": 27,
+            "x": 100,
             "disc_id": -2
         },
         {
             "disc_name": "Unclassified",
             "color": "#AAAAAA",
-            "y": 92,
-            "x": 130,
+            "y": 62,
+            "x": 100,
             "disc_id": -1
         }
     ]

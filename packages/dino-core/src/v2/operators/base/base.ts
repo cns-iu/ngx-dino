@@ -24,8 +24,8 @@ export abstract class BaseOperator<In, Out> {
 
   // Public interface
   get(data: In, cache: BaseCache): Out {
-    cache.enter();
     try {
+      cache.enter();
       return this.getImpl(data, cache);
     } finally {
       cache.exit();

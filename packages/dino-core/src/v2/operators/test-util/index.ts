@@ -6,7 +6,8 @@ export { BaseOperator, BaseCache } from '../base/base';
 export { Operator } from '../operator';
 
 // Export general utility
-export { create } from '../utility/create';
+export { createRaw, create } from '../utility/create';
+export { unwrap } from '../utility/unwrap';
 
 // Export test utility
 export { MockOperator } from './mock-operator';

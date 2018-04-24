@@ -1,9 +1,21 @@
-import { Operator, MockOperator } from '../test-util';
-import { create } from './create';
+import { BaseOperator, Operator, MockOperator } from '../test-util';
+import { createRaw, create } from './create';
 
 
 describe('operators', () => {
 describe('utility', () => {
+describe('createRaw', () => {
+  let rawOp: BaseOperator<any, any>;
+
+  beforeEach(() => {
+    rawOp = createRaw(MockOperator);
+  });
+
+  it('should return a new operator of the specified type', () => {
+    expect(rawOp).toEqual(jasmine.any(MockOperator));
+  });
+});
+
 describe('create', () => {
   let op: Operator<any, any>;
 

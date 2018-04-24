@@ -15,7 +15,7 @@ const flags = Flags.combine(Flags.Stateless, Flags.SideEffectFree);
 
 export { PropertyPath };
 export class AccessorOperator<Out> extends BaseOperator<any, Out> {
-  constructor(readonly path: PropertyPath, readonly defaultValue: Out) {
+  constructor(readonly path: PropertyPath, readonly defaultValue?: Out) {
     super(flags);
   }
 

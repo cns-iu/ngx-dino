@@ -13,6 +13,10 @@ describe('Flags', () => {
     expect(Flags.All).toBeDefined();
   });
 
+  it('should have a name', () => {
+    expect(Flags.Stateless.name).toEqual(jasmine.any(String));
+  });
+
   it('should test for inclusion', () => {
     expect(Flags.All.has(Flags.Stateless)).toBeTruthy();
     expect(Flags.All.all(Flags.Stateless)).toBeTruthy();
@@ -64,6 +68,10 @@ describe('Flags', () => {
 
   it('should not equal if it contains at least one differing flag', () => {
     expect(Flags.All.equals(Flags.Stateless)).toBeFalsy();
+  });
+
+  it('should have a printable representation', () => {
+    expect(Flags.All.toString()).toEqual(jasmine.any(String));
   });
 });
 });

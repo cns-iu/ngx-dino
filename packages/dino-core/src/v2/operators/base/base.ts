@@ -10,6 +10,12 @@ export abstract class BaseOperator<In, Out> {
 
   constructor(readonly flags: Flags = Flags.None) { }
 
+  // Helper method for setting the flags after the super constructor call
+  // It is only allowed to be called in the derived constructor
+  protected setFlags(flags: Flags): void {
+    (this as {flags: Flags}).flags = flags;
+  }
+
 
   // Methods to override in derived classes
   protected abstract getImpl(data: In, cache: BaseCache): Out;
@@ -44,6 +50,10 @@ export abstract class BaseOperator<In, Out> {
   hashCode(): number {
     return this.getState().hashCode();
   }
+
+
+  // toString
+  // TODO
 }
 
 

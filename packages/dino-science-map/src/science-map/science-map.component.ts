@@ -33,7 +33,7 @@ export class ScienceMapComponent implements OnInit, OnChanges {
   @Input() subdisciplineSizeField: BoundField<string>;
   @Input() subdisciplineIDField: BoundField<number|string>;
   @Input() data: any[];
-  @Input() nodeSizeRange = [1, 15];
+  @Input() nodeSizeRange = [2, 18];
   @Output() nodeClicked = new EventEmitter<any>();
 
   private parentNativeElement: any;
@@ -76,11 +76,11 @@ export class ScienceMapComponent implements OnInit, OnChanges {
     this.translateYScale = scaleLinear()
       .domain(d3Array.extent(this.dataService.underlyingScimapData.nodes, (d: any) => <number>d.y))
       .range([this.height - 10, 10]);
-    
+
     const nodeSizeScale = scaleLog()
       .domain(d3Array.extent(this.data, (d: any) => Math.max(1, parseInt(this.subdisciplineSizeField.get(d)))))
       .range(this.nodeSizeRange);
-    
+
     this.nodeSizeScale = (value) => nodeSizeScale(value < 1 ? 1 : value);
   }
 
@@ -119,7 +119,7 @@ export class ScienceMapComponent implements OnInit, OnChanges {
       .on('click', (d) => this.nodeClicked.emit(this.dataForSubdiscipline(d.subd_id)))
       .on('mouseover', (d) => this.onMouseOver(<number>this.subdisciplineIDField.get(d)))
       .on('mouseout', (d) => this.onMouseOut(<number>this.subdisciplineIDField.get(d)));
-      
+
     this.nodes.exit().remove();
 
     const subd_labels = this.svgContainer.append('g').attr('class', 'labels')

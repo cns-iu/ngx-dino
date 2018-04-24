@@ -7,7 +7,7 @@ import { LookupOperator } from './lookup';
 describe('operators', () => {
 describe('classes', () => { // Prevent deep indentation
 describe('extracting', () => { // Prevent deep indentation
-describe('IdentityOperator', () => {
+describe('LookupOperator', () => {
   const mapping = Map({a: 1, b: 2});
   const defaultValue = 33;
   let op: Operator<any, any>;

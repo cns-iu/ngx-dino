@@ -4,7 +4,7 @@ import { AutoIdOperator } from './auto-id';
 
 describe('operators', () => {
 describe('classes', () => { // Prevent deep indentation
-describe('extracting', () => { // Prevent deep indentation
+describe('generating', () => { // Prevent deep indentation
 describe('AutoIdOperator', () => {
   const prefix = 'abc_';
   const start = 22;

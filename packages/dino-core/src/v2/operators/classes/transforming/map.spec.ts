@@ -4,7 +4,7 @@ import { MapOperator } from './map';
 
 describe('operators', () => {
 describe('classes', () => { // Prevent deep indentation
-describe('extracting', () => { // Prevent deep indentation
+describe('transforming', () => { // Prevent deep indentation
 describe('MapOperator', () => {
   const flags = Flags.combine(Flags.Stateless, Flags.SideEffectFree);
   const args = [1, 2, 'a'];

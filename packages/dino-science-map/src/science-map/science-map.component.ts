@@ -11,7 +11,7 @@ import {
 import { Changes, StreamCache, BoundField } from '@ngx-dino/core';
 
 import * as d3Selection from 'd3-selection';
-import { scaleLinear } from 'd3-scale';
+import { scaleLinear, scaleLog } from 'd3-scale';
 import * as d3Array from 'd3-array';
 import 'd3-transition';
 import * as d3Zoom from 'd3-zoom';
@@ -33,13 +33,13 @@ export class ScienceMapComponent implements OnInit, OnChanges {
   @Input() subdisciplineSizeField: BoundField<string>;
   @Input() subdisciplineIDField: BoundField<number|string>;
   @Input() data: any[];
+  @Input() nodeSizeRange = [1, 15];
   @Output() nodeClicked = new EventEmitter<any>();
 
   private parentNativeElement: any;
   private svgContainer: d3Selection.Selection<d3Selection.BaseType, any, HTMLElement, undefined>;
   private nodes: any;
   private defaultNodeSize = 4;
-  private defaultNodeSizeRange = [4, 14];
   private labels: any;
   private links: any;
   private translateXScale: any;
@@ -59,15 +59,13 @@ export class ScienceMapComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    for (const propName in changes) {
-      if (propName === 'data' && this[propName]) {
+      if ('data' in changes && this.data.length !== 0) {
         this.setScales();
         this.initVisualization();
         this.createNodes();
         this.createEdges();
         this.createLabels('black', 17);
       }
-    }
   }
 
   setScales() {
@@ -78,10 +76,12 @@ export class ScienceMapComponent implements OnInit, OnChanges {
     this.translateYScale = scaleLinear()
       .domain(d3Array.extent(this.dataService.underlyingScimapData.nodes, (d: any) => <number>d.y))
       .range([this.height - 10, 10]);
-
-    this.nodeSizeScale = scaleLinear()
-      .domain(d3Array.extent(this.data, (d: any) => parseInt(this.subdisciplineSizeField.get(d))))
-      .range(this.defaultNodeSizeRange);
+    
+    const nodeSizeScale = scaleLog()
+      .domain(d3Array.extent(this.data, (d: any) => Math.max(1, parseInt(this.subdisciplineSizeField.get(d)))))
+      .range(this.nodeSizeRange);
+    
+    this.nodeSizeScale = (value) => nodeSizeScale(value < 1 ? 1 : value);
   }
 
   initVisualization() {
@@ -108,14 +108,14 @@ export class ScienceMapComponent implements OnInit, OnChanges {
 
     this.nodes.enter().append('g')
       .attr('class', (d) => 'node-g subd_id' + this.subdisciplineIDField.get(d))
-      .attr('transform', (d) => 'translate(' + this.translateXScale(this.dataService.subdIdToPosition[this.subdisciplineIDField.get(d)].x)
-          + ',' + this.translateYScale(this.dataService.subdIdToPosition[this.subdisciplineIDField.get(d)].y) + ')')
       .append('circle')
       .attr('r', (d) => this.nodeSizeScale(this.subdisciplineSizeField.get(d)) || this.defaultNodeSize)
       .attr('class', (d) => 'node subd_id' + this.subdisciplineIDField.get(d))
       .attr('fill', (d) => this.dataService.underlyingScimapData.disciplines.filter(
         (d2) => d2.disc_id === this.dataService.subdIdToDisc[this.subdisciplineIDField.get(d)].disc_id)[0].color)
       .attr('stroke', 'black')
+      .attr('transform', (d) => 'translate(' + this.translateXScale(this.dataService.subdIdToPosition[this.subdisciplineIDField.get(d)].x)
+          + ',' + this.translateYScale(this.dataService.subdIdToPosition[this.subdisciplineIDField.get(d)].y) + ')')
       .on('click', (d) => this.nodeClicked.emit(this.dataForSubdiscipline(d.subd_id)))
       .on('mouseover', (d) => this.onMouseOver(<number>this.subdisciplineIDField.get(d)))
       .on('mouseout', (d) => this.onMouseOut(<number>this.subdisciplineIDField.get(d)));

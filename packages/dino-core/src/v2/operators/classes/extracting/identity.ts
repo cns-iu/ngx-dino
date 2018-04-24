@@ -4,6 +4,7 @@ import { Flags } from '../../base/flags';
 import { BaseOperator, BaseCache } from '../../base/base';
 
 
+// Constants
 const flags = Flags.combine(Flags.Stateless, Flags.SideEffectFree);
 const state = List.of({});
 

@@ -1,1 +1,2 @@
-// TODO import common operator functions
+import './class/common';
+import './instance/common';

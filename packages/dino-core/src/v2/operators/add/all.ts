@@ -1,1 +1,2 @@
-// Import all operator functions
+import './class/all';
+import './instance/all';

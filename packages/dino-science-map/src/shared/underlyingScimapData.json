@@ -5545,7 +5545,7 @@
             "subd_id": -2,
             "disc_id": 14,
             "size": 5.97,
-            "y": 43,
+            "y": 40,
             "x": 110
         },
         {
@@ -5553,7 +5553,7 @@
             "subd_id": -1,
             "disc_id": 15,
             "size": 5.97,
-            "y": 80,
+            "y": 55,
             "x": 110
         }
     ],
@@ -17047,15 +17047,15 @@
         {
             "disc_name": "Multidisciplinary",
             "color": "#000000",
-            "y": 100,
-            "x": 450,
+            "y": 40,
+            "x": 110,
             "disc_id": 14
         },
         {
             "disc_name": "Unclassified",
             "color": "#AAAAAA",
-            "y": 100,
-            "x": 130,
+            "y": 55,
+            "x": 110,
             "disc_id": 15
         }
     ],
@@ -17206,15 +17206,15 @@
         {
             "disc_name": "Multidisciplinary",
             "color": "#000000",
-            "y": 27,
-            "x": 100,
+            "y": 39,
+            "x": 120,
             "disc_id": -2
         },
         {
             "disc_name": "Unclassified",
             "color": "#AAAAAA",
-            "y": 62,
-            "x": 100,
+            "y": 54,
+            "x": 120,
             "disc_id": -1
         }
     ]

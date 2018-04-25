@@ -6,12 +6,12 @@ describe('operators', () => {
 describe('classes', () => { // Prevent deep indentation
 describe('generating', () => { // Prevent deep indentation
 describe('ConstantOperator', () => {
-  const constant = 111;
+  const value = 111;
   let op: Operator<any, any>;
   let rawOp: ConstantOperator<any>;
 
   beforeEach(() => {
-    op = create(ConstantOperator, constant);
+    op = create(ConstantOperator, value);
     rawOp = op.wrapped as ConstantOperator<any>;
   });
 
@@ -19,23 +19,23 @@ describe('ConstantOperator', () => {
     expect(op.wrapped).toEqual(jasmine.any(ConstantOperator));
   });
 
-  it('should have a constant', () => {
-    expect(rawOp.constant).toBe(constant);
+  it('should have a value', () => {
+    expect(rawOp.value).toBe(value);
   });
 
-  it('should always return the constant', () => {
+  it('should always return the value', () => {
     const val1 = op.get(1);
     const val2 = op.get(2);
-    expect(val1).toBe(constant);
-    expect(val2).toBe(constant);
+    expect(val1).toBe(value);
+    expect(val2).toBe(value);
   });
 
-  it('should be equal if equal constants', () => {
-    const op2 = create(ConstantOperator, constant);
+  it('should be equal if equal values', () => {
+    const op2 = create(ConstantOperator, value);
     expect(op.equals(op2)).toBeTruthy();
   });
 
-  it('should not be equal if different constants', () => {
+  it('should not be equal if different values', () => {
     const op2 = create(ConstantOperator, 765);
     expect(op.equals(op2)).toBeFalsy();
   });

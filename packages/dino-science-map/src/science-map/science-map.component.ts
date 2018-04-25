@@ -49,6 +49,7 @@ export class ScienceMapComponent implements OnInit, OnChanges {
   private subdIdToDisc: any;
   private discIdToColor: any;
   private subdIdToName: any;
+
   // private zoom = d3Zoom.zoom().scaleExtent([1, 10]).on('zoom', this.zoomed);
 
   constructor(element: ElementRef, private dataService: ScienceMapDataService) {
@@ -60,7 +61,6 @@ export class ScienceMapComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
       if ('data' in changes && this.data.length !== 0) {
-        console.log(this.data);
         this.setScales();
         this.initVisualization();
         this.createNodes();
@@ -140,6 +140,9 @@ export class ScienceMapComponent implements OnInit, OnChanges {
   }
 
   createLabels(strokeColor: string, fontSize: number) {
+    const numUnclassified = this.data.filter((entry) => this.subdisciplineIDField.get(entry) == -1);
+    const numMultidisciplinary = this.data.filter((entry) => this.subdisciplineIDField.get(entry) == -2);
+        
     this.svgContainer.selectAll('.underlyingLabels')
       .append('g')
       .data<any>(this.dataService.underlyingScimapData.labels).enter()
@@ -160,6 +163,13 @@ export class ScienceMapComponent implements OnInit, OnChanges {
       .style('fill', (d) => d.color)
       .attr('stroke', strokeColor)
       .attr('font-size', fontSize)
+      .attr('display', (d) => {
+        if (((numUnclassified.length === 0) && (d.disc_id === -1)) || ((numMultidisciplinary.length === 0) && (d.disc_id === -2))) {
+          return 'none';
+        }else {
+          return 'block';
+        }
+      })
       .text((d) => d.disc_name)
       .style('pointer-events', 'none');
   }

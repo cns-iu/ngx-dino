@@ -45,6 +45,16 @@ function reduceOps(
   }, []).reverse();
 }
 
+function mergeFlags(operators: List<BaseOperator<any, any>>): Flags {
+  const flags = operators.map((op) => op.flags);
+  const firstOp = operators.first();
+  const inputIndependent = firstOp && firstOp.flags.has(Flags.InputIndependent);
+
+  return Flags.All
+    .and(...flags.toArray())
+    .or(inputIndependent ? Flags.InputIndependent : Flags.None);
+}
+
 
 export class ChainOperator<In, Out> extends BaseOperator<In, Out> {
   readonly operators: List<BaseOperator<any, any>>;
@@ -53,9 +63,7 @@ export class ChainOperator<In, Out> extends BaseOperator<In, Out> {
     super();
 
     this.operators = List(processOps(operators));
-
-    const flags = Flags.All.and(...this.operators.map((o) => o.flags).toArray());
-    super.setFlags(flags);
+    super.setFlags(mergeFlags(this.operators));
   }
 
   getImpl(data: In, cache: BaseCache): Out {

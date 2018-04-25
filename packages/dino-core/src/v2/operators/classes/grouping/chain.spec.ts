@@ -59,6 +59,8 @@ describe('ChainOperator', () => {
     expect(op.get('bvcx')).toBe('aab');
   });
 
+  // TODO: More intensive/complex tests
+
   it('should be equal if same operators', () => {
     const op2 = create(ChainOperator, ...ops);
     expect(op.equals(op2)).toBeTruthy();

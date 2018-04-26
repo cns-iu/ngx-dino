@@ -1,4 +1,4 @@
-import { BaseOperator, BaseCache } from '../base/base';
+import { BaseOperator, BaseCache } from '../base';
 
 
 // Callback function

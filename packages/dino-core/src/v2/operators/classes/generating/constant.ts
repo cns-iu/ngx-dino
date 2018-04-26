@@ -1,7 +1,6 @@
 import { List } from 'immutable';
 
-import { Flags } from '../../base/flags';
-import { State, BaseOperator, BaseCache } from '../../base/base';
+import { Flags, State, BaseOperator, BaseCache } from '../../base';
 
 
 // Constants

@@ -1,8 +1,7 @@
 import { List, Map, Record, fromJS } from 'immutable';
 import { isFunction, isObject, cloneDeepWith } from 'lodash';
 
-import { Flags } from '../../base/flags';
-import { State, BaseOperator, BaseCache } from '../../base/base';
+import { Flags, State, BaseOperator, BaseCache } from '../../base';
 import { unwrap } from '../../utility/unwrap';
 
 

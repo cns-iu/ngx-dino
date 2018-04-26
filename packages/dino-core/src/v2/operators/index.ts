@@ -1,3 +1,2 @@
-export { Flags } from './base/flags';
-export { State, BaseOperator, BaseCache } from './base/base';
+export { Flags, State, BaseOperator, BaseCache } from './base';
 export { Operator } from './operator';

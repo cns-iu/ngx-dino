@@ -1,4 +1,4 @@
-import { BaseOperator, BaseCache } from '../base/base';
+import { BaseOperator, BaseCache } from '../base';
 
 
 export class NoopCache extends BaseCache {

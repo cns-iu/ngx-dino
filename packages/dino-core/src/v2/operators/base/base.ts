@@ -1,7 +1,7 @@
 import { List } from 'immutable';
 import { uniqueId } from 'lodash';
 
-import { State, ImmutableValue } from '../../common/immutable-value';
+import { State, ImmutableValue } from '../../common';
 import { Flags } from './flags';
 
 

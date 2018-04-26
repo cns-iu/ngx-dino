@@ -1,6 +1,6 @@
 import { List } from 'immutable';
 
-import { State, ImmutableValue } from '../../common/immutable-value';
+import { State, ImmutableValue } from '../../common';
 
 
 // tslint:disable:no-bitwise

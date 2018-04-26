@@ -5,8 +5,7 @@ import {
   toPath as normalizeProperyPath
 } from 'lodash';
 
-import { Flags } from '../../base/flags';
-import { State, BaseOperator, BaseCache } from '../../base/base';
+import { Flags, State, BaseOperator, BaseCache } from '../../base';
 
 
 // Constants

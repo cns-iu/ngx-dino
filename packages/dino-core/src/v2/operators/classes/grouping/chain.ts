@@ -1,8 +1,7 @@
 import { List } from 'immutable';
 import { chain } from 'lodash';
 
-import { Flags } from '../../base/flags';
-import { State, BaseOperator, BaseCache } from '../../base/base';
+import { Flags, State, BaseOperator, BaseCache } from '../../base';
 import { IdentityOperator } from '../extracting/identity';
 import { unwrap } from '../../utility/unwrap';
 

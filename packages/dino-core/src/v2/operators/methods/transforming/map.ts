@@ -1,6 +1,6 @@
 import { isFunction } from 'lodash';
 
-import { Flags } from '../../base/flags';
+import { Flags } from '../../base';
 import { Operator } from '../../operator';
 import { Mapper, MapOperator } from '../../classes/transforming/map';
 import { create } from '../../utility/create';

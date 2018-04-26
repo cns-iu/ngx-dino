@@ -1,4 +1,4 @@
-import { BaseOperator } from '../base/base';
+import { BaseOperator } from '../base';
 import { Operator } from '../operator';
 
 

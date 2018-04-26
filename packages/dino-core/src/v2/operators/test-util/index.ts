@@ -1,8 +1,7 @@
 /// <reference path="../../../../../../node_modules/@types/jasmine/index.d.ts" />
 
 // Export base classes
-export { Flags } from '../base/flags';
-export { BaseOperator, BaseCache } from '../base/base';
+export { Flags, State, BaseOperator, BaseCache } from '../base';
 export { Operator } from '../operator';
 
 // Export general utility

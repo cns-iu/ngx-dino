@@ -1,4 +1,4 @@
-import { Collection, List } from 'immutable';
+import { List } from 'immutable';
 import {
   PropertyPath,
   get as getDeepProperty,
@@ -6,7 +6,7 @@ import {
 } from 'lodash';
 
 import { Flags } from '../../base/flags';
-import { BaseOperator, BaseCache } from '../../base/base';
+import { State, BaseOperator, BaseCache } from '../../base/base';
 
 
 // Constants
@@ -23,7 +23,7 @@ export class AccessorOperator<Out> extends BaseOperator<any, Out> {
     return getDeepProperty(data, this.path, this.defaultValue);
   }
 
-  protected getStateImpl(): Collection<any, any> {
+  protected getStateImpl(): State {
     const pathList = List(normalizeProperyPath(this.path));
     return List.of<any>(pathList, this.defaultValue);
   }

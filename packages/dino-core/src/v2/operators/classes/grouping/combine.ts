@@ -1,8 +1,8 @@
-import { Collection, List, Map, Record, fromJS } from 'immutable';
+import { List, Map, Record, fromJS } from 'immutable';
 import { isFunction, isObject, cloneDeepWith } from 'lodash';
 
 import { Flags } from '../../base/flags';
-import { BaseOperator, BaseCache } from '../../base/base';
+import { State, BaseOperator, BaseCache } from '../../base/base';
 import { unwrap } from '../../utility/unwrap';
 
 
@@ -133,7 +133,7 @@ export class CombineOperator<In, Out> extends BaseOperator<In, Out> {
     return evaluate(this.schema, operatorEvaluator, state);
   }
 
-  protected getStateImpl(): Collection<any, any> {
+  protected getStateImpl(): State {
     const state: CycleState = {
       paths: Map<any, any>().asMutable(),
       cycles: Map<any, any>().asMutable()

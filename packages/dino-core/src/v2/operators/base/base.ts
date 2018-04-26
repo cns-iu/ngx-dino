@@ -1,14 +1,17 @@
-import { Collection, is } from 'immutable';
+import { List } from 'immutable';
 import { uniqueId } from 'lodash';
 
+import { State, ImmutableValue } from '../../common/immutable-value';
 import { Flags } from './flags';
 
 
-export abstract class BaseOperator<In, Out> {
+export { State };
+export abstract class BaseOperator<In, Out> extends ImmutableValue {
   readonly id: string = uniqueId('operator_');
-  private cachedState: Collection<any, any> = undefined;
 
-  constructor(readonly flags: Flags = Flags.None) { }
+  constructor(readonly flags: Flags = Flags.None) {
+    super();
+  }
 
   // Helper method for setting the flags after the super constructor call
   // It is only allowed to be called in the derived constructor
@@ -19,7 +22,7 @@ export abstract class BaseOperator<In, Out> {
 
   // Methods to override in derived classes
   protected abstract getImpl(data: In, cache: BaseCache): Out;
-  protected abstract getStateImpl(): Collection<any, any>;
+  protected abstract getStateImpl(): State;
 
 
   // Public interface
@@ -32,23 +35,10 @@ export abstract class BaseOperator<In, Out> {
     }
   }
 
-  getState(): Collection<any, any> {
-    return this.cachedState || (this.cachedState = this.getStateImpl());
-  }
 
-
-  // Implementation of immutable value interface
-  equals(other: any): boolean {
-    if (other instanceof BaseOperator) {
-      return (is(this.flags, other.flags) &&
-              is(this.getState(), other.getState()));
-    }
-
-    return false;
-  }
-
-  hashCode(): number {
-    return this.getState().hashCode();
+  // ImmutableValue implementation
+  getState(): State {
+    return List.of<any>(this.flags, this.getStateImpl());
   }
 
 

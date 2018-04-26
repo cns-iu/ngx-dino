@@ -1,7 +1,7 @@
-import { Collection, List } from 'immutable';
+import { List } from 'immutable';
 
 import { Flags } from '../../base/flags';
-import { BaseOperator, BaseCache } from '../../base/base';
+import { State, BaseOperator, BaseCache } from '../../base/base';
 
 
 // Constants
@@ -21,7 +21,7 @@ export class AutoIdOperator extends BaseOperator<any, string> {
     return `${this.prefix}${this._counter++}`;
   }
 
-  protected getStateImpl(): Collection<any, any> {
+  protected getStateImpl(): State {
     return List.of(this.id);
   }
 }

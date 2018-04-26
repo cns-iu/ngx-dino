@@ -1,7 +1,7 @@
-import { Collection, List, Map } from 'immutable';
+import { List, Map } from 'immutable';
 
 import { Flags } from '../../base/flags';
-import { BaseOperator, BaseCache } from '../../base/base';
+import { State, BaseOperator, BaseCache } from '../../base/base';
 
 
 // Constants
@@ -23,7 +23,7 @@ export class LookupOperator<In, Out> extends BaseOperator<In, Out> {
     return this.mapping.get(data, this.defaultValue);
   }
 
-  protected getStateImpl(): Collection<any, any> {
+  protected getStateImpl(): State {
     return List.of<any>(this.mapping, this.defaultValue);
   }
 }

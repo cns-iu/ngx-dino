@@ -1,7 +1,7 @@
-import { Collection, List } from 'immutable';
+import { List } from 'immutable';
 
 import { Flags } from '../../base/flags';
-import { BaseOperator, BaseCache } from '../../base/base';
+import { State, BaseOperator, BaseCache } from '../../base/base';
 
 
 // Constants
@@ -18,7 +18,7 @@ export class IdentityOperator<T> extends BaseOperator<T, T> {
     return data;
   }
 
-  getStateImpl(): Collection<any, any> {
+  getStateImpl(): State {
     return state;
   }
 }

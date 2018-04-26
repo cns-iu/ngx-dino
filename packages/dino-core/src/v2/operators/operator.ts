@@ -1,6 +1,6 @@
 import { Collection } from 'immutable';
 
-import { BaseOperator, BaseCache } from './base/base';
+import { State, BaseOperator, BaseCache } from './base/base';
 import { NoopCache } from './caches/noop-cache';
 
 
@@ -19,11 +19,11 @@ export class Operator<In, Out> extends BaseOperator<In, Out> {
 
   // Override base class methods
   protected getImpl(data: In, cache: BaseCache): Out {
-    return this.wrapped.get(data, cache);
+    return (this.wrapped as any).getImpl(data, cache);
   }
 
-  protected getStateImpl(): Collection<any, any> {
-    return this.wrapped.getState();
+  protected getStateImpl(): State {
+    return (this.wrapped as any).getStateImpl();
   }
 
   get(data: In, cache: BaseCache = new NoopCache()): Out {
@@ -33,7 +33,7 @@ export class Operator<In, Out> extends BaseOperator<In, Out> {
 
   // Binding for Operator#get. Makes it easier to use as a callback i.e.
   // [...].map(op.getter)
-  get getter(): (data: In) => Out {
+  get getter(): (data: In, cache?: BaseCache) => Out {
     return this.cachedGetter || (this.cachedGetter = this.get.bind(this));
   }
 }

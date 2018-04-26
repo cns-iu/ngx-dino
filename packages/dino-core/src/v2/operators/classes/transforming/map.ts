@@ -1,7 +1,7 @@
-import { Collection, List } from 'immutable';
+import { List } from 'immutable';
 
 import { Flags } from '../../base/flags';
-import { BaseOperator, BaseCache } from '../../base/base';
+import { State, BaseOperator, BaseCache } from '../../base/base';
 
 
 export type Mapper<In, Out> = (data: In, ...args: any[]) => Out;
@@ -22,7 +22,7 @@ export class MapOperator<In, Out> extends BaseOperator<In, Out> {
     return this.mapper.apply(undefined, this.callArgs);
   }
 
-  protected getStateImpl(): Collection<any, any> {
+  protected getStateImpl(): State {
     this.callArgs[0] = this.mapper;
     return List(this.callArgs);
   }

@@ -1,5 +1,10 @@
+import { List } from 'immutable';
+
+import { State, ImmutableValue } from '../../common/immutable-value';
+
+
 // tslint:disable:no-bitwise
-export class Flags {
+export class Flags extends ImmutableValue {
   // Individual flags
   // ----------------
 
@@ -29,7 +34,9 @@ export class Flags {
   private constructor(
     private readonly bits: number,
     private _name?: string
-  ) { }
+  ) {
+    super();
+  }
 
 
   get name(): string {
@@ -76,13 +83,9 @@ export class Flags {
   }
 
 
-  // Immutable value interface
-  equals(other: any): boolean {
-    return other instanceof Flags && this.bits === other.bits;
-  }
-
-  hashCode(): number {
-    return this.bits;
+  // ImmutableValue implemenation
+  getState(): State {
+    return List.of(this.bits);
   }
 
 

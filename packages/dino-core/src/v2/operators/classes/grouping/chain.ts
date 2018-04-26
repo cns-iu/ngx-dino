@@ -1,8 +1,8 @@
-import { Collection, List } from 'immutable';
+import { List } from 'immutable';
 import { chain } from 'lodash';
 
 import { Flags } from '../../base/flags';
-import { BaseOperator, BaseCache } from '../../base/base';
+import { State, BaseOperator, BaseCache } from '../../base/base';
 import { IdentityOperator } from '../extracting/identity';
 import { unwrap } from '../../utility/unwrap';
 
@@ -72,7 +72,7 @@ export class ChainOperator<In, Out> extends BaseOperator<In, Out> {
     }, data) as Out;
   }
 
-  getStateImpl(): Collection<any, any> {
+  getStateImpl(): State {
     return this.operators.size !== 0 ? this.operators : emptyState;
   }
 }

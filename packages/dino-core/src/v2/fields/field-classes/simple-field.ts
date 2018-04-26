@@ -26,7 +26,7 @@ export class SimpleField<T> extends Field<T> {
   }
 
 
-  // Implement abstract methods
+  // Abstract method implementations
   getState(): State {
     return List.of<any>(this.defaultId, this.operator);
   }

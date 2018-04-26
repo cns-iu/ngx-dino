@@ -10,7 +10,7 @@ import { ScienceMapDataService } from '../shared/science-map/science-map-data.se
   providers:[ScienceMapDataService]
 })
 export class ScienceMapComponent implements OnInit {
-  subdisciplineSize: BoundField<string>;
+  subdisciplineSize: BoundField<number>;
   subdisciplineID: BoundField<number|string>;
   filteredSubdisciplines: any[];
   width = window.innerWidth;
@@ -21,9 +21,9 @@ export class ScienceMapComponent implements OnInit {
 
   ngOnInit() {
     // not user facing
-    this.subdisciplineSize = subdisciplineSizeField.getBoundField('size');
-    this.subdisciplineID = subdisciplineIDField.getBoundField('id');
-    
+    this.subdisciplineSize = subdisciplineSizeField.getBoundField();
+    this.subdisciplineID = subdisciplineIDField.getBoundField();
+
     this.filteredSubdisciplines = this.dataService.filteredSubdisciplines.data;
   }
 

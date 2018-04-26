@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { Operator, BoundField } from '@ngx-dino/core';
-import '@ngx-dino/core/src/operators/add/static/combine';
+import '@ngx-dino/core/src/v2/operators/add/common';
 
 import { DataType } from './data-types';
 

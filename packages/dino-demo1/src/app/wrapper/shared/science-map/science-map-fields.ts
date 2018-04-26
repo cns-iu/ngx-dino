@@ -1,22 +1,16 @@
-import { Operator } from '@ngx-dino/core/operators';
-import { FieldV2 as Field} from '@ngx-dino/core';
+import { Operator, SimpleField } from '@ngx-dino/core';
+import '@ngx-dino/core/src/v2/operators/add/common';
 
-export const subdisciplineSizeField = new Field<string>({
-  id: '1',
+export const subdisciplineSizeField = new SimpleField<number>({
+  defaultId: 'size',
   label: 'Subdiscipline Size',
 
-  initialOp: Operator.access('weight'),
-  mapping: [
-    ['size', true]
-  ]
+  operator: Operator.access('weight')
 });
 
-export const subdisciplineIDField = new Field<number|string>({
-  id: '1',
-  label: 'Subdiscipline ID',
+export const subdisciplineIDField = new SimpleField<number|string>({
+  defaultId: 'id',
+  label: 'Subdiscipline Id',
 
-  initialOp: Operator.access('subd_id'),
-  mapping: [
-    ['id', true]
-  ]
+  operator: Operator.access('subd_id')
 });

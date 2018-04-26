@@ -10,6 +10,7 @@
     "../../dino-*/**/*.spec.ts",
     "../../dino-*/**/*-spec.ts",
     "../../dino-*/**/*.tpl.ts",
+    "../../dino-*/**/index.d.ts",
     "../node_modules"
   ],
   "include": [

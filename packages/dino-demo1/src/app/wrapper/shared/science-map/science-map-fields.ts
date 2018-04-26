@@ -1,12 +1,11 @@
 import { Operator } from '@ngx-dino/core/operators';
-import { FieldV2 as Field}  from '@ngx-dino/core';
-
+import { FieldV2 as Field} from '@ngx-dino/core';
 
 export const subdisciplineSizeField = new Field<string>({
   id: '1',
   label: 'Subdiscipline Size',
 
-  initialOp: Operator.access('tableData'),
+  initialOp: Operator.access('weight'),
   mapping: [
     ['size', true]
   ]
@@ -21,4 +20,3 @@ export const subdisciplineIDField = new Field<number|string>({
     ['id', true]
   ]
 });
-

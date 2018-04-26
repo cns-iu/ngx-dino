@@ -28,7 +28,7 @@ export class BoundField<T> extends ImmutableValue {
     return this.operator.get(data, cache);
   }
 
-  get getter(): (data: any, cache?: BaseCache) => T {
+  get getter(): (data: any) => T {
     return this.operator.getter;
   }
 

@@ -33,7 +33,10 @@ export class Operator<In, Out> extends BaseOperator<In, Out> {
 
   // Binding for Operator#get. Makes it easier to use as a callback i.e.
   // [...].map(op.getter)
-  get getter(): (data: In, cache?: BaseCache) => Out {
-    return this.cachedGetter || (this.cachedGetter = this.get.bind(this));
+  get getter(): (data: In) => Out {
+    if (this.cachedGetter === undefined) {
+      this.cachedGetter = (data) => this.get(data);
+    }
+    return this.cachedGetter;
   }
 }

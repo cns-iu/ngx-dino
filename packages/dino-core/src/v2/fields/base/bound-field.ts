@@ -34,7 +34,7 @@ export class BoundField<T> extends ImmutableValue {
 
 
   // ImmutableValue implementation
-  getState(): State {
+  protected getState(): State {
     return List.of<any>(this.id, this.field, this.operator);
   }
 }

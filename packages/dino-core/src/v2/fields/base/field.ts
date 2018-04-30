@@ -8,6 +8,9 @@ import { BoundField } from './bound-field';
 export { State };
 
 export enum DataType {
+  Boolean = 'boolean',
+  Number = 'number',
+  String = 'string',
   Any = 'any'
 }
 
@@ -22,7 +25,7 @@ export interface FieldArgs {
 export abstract class Field<T> extends ImmutableValue {
   readonly id: string;
   readonly label: string;
-  readonly dataType: DataType = DataType.Any;
+  readonly dataType: DataType;
 
   constructor(args: FieldArgs) {
     super();

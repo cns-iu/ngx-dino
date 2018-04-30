@@ -27,10 +27,6 @@ export class SimpleField<T> extends Field<T> {
 
 
   // Abstract method implementations
-  getState(): State {
-    return List.of<any>(this.defaultId, this.operator);
-  }
-
   getBoundFieldIds(): string[] {
     return this.defaultId ? [this.defaultId] : [];
   }
@@ -40,5 +36,11 @@ export class SimpleField<T> extends Field<T> {
       return this.boundField;
     }
     return undefined;
+  }
+
+
+  // ImmutableValue implementation
+  protected getState(): State {
+    return List.of<any>(this.defaultId, this.operator);
   }
 }

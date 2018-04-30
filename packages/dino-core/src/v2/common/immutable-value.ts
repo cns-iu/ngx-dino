@@ -7,7 +7,7 @@ export abstract class ImmutableValue {
 
 
   // Methods to override in derived classes
-  abstract getState(): State;
+  protected abstract getState(): State;
 
 
   // Implementation for immutable interface

@@ -33,10 +33,6 @@ export class MultiField<T> extends Field<T> {
 
 
   // Abstract method implementations
-  getState(): State {
-    return List.of<any>(this.defaultId, this.mapping.map((bf) => bf.operator));
-  }
-
   getBoundFieldIds(): string[] {
     return this.mapping.keySeq().toArray();
   }
@@ -46,5 +42,11 @@ export class MultiField<T> extends Field<T> {
       return this.mapping.get(id);
     }
     return this.mapping.get(this.defaultId);
+  }
+
+
+  // ImmutableValue implementation
+  protected getState(): State {
+    return List.of<any>(this.defaultId, this.mapping.map((bf) => bf.operator));
   }
 }

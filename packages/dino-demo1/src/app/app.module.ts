@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { WrapperModule } from './wrapper/wrapper.module';
+import { DemoUiModule } from './demo-ui/demo-ui.module';
 
 import { AppComponent } from './app.component';
 
@@ -10,7 +10,7 @@ import { AppComponent } from './app.component';
   ],
   imports: [
     BrowserModule,
-    WrapperModule
+    DemoUiModule
   ],
   providers: [],
   bootstrap: [AppComponent]

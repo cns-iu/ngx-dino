@@ -16,6 +16,7 @@ import * as d3Array from 'd3-array';
 import 'd3-transition';
 import * as d3Zoom from 'd3-zoom';
 
+
 import { ScienceMapDataService } from '../shared/science-map-data.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
@@ -28,12 +29,15 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 })
 export class ScienceMapComponent implements OnInit, OnChanges {
   @Input() margin = { top: 20, right: 15, bottom: 60, left: 60 };
-  @Input() width = window.innerWidth - 20; // initializing width for map container
-  @Input() height = window.innerHeight - 100; // initializing height for map container
+  @Input() width = window.innerWidth - this.margin.left - this.margin.right; // initializing width for map container
+  @Input() height = window.innerHeight - this.margin.top - this.margin.bottom; // initializing height for map container
   @Input() subdisciplineSizeField: BoundField<string>;
   @Input() subdisciplineIDField: BoundField<number|string>;
   @Input() data: any[];
   @Input() nodeSizeRange = [2, 18];
+  @Input() minPositionX = 0;
+  @Input() minPositionY = -20;
+  @Input() enableTooltip = false;
   @Output() nodeClicked = new EventEmitter<any>();
 
   private parentNativeElement: any;
@@ -49,7 +53,7 @@ export class ScienceMapComponent implements OnInit, OnChanges {
   private subdIdToDisc: any;
   private discIdToColor: any;
   private subdIdToName: any;
-
+  private tooltipDiv: any;
   // private zoom = d3Zoom.zoom().scaleExtent([1, 10]).on('zoom', this.zoomed);
 
   constructor(element: ElementRef, private dataService: ScienceMapDataService) {
@@ -72,11 +76,11 @@ export class ScienceMapComponent implements OnInit, OnChanges {
   setScales() {
     this.translateXScale = scaleLinear()
       .domain(d3Array.extent(this.dataService.underlyingScimapData.nodes, (d: any) => <number>d.x))
-      .range([10, this.width - 10]);
+      .range([0, this.width]);
 
     this.translateYScale = scaleLinear()
       .domain(d3Array.extent(this.dataService.underlyingScimapData.nodes, (d: any) => <number>d.y))
-      .range([this.height - 10, 10]);
+      .range([this.height, 0]);
 
     const nodeSizeScale = scaleLog()
       .domain(d3Array.extent(this.data, (d: any) => Math.max(1, parseInt(this.subdisciplineSizeField.get(d)))))
@@ -94,10 +98,13 @@ export class ScienceMapComponent implements OnInit, OnChanges {
       .select('#scienceMapContainer');
 
     this.svgContainer = container.append('svg')
-      .attr('width', this.width)
-      .attr('height', this.height)
+      .attr('preserveAspectRatio', 'xMidYMid slice')
+      .attr('viewBox', ''+ this.minPositionX +' '+ this.minPositionY +' ' + (this.width) + ' ' + (this.height))
+      .classed('svg-content-responsive', true)
       .attr('id', 'scienceMapcontainer');
-      // .call(this.zoom);
+        // .call(this.zoom);
+
+    this.tooltipDiv = d3Selection.select('.tooltip');
   }
 
   createNodes() {
@@ -115,28 +122,17 @@ export class ScienceMapComponent implements OnInit, OnChanges {
       .attr('fill', (d) => this.dataService.underlyingScimapData.disciplines.filter(
         (d2) => d2.disc_id === this.dataService.subdIdToDisc[this.subdisciplineIDField.get(d)].disc_id)[0].color)
       .attr('stroke', 'black')
-      .attr('transform', (d) => 'translate(' + this.translateXScale(this.dataService.subdIdToPosition[this.subdisciplineIDField.get(d)].x)
-          + ',' + this.translateYScale(this.dataService.subdIdToPosition[this.subdisciplineIDField.get(d)].y) + ')')
-      .on('click', (d) => this.nodeClicked.emit(this.dataForSubdiscipline(d.subd_id)))
-      .on('mouseover', (d) => this.onMouseOver(<number>this.subdisciplineIDField.get(d)))
-      .on('mouseout', (d) => this.onMouseOut(<number>this.subdisciplineIDField.get(d)));
+      .attr('x', (d) => this.translateXScale(this.dataService.subdIdToPosition[this.subdisciplineIDField.get(d)].x))
+      .attr('y', (d) => this.translateYScale(this.dataService.subdIdToPosition[this.subdisciplineIDField.get(d)].y))
+      .attr('transform', (d) => 'translate(' 
+        + this.translateXScale(this.dataService.subdIdToPosition[this.subdisciplineIDField.get(d)].x)
+        + ',' + this.translateYScale(this.dataService.subdIdToPosition[this.subdisciplineIDField.get(d)].y) + ')')
+      .on('click', (d) => this.nodeClicked.emit(this.dataForSubdiscipline(<number>this.subdisciplineIDField.get(d))))
+      .on('mouseover', (d) => this.onMouseOver(this.dataForSubdiscipline(<number>this.subdisciplineIDField.get(d))))
+      .on('mouseout', (d) => this.onMouseOut(this.dataForSubdiscipline(<number>this.subdisciplineIDField.get(d))));
+
 
     this.nodes.exit().remove();
-
-    const subd_labels = this.svgContainer.append('g').attr('class', 'labels')
-      .selectAll('text').data<any>(this.dataService.underlyingScimapData.nodes).enter()
-      .append('text')
-      .attr('class', 'subd subd_label')
-      .text((d) => this.dataService.subdIdToName[this.subdisciplineIDField.get(d)].subd_name)
-      .attr('x', (d) => this.translateXScale(d.x))
-      .attr('y', (d) => this.translateYScale(d.y))
-      .attr('dx', 10)
-      .attr('dy', 30)
-      .attr('font-size', 12)
-      .attr('text-anchor', 'middle')
-      .attr('display', 'none');
-
-    subd_labels.exit().remove();
   }
 
   createLabels(strokeColor: string, fontSize: number) {
@@ -191,24 +187,29 @@ export class ScienceMapComponent implements OnInit, OnChanges {
       .attr('y2', (d) => this.translateYScale(this.dataService.subdIdToPosition[d.subd_id2].y));
   }
 
-  onMouseOver(targetID: number) {
+  onMouseOver(target: any) {
     const selection = this.svgContainer.selectAll('circle')
-    .filter((d: any) => this.subdisciplineIDField.get(d) === targetID);
+      .filter((d: any) => this.subdisciplineIDField.get(d) === target.subd_id);
     selection.transition().attr('r', (d) => 2 * this.nodeSizeScale(this.subdisciplineSizeField.get(d) || 2 * this.defaultNodeSize));
+    
+    console.log(this.enableTooltip);
+    if (this.enableTooltip) {
+      this.tooltipDiv.transition().style('opacity', .7)
+        .style('visibility', 'visible');		
 
-    const textSelection = this.svgContainer.selectAll('.subd_label')
-      .filter((d: any) => this.subdisciplineIDField.get(d) == targetID); // TODO ==
-    textSelection.transition().attr('display', 'block');
+      this.tooltipDiv.html(this.dataService.subdIdToName[target.subd_id].subd_name) // TODO generic content needed
+        .style('left', (Number(selection.attr('x'))  - 10) + 'px')		
+        .style('top', (Number(selection.attr('y')) + 40) + 'px');	 
+    }        					
   }
 
-  onMouseOut(targetID: number) {
+  onMouseOut(target: any) {
     const selection = this.svgContainer.selectAll('circle')
-    .filter((d: any) => this.subdisciplineIDField.get(d) === targetID);
+      .filter((d: any) => this.subdisciplineIDField.get(d) === target.subd_id);
     selection.transition().attr('r', (d) => this.nodeSizeScale(this.subdisciplineSizeField.get(d)) || this.defaultNodeSize);
 
-    const textSelection = this.svgContainer.selectAll('.subd_label')
-    .filter((d: any) => this.subdisciplineIDField.get(d) == targetID); // TODO ==
-    textSelection.transition().attr('display', 'none');
+    this.tooltipDiv.style('opacity', 0)
+      .style('visibility', 'hidden');
   }
 
   zoomed() {

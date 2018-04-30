@@ -3,8 +3,8 @@ import { AccessorOperator } from './accessor';
 
 
 describe('operators', () => {
-describe('classes', () => { // Prevent deep indentation
-describe('extracting', () => { // Prevent deep indentation
+describe('classes', () => {
+describe('extracting', () => {
 describe('AccessorOperator', () => {
   const path = 'the.path';
   const defaultValue = 'a_default_value';

@@ -7,8 +7,8 @@ import { ChainOperator } from './chain';
 
 
 describe('operators', () => {
-describe('classes', () => { // Prevent deep indentation
-describe('grouping', () => { // Prevent deep indentation
+describe('classes', () => {
+describe('grouping', () => {
 describe('ChainOperator', () => {
   let spy1: jasmine.Spy;
   let spy2: jasmine.Spy;

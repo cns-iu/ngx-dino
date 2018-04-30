@@ -1,4 +1,4 @@
-import { List, Map } from 'immutable';
+import { Seq, Map } from 'immutable';
 
 import { Operator } from '../../operators';
 import { State, FieldArgs, Field, BoundField } from '../base';
@@ -33,20 +33,7 @@ export class MultiField<T> extends Field<T> {
 
 
   // Abstract method implementations
-  getBoundFieldIds(): string[] {
-    return this.mapping.keySeq().toArray();
-  }
-
-  getBoundField(id?: string): BoundField<T> {
-    if (id !== undefined) {
-      return this.mapping.get(id);
-    }
-    return this.mapping.get(this.defaultId);
-  }
-
-
-  // ImmutableValue implementation
-  protected getState(): State {
-    return List.of<any>(this.defaultId, this.mapping.map((bf) => bf.operator));
+  protected getAllBoundFields(): Seq.Keyed<string, BoundField<T>> {
+    return this.mapping.toSeq();
   }
 }

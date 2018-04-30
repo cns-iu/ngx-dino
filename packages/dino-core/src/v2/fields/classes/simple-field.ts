@@ -1,4 +1,4 @@
-import { List } from 'immutable';
+import { Seq } from 'immutable';
 
 import { Operator } from '../../operators';
 import { State, FieldArgs, Field, BoundField } from '../base';
@@ -27,20 +27,10 @@ export class SimpleField<T> extends Field<T> {
 
 
   // Abstract method implementations
-  getBoundFieldIds(): string[] {
-    return this.defaultId ? [this.defaultId] : [];
-  }
-
-  getBoundField(id?: string): BoundField<T> {
-    if (id === undefined || id === this.defaultId) {
-      return this.boundField;
-    }
-    return undefined;
-  }
-
-
-  // ImmutableValue implementation
-  protected getState(): State {
-    return List.of<any>(this.defaultId, this.operator);
+  protected getAllBoundFields(): Seq.Keyed<string, BoundField<T>> {
+    return Seq.Keyed([
+      [undefined, this.boundField],
+      [this.defaultId, this.boundField]
+    ]);
   }
 }

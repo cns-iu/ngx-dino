@@ -5,7 +5,6 @@ import { State, ImmutableValue } from '../../common';
 import { Operator } from '../../operators';
 
 import { BoundField } from './bound-field';
-import { makeBoundField } from '../utility/make-bound-field';
 
 
 export enum DataType {
@@ -52,7 +51,7 @@ export class Field<T> extends ImmutableValue {
     } = args);
 
     this.mapping = Seq.Keyed<string, Operator<any, T>>(operatorMapping)
-      .map((op, id) => makeBoundField(id, this, op)).toMap();
+      .map((op, id) => new (BoundField as any)(id, this, op)).toMap();
   }
 
 

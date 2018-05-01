@@ -2,6 +2,9 @@ import { List } from 'immutable';
 
 import { State, ImmutableValue } from '../../common';
 import { BaseCache, Operator } from '../../operators';
+
+// Do NOT use DataType or Field as values! Will cause circular dependency.
+// Allowed to be used as types.
 import { DataType, Field } from './field';
 
 

@@ -3,10 +3,10 @@ import { uniqueId } from 'lodash';
 
 import { State, ImmutableValue } from '../../common';
 import { Operator } from '../../operators';
+
 import { BoundField } from './bound-field';
+import { makeBoundField } from '../utility/make-bound-field';
 
-
-export { State };
 
 export enum DataType {
   Boolean = 'boolean',
@@ -16,60 +16,62 @@ export enum DataType {
 }
 
 
-export interface FieldArgs {
+export interface BaseFieldArgs {
   id?: string;
   label: string;
   dataType?: DataType;
 }
 
+export type FieldMappingArg<T, F = any> =
+  Seq<string, Operator<F, T>> |
+  Iterable<[string, Operator<F, T>]> |
+  {[id: string]: Operator<F, T>};
 
-export abstract class Field<T> extends ImmutableValue {
+export interface FieldArgs<T, F = any> extends BaseFieldArgs {
+  mapping: FieldMappingArg<T, F>;
+}
+
+
+export class Field<T> extends ImmutableValue {
+  static defaultSymbol = '__ngx-dino-field-default__';
+
   readonly id: string;
   readonly label: string;
   readonly dataType: DataType;
-  private boundFieldsMapping: Map<string, BoundField<T>> = undefined;
+  readonly mapping: Map<string, BoundField<T>>;
 
-  constructor(args: FieldArgs) {
+  constructor(args: FieldArgs<T>) {
     super();
 
+    let operatorMapping: FieldMappingArg<T>;
     ({
       id: this.id = uniqueId('field_'),
       label: this.label,
-      dataType: this.dataType = DataType.Any
+      dataType: this.dataType = DataType.Any,
+      mapping: operatorMapping
     } = args);
+
+    this.mapping = Seq.Keyed<string, Operator<any, T>>(operatorMapping)
+      .map((op, id) => makeBoundField(id, this, op)).toMap();
   }
-
-
-  // Methods to overrride in derived classes
-  protected abstract getAllBoundFields(): Seq.Keyed<string, BoundField<T>>;
 
 
   // Public interface
   getBoundFieldIds(): Seq.Indexed<string> {
-    return this.getBoundFieldsMap()
+    return this.mapping
       .keySeq()
-      .filter((id) => id !== undefined)
+      .filter((id) => id !== Field.defaultSymbol)
       .valueSeq();
   }
 
-  getBoundField(id?: string): BoundField<T> {
-    return this.getBoundFieldsMap().get(id);
+  getBoundField(id: string = Field.defaultSymbol): BoundField<T> {
+    return this.mapping.get(id);
   }
 
 
   // ImmutableValue implementation
   protected getState(): State {
-    const operatorMap = this.getBoundFieldsMap().map((bf) => bf.operator);
+    const operatorMap = this.mapping.map((bf) => bf.operator);
     return List.of<any>(this.dataType, operatorMap);
-  }
-
-
-  // Internal utility
-  private getBoundFieldsMap(): Map<string, BoundField<T>> {
-    if (this.boundFieldsMapping === undefined) {
-      this.boundFieldsMapping = Map(this.getAllBoundFields());
-    }
-
-    return this.boundFieldsMapping;
   }
 }

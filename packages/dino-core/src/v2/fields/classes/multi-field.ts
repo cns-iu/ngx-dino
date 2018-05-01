@@ -1,39 +1,52 @@
-import { Seq, Map } from 'immutable';
+import { Seq } from 'immutable';
 
 import { Operator } from '../../operators';
-import { State, FieldArgs, Field, BoundField } from '../base';
-import { makeBoundField } from '../utility/make-bound-field';
+import { chain } from '../../operators/methods/grouping/chain';
+
+import { FieldArgs, Field } from '../base';
 
 
-export type MultiFieldMappingArg<T> =
-  Iterable<[string, Operator<any, T>]> |
-  {[id: string]: Operator<any, T>};
-
-export interface MultiFieldArgs<T> extends FieldArgs {
+export interface MultiFieldArgs<T, F = any> extends FieldArgs<T, F> {
   defaultId?: string;
-  mapping: MultiFieldMappingArg<T>;
 }
 
-export class MultiField<T> extends Field<T> {
-  readonly defaultId?: string;
-  readonly mapping: Map<string, BoundField<T>>;
-
-  constructor(args: MultiFieldArgs<T>) {
-    super(args);
-
-    let rawMapping: MultiFieldMappingArg<T>;
-    ({
-      defaultId: this.defaultId,
-      mapping: rawMapping
-    } = args);
-    this.mapping = Map<string, Operator<any, T>>(rawMapping).map((op, id) => {
-      return makeBoundField(id, this, op);
-    }).toMap();
-  }
+export interface PreOperationArg<T> {
+  pre: Operator<any, T>;
+}
+export interface PostOperationArg<F, T> {
+  post: Operator<F, T>;
+}
 
 
-  // Abstract method implementations
-  protected getAllBoundFields(): Seq.Keyed<string, BoundField<T>> {
-    return this.mapping.toSeq();
-  }
+export function multiField<T>(args: MultiFieldArgs<T>): Field<T> {
+  const mapping = Seq.Keyed<string, Operator<any, T>>(args.mapping);
+  const defaultId = args.defaultId;
+  const defaultOperator = defaultId && mapping.get(defaultId);
+  const defaultSeq = defaultOperator ? {
+    [Field.defaultSymbol]: defaultOperator
+  } : {};
+  const newMapping = mapping.concat(defaultSeq).toSeq();
+  const newArgs = {...args, mapping: newMapping};
+
+  return new Field(newArgs);
+}
+
+export function prePostMultiField<T>(args: MultiFieldArgs<T>): Field<T>;
+export function prePostMultiField<T, Inter>(
+  args: PreOperationArg<Inter> & MultiFieldArgs<T, Inter> |
+    PostOperationArg<Inter, T> & MultiFieldArgs<Inter>
+): Field<T>;
+export function prePostMultiField<T, Inter1, Inter2>(
+  args: PreOperationArg<Inter1> & PostOperationArg<Inter2, T> &
+    MultiFieldArgs<Inter2, Inter1>
+): Field<T>;
+export function prePostMultiField(
+  args: PreOperationArg<any> & PostOperationArg<any, any> & MultiFieldArgs<any>
+): Field<any> {
+  const {pre, post, mapping} = args;
+  const newMapping = Seq.Keyed<string, Operator<any, any>>(mapping)
+    .map((op) => chain(pre, op, post)).toSeq();
+  const newArgs = {...args, mapping: newMapping};
+
+  return multiField(newArgs);
 }

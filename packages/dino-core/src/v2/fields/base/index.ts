@@ -1,2 +1,6 @@
-export { State, DataType, FieldArgs, Field } from './field';
+export {
+  DataType,
+  BaseFieldArgs, FieldMappingArg, FieldArgs,
+  Field
+} from './field';
 export { BoundField } from './bound-field';

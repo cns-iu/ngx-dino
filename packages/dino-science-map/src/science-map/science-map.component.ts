@@ -198,8 +198,8 @@ export class ScienceMapComponent implements OnInit, OnChanges {
         .style('visibility', 'visible');		
 
       this.tooltipDiv.html(this.dataService.subdIdToName[target.subd_id].subd_name) // TODO generic content needed
-        .style('left', (Number(selection.attr('x'))  - 10) + 'px')		
-        .style('top', (Number(selection.attr('y')) + 40) + 'px');	 
+        .style('left', d3Selection.event.x - 50 + 'px')		
+        .style('top',  d3Selection.event.y - 40+ 'px');	 
     }        					
   }
 

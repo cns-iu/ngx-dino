@@ -1,4 +1,4 @@
-import { Seq } from 'immutable';
+import { Seq, Map } from 'immutable';
 
 import { BoundField } from '../../fields';
 import { DatumId } from '../datum-id';
@@ -16,6 +16,10 @@ export class ChangeCache<T> {
   // Forward accesses
   get field(): BoundField<DatumId> {
     return this.simpleCache.field;
+  }
+
+  get map(): Map<DatumId, T> {
+    return this.simpleCache.map;
   }
 
   get datums(): Seq.Indexed<T> {

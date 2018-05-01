@@ -3,7 +3,7 @@ import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/do';
 
-import { Seq } from 'immutable';
+import { Seq, Map } from 'immutable';
 
 import { BoundField } from '../../fields';
 import { DatumId } from '../datum-id';
@@ -33,6 +33,10 @@ export class StreamCache<T> {
   // Forward accesses
   get field(): BoundField<DatumId> {
     return this.changeCache.field;
+  }
+
+  get map(): Map<DatumId, T> {
+    return this.changeCache.map;
   }
 
   get datums(): Seq.Indexed<T> {

@@ -3,8 +3,8 @@ import { IdentityOperator } from './identity';
 
 
 describe('operators', () => {
-describe('classes', () => { // Prevent deep indentation
-describe('extracting', () => { // Prevent deep indentation
+describe('classes', () => {
+describe('extracting', () => {
 describe('IdentityOperator', () => {
   let op: Operator<any, any>;
 

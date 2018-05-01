@@ -5,8 +5,8 @@ import { LookupOperator } from './lookup';
 
 
 describe('operators', () => {
-describe('classes', () => { // Prevent deep indentation
-describe('extracting', () => { // Prevent deep indentation
+describe('classes', () => {
+describe('extracting', () => {
 describe('LookupOperator', () => {
   const mapping = Map({a: 1, b: 2});
   const defaultValue = 33;

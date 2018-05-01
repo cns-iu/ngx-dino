@@ -84,7 +84,7 @@ export class Flags extends ImmutableValue {
 
 
   // ImmutableValue implemenation
-  getState(): State {
+  protected getState(): State {
     return List.of(this.bits);
   }
 

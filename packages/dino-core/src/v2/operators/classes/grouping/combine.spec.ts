@@ -7,8 +7,8 @@ import { CombineOperator } from './combine';
 
 
 describe('operators', () => {
-describe('classes', () => { // Prevent deep indentation
-describe('grouping', () => { // Prevent deep indentation
+describe('classes', () => {
+describe('grouping', () => {
 describe('CombineOperator', () => {
   let spy1: jasmine.Spy;
   let spy2: jasmine.Spy;

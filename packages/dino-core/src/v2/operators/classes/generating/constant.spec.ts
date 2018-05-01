@@ -3,8 +3,8 @@ import { ConstantOperator } from './constant';
 
 
 describe('operators', () => {
-describe('classes', () => { // Prevent deep indentation
-describe('generating', () => { // Prevent deep indentation
+describe('classes', () => {
+describe('generating', () => {
 describe('ConstantOperator', () => {
   const value = 111;
   let op: Operator<any, any>;

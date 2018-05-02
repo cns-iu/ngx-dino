@@ -184,11 +184,11 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
   }
   
   ticked() {
-    this.nodes.attr('cx', (d) => Math.max(this.radius, Math.min(this.width - this.radius, d.x)))
-      .attr('cy', (d) => Math.max(this.radius, Math.min(this.height - this.radius, d.y)));
+    this.nodes.attr('cx', (d) => d.x = Math.max(this.radius, Math.min(this.width - this.radius, d.x)))
+      .attr('cy', (d) => d.y = Math.max(this.radius, Math.min(this.height - this.radius, d.y)));
     
-    this.labels.attr('x', node => Math.max(this.radius, Math.min(this.width - this.radius, node.x)))
-      .attr('y', node => Math.max(this.radius, Math.min(this.height - this.radius, node.y)));
+    this.labels.attr('x', node => node.x = Math.max(this.radius, Math.min(this.width - this.radius, node.x)))
+      .attr('y', node => node.y = Math.max(this.radius, Math.min(this.height - this.radius, node.y)));
     
     this.links.attr('x1', (d) => d.source.x)
     .attr('y1', (d) => d.source.y)

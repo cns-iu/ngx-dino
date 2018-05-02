@@ -173,7 +173,7 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
       .selectAll('text').data(this.dataNodes, node => this.nodeIDField.get(node))
       .enter()
       .append('text')
-      .text(node => this.toTitleCase(this.nodeLabelField.get(node)))
+      .text(node => this.nodeLabelField.get(node))
       .style('font-size', (d) => isNaN(this.labelSizeScale(d[this.labelSizeField])) ? 16 : this.labelSizeScale(d[this.labelSizeField]))
       .attr('dx', 15) // label position encoding is not supported yet
       .attr('dy', 10);

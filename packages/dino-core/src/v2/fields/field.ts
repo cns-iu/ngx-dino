@@ -1,8 +1,8 @@
 import { Seq, List, Map } from 'immutable';
 import { uniqueId } from 'lodash';
 
-import { State, ImmutableValue } from '../../common';
-import { Operator } from '../../operators';
+import { State, ImmutableValue } from '../common';
+import { Operator } from '../operators';
 
 import { BoundField } from './bound-field';
 
@@ -66,6 +66,10 @@ export class Field<T> extends ImmutableValue {
   getBoundField(id: string = Field.defaultSymbol): BoundField<T> {
     return this.mapping.get(id);
   }
+
+
+  // toString
+  // TODO
 
 
   // ImmutableValue implementation

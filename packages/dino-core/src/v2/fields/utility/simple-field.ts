@@ -1,7 +1,7 @@
 import { Seq } from 'immutable';
 
 import { Operator } from '../../operators';
-import { BaseFieldArgs, Field } from '../base';
+import { BaseFieldArgs, Field } from '../field';
 
 
 export interface SimpleFieldArgs<T> extends BaseFieldArgs {

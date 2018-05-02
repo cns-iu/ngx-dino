@@ -47,6 +47,8 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
   @Input() linkColorRange = ['#FFFFFF','#3683BB','#3182BD'];
   @Input() linkOpacityRange = [.5, 1];
 
+  @Input() chargeStrength = -10;
+
   private parentNativeElement: any;
   private svgContainer: d3Selection.Selection<d3Selection.BaseType, any, HTMLElement, undefined>;
   private simulation: any; // TODO typings
@@ -91,10 +93,7 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
     .range(this.labelSizeRange);
     
     this.nodeColorScale = scaleLinear<string>()
-     .domain([0, d3Array.max(this.dataNodes, 
-        (d) => this.nodeColorField.get(d)/2), 
-        d3Array.max(this.dataNodes, 
-        (d) => this.nodeColorField.get(d))])
+     .domain([0,d3Array.max(this.dataNodes, (d) => this.nodeColorField.get(d))])
       .range(this.nodeColorRange);
 
     this.linkSizeScale = scaleLinear()
@@ -128,7 +127,7 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
       .attr('class', 'container');
 
     this.simulation = d3Force.forceSimulation(this.dataNodes)
-      .force('charge', d3Force.forceManyBody().strength(-10))
+      .force('charge', d3Force.forceManyBody().strength(this.chargeStrength))
       .force('link', d3Force.forceLink().distance(75)
         .id(link => link['id'])
         .strength(1))
@@ -174,10 +173,10 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
       .selectAll('text').data(this.dataNodes, node => this.nodeIDField.get(node))
       .enter()
       .append('text')
-      .text(node => this.toTitleCase(this.nodeLabelField.get(node)))
+      .text(node => this.nodeLabelField.get(node))
       .style('font-size', (d) => isNaN(this.labelSizeScale(d[this.labelSizeField])) ? 16 : this.labelSizeScale(d[this.labelSizeField]))
       .attr('dx', 15) // label position encoding is not supported yet
-      .attr('dy', 10)
+      .attr('dy', 10);
 
     this.simulation.nodes(this.dataNodes).on('tick', () => this.ticked());
     this.simulation.force('link').links(this.dataEdges);

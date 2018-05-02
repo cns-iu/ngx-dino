@@ -3,7 +3,7 @@ import { Seq } from 'immutable';
 import { Operator } from '../../operators';
 import { chain } from '../../operators/methods/grouping/chain';
 
-import { FieldArgs, Field } from '../base';
+import { FieldArgs, Field } from '../field';
 
 
 export interface MultiFieldArgs<T, F = any> extends FieldArgs<T, F> {

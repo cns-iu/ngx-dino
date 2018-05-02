@@ -1,7 +1,7 @@
 import { List } from 'immutable';
 
-import { State, ImmutableValue } from '../../common';
-import { BaseCache, Operator } from '../../operators';
+import { State, ImmutableValue } from '../common';
+import { BaseCache, Operator } from '../operators';
 
 // Do NOT use DataType or Field as values! Will cause circular dependency.
 // Allowed to be used as types.
@@ -34,6 +34,10 @@ export class BoundField<T> extends ImmutableValue {
   get getter(): (data: any) => T {
     return this.operator.getter;
   }
+
+
+  // toString
+  // TODO
 
 
   // ImmutableValue implementation

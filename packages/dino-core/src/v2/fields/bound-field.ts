@@ -1,6 +1,9 @@
-import { List } from 'immutable';
+import { Seq, List } from 'immutable';
 
-import { State, ImmutableValue } from '../common';
+import {
+  State, ImmutableValue,
+  toStringHelper
+} from '../common';
 import { BaseCache, Operator } from '../operators';
 
 // Do NOT use DataType or Field as values! Will cause circular dependency.
@@ -37,7 +40,14 @@ export class BoundField<T> extends ImmutableValue {
 
 
   // toString
-  // TODO
+  toString(): string {
+    const keywords = Seq.Keyed<string, any>([
+      ['id', this.id],
+      ['field', this.field]
+    ]);
+
+    return toStringHelper('BoundField', keywords);
+  }
 
 
   // ImmutableValue implementation

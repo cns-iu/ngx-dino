@@ -1,7 +1,10 @@
 import { Seq, List, Map } from 'immutable';
 import { uniqueId } from 'lodash';
 
-import { State, ImmutableValue } from '../common';
+import {
+  State, ImmutableValue,
+  stringCompare, toStringHelper
+} from '../common';
 import { Operator } from '../operators';
 
 import { BoundField } from './bound-field';
@@ -69,7 +72,23 @@ export class Field<T> extends ImmutableValue {
 
 
   // toString
-  // TODO
+  toString(): string {
+    const operators = Seq.Keyed(
+      this.mapping
+        .filter((_value, key) => key !== Field.defaultSymbol)
+        .map((bf) => bf.operator)
+        .entrySeq()
+        .sort(([k1], [k2]) => stringCompare(k1, k2))
+    );
+    const keywords = Seq.Keyed<string, any>([
+      ['id', this.id],
+      ['label', this.label],
+      ['dataType', this.dataType],
+      ['mapping', operators]
+    ]);
+
+    return toStringHelper('Field', keywords);
+  }
 
 
   // ImmutableValue implementation

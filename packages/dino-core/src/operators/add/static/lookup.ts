@@ -6,7 +6,7 @@ import { create } from '../internal/create';
 function staticLookup<In, Out>(
   mapping: MappingArg<In, Out>, defaultValue?: Out
 ): OperatorClass<In, Out> {
-  return create(LookupOperator, mapping, defaultValue);
+  return create<In, Out>(LookupOperator, mapping, defaultValue);
 }
 
 

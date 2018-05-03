@@ -2,7 +2,7 @@ import { Operator as OperatorClass } from '../../operator';
 import {
   TypeConstructor, constructCallback
 } from '../internal/construct-callback';
-
+import './map';
 
 function staticConstruct<In, Out>(
   type: TypeConstructor<Out, In>

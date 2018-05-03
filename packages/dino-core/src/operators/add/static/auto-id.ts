@@ -6,7 +6,7 @@ import { create } from '../internal/create';
 function staticAutoId(
   prefix?: string, start?: number
 ): OperatorClass<any, string> {
-  return create(AutoIdOperator, prefix, start);
+  return create<any, string>(AutoIdOperator, prefix, start);
 }
 
 

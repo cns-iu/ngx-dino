@@ -4,7 +4,7 @@ import { create } from '../internal/create';
 
 
 function staticIdentity<T = any>(): OperatorClass<T, T> {
-  return create(IdentityOperator);
+  return create<T, T>(IdentityOperator);
 }
 
 

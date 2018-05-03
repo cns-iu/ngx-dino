@@ -18,7 +18,7 @@ function staticChain(...ops: OperatorClass<any, any>[]): OperatorClass<any, any>
       return ops[0];
 
     default:
-      return create(ChainOperator, ...ops);
+      return create<any, any>(ChainOperator, ...ops);
   }
 }
 

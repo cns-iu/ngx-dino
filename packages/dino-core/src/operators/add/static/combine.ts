@@ -6,7 +6,7 @@ import { create } from '../internal/create';
 function staticCombine<In = any, Out = any>(
   schema: Schema
 ): OperatorClass<In, Out> {
-  return create(CombineOperator, schema);
+  return create<In, Out>(CombineOperator, schema);
 }
 
 

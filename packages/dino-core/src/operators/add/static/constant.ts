@@ -4,7 +4,7 @@ import { create } from '../internal/create';
 
 
 function staticConstant<T>(value: T): OperatorClass<any, T> {
-  return create(ConstantOperator, value);
+  return create<T, T>(ConstantOperator, value);
 }
 
 

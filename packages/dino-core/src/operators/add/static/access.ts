@@ -6,7 +6,7 @@ import { create } from '../internal/create';
 function staticAccess<In = any, Out = any>(
   path: Path, defaultValue?: Out
 ): OperatorClass<In, Out> {
-  return create(AccessorOperator, path, defaultValue);
+  return create<In, Out>(AccessorOperator, path, defaultValue);
 }
 
 

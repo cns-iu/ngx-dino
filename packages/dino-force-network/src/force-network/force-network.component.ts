@@ -46,6 +46,8 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
   @Input() linkSizeRange = [1, 8];
   @Input() linkColorRange = ['#FFFFFF','#3683BB','#3182BD'];
   @Input() linkOpacityRange = [.5, 1];
+  @Input() minPositionX = 0;
+  @Input() minPositionY = 0;
 
   @Input() chargeStrength = -10;
 
@@ -122,8 +124,9 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
       .select('#forceNetworkContainer');
 
     this.svgContainer = container.append('svg')
-      .attr('width', this.width)
-      .attr('height', this.height)
+      .attr('preserveAspectRatio', 'xMidYMid slice')
+      .attr('viewBox', ''+ this.minPositionX +' '+ this.minPositionY +' ' + (this.width) + ' ' + (this.height))
+      .classed('svg-content-responsive', true)
       .attr('class', 'container');
 
     this.simulation = d3Force.forceSimulation(this.dataNodes)

@@ -1,9 +1,6 @@
 import { Seq, List } from 'immutable';
 
-import {
-  State, ImmutableValue,
-  toStringHelper
-} from '../common';
+import { State, ImmutableValue, toStringHelper } from '../common';
 import { BaseCache, Operator } from '../operators';
 
 // Do NOT use DataType or Field as values! Will cause circular dependency.
@@ -52,6 +49,6 @@ export class BoundField<T> extends ImmutableValue {
 
   // ImmutableValue implementation
   protected getState(): State {
-    return List.of<any>(this.id, this.field, this.operator);
+    return List.of<any>(this.id, this.field);
   }
 }

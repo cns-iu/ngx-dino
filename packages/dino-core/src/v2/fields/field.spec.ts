@@ -5,7 +5,7 @@ import oneOfMatchers from '../test-utility/matchers/one-of';
 
 import { constant } from '../operators/methods/generating/constant';
 
-import { DataType, FieldArgs, Field } from './field';
+import { DataType, Field } from './field';
 import { BoundField } from './bound-field';
 
 
@@ -27,7 +27,7 @@ describe('Field', () => {
 
 
   beforeEach(() => {
-    // Add equality tester
+    // Add equality testers
     jasmine.addCustomEqualityTester(immutableEqualityTester);
 
     // Add matchers
@@ -41,6 +41,7 @@ describe('Field', () => {
     });
   });
 
+
   describe('.id', () => {
     it('is set to the provided value', () => {
       expect(fullField.id).toBe(id);
@@ -51,11 +52,13 @@ describe('Field', () => {
     });
   });
 
+
   describe('.label', () => {
     it('is set to the provided value', () => {
       expect(fullField.label).toBe(label);
     });
   });
+
 
   describe('.dataType', () => {
     it('is set to the provided value', () => {
@@ -66,6 +69,7 @@ describe('Field', () => {
       expect(emptyField.dataType).toBe(DataType.Any);
     });
   });
+
 
   describe('.mapping', () => {
     it('is a Immutable.Map', () => {
@@ -93,6 +97,7 @@ describe('Field', () => {
     });
   });
 
+
   describe('.getBoundFieldIds()', () => {
     beforeEach(() => {
       this.bfids = fullField.getBoundFieldIds().toArray();
@@ -106,6 +111,7 @@ describe('Field', () => {
       expect(this.bfids).not.toContain(Field.defaultSymbol);
     });
   });
+
 
   describe('.getBoundField(id)', () => {
     it('returns a BoundField for a valid id', () => {
@@ -121,8 +127,24 @@ describe('Field', () => {
     });
   });
 
+
   describe('.equals(other)', () => {
-    // TODO
+    const fieldEquiv = new Field({id, label, dataType, mapping});
+    const fieldDiffId = new Field({id: 'another', label, dataType, mapping});
+    const fieldDiffLabel = new Field({id, label: 'abc', dataType, mapping});
+
+
+    it('is true if equal dataType and mapping', () => {
+      expect(fullField).toEqual(fieldEquiv);
+    });
+
+    it('is compared regardless of id', () => {
+      expect(fullField).toEqual(fieldDiffId);
+    });
+
+    it('is compared regardless of label', () => {
+      expect(fullField).toEqual(fieldDiffLabel);
+    });
   });
 });
 });

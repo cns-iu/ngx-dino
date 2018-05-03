@@ -2,8 +2,7 @@ import { Seq, List, Map } from 'immutable';
 import { uniqueId } from 'lodash';
 
 import {
-  State, ImmutableValue,
-  stringCompare, toStringHelper
+  State, ImmutableValue, stringCompare, toStringHelper
 } from '../common';
 import { Operator } from '../operators';
 

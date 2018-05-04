@@ -18,14 +18,15 @@ export class StreamCache<T> {
 
   constructor(
     readonly stream: Observable<Changes<T>>,
-    field: BoundField<DatumId>
+    field: BoundField<DatumId>,
+    strictMode: boolean = false
   ) {
     const observedStream = stream.do({
       next: (changes) => (this.changeCache = this.changeCache.update(changes)),
-      complete: () => (this.changeCache = new ChangeCache(field))
+      complete: () => (this.changeCache = new ChangeCache(field, strictMode))
     });
 
-    this.changeCache = new ChangeCache(field);
+    this.changeCache = new ChangeCache(field, strictMode);
     this.cacheStream = Observable.merge(observedStream, this.emitStream);
   }
 
@@ -33,6 +34,10 @@ export class StreamCache<T> {
   // Forward accesses
   get field(): BoundField<DatumId> {
     return this.changeCache.field;
+  }
+
+  get strictMode(): boolean {
+    return this.changeCache.strictMode;
   }
 
   get map(): Map<DatumId, T> {

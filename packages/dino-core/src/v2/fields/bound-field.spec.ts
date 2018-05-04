@@ -72,26 +72,24 @@ describe('BoundField', () => {
     const data = 1234;
     const cache: any = {};
     const resultData = 'zxc';
-    let spy: jasmine.Spy;
-    let result: any;
 
 
     beforeEach(() => {
-      spy = spyOn(bound.operator, 'get').and.returnValue(resultData);
-      result = bound.get(data, cache);
+      this.spy = spyOn(bound.operator, 'get').and.returnValue(resultData);
+      this.result = bound.get(data, cache);
     });
 
 
     it('forward calls to Operator#get', () => {
-      expect(spy).toHaveBeenCalledTimes(1);
+      expect(this.spy).toHaveBeenCalledTimes(1);
     });
 
     it('forward arguments to Operator#get', () => {
-      expect(spy).toHaveBeenCalledWith(data, cache);
+      expect(this.spy).toHaveBeenCalledWith(data, cache);
     });
 
     it('returns the result from Operator#get', () => {
-      expect(result).toBe(resultData);
+      expect(this.result).toBe(resultData);
     });
   });
 

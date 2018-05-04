@@ -54,6 +54,18 @@ export class Field<T> extends ImmutableValue {
 
     this.mapping = Seq.Keyed<string, Operator<any, T>>(operatorMapping)
       .map((op, id) => new (BoundField as any)(id, this, op)).toMap();
+
+    // Bind the default to a BoundField with an equivalent Operator if possible
+    if (this.mapping.has(Field.defaultSymbol)) {
+      const op = this.mapping.get(Field.defaultSymbol).operator;
+      const equiv = this.mapping.find((bf, key) => {
+        return bf.operator.equals(op) && key !== Field.defaultSymbol;
+      });
+
+      if (equiv !== undefined) {
+        this.mapping = this.mapping.set(Field.defaultSymbol, equiv);
+      }
+    }
   }
 
 

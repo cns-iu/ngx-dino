@@ -31,13 +31,18 @@ export class ScienceMapComponent implements OnInit, OnChanges {
   @Input() margin = { top: 20, right: 15, bottom: 60, left: 60 };
   @Input() width = window.innerWidth - this.margin.left - this.margin.right; // initializing width for map container
   @Input() height = window.innerHeight - this.margin.top - this.margin.bottom; // initializing height for map container
+ 
   @Input() subdisciplineSizeField: BoundField<string>;
   @Input() subdisciplineIDField: BoundField<number|string>;
+ 
   @Input() data: any[];
+ 
   @Input() nodeSizeRange = [2, 18];
   @Input() minPositionX = 0;
   @Input() minPositionY = -20;
+  
   @Input() enableTooltip = false;
+  
   @Output() nodeClicked = new EventEmitter<any>();
 
   private parentNativeElement: any;
@@ -104,7 +109,7 @@ export class ScienceMapComponent implements OnInit, OnChanges {
       .attr('id', 'scienceMapcontainer');
         // .call(this.zoom);
 
-    this.tooltipDiv = d3Selection.select('.tooltip');
+    this.tooltipDiv = container.select('#tooltip');
   }
 
   createNodes() {
@@ -128,9 +133,8 @@ export class ScienceMapComponent implements OnInit, OnChanges {
         + this.translateXScale(this.dataService.subdIdToPosition[this.subdisciplineIDField.get(d)].x)
         + ',' + this.translateYScale(this.dataService.subdIdToPosition[this.subdisciplineIDField.get(d)].y) + ')')
       .on('click', (d) => this.nodeClicked.emit(this.dataForSubdiscipline(<number>this.subdisciplineIDField.get(d))))
-      .on('mouseover', (d) => this.onMouseOver(this.dataForSubdiscipline(<number>this.subdisciplineIDField.get(d))))
+      .on('mouseover', (d) => this.enableTooltip? this.onMouseOver(this.dataForSubdiscipline(<number>this.subdisciplineIDField.get(d))): null)
       .on('mouseout', (d) => this.onMouseOut(this.dataForSubdiscipline(<number>this.subdisciplineIDField.get(d))));
-
 
     this.nodes.exit().remove();
   }
@@ -190,17 +194,15 @@ export class ScienceMapComponent implements OnInit, OnChanges {
   onMouseOver(target: any) {
     const selection = this.svgContainer.selectAll('circle')
       .filter((d: any) => this.subdisciplineIDField.get(d) === target.subd_id);
+    
     selection.transition().attr('r', (d) => 2 * this.nodeSizeScale(this.subdisciplineSizeField.get(d) || 2 * this.defaultNodeSize));
     
-    console.log(this.enableTooltip);
-    if (this.enableTooltip) {
-      this.tooltipDiv.transition().style('opacity', .7)
+    this.tooltipDiv.transition().style('opacity', .7)
         .style('visibility', 'visible');		
-
-      this.tooltipDiv.html(this.dataService.subdIdToName[target.subd_id].subd_name) // TODO generic content needed
+    
+    this.tooltipDiv.html(this.dataService.subdIdToName[target.subd_id].subd_name) // TODO generic content needed
         .style('left', d3Selection.event.x - 50 + 'px')		
-        .style('top',  d3Selection.event.y - 40+ 'px');	 
-    }        					
+        .style('top',  d3Selection.event.y - 40+ 'px');
   }
 
   onMouseOut(target: any) {

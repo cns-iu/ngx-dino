@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { BoundField } from '@ngx-dino/core';
 
 import { ForceNetworkDataService } from '../shared/force-network/force-network-data.service';
@@ -19,6 +19,9 @@ import {
 })
 export class ForceNetworkComponent implements OnInit {
 
+  @Input() height = window.innerHeight;
+  @Input() width = window.innerWidth;
+
   networkGraph: any;
 
   nodeId: BoundField<string>;
@@ -26,6 +29,9 @@ export class ForceNetworkComponent implements OnInit {
   nodeColor: BoundField<number>;
   nodeLabel: BoundField<string>;
   nodeColorRange: [string, string, string] | [string, string];
+
+  visChargeStrength = -40;
+  margin = { top: 0, bottom: 0, left: 0, right: 0 };
 
   edgeSize: BoundField<number>;
 

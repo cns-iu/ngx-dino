@@ -35,3 +35,10 @@ export const edgeSizeField = simpleField<number>({
 
   operator: Operator.access('value')
 });
+
+export const tooltipTextField = simpleField<number>({
+  bfieldId: 'tooltipText',
+  label: 'Tooltip Text',
+
+  operator: Operator.access('group')
+});

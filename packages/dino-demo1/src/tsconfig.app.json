@@ -11,7 +11,9 @@
     "../../dino-*/**/*-spec.ts",
     "../../dino-*/**/*.tpl.ts",
     "../../dino-*/**/index.d.ts",
-    "../node_modules"
+    "../node_modules",
+    "../../../packages/dino-*/node_modules/**/*.ts",
+    "../../../packages/dino-core/src/v2/test-*/**/*.ts"
   ],
   "include": [
     "../../dino-*/**/*.ts"

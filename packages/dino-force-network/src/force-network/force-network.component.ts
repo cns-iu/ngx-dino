@@ -28,42 +28,54 @@ import * as data from '../shared/copi.json'; // TODO streaming data instead of j
 export class ForceNetworkComponent implements OnInit, OnChanges {
   @Input() dataNodes: any[]; // TODO datastream
   @Input() dataEdges: any[];
+  
   @Input() margin = { top: 20, right: 15, bottom: 60, left: 60 };
   @Input() width = window.innerWidth; // initializing width for map container
   @Input() height = window.innerHeight; // initializing height for map container
+  
   @Input() nodeSizeField: BoundField<string>;
   @Input() nodeColorField: BoundField<number>; 
   @Input() nodeIDField: BoundField<string>;
   @Input() nodeLabelField: BoundField<string>; // TODO Field
   @Input() labelSizeField: string = 'total_amount'; // TODO Field
+  
   @Input() linkIDField: string = 'id'; // TODO Field
   @Input() linkSizeField: BoundField<number>;
   @Input() linkColorField: string; // TODO Field
   @Input() linkOpacityField: string; // TODO Field
+  
   @Input() nodeSizeRange = [5, 17];
   @Input() labelSizeRange = [16, 22];
   @Input() nodeColorRange: string[];
+  
   @Input() linkSizeRange = [1, 8];
   @Input() linkColorRange = ['#FFFFFF','#3683BB','#3182BD'];
   @Input() linkOpacityRange = [.5, 1];
+  
   @Input() minPositionX = 0;
-  @Input() minPositionY = 0;
+  @Input() minPositionY = -20;
 
   @Input() chargeStrength = -10;
 
   private parentNativeElement: any;
   private svgContainer: d3Selection.Selection<d3Selection.BaseType, any, HTMLElement, undefined>;
+  
   private simulation: any; // TODO typings
+  
   private nodes: any; // TODO typings
   private links: any; // TODO typings
   private labels: any; // TODO typings
+  
   private nodeSizeScale: any; // TODO typings
   private labelSizeScale: any; // TODO typings
-  private nodeColorScale: any; // TODO typings
   private linkSizeScale: any; // TODO typings
+
+  private nodeColorScale: any; // TODO typings
   private linkColorScale: any; // TODO typings
+  
   private linkOpacityScale: any; // TODO typings
-  private radius = 15
+  
+  private radius = 15 // default radius
   
   constructor(element: ElementRef) {
     this.parentNativeElement = element.nativeElement; // to get native parent element of this component

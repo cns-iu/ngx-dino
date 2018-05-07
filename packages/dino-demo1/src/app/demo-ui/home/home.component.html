@@ -1,14 +1,57 @@
-<mat-tab-group>
-  <mat-tab label="Science Map">
-    <app-science-map></app-science-map>
-  </mat-tab>
-  <mat-tab label="Force Network">
-    <app-force-network></app-force-network>
-  </mat-tab>
-  <mat-tab label="Scatterplot">
-    <app-scatterplot></app-scatterplot>
-  </mat-tab>
-  <mat-tab label="Geomap">
-    <app-geomap></app-geomap>
-  </mat-tab>
-</mat-tab-group>
+<mat-toolbar class="toolbar z-depth-1-half">
+    <mat-icon class="hamburger" (click)="sidenav.toggle()">menu</mat-icon>
+    <span>Dino Demo</span>
+    <img id="cnsLogo" src="assets/cns-logo.png" title="Cyberinfrastructure for Network Science Center">
+</mat-toolbar>
+
+<mat-sidenav-container>
+
+  <mat-sidenav #sidenav
+    class="sidenav"
+    mode="side"
+    [(opened)]="openState">
+      
+      <div [hidden]="tabIndex === 2" class="sidenavLegend">
+        <p class="sidenavTitle">Data Simulator</p>
+        <hr>
+        <p class="sidenavTitle">Legend</p>
+        <hr>
+          <app-science-map-legend *ngIf="tabIndex === 0">
+          </app-science-map-legend>
+          <app-force-network-legend *ngIf="tabIndex === 1">
+          </app-force-network-legend>
+      </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <mat-tab-group #tabs>
+      <mat-tab label="Science Map">
+        <app-science-map *ngIf="openState"
+          [width]="narrowWidth"
+          [height]="height">
+        </app-science-map>
+        <app-science-map *ngIf="!openState"
+          [width]="wideWidth"
+          [height]="height">
+        </app-science-map>
+      </mat-tab>
+      <mat-tab label="Force Network">
+        <app-force-network *ngIf="openState"
+          [width]="narrowWidth"
+          [height]="height">
+        </app-force-network>
+        <app-force-network *ngIf="!openState"
+          [width]="wideWidth"
+          [height]="height">
+        </app-force-network>
+      </mat-tab>
+      <mat-tab label="Scatterplot">
+        <app-scatterplot></app-scatterplot>
+      </mat-tab>
+      <mat-tab label="Geomap">
+        <app-geomap></app-geomap>
+      </mat-tab>
+    </mat-tab-group>
+</mat-sidenav-content>
+
+</mat-sidenav-container>

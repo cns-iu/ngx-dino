@@ -1,2 +1,3 @@
-export { DatumId } from './datum-id';
-export { Changes } from './changes';
+export * from './datums';
+export * from './changes';
+export * from './processors';

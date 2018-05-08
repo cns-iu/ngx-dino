@@ -32,7 +32,7 @@ export class ScienceMapLegendComponent implements OnInit, OnChanges {
  }
 
   ngOnInit() {
-    this.subdisciplineSize = subdisciplineSizeField.getBoundField('size');
+    this.subdisciplineSize = subdisciplineSizeField.getBoundField();
   }
 
   ngOnChanges(changes: SimpleChanges) {

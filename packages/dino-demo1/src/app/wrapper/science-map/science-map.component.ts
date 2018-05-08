@@ -20,11 +20,13 @@ export class ScienceMapComponent implements OnInit {
   @Input() width = window.innerWidth - 30;
   
   subdisciplineSize: BoundField<number>;
-  subdisciplineID: BoundField<number|string>;
+  subdisciplineId: BoundField<number|string>;
+  tooltipText: BoundField<number|string>;
 
   filteredSubdisciplines: any[];
   
   nodeSizeRange = [2, 18]; 
+  
   margin = { top: 0, bottom: 0, left: 0, right: 0 };
   minPositionX = 0; // viewbox min-x position in pixels
   minPositionY = -15; // viewbox min-y position in pixels
@@ -36,7 +38,8 @@ export class ScienceMapComponent implements OnInit {
   ngOnInit() {
     // not user facing
     this.subdisciplineSize = subdisciplineSizeField.getBoundField();
-    this.subdisciplineID = subdisciplineIDField.getBoundField();
+    this.subdisciplineId = subdisciplineIDField.getBoundField();
+    this.tooltipText = tooltipTextField.getBoundField();
 
     this.filteredSubdisciplines = this.dataService.filteredSubdisciplines.data;
   }

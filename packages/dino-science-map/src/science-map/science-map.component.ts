@@ -33,7 +33,7 @@ export class ScienceMapComponent implements OnInit, OnChanges {
   @Input() height = window.innerHeight - this.margin.top - this.margin.bottom; // initializing height for map container
  
   @Input() subdisciplineSizeField: BoundField<string>;
-  @Input() subdisciplineIDField: BoundField<number|string>;
+  @Input() subdisciplineIdField: BoundField<number|string>;
  
   @Input() data: any[];
  
@@ -42,22 +42,28 @@ export class ScienceMapComponent implements OnInit, OnChanges {
   @Input() minPositionY = -20;
   
   @Input() enableTooltip = false;
+  @Input() tooltipTextField: BoundField<number|string>;
   
   @Output() nodeClicked = new EventEmitter<any>();
 
   private parentNativeElement: any;
   private svgContainer: d3Selection.Selection<d3Selection.BaseType, any, HTMLElement, undefined>;
+  
   private nodes: any;
   private defaultNodeSize = 4;
   private labels: any;
+  
   private links: any;
+  
   private translateXScale: any;
   private translateYScale: any;
   private nodeSizeScale: any;
+  
   private subdIdToPosition: any;
   private subdIdToDisc: any;
   private discIdToColor: any;
   private subdIdToName: any;
+  
   private tooltipDiv: any;
   // private zoom = d3Zoom.zoom().scaleExtent([1, 10]).on('zoom', this.zoomed);
 
@@ -114,34 +120,34 @@ export class ScienceMapComponent implements OnInit, OnChanges {
 
   createNodes() {
     this.nodes = this.svgContainer.selectAll('.underlyingNodes')
-      .data<any>(this.data, (d) => <any>this.subdisciplineIDField.get(d));
+      .data<any>(this.data, (d) => <any>this.subdisciplineIdField.get(d));
 
     this.nodes.selectAll('circle')
       .transition().attr('r', (d) => this.nodeSizeScale(this.subdisciplineSizeField.get(d)));
 
     this.nodes.enter().append('g')
-      .attr('class', (d) => 'node-g subd_id' + this.subdisciplineIDField.get(d))
+      .attr('class', (d) => 'node-g subd_id' + this.subdisciplineIdField.get(d))
       .append('circle')
       .attr('r', (d) => this.nodeSizeScale(this.subdisciplineSizeField.get(d)) || this.defaultNodeSize)
-      .attr('class', (d) => 'node subd_id' + this.subdisciplineIDField.get(d))
+      .attr('class', (d) => 'node subd_id' + this.subdisciplineIdField.get(d))
       .attr('fill', (d) => this.dataService.underlyingScimapData.disciplines.filter(
-        (d2) => d2.disc_id === this.dataService.subdIdToDisc[this.subdisciplineIDField.get(d)].disc_id)[0].color)
+        (d2) => d2.disc_id === this.dataService.subdIdToDisc[this.subdisciplineIdField.get(d)].disc_id)[0].color)
       .attr('stroke', 'black')
-      .attr('x', (d) => this.translateXScale(this.dataService.subdIdToPosition[this.subdisciplineIDField.get(d)].x))
-      .attr('y', (d) => this.translateYScale(this.dataService.subdIdToPosition[this.subdisciplineIDField.get(d)].y))
+      .attr('x', (d) => this.translateXScale(this.dataService.subdIdToPosition[this.subdisciplineIdField.get(d)].x))
+      .attr('y', (d) => this.translateYScale(this.dataService.subdIdToPosition[this.subdisciplineIdField.get(d)].y))
       .attr('transform', (d) => 'translate(' 
-        + this.translateXScale(this.dataService.subdIdToPosition[this.subdisciplineIDField.get(d)].x)
-        + ',' + this.translateYScale(this.dataService.subdIdToPosition[this.subdisciplineIDField.get(d)].y) + ')')
-      .on('click', (d) => this.nodeClicked.emit(this.dataForSubdiscipline(<number>this.subdisciplineIDField.get(d))))
-      .on('mouseover', (d) => this.enableTooltip? this.onMouseOver(this.dataForSubdiscipline(<number>this.subdisciplineIDField.get(d))): null)
-      .on('mouseout', (d) => this.onMouseOut(this.dataForSubdiscipline(<number>this.subdisciplineIDField.get(d))));
+        + this.translateXScale(this.dataService.subdIdToPosition[this.subdisciplineIdField.get(d)].x)
+        + ',' + this.translateYScale(this.dataService.subdIdToPosition[this.subdisciplineIdField.get(d)].y) + ')')
+      .on('click', (d) => this.nodeClicked.emit(this.dataForSubdiscipline(<number>this.subdisciplineIdField.get(d))))
+      .on('mouseover', (d) => this.enableTooltip? this.onMouseOver(this.dataForSubdiscipline(<number>this.subdisciplineIdField.get(d))): null)
+      .on('mouseout', (d) => this.onMouseOut(this.dataForSubdiscipline(<number>this.subdisciplineIdField.get(d))));
 
     this.nodes.exit().remove();
   }
 
   createLabels(strokeColor: string, fontSize: number) {
-    const numUnclassified = this.data.filter((entry) => this.subdisciplineIDField.get(entry) == -1);
-    const numMultidisciplinary = this.data.filter((entry) => this.subdisciplineIDField.get(entry) == -2);
+    const numUnclassified = this.data.filter((entry) => this.subdisciplineIdField.get(entry) == -1);
+    const numMultidisciplinary = this.data.filter((entry) => this.subdisciplineIdField.get(entry) == -2);
         
     this.svgContainer.selectAll('.underlyingLabels')
       .append('g')
@@ -192,22 +198,28 @@ export class ScienceMapComponent implements OnInit, OnChanges {
   }
 
   onMouseOver(target: any) {
+    let tooltipText = '';
     const selection = this.svgContainer.selectAll('circle')
-      .filter((d: any) => this.subdisciplineIDField.get(d) === target.subd_id);
+      .filter((d: any) => {
+        if (this.subdisciplineIdField.get(d) === target.subd_id) {
+          tooltipText = this.tooltipTextField.get(d).toString();
+          return true;
+        }
+      });
     
     selection.transition().attr('r', (d) => 2 * this.nodeSizeScale(this.subdisciplineSizeField.get(d) || 2 * this.defaultNodeSize));
     
     this.tooltipDiv.transition().style('opacity', .7)
         .style('visibility', 'visible');		
     
-    this.tooltipDiv.html(this.dataService.subdIdToName[target.subd_id].subd_name) // TODO generic content needed
+    this.tooltipDiv.html(this.dataService.subdIdToName[tooltipText].subd_name) // TODO generic content needed
         .style('left', d3Selection.event.x - 50 + 'px')		
         .style('top',  d3Selection.event.y - 40+ 'px');
   }
 
   onMouseOut(target: any) {
     const selection = this.svgContainer.selectAll('circle')
-      .filter((d: any) => this.subdisciplineIDField.get(d) === target.subd_id);
+      .filter((d: any) => this.subdisciplineIdField.get(d) === target.subd_id);
     selection.transition().attr('r', (d) => this.nodeSizeScale(this.subdisciplineSizeField.get(d)) || this.defaultNodeSize);
 
     this.tooltipDiv.style('opacity', 0)

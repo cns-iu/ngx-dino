@@ -16,7 +16,7 @@ export const subdisciplineIDField = simpleField<number|string>({
 });
 
 export const tooltipTextField = simpleField<number|string>({
-  bfieldId: 'id',
+  bfieldId: 'tooltip',
   label: 'Subdiscipline Id',
 
   operator: Operator.access('subd_id')

@@ -43,6 +43,9 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
   @Input() linkSizeField: BoundField<number>;
   @Input() linkColorField: string; // TODO Field
   @Input() linkOpacityField: string; // TODO Field
+
+  @Input() tooltipTextField: BoundField<number|string>;
+  @Input() enableTooltip = false;
   
   @Input() nodeSizeRange = [5, 17];
   @Input() labelSizeRange = [16, 22];
@@ -76,6 +79,8 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
   private linkOpacityScale: any; // TODO typings
   
   private radius = 15 // default radius
+
+  private tooltipDiv: any;
   
   constructor(element: ElementRef) {
     this.parentNativeElement = element.nativeElement; // to get native parent element of this component
@@ -137,7 +142,7 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
 
     this.svgContainer = container.append('svg')
       .attr('preserveAspectRatio', 'xMidYMid slice')
-      .attr('viewBox', ''+ this.minPositionX +' '+ this.minPositionY +' ' + (this.width) + ' ' + (this.height))
+      .attr('viewBox', '' + this.minPositionX + ' ' + this.minPositionY + ' ' + (this.width) + ' ' + (this.height))
       .classed('svg-content-responsive', true)
       .attr('class', 'container');
 
@@ -147,9 +152,12 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
         .id(link => link['id'])
         .strength(1))
       .force('center', d3Force.forceCenter(this.width/2.2, this.height/2))
+    
     this.simulation.velocityDecay(0.4);  
     this.simulation.alpha(0.9);
     this.simulation.restart();
+
+    this.tooltipDiv = container.select('#tooltip');
     }
 
   plotForceNetwork() {
@@ -214,7 +222,6 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
   dragstarted(d) {
     if (!d3Selection.event.active) {
       this.simulation.alphaTarget(0.3)
-      .force('charge', d3Force.forceManyBody().strength(-5))
       .restart();
     }
     d.fx = d.x;
@@ -241,8 +248,14 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
   }
 
   onMouseOver(targetID: any) {
+    let tooltipText = '';
     const selection = this.svgContainer.selectAll('circle')
-      .filter((d: any) => this.nodeIDField.get(d) === targetID);
+      .filter((d: any) => {
+        if (this.nodeIDField.get(d) === targetID) {
+          tooltipText = this.tooltipTextField.get(d).toString();
+          return true;
+        }
+      });
     selection.transition().attr('r', (d) => 2 * this.nodeSizeScale(this.nodeSizeField.get(d)));
 
     const textSelection = this.svgContainer.selectAll('text')
@@ -250,6 +263,15 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
     textSelection.transition().style('font-size', (d) => isNaN(this.labelSizeScale(d[this.labelSizeField])) ? '32px' : 2 * this.labelSizeScale(d[this.labelSizeField]))
     .attr('dx', 30)
     .attr('dy', 20);
+
+    if(this.enableTooltip) {
+      this.tooltipDiv.transition().style('opacity', .7)
+      .style('visibility', 'visible');		
+
+      this.tooltipDiv.html(tooltipText) // TODO generic content needed
+      .style('left', d3Selection.event.x - 50 + 'px')		
+      .style('top',  d3Selection.event.y - 40+ 'px');
+    }
   }
 
   onMouseOut(targetID: any) {
@@ -262,5 +284,10 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
     textSelection.transition().style('font-size', (d) => isNaN(this.labelSizeScale(d[this.labelSizeField])) ? '16px' : this.labelSizeScale(d[this.labelSizeField]))
     .attr('dx', 15)
     .attr('dy', 10);
+    
+    if(this.enableTooltip) {
+      this.tooltipDiv.style('opacity', 0)
+      .style('visibility', 'hidden');
+    }
   }
 }

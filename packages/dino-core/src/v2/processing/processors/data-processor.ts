@@ -134,7 +134,7 @@ export class DataProcessor<R, T extends Datum<R>> {
   private insertAll(
     items: Collection.Indexed<Datum<R>>
   ): void {
-    const changes = new ChangeSet(items);
+    const changes = this.processChanges(new ChangeSet(items));
     setTimeout(() => this.emitStream.next(changes), 0);
   }
 }

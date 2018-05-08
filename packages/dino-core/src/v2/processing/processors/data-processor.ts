@@ -13,6 +13,7 @@ import { DatumProcessor } from './datum-processor';
 
 
 export interface DataProcessorConfig {
+  strictMode?: boolean;
   create?: <R, T extends Datum<R>>(id: DatumId, rawData: R) => T;
 }
 
@@ -37,6 +38,7 @@ export class DataProcessor<R, T extends Datum<R>> {
   ) {
     this.datumProcessor = new DatumProcessor(extracted, computed);
     this.config = defaults({}, config, {
+      strictMode: false,
       create: defaultCreate
     });
 
@@ -44,7 +46,10 @@ export class DataProcessor<R, T extends Datum<R>> {
     const processedStream = rawCache.asObservable().map(boundProcessChanges);
     this.processedCache = new CachedChangeStream(Observable.merge(
       processedStream, this.emitStream
-    ));
+    ), this.config.strictMode);
+
+    const items = rawCache.cache.items.valueSeq();
+    this.insertAll(items);
   }
 
 
@@ -58,11 +63,11 @@ export class DataProcessor<R, T extends Datum<R>> {
     const newComputed = Map<string, BoundField<any>>().merge(
       this.datumProcessor.computed, computed
     );
-    const changes = new ChangeSet<R>(this.rawCache.cache.items.valueSeq());
+    const items = this.rawCache.cache.items.valueSeq();
 
     this.datumProcessor = new DatumProcessor(newExtracted, newComputed);
     this.processedCache.clear();
-    this.emitStream.next(changes);
+    this.insertAll(items);
 
     return this;
   }
@@ -122,5 +127,14 @@ export class DataProcessor<R, T extends Datum<R>> {
     const datum = this.config.create<R, T>(id, rawData);
 
     return this.datumProcessor.process(datum);
+  }
+
+
+  // Other utility
+  private insertAll(
+    items: Collection.Indexed<Datum<R>>
+  ): void {
+    const changes = new ChangeSet(items);
+    setTimeout(() => this.emitStream.next(changes), 0);
   }
 }

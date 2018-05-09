@@ -19,8 +19,10 @@ export function numberCompare(n1: number, n2: number): number {
     const n2pos = +((1 / n2) === Infinity);
     return n1pos - n2pos;
   } else if (diff !== diff) {
-    // NaN
-    return 0;
+    // NaNs
+    const n1Nan = n1 !== n1;
+    const n2Nan = n2 !== n2;
+    return n1Nan ? +(!n2Nan) : -1;
   } else {
     return diff;
   }

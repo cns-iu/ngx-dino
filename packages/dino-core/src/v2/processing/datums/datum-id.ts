@@ -1,6 +1,6 @@
 import { isNumber, isString } from 'lodash';
 
-import { BoundField } from '../fields';
+import { BoundField } from '../../fields';
 
 
 // Id type

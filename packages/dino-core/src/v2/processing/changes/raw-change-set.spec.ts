@@ -67,8 +67,6 @@ describe('RawChangeSet', () => {
       expect(this.set2.replace).toEqual([]);
     });
   });
-
-  // TODO
 });
 });
 });

@@ -13,3 +13,4 @@ export { StreamCache } from './shared/stream-cache';
 export { Operator } from './v2/operators';
 export { FieldV2, BoundField, simpleField, multiField, prePostMultiField };
 export { BoundFieldAdapter, adaptBoundField } from './v2/field-adapter';
+export * from './v2/processing';

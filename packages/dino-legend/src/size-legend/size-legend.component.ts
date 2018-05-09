@@ -16,7 +16,7 @@ import  { Observable } from 'rxjs/Observable';
 import { BoundField } from '@ngx-dino/core';
 
 @Component({
-  selector: 'science-map-size-legend',
+  selector: 'size-legend',
   templateUrl: './size-legend.component.html',
   styleUrls: ['./size-legend.component.sass'],
   providers: []

@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subscription } from 'rxjs/Subscription';
 
-import { Changes, IField, FieldProcessor } from '@ngx-dino/core';
+import { Changes, FieldProcessor, BoundField } from '@ngx-dino/core';
 import { Point } from './point';
 
 @Injectable()
@@ -16,33 +16,33 @@ export class ScatterplotDataService {
 
   constructor() { }
 
-  fetchData(
-    stream: Observable<Changes<any>>,
-    pointIDField: IField<string>,
-    xField: IField<number | string>,
-    yField: IField<number | string>,
-    colorField: IField<string>,
-    shapeField: IField<string>,
-    sizeField: IField<string>,
-    strokeColorField: IField<string>): this {
-    this.pointProcessor = new FieldProcessor<Point>(stream, {
-      id: pointIDField,
-      x: xField,
-      y: yField,
-      color: colorField,
-      shape: shapeField,
-      size: sizeField,
-      stroke: strokeColorField
-    });
+  // fetchData(
+  //   stream: Observable<Changes<any>>,
+  //   pointIDField: BoundField<string>,
+  //   xField: BoundField<number | string>,
+  //   yField: BoundField<number | string>,
+  //   colorField: BoundField<string>,
+  //   shapeField: BoundField<string>,
+  //   sizeField: BoundField<string>,
+  //   strokeColorField: BoundField<string>): this {
+  //   this.pointProcessor = new FieldProcessor<Point>(stream, {
+  //     id: pointIDField,
+  //     x: xField,
+  //     y: yField,
+  //     color: colorField,
+  //     shape: shapeField,
+  //     size: sizeField,
+  //     stroke: strokeColorField
+  //   });
 
-    if (this.streamSubscription) {
-      this.streamSubscription.unsubscribe();
-    }
+  //   if (this.streamSubscription) {
+  //     this.streamSubscription.unsubscribe();
+  //   }
 
-    this.streamSubscription = this.pointProcessor.asObservable().subscribe(
-      (change) => this.pointsChange.next(change)
-    );
+  //   this.streamSubscription = this.pointProcessor.asObservable().subscribe(
+  //     (change) => this.pointsChange.next(change)
+  //   );
 
-    return this;
-  }
+  //   return this;
+  // }
 }

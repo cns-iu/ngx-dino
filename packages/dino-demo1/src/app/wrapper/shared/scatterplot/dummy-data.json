@@ -1,0 +1,137 @@
+[
+  {
+    "id": "undefinedperson496",
+    "x": 2.305,
+    "y": 3,
+    "color": "purple",
+    "shape": "circle",
+    "size": 143,
+    "stroke": "purple"
+  },
+  {
+    "id": "undefinedperson42",
+    "x": 2.99,
+    "y": 2,
+    "color": "pink",
+    "shape": "circle",
+    "size": 77,
+    "stroke": "pink"
+  },
+  {
+    "id": "undefinedperson30",
+    "x": 2.246,
+    "y": 2,
+    "color": "#696969",
+    "shape": "circle",
+    "size": 66,
+    "stroke": "#696969"
+  },
+  {
+    "id": "undefinedperson411",
+    "x": 2.231,
+    "y": 5,
+    "color": "pink",
+    "shape": "circle",
+    "size": 121,
+    "stroke": "pink"
+  },
+  {
+    "id": "undefinedperson370",
+    "x": 2.217,
+    "y": 5,
+    "color": "pink",
+    "shape": "circle",
+    "size": 100,
+    "stroke": "pink"
+  },
+  {
+    "id": "undefinedperson331",
+    "x": 2.04,
+    "y": 2.5,
+    "color": "blue",
+    "shape": "circle",
+    "size": 110,
+    "stroke": "blue"
+  },
+  {
+    "id": "undefinedperson451",
+    "x": 1.939,
+    "y": 4,
+    "color": "pink",
+    "shape": "circle",
+    "size": 88,
+    "stroke": "pink"
+  },
+  {
+    "id": "undefinedperson428",
+    "x": 3.107,
+    "y": 4,
+    "color": "blue",
+    "shape": "circle",
+    "size": 77,
+    "stroke": "blue"
+  },
+  {
+    "id": "undefinedperson484",
+    "x": 2.514,
+    "y": 5,
+    "color": "purple",
+    "shape": "circle",
+    "size": 121,
+    "stroke": "purple"
+  },
+  {
+    "id": "undefinedperson197",
+    "x": 1.889,
+    "y": 3.5,
+    "color": "pink",
+    "shape": "circle",
+    "size": 121,
+    "stroke": "pink"
+  },
+  {
+    "id": "undefinedperson430",
+    "x": 1.907,
+    "y": 3.5,
+    "color": "blue",
+    "shape": "circle",
+    "size": 100,
+    "stroke": "blue"
+  },
+  {
+    "id": "undefinedperson294",
+    "x": 3.742,
+    "y": 2.5,
+    "color": "silver",
+    "shape": "triangle-down",
+    "size": 200,
+    "stroke": "black"
+  },
+  {
+    "id": "undefinedperson375",
+    "x": 1.062,
+    "y": 3.5,
+    "color": "silver",
+    "shape": "diamond",
+    "size": 200,
+    "stroke": "black"
+  },
+  {
+    "id": "undefinedperson385",
+    "x": 2.213,
+    "y": 2,
+    "color": "navy",
+    "shape": "circle",
+    "size": 200,
+    "stroke": "black"
+  },
+  {
+    "id": "undefinedperson82",
+    "x": 2.134,
+    "y": 3,
+    "color": "gray",
+    "shape": "diamond",
+    "size": 200,
+    "stroke": "black"
+  }
+]

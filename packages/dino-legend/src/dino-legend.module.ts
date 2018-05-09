@@ -5,8 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
 
-import { ScienceMapLegendComponent } from './science-map-legend/science-map-legend.component';
-import { ColorLegendComponent } from './color-legend/color-legend.component';
+import { ScienceMapColorLegendComponent } from './science-map-color-legend/science-map-color-legend.component';
 import { SizeLegendComponent } from './size-legend/size-legend.component';
 
 @NgModule({
@@ -18,14 +17,12 @@ import { SizeLegendComponent } from './size-legend/size-legend.component';
     MatGridListModule
   ],
   exports: [
-    ScienceMapLegendComponent,
-    ColorLegendComponent,
+    ScienceMapColorLegendComponent,
     SizeLegendComponent
   ],
   declarations: [
-    ScienceMapLegendComponent, 
-    ColorLegendComponent, 
+    ScienceMapColorLegendComponent, 
     SizeLegendComponent
   ]
 })
-export class DinoScienceMapLegendModule { }
+export class DinoLegendModule { }

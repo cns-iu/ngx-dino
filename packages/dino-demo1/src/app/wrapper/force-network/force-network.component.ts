@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { BoundField } from '@ngx-dino/core';
 
-import { ForceNetworkDataService } from '../shared/force-network/force-network-data.service';
 import {
   nodeIdField,
   nodeSizeField,
@@ -12,6 +11,7 @@ import {
 
   tooltipTextField
 } from '../shared/force-network/force-network-fields';
+import { ForceNetworkDataService } from '../shared/force-network/force-network-data.service';
 
 @Component({
   selector: 'app-force-network',

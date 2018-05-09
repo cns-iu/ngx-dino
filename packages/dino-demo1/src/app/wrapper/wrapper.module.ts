@@ -6,7 +6,7 @@ import { DinoForceNetworkModule } from '@ngx-dino/force-network';
 import { DinoGeomapModule } from '@ngx-dino/geomap';
 import { DinoScatterplotModule } from '@ngx-dino/scatterplot';
 
-import { DinoScienceMapLegendModule } from '@ngx-dino/science-map-legend';
+import { DinoLegendModule } from '@ngx-dino/legend';
 
 import { SharedModule } from '../shared';
 
@@ -26,7 +26,7 @@ import { ForceNetworkLegendComponent } from './force-network-legend/force-networ
     DinoGeomapModule,
     DinoScatterplotModule,
 
-    DinoScienceMapLegendModule,
+    DinoLegendModule,
     
     SharedModule
   ],

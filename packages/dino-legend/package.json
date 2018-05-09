@@ -1,6 +1,6 @@
 {
   "$schema": "../../node_modules/ng-packagr/package.schema.json",
-  "name": "@ngx-dino/science-map-legend",
+  "name": "@ngx-dino/legend",
   "version": "0.0.0",
   "license": "MIT",
   "main": "dist/index.js",

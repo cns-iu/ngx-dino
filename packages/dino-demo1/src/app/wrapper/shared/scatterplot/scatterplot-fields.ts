@@ -56,5 +56,5 @@ export const tooltipTextField = simpleField<number>({
   bfieldId: 'tooltipText',
   label: 'Tooltip Text',
 
-  operator: Operator.access('idSymbol')
+  operator: Operator.access('id')
 });

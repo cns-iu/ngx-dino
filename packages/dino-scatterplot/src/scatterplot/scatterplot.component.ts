@@ -208,24 +208,24 @@ export class ScatterplotComponent implements OnInit, OnChanges {
       .attr('d', d3Shape.symbol()
         .size((d) => <number>2 * d.size)
         .type((d) => this.selectShape(d)))
-      .attr('stroke', (d) => this.strokeColorField.get(d))
+      .attr('stroke', (d) => d.stroke)
       .attr('stroke-width', '2px')
       .attr('transform', (d) => this.shapeTransform(d))
       .transition().duration(1000)
-      .attr('fill', (d) => this.colorField.get(d)).attr('r', 8);
+      .attr('fill', (d) => d.color).attr('r', 8);
 
     plots.enter().append('path')
       .data(data)
       .attr('class', 'plots')
       .attr('id', (d) => d[idSymbol])
       .attr('d', d3Shape.symbol()
-        .size((d) => <number>2 * <number>this.sizeField.get(d))
+        .size((d) => <number>2 * d.size)
         .type((d) => this.selectShape(d)))
       .attr('transform', (d) => this.shapeTransform(d))
       .attr('fill', 'red')
       .attr('stroke', (d) => d.stroke)
       .attr('stroke-width', '2px')
-      .transition().duration(1000).attr('fill', (d) => this.colorField.get(d))
+      .transition().duration(1000).attr('fill', (d) => d.color)
       .attr('r', 8);
 
     this.svgContainer.selectAll('.plots')
@@ -244,17 +244,17 @@ export class ScatterplotComponent implements OnInit, OnChanges {
         .data(data, (d: Point) => d.id);
 
       labels.transition().duration(500)
-        .attr('x', (d) => this.xScale(this.xField.get(d)) + 12)
-        .attr('y', (d) => this.yScale(this.yField.get(d)) + 14)
-        .text((d) => '(' + this.shapeField.get(d) + ')')
+        .attr('x', (d) => this.xScale(d.x) + 12)
+        .attr('y', (d) => this.yScale(d.y) + 14)
+        .text((d) => '(' + d.shape + ')')
         .attr('font-size', '8px');
 
       labels.enter().append('text')
         .data(data)
         .attr('class', 'label')
-        .attr('x', (d) => this.xScale(this.xField.get(d)) + 12)
-        .attr('y', (d) => this.yScale(this.yField.get(d)) + 14)
-        .text((d) => '(' + this.shapeField.get(d) + ')')
+        .attr('x', (d) => this.xScale(d.x) + 12)
+        .attr('y', (d) => this.yScale(d.y) + 14)
+        .text((d) => '(' + d.shape + ')')
         .attr('font-size', '8px');
 
       labels.exit().remove();
@@ -347,7 +347,7 @@ export class ScatterplotComponent implements OnInit, OnChanges {
       });
     
     selection.transition().attr('d', d3Shape.symbol()
-    .size((d) => <number>4 * <number>this.sizeField.get(d))
+    .size((d) => <number>4 * <number>d.size)
     .type((d) => this.selectShape(d)))
     
     if(this.enableTooltip) {
@@ -365,7 +365,7 @@ export class ScatterplotComponent implements OnInit, OnChanges {
     .filter((d: any) => d[idSymbol] === targetId);
     
     selection.transition().attr('d', d3Shape.symbol()
-    .size((d) => <number>2 * <number>this.sizeField.get(d))
+    .size((d) => <number>2 * <number>d.size)
     .type((d) => this.selectShape(d)))
 
     if(this.enableTooltip) {

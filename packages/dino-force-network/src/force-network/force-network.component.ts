@@ -268,7 +268,7 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
       this.tooltipDiv.transition().style('opacity', .7)
       .style('visibility', 'visible');		
 
-      this.tooltipDiv.html(tooltipText) // TODO generic content needed
+      this.tooltipDiv.html(tooltipText)
       .style('left', d3Selection.event.x - 50 + 'px')		
       .style('top',  d3Selection.event.y - 40+ 'px');
     }

@@ -3,7 +3,7 @@ import '@ngx-dino/core/src/v2/operators/add/common';
 
 // not user facing
 export const pointIdField = simpleField<string>({
-  bfieldId: 'race-id',
+  bfieldId: 'id',
   label: 'Race ID',
 
   operator: Operator.access('id')
@@ -50,4 +50,11 @@ export const strokeField = simpleField<string>({
   label: 'Stroke',
 
   operator: Operator.access('stroke')
+});
+
+export const tooltipTextField = simpleField<number>({
+  bfieldId: 'tooltipText',
+  label: 'Tooltip Text',
+
+  operator: Operator.access('idSymbol')
 });

@@ -21,7 +21,12 @@ import {
 } from 'd3-scale';
 import * as d3Shape from 'd3-shape';
 
-import { Changes, StreamCache, BoundField } from '@ngx-dino/core';
+import {
+  BoundField,
+  RawChangeSet,
+  Datum,
+  idSymbol
+} from '@ngx-dino/core';
 import { ScatterplotDataService } from '../shared/scatterplot-data.service';
 import { Point } from '../shared/point';
 
@@ -40,8 +45,10 @@ export class ScatterplotComponent implements OnInit, OnChanges {
   @Input() shapeField: BoundField<string>;
   @Input() sizeField: BoundField<number | string>;
 
-  // @Input() dataStream: Observable<Changes<any>>; // TODO
-  @Input() dataStream: any[];
+  @Input() tooltipTextField: BoundField<number | string>;
+  @Input() enableTooltip = false;
+
+  @Input() dataStream: Observable<RawChangeSet<any>>;
 
   @Input() margin = { top: 20, right: 15, bottom: 60, left: 60 };
 
@@ -52,7 +59,6 @@ export class ScatterplotComponent implements OnInit, OnChanges {
   // This is the better way, but is inconsistent with geomap
   // @Input() svgWidth = window.innerWidth - this.margin.left - this.margin.right - 300; // initializing width for map container
   // @Input() svgHeight: number = window.innerHeight - this.margin.top - this.margin.bottom - 200; // initializing height for map container
-  private streamCache: StreamCache<any>;
   private streamSubscription: Subscription;
   
   private parentNativeElement: any; // a native Element to access this component's selector for drawing the map
@@ -72,64 +78,54 @@ export class ScatterplotComponent implements OnInit, OnChanges {
   
   data: Point[] = [];
 
+  tooltipDiv: any;
+
   constructor(element: ElementRef, public dataService: ScatterplotDataService) {
     this.parentNativeElement = element.nativeElement; // to get native parent element of this component
   }
 
   ngOnInit() {
-    // this.setScales([]);
-    // this.initVisualization();
-    // this.updateAxisLabels();
+    this.setScales([]);
+    this.initVisualization();
+    this.updateAxisLabels();
   
-    // this.dataService.points.subscribe((data) => {
-    //   this.data = this.data.filter((e: Point) => !data.remove
-    //     .some((obj: Point) => obj.id === e.id)).concat(data.add);
-
-    //   data.update.forEach((el) => {
-    //     const index = this.data.findIndex((e) => e.id === el[1].id);
-    //     this.data[index] = Object.assign(this.data[index] || {}, <Point>el[1]);
-    //   });
-
-    //   // this.setScales(this.data);
-    //   // this.drawPlots(this.data);
-    //   // this.drawText(this.data);
-    // });
+    this.dataService.points.subscribe((data) => {
+      this.data = this.data.filter((e: Point) => !data.remove
+        .some((obj: Datum<Point>) => obj[idSymbol] === e.id)).concat(data.insert.toArray() as any);
+     
+      data.update.forEach((el) => {
+        const index = this.data.findIndex((e) => e.id === el[1].id);
+        this.data[index] = Object.assign(this.data[index] || {}, <Point>el[1]);
+      });
+      
+      this.setScales(this.data);
+      this.drawPlots(this.data);
+      this.drawText(this.data);
+    });
 
   }
 
-  // ngOnChanges(changes: SimpleChanges) {
-  //     if ('dataStream' in changes && this.dataStream) {
-  //       this.data = [];
-  //       this.streamCache = new StreamCache<any>(this.pointIdField, this.dataStream); // TODO
-  //       this.updateStreamProcessor(false); // TODO
-  //     } else if (Object.keys(changes).filter((k) => k.endsWith('Field'))) {
-  //       this.updateStreamProcessor(); // TODO
-  //     }
-  // }
-
-  // TODO
-  // updateStreamProcessor(update = true) {
-  //   if (this.streamCache && this.xField && this.yField) {
-  //     this.dataService.fetchData(
-  //       this.streamCache.asObservable(), this.pointIdField,
-  //       this.xField, this.yField,
-  //       this.colorField, this.shapeField,
-  //       this.sizeField, this.strokeColorField
-  //     );
-  //   }
-  //   if (this.streamCache && update) {
-  //     this.streamCache.sendUpdate();
-  //   }
-  // }
-
-  // temporary for static data
   ngOnChanges(changes: SimpleChanges) {
-    if ('dataStream' in changes) {
-      this.setScales(this.dataStream);
-      this.initVisualization();
-      this.updateAxisLabels();
-      this.drawPlots(this.dataStream);
-      this.drawText(this.dataStream);
+      if ('dataStream' in changes && this.dataStream) {
+        this.data = [];
+        this.updateStreamProcessor(false);
+      } else if (Object.keys(changes).filter((k) => k.endsWith('Field'))) {
+        this.updateStreamProcessor();
+        // updateField(....)
+      }
+  }
+
+  updateStreamProcessor(update = true) {
+    if (this.xField && this.yField && this.dataService.pointProcessor) {
+      this.dataService.updateData();
+    }
+    if (!update) {
+      this.dataService.fetchData(
+        this.dataStream, this.pointIdField,
+        this.xField, this.yField,
+        this.colorField, this.shapeField,
+        this.sizeField, this.strokeColorField
+      );
     }
   }
 
@@ -192,6 +188,9 @@ export class ScatterplotComponent implements OnInit, OnChanges {
       .call(this.yAxis);
 
     this.mainG = this.containerMain.append('g');
+
+    this.tooltipDiv = d3Selection.select(this.parentNativeElement)
+      .select('#plotContainer').select('#tooltip');
   }
 
   /********* This function draws points on the scatterplot ********/
@@ -201,9 +200,9 @@ export class ScatterplotComponent implements OnInit, OnChanges {
 
     this.xAxisGroup.transition().call(this.xAxis);  // Update X-Axis
     this.yAxisGroup.transition().call(this.yAxis);  // Update Y-Axis
-
+    
     const plots = this.mainG.selectAll('.plots')
-      .data(data, (d: Point) => d.id);
+      .data(data, (d: Point) => d[idSymbol]);
 
     plots.transition().duration(500)
       .attr('d', d3Shape.symbol()
@@ -218,6 +217,7 @@ export class ScatterplotComponent implements OnInit, OnChanges {
     plots.enter().append('path')
       .data(data)
       .attr('class', 'plots')
+      .attr('id', (d) => d[idSymbol])
       .attr('d', d3Shape.symbol()
         .size((d) => <number>2 * <number>this.sizeField.get(d))
         .type((d) => this.selectShape(d)))
@@ -228,8 +228,15 @@ export class ScatterplotComponent implements OnInit, OnChanges {
       .transition().duration(1000).attr('fill', (d) => this.colorField.get(d))
       .attr('r', 8);
 
+    this.svgContainer.selectAll('.plots')
+      .on('mouseover', (d) => this.onMouseOver(d[idSymbol]));
+
+    this.svgContainer.selectAll('.plots')
+      .on('mouseout', (d) => this.onMouseOut(d[idSymbol]));
+    
     plots.exit().remove();
   }
+
   /**** This function draws text next to each plot with info about it ****/
   drawText(data: Point[], enabled = false) {
     if (enabled) {
@@ -327,5 +334,43 @@ export class ScatterplotComponent implements OnInit, OnChanges {
 
     }
     this.updateAxisLabels();
+  }
+
+  onMouseOver(targetId: any) {
+    let tooltipText = '';
+    const selection = this.svgContainer.selectAll('.plots')
+      .filter((d: any) => {
+        if (d[idSymbol] === targetId) {
+          tooltipText = targetId.toString();
+          return true;
+        }
+      });
+    
+    selection.transition().attr('d', d3Shape.symbol()
+    .size((d) => <number>4 * <number>this.sizeField.get(d))
+    .type((d) => this.selectShape(d)))
+    
+    if(this.enableTooltip) {
+      this.tooltipDiv.transition().style('opacity', .7)
+      .style('visibility', 'visible');		
+
+      this.tooltipDiv.html(tooltipText) 
+      .style('left', d3Selection.event.x - 50 + 'px')		
+      .style('top',  d3Selection.event.y - 40+ 'px');
+    }
+  }
+
+  onMouseOut(targetId: any) {
+    const selection = this.svgContainer.selectAll('.plots')
+    .filter((d: any) => d[idSymbol] === targetId);
+    
+    selection.transition().attr('d', d3Shape.symbol()
+    .size((d) => <number>2 * <number>this.sizeField.get(d))
+    .type((d) => this.selectShape(d)))
+
+    if(this.enableTooltip) {
+      this.tooltipDiv.style('opacity', 0)
+      .style('visibility', 'hidden');
+    }
   }
 }

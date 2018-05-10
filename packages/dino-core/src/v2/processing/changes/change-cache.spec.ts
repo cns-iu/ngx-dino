@@ -3,7 +3,6 @@ import { mapValues } from 'lodash';
 
 import immutableEqualityTester from '../../test-utility/equality/immutable';
 
-// TODO
 import { DatumId, Datum } from '../datums';
 import { ChangeSet } from './change-set';
 import { ChangeCache } from './change-cache';

@@ -63,7 +63,7 @@ describe('DataProcessor', () => {
 
 
   describe('.updateFields(extracted, computed)', () => {
-    it('emits the reprocessed values', (done) => {
+    it('emits the reprocessed values', () => {
       // FIXME
     });
   });

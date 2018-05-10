@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { BoundField } from '@ngx-dino/core';
+import { BoundField, RawChangeSet } from '@ngx-dino/core';
+
+import { Observable } from 'rxjs/Observable';
 
 import {
   pointIdField,
@@ -10,7 +12,8 @@ import {
   sizeField,
   shapeField,
   colorField,
-  strokeField
+  strokeField,
+  tooltipTextField
 } from '../shared/scatterplot/scatterplot-fields';
 import { ScatterplotDataService } from '../shared/scatterplot/scatterplot-data.service';
 
@@ -24,7 +27,7 @@ export class ScatterplotComponent implements OnInit {
   @Input() height = window.innerHeight;
   @Input() width = window.innerWidth;
   
-  data: any[];
+  data: Observable<RawChangeSet<any>>;
 
   id: BoundField<string>;
 
@@ -36,7 +39,12 @@ export class ScatterplotComponent implements OnInit {
   size: BoundField<number>;
   stroke: BoundField<string>;
 
-  constructor(private dataService: ScatterplotDataService) { }
+  tooltipText: BoundField<number | string>;
+  enableTooltip = true;
+
+  constructor(private dataService: ScatterplotDataService) { 
+    this.data = this.dataService.data;
+  }
 
   ngOnInit() {
     this.id = pointIdField.getBoundField();
@@ -49,6 +57,6 @@ export class ScatterplotComponent implements OnInit {
     this.color = colorField.getBoundField();
     this.stroke = strokeField.getBoundField();
 
-    this.data = this.dataService.data;
+    this.tooltipText = tooltipTextField.getBoundField();
   }
 }

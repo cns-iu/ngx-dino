@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import { DataProcessorService } from '@ngx-dino/core';
+
 import { DinoScienceMapModule } from '@ngx-dino/science-map';
 import { DinoForceNetworkModule } from '@ngx-dino/force-network';
 import { DinoGeomapModule } from '@ngx-dino/geomap';
@@ -48,6 +50,7 @@ import { ForceNetworkLegendComponent } from './force-network-legend/force-networ
     ScienceMapLegendComponent,
     
     ForceNetworkLegendComponent
-  ]
+  ],
+  providers: [DataProcessorService]
 })
 export class WrapperModule { }

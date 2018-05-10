@@ -102,7 +102,6 @@ export class ScatterplotComponent implements OnInit, OnChanges {
       this.drawPlots(this.data);
       this.drawText(this.data);
     });
-
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -111,6 +110,7 @@ export class ScatterplotComponent implements OnInit, OnChanges {
         this.updateStreamProcessor(false);
       } else if (Object.keys(changes).filter((k) => k.endsWith('Field'))) {
         this.updateStreamProcessor();
+        this.updateAxisLabels();
         // updateField(....)
       }
   }
@@ -121,20 +121,26 @@ export class ScatterplotComponent implements OnInit, OnChanges {
     }
     if (!update) {
       this.dataService.fetchData(
-        this.dataStream, this.pointIdField,
+        this.dataStream, 
+        
+        this.pointIdField,
+        
         this.xField, this.yField,
+        
         this.colorField, this.shapeField,
-        this.sizeField, this.strokeColorField
+        this.sizeField, this.strokeColorField,
+
+        this.tooltipTextField
       );
     }
   }
 
   updateAxisLabels() {
     if (this.xField) {
-      d3Selection.select('#xAxisLabel').text(this.xField.label); // text label for the x axis
+      this.containerMain.select('.xAxisLabel').text(this.xField.label); // text label for the x axis
     }
     if (this.yField) {
-      d3Selection.select('#yAxisLabel').text(this.yField.label); // text label for the x axis
+      this.containerMain.select('.yAxisLabel').text(this.yField.label); // text label for the x axis
     }
   }
 
@@ -154,22 +160,22 @@ export class ScatterplotComponent implements OnInit, OnChanges {
       .attr('height', this.height)
       .attr('class', 'main');
 
-    // text label for the x axis
+    // text label for the x-axis
     this.containerMain.append('text')
       .attr('transform',
         'translate(' + (this.width / 2) + ' ,' +
         (this.height + this.margin.top + 20) + ')')
-      .attr('id', 'xAxisLabel')
+      .attr('class', 'xAxisLabel')
       .style('text-anchor', 'middle')
       .text(this.xAxisLabel);
 
-    // text label for the y axis
+    // text label for the y-axis
     this.containerMain.append('text')
       .attr('transform', 'rotate(-90)')
       .attr('y', 0 - this.margin.left)
       .attr('x', 0 - (this.height / 2))
       .attr('dy', '1em')
-      .attr('id', 'yAxisLabel')
+      .attr('class', 'yAxisLabel')
       .style('text-anchor', 'middle')
       .text(this.yAxisLabel);
 
@@ -225,8 +231,7 @@ export class ScatterplotComponent implements OnInit, OnChanges {
       .attr('fill', 'red')
       .attr('stroke', (d) => d.stroke)
       .attr('stroke-width', '2px')
-      .transition().duration(1000).attr('fill', (d) => d.color)
-      .attr('r', 8);
+      .transition().duration(1000).attr('fill', (d) => d.color);
 
     this.svgContainer.selectAll('.plots')
       .on('mouseover', (d) => this.onMouseOver(d[idSymbol]));
@@ -331,9 +336,7 @@ export class ScatterplotComponent implements OnInit, OnChanges {
         this.yScale.domain(data.map(el => el.y))
           .range([this.height, 0]);
         break;
-
     }
-    this.updateAxisLabels();
   }
 
   onMouseOver(targetId: any) {
@@ -341,7 +344,7 @@ export class ScatterplotComponent implements OnInit, OnChanges {
     const selection = this.svgContainer.selectAll('.plots')
       .filter((d: any) => {
         if (d[idSymbol] === targetId) {
-          tooltipText = targetId.toString();
+          tooltipText = d.tooltip.toString();
           return true;
         }
       });

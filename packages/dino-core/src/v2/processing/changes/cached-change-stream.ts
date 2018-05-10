@@ -20,7 +20,7 @@ export class CachedChangeStream<R> {
     this.cache = new ChangeCache(strictMode);
     this.cachedStream = Observable.merge(stream.do({
       next: (changes) => (this.cache = this.cache.update(changes)),
-      complete: () => this.clear()
+      complete: () => this.emitStream.complete()
     }), this.emitStream);
   }
 

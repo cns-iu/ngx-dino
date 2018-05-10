@@ -53,12 +53,12 @@ export class ScatterplotComponent implements OnInit, OnChanges {
   @Input() margin = { top: 20, right: 15, bottom: 60, left: 60 };
 
   // Temporary change so that Geomap and Scatterplot are the same size.
-  @Input() svgWidth = 955 - this.margin.left - this.margin.right;
-  @Input() svgHeight = 560 - this.margin.top - this.margin.bottom;
+  @Input() width = 955 - this.margin.left - this.margin.right;
+  @Input() height = 560 - this.margin.top - this.margin.bottom;
 
   // This is the better way, but is inconsistent with geomap
-  // @Input() svgWidth = window.innerWidth - this.margin.left - this.margin.right - 300; // initializing width for map container
-  // @Input() svgHeight: number = window.innerHeight - this.margin.top - this.margin.bottom - 200; // initializing height for map container
+  // @Input() width = window.innerWidth - this.margin.left - this.margin.right - 300; // initializing width for map container
+  // @Input() height: number = window.innerHeight - this.margin.top - this.margin.bottom - 200; // initializing height for map container
   private streamSubscription: Subscription;
   
   private parentNativeElement: any; // a native Element to access this component's selector for drawing the map
@@ -142,23 +142,23 @@ export class ScatterplotComponent implements OnInit, OnChanges {
   initVisualization() {
     // initializing svg container
     this.svgContainer = d3Selection.select(this.parentNativeElement)
-      .select('#plotContainer')
+      .select('.plotContainer')
       .append('svg')
-      .attr('width', this.svgWidth + this.margin.right + this.margin.left)
-      .attr('height', this.svgHeight + this.margin.top + this.margin.bottom)
+      .attr('width', this.width + this.margin.right + this.margin.left)
+      .attr('height', this.height + this.margin.top + this.margin.bottom)
       .attr('class', 'chart');
 
     this.containerMain = this.svgContainer.append('g')
       .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')')
-      .attr('width', this.svgWidth)
-      .attr('height', this.svgHeight)
+      .attr('width', this.width)
+      .attr('height', this.height)
       .attr('class', 'main');
 
     // text label for the x axis
     this.containerMain.append('text')
       .attr('transform',
-        'translate(' + (this.svgWidth / 2) + ' ,' +
-        (this.svgHeight + this.margin.top + 20) + ')')
+        'translate(' + (this.width / 2) + ' ,' +
+        (this.height + this.margin.top + 20) + ')')
       .attr('id', 'xAxisLabel')
       .style('text-anchor', 'middle')
       .text(this.xAxisLabel);
@@ -167,7 +167,7 @@ export class ScatterplotComponent implements OnInit, OnChanges {
     this.containerMain.append('text')
       .attr('transform', 'rotate(-90)')
       .attr('y', 0 - this.margin.left)
-      .attr('x', 0 - (this.svgHeight / 2))
+      .attr('x', 0 - (this.height / 2))
       .attr('dy', '1em')
       .attr('id', 'yAxisLabel')
       .style('text-anchor', 'middle')
@@ -176,7 +176,7 @@ export class ScatterplotComponent implements OnInit, OnChanges {
     // draw the x axis
     this.xAxis = d3Axis.axisBottom(this.xScale);
     this.xAxisGroup = this.containerMain.append('g')
-      .attr('transform', 'translate(0,' + this.svgHeight + ')')
+      .attr('transform', 'translate(0,' + this.height + ')')
       .attr('class', 'xAxis')
       .call(this.xAxis);
 
@@ -190,7 +190,7 @@ export class ScatterplotComponent implements OnInit, OnChanges {
     this.mainG = this.containerMain.append('g');
 
     this.tooltipDiv = d3Selection.select(this.parentNativeElement)
-      .select('#plotContainer').select('#tooltip');
+      .select('.plotContainer').select('.tooltip');
   }
 
   /********* This function draws points on the scatterplot ********/
@@ -305,14 +305,14 @@ export class ScatterplotComponent implements OnInit, OnChanges {
         this.xScale = scaleLinear();
         this.xAxis = d3Axis.axisBottom(this.xScale);
         this.xScale.domain([0, d3Array.max(data, (d) => Number(d.x))])
-          .range([0, this.svgWidth]);
+          .range([0, this.width]);
         break;
 
       case 'string':
         this.xScale = scalePoint();
         this.xAxis = d3Axis.axisBottom(this.xScale);
         this.xScale.domain(data.map(el => el.x))
-          .range([0, this.svgWidth]);
+          .range([0, this.width]);
         break;
     }
 
@@ -322,14 +322,14 @@ export class ScatterplotComponent implements OnInit, OnChanges {
         this.yScale = scaleLinear();
         this.yAxis = d3Axis.axisLeft(this.yScale);
         this.yScale.domain([0, d3Array.max(data, (d) => Number(d.y))])
-          .range([this.svgHeight, 0]);
+          .range([this.height, 0]);
         break;
 
       case 'string':
         this.yScale = scalePoint();
         this.yAxis = d3Axis.axisLeft(this.yScale);
         this.yScale.domain(data.map(el => el.y))
-          .range([this.svgHeight, 0]);
+          .range([this.height, 0]);
         break;
 
     }

@@ -18,8 +18,6 @@ import * as d3Drag from 'd3-drag';
 import * as d3Shape from 'd3-shape';
 import 'd3-transition';
 
-import * as data from '../shared/copi.json'; // TODO streaming data instead of json file
-
 @Component({
   selector: 'dino-force-network',
   templateUrl: './force-network.component.html',
@@ -134,11 +132,11 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
 
   initVisualization() {
     d3Selection.select(this.parentNativeElement)
-    .select('#forceNetworkContainer').select('svg').remove(); // remove and redraw, TODO needs changing
+    .select('.forceNetworkContainer').select('svg').remove(); // remove and redraw, TODO needs changing
     
     // initializing svg container
     let container = d3Selection.select(this.parentNativeElement)
-      .select('#forceNetworkContainer');
+      .select('.forceNetworkContainer');
 
     this.svgContainer = container.append('svg')
       .attr('preserveAspectRatio', 'xMidYMid slice')
@@ -157,7 +155,7 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
     this.simulation.alpha(0.9);
     this.simulation.restart();
 
-    this.tooltipDiv = container.select('#tooltip');
+    this.tooltipDiv = container.select('.tooltip');
     }
 
   plotForceNetwork() {

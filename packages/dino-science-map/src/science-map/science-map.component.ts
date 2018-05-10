@@ -102,20 +102,20 @@ export class ScienceMapComponent implements OnInit, OnChanges {
 
   initVisualization() {
     d3Selection.select(this.parentNativeElement)
-      .select('#scienceMapContainer').select('svg').remove();
+      .select('.scienceMapContainer').select('svg').remove();
 
     // initializing svg container
     let container = d3Selection.select(this.parentNativeElement)
-      .select('#scienceMapContainer');
+      .select('.scienceMapContainer');
 
     this.svgContainer = container.append('svg')
       .attr('preserveAspectRatio', 'xMidYMid slice')
       .attr('viewBox', ''+ this.minPositionX +' '+ this.minPositionY +' ' + (this.width) + ' ' + (this.height))
       .classed('svg-content-responsive', true)
-      .attr('id', 'scienceMapcontainer');
+      .attr('class', 'scienceMapSvgcontainer');
         // .call(this.zoom);
 
-    this.tooltipDiv = container.select('#tooltip');
+    this.tooltipDiv = container.select('.tooltip');
   }
 
   createNodes() {

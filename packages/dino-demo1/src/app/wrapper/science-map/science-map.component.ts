@@ -1,13 +1,14 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { BoundField } from '@ngx-dino/core'
+import { BoundField, RawChangeSet } from '@ngx-dino/core'
 
 import {
   subdisciplineSizeField,
-  subdisciplineIDField,
+  subdisciplineIdField,
 
   tooltipTextField
 } from '../shared/science-map/science-map-fields';
 import { ScienceMapDataService } from '../shared/science-map/science-map-data.service';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-science-map',
@@ -18,12 +19,12 @@ import { ScienceMapDataService } from '../shared/science-map/science-map-data.se
 export class ScienceMapComponent implements OnInit {
   @Input() height = window.innerHeight;
   @Input() width = window.innerWidth - 30;
+
+  filteredSubdisciplines: Observable<RawChangeSet<any>>;
   
   subdisciplineSize: BoundField<number>;
   subdisciplineId: BoundField<number|string>;
   tooltipText: BoundField<number|string>;
-
-  filteredSubdisciplines: any[];
   
   nodeSizeRange = [2, 18]; 
   
@@ -38,10 +39,10 @@ export class ScienceMapComponent implements OnInit {
   ngOnInit() {
     // not user facing
     this.subdisciplineSize = subdisciplineSizeField.getBoundField();
-    this.subdisciplineId = subdisciplineIDField.getBoundField();
+    this.subdisciplineId = subdisciplineIdField.getBoundField();
     this.tooltipText = tooltipTextField.getBoundField();
 
-    this.filteredSubdisciplines = this.dataService.filteredSubdisciplines.data;
+    this.filteredSubdisciplines = this.dataService.filteredSubdisciplines;
   }
 
   log(event: any) {

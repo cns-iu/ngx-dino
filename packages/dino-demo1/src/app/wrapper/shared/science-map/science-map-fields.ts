@@ -8,14 +8,14 @@ export const subdisciplineSizeField = simpleField<number>({
   operator: Operator.access('weight')
 });
 
-export const subdisciplineIDField = simpleField<number|string>({
+export const subdisciplineIdField = simpleField<number | string>({
   bfieldId: 'id',
   label: 'Subdiscipline Id',
 
   operator: Operator.access('subd_id')
 });
 
-export const tooltipTextField = simpleField<number|string>({
+export const tooltipTextField = simpleField<number | string>({
   bfieldId: 'tooltip',
   label: 'Subdiscipline Id',
 

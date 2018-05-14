@@ -8,7 +8,18 @@ import {
   OnChanges,
   SimpleChanges
 } from '@angular/core';
-import { Changes, StreamCache, BoundField } from '@ngx-dino/core';
+
+import { 
+  Changes,
+  StreamCache, 
+  BoundField, 
+  RawChangeSet, 
+  Datum, 
+  idSymbol 
+} from '@ngx-dino/core';
+
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
 
 import * as d3Selection from 'd3-selection';
 import { scaleLinear, scaleLog } from 'd3-scale';
@@ -18,8 +29,7 @@ import * as d3Zoom from 'd3-zoom';
 
 
 import { ScienceMapDataService } from '../shared/science-map-data.service';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-
+import { Subdiscipline } from '../shared/subdiscipline';
 
 @Component({
   selector: 'dino-science-map',
@@ -35,7 +45,7 @@ export class ScienceMapComponent implements OnInit, OnChanges {
   @Input() subdisciplineSizeField: BoundField<string>;
   @Input() subdisciplineIdField: BoundField<number|string>;
  
-  @Input() data: any[];
+  @Input() dataStream: Observable<RawChangeSet<any>>;
  
   @Input() nodeSizeRange = [2, 18];
   @Input() minPositionX = 0;
@@ -65,6 +75,7 @@ export class ScienceMapComponent implements OnInit, OnChanges {
   private subdIdToName: any;
   
   private tooltipDiv: any;
+  private data: any[];
   // private zoom = d3Zoom.zoom().scaleExtent([1, 10]).on('zoom', this.zoomed);
 
   constructor(element: ElementRef, private dataService: ScienceMapDataService) {
@@ -72,16 +83,50 @@ export class ScienceMapComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    this.setScales();
+    this.initVisualization();
+    this.createEdges();
+    this.createLabels('black', 17);
+
+    this.dataService.subdisciplines.subscribe((data) => {
+      this.data = this.data.filter((e: Subdiscipline) => !data.remove
+        .some((obj: Datum<Subdiscipline>) => obj[idSymbol] === e.id)).concat(data.insert.toArray() as any);
+     
+      data.update.forEach((el) => {
+        const index = this.data.findIndex((e) => e.id === el[1].id);
+        this.data[index] = Object.assign(this.data[index] || {}, <Subdiscipline>el[1]);
+      });
+
+      this.setScales();
+      this.createNodes();
+    });
   }
 
   ngOnChanges(changes: SimpleChanges) {
-      if ('data' in changes && this.data.length !== 0) {
-        this.setScales();
-        this.initVisualization();
-        this.createNodes();
-        this.createEdges();
-        this.createLabels('black', 17);
-      }
+    if ('dataStream' in changes && this.dataStream) {
+      this.data = [];
+      this.updateStreamProcessor(false);
+    } else if (Object.keys(changes).filter((k) => k.endsWith('Field'))) {
+      this.updateStreamProcessor();
+      // updateField(....)
+    }
+  }
+
+  updateStreamProcessor(update = true) {
+    if (update) {
+      this.dataService.updateData(this.subdisciplineIdField, this.subdisciplineSizeField);
+    }
+
+    if (!update) {
+      this.dataService.fetchData(
+        this.dataStream, 
+
+        this.subdisciplineIdField,
+        this.subdisciplineSizeField,
+
+        this.tooltipTextField
+      );
+    }
   }
 
   setScales() {
@@ -94,16 +139,13 @@ export class ScienceMapComponent implements OnInit, OnChanges {
       .range([this.height, 0]);
 
     const nodeSizeScale = scaleLog()
-      .domain(d3Array.extent(this.data, (d: any) => Math.max(1, parseInt(this.subdisciplineSizeField.get(d)))))
+      .domain(d3Array.extent(this.data, (d: any) => Math.max(1, parseInt(d.size))))
       .range(this.nodeSizeRange);
 
     this.nodeSizeScale = (value) => nodeSizeScale(value < 1 ? 1 : value);
   }
 
   initVisualization() {
-    d3Selection.select(this.parentNativeElement)
-      .select('.scienceMapContainer').select('svg').remove();
-
     // initializing svg container
     let container = d3Selection.select(this.parentNativeElement)
       .select('.scienceMapContainer');
@@ -119,35 +161,34 @@ export class ScienceMapComponent implements OnInit, OnChanges {
   }
 
   createNodes() {
-    this.nodes = this.svgContainer.selectAll('.underlyingNodes')
-      .data<any>(this.data, (d) => <any>this.subdisciplineIdField.get(d));
+    this.nodes = this.svgContainer.selectAll('circle')
+      .data<any>(this.data, (d) => d[idSymbol]);
 
-    this.nodes.selectAll('circle')
-      .transition().attr('r', (d) => this.nodeSizeScale(this.subdisciplineSizeField.get(d)));
-
-    this.nodes.enter().append('g')
-      .attr('class', (d) => 'node-g subd_id' + this.subdisciplineIdField.get(d))
-      .append('circle')
-      .attr('r', (d) => this.nodeSizeScale(this.subdisciplineSizeField.get(d)) || this.defaultNodeSize)
-      .attr('class', (d) => 'node subd_id' + this.subdisciplineIdField.get(d))
-      .attr('fill', (d) => this.dataService.underlyingScimapData.disciplines.filter(
-        (d2) => d2.disc_id === this.dataService.subdIdToDisc[this.subdisciplineIdField.get(d)].disc_id)[0].color)
-      .attr('stroke', 'black')
-      .attr('x', (d) => this.translateXScale(this.dataService.subdIdToPosition[this.subdisciplineIdField.get(d)].x))
-      .attr('y', (d) => this.translateYScale(this.dataService.subdIdToPosition[this.subdisciplineIdField.get(d)].y))
-      .attr('transform', (d) => 'translate(' 
-        + this.translateXScale(this.dataService.subdIdToPosition[this.subdisciplineIdField.get(d)].x)
-        + ',' + this.translateYScale(this.dataService.subdIdToPosition[this.subdisciplineIdField.get(d)].y) + ')')
-      .on('click', (d) => this.nodeClicked.emit(this.dataForSubdiscipline(<number>this.subdisciplineIdField.get(d))))
-      .on('mouseover', (d) => this.enableTooltip? this.onMouseOver(this.dataForSubdiscipline(<number>this.subdisciplineIdField.get(d))): null)
-      .on('mouseout', (d) => this.onMouseOut(this.dataForSubdiscipline(<number>this.subdisciplineIdField.get(d))));
+    this.nodes.attr('r', (d) => this.nodeSizeScale(d.size))
 
     this.nodes.exit().remove();
+
+    this.nodes.enter().append('g')
+      .attr('class', (d) => 'node-g subd_id' + d[idSymbol])
+      .append('circle')
+      .attr('r', (d) => this.nodeSizeScale(d.size) || this.defaultNodeSize)
+      .attr('class', (d) => 'node subd_id' + d[idSymbol])
+      .attr('fill', (d) => this.dataService.underlyingScimapData.disciplines.filter(
+        (d2) => d2.disc_id === this.dataService.subdIdToDisc[d[idSymbol]].disc_id)[0].color)
+      .attr('stroke', 'black')
+      .attr('x', (d) => this.translateXScale(this.dataService.subdIdToPosition[d[idSymbol]].x))
+      .attr('y', (d) => this.translateYScale(this.dataService.subdIdToPosition[d[idSymbol]].y))
+      .attr('transform', (d) => 'translate(' 
+        + this.translateXScale(this.dataService.subdIdToPosition[d[idSymbol]].x)
+        + ',' + this.translateYScale(this.dataService.subdIdToPosition[d[idSymbol]].y) + ')')
+      .on('click', (d) => this.nodeClicked.emit(this.dataForSubdiscipline(<number>d[idSymbol])))
+      .on('mouseover', (d) => this.enableTooltip? this.onMouseOver(this.dataForSubdiscipline(<number>d[idSymbol])): null)
+      .on('mouseout', (d) => this.onMouseOut(this.dataForSubdiscipline(<number>d[idSymbol])));
   }
 
   createLabels(strokeColor: string, fontSize: number) {
-    const numUnclassified = this.data.filter((entry) => this.subdisciplineIdField.get(entry) == -1);
-    const numMultidisciplinary = this.data.filter((entry) => this.subdisciplineIdField.get(entry) == -2);
+    const numUnclassified = this.data.filter((entry) => entry[idSymbol] == -1);
+    const numMultidisciplinary = this.data.filter((entry) => entry[idSymbol] == -2);
         
     this.svgContainer.selectAll('.underlyingLabels')
       .append('g')
@@ -201,13 +242,13 @@ export class ScienceMapComponent implements OnInit, OnChanges {
     let tooltipText = '';
     const selection = this.svgContainer.selectAll('circle')
       .filter((d: any) => {
-        if (this.subdisciplineIdField.get(d) === target.subd_id) {
-          tooltipText = this.tooltipTextField.get(d).toString();
+        if (d[idSymbol] === target.subd_id) {
+          tooltipText = d.tooltipText.toString();
           return true;
         }
       });
     
-    selection.transition().attr('r', (d) => 2 * this.nodeSizeScale(this.subdisciplineSizeField.get(d) || 2 * this.defaultNodeSize));
+    selection.transition().attr('r', (d: any) => 2 * this.nodeSizeScale(d.size || 2 * this.defaultNodeSize));
     
     this.tooltipDiv.transition().style('opacity', .7)
         .style('visibility', 'visible');		
@@ -219,8 +260,8 @@ export class ScienceMapComponent implements OnInit, OnChanges {
 
   onMouseOut(target: any) {
     const selection = this.svgContainer.selectAll('circle')
-      .filter((d: any) => this.subdisciplineIdField.get(d) === target.subd_id);
-    selection.transition().attr('r', (d) => this.nodeSizeScale(this.subdisciplineSizeField.get(d)) || this.defaultNodeSize);
+      .filter((d: any) => d[idSymbol] === target.subd_id);
+    selection.transition().attr('r', (d: any) => this.nodeSizeScale(d.size) || this.defaultNodeSize);
 
     this.tooltipDiv.style('opacity', 0)
       .style('visibility', 'hidden');

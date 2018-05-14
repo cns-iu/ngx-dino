@@ -8,7 +8,7 @@ import * as d3Selection from 'd3-selection';
 import * as d3Array from 'd3-array';
 import { scaleLinear } from 'd3-scale';
 
-import { nodeSizeField, edgeSizeField, nodeColorField} from '../shared/force-network/force-network-fields';
+import { nodeIdField, nodeSizeField, edgeSizeField, nodeColorField} from '../shared/force-network/force-network-fields';
 import { ForceNetworkDataService } from '../shared/force-network/force-network-data.service';
 
 
@@ -22,6 +22,7 @@ export class ForceNetworkLegendComponent implements OnInit {
   nodesData: Observable<RawChangeSet<any>>;
   edgesData: Observable<RawChangeSet<any>>;
 
+  nodeId: BoundField<number | string>;
   nodeSize: BoundField<number>;
   edgeSize: BoundField<number>;
   nodeColorEncoding: BoundField<number>;
@@ -52,6 +53,7 @@ export class ForceNetworkLegendComponent implements OnInit {
   edges = [];
 
   constructor(private dataService: ForceNetworkDataService) { 
+    this.nodesData = this.dataService.nodesData;
 
     this.dataService.nodesData.subscribe((nodes: any) => {
       this.nodes = this.nodes.filter((e: any) => !nodes.remove
@@ -90,6 +92,7 @@ export class ForceNetworkLegendComponent implements OnInit {
     this.edgeLegendTitle = this.dataService.edgeLegendEncoding;
     
     // not user facing
+    this.nodeId = nodeIdField.getBoundField('id');
     this.nodeSize = nodeSizeField.getBoundField('size');
     this.edgeSize = edgeSizeField.getBoundField('edgeSize');
     this.nodeColorEncoding = nodeColorField.getBoundField('color');

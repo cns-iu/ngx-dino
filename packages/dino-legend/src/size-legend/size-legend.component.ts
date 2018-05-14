@@ -13,18 +13,23 @@ import { scaleLinear } from 'd3-scale';
 import 'd3-transition';
 
 import  { Observable } from 'rxjs/Observable';
-import { BoundField } from '@ngx-dino/core';
+
+import { BoundField, RawChangeSet, idSymbol, Datum } from '@ngx-dino/core';
+
+import  { LegendDataService } from '../shared/legend-data.service';
 
 @Component({
   selector: 'size-legend',
   templateUrl: './size-legend.component.html',
   styleUrls: ['./size-legend.component.sass'],
-  providers: []
+  providers: [LegendDataService]
 })
 export class SizeLegendComponent implements OnInit, OnChanges {
-  @Input() dataStream: any[];
+  @Input() dataStream: Observable<RawChangeSet<any>>;
   
-  @Input() sizeField: BoundField<string>;
+  @Input() nodeSizeField: BoundField<string>;
+  @Input() nodeIdField: BoundField<number | string>;
+
   @Input() title: string = 'Weighted Journal Score';
   
   @Input()  nodeSizeRange = [5, 15];
@@ -40,32 +45,63 @@ export class SizeLegendComponent implements OnInit, OnChanges {
   midLabel: string;
   minLabel: string;
 
-  constructor(element: ElementRef) {
+  nodesData = [];
+
+  constructor(element: ElementRef, private dataService: LegendDataService) {
     this.parentNativeElement = element.nativeElement; // to get native parent element of this component
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.dataService.nodes.subscribe((data) => {
+      this.nodesData = this.nodesData.filter((e: any) => !data.remove
+        .some((obj: Datum<any>) => obj[idSymbol] === e.id)).concat(data.insert.toArray());
+     
+      data.update.forEach((el) => {
+        const index = this.nodesData.findIndex((e) => e.id === el[1].id);
+        this.nodesData[index] = Object.assign(this.nodesData[index] || {}, <Node>el[1]);
+      });
 
-  ngOnChanges(changes: SimpleChanges) {
-      if ('dataStream' in changes && this.dataStream) {
-        const values = changes['dataStream'].currentValue;
-        
-        this.max = Math.round(parseInt(d3Array.max(values, (d: any) => this.sizeField.get(d))));
-        this.min = Math.round(parseInt(d3Array.min(values, (d: any) => this.sizeField.get(d))));
+      if (this.nodesData.length) {
+        this.max = Math.round(parseInt(d3Array.max(this.nodesData, (d: any) => d.size)));
+        this.min = Math.round(parseInt(d3Array.min(this.nodesData, (d: any) => d.size)));
         this.mid = Math.round((this.max + this.min) / 2);
-        
+            
         this.maxLabel = (!isNaN(this.max))? this.max.toString(): '';
         this.midLabel = (!isNaN(this.mid))? this.mid.toString(): '';
         this.minLabel = (!isNaN(this.min))? this.min.toString(): '';
-        
+            
         this.setScales();
         this.setSizes();
         this.setTexts();
       }
+    });
+
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if ('dataStream' in changes && this.dataStream) {
+          this.updateStreamProcessor(false);
+    } else if (Object.keys(changes).filter((k) => k.endsWith('Field'))) {
+      this.updateStreamProcessor();
+    }
 
     if ('title' in changes) {
       d3Selection.select(this.parentNativeElement)
         .select('#title').transition().text(this.title);
+    }
+  }
+
+  updateStreamProcessor(update = true) {
+    if (update) {
+      this.dataService.updateData();
+    }
+    if (!update) {
+      this.dataService.fetchData(
+        this.dataStream,
+        
+        this.nodeIdField,
+        this.nodeSizeField
+      );
     }
   }
 

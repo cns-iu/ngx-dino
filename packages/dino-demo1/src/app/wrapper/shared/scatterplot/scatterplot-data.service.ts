@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 
 import { RawChangeSet } from '@ngx-dino/core';
-import * as dummyData from './dummy-data.json';
-import { Observable } from 'rxjs/Observable';
+
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
+import * as dummyData from './dummy-data.json';
 
 @Injectable()
 export class ScatterplotDataService {

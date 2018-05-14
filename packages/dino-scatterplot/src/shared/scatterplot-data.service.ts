@@ -1,9 +1,19 @@
 import { Injectable } from '@angular/core';
+
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subscription } from 'rxjs/Subscription';
 
-import { Changes, FieldProcessor, BoundField, CachedChangeStream, DataProcessor, Datum, ChangeSet, DataProcessorService, RawChangeSet } from '@ngx-dino/core';
+import {
+  BoundField,
+  CachedChangeStream,
+  DataProcessor, 
+  Datum, 
+  ChangeSet,
+  DataProcessorService,
+  RawChangeSet 
+} from '@ngx-dino/core';
+
 import { Point } from './point';
 
 @Injectable()

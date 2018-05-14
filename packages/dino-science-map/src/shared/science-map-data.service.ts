@@ -1,21 +1,41 @@
 import { Injectable } from '@angular/core';
 
+import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
 import * as d3Collection from 'd3-collection';
 import * as d3Array from 'd3-array';
 
-import { Operator } from '@ngx-dino/core';
+import { 
+  Operator, 
+  RawChangeSet, 
+  BoundField, 
+  DataProcessorService, 
+  DataProcessor,
+  Datum,
+  ChangeSet
+} from '@ngx-dino/core';
 
+import { Subdiscipline } from './subdiscipline';
 import * as underlyingScimapData from './underlyingScimapData.json';
+import { Subscription } from 'rxjs/Subscription';
+
 
 @Injectable()
 export class ScienceMapDataService {
+  public subdisciplineProcessor: DataProcessor<any, Subdiscipline & Datum<any>>;
+  private subdisciplineChange = new BehaviorSubject<ChangeSet<Subdiscipline>>(new ChangeSet<Subdiscipline>());
+  subdisciplines: Observable<ChangeSet<Subdiscipline>> = this.subdisciplineChange.asObservable();
+  
+  private streamSubscription: Subscription;
+  
   underlyingScimapData: any;
   subdIdToPosition: any;
   subdIdToDisc: any;
   subdIdToName: any;
   discIdToColor: any;
 
-  constructor() {
+  constructor(private processorService: DataProcessorService) {
     this.underlyingScimapData = underlyingScimapData;
     this.makeMappings();
     }
@@ -40,5 +60,40 @@ export class ScienceMapDataService {
       map[d.disc_id] = d.color;
       return map;
     }, {});
+  }
+
+  fetchData(
+    stream: Observable<RawChangeSet<any>>,
+    
+    subdisciplineIdField: BoundField<number | string>,
+    subdisciplineSizeField: BoundField<number | string>,
+
+    tooltipTextField: BoundField<number | string>
+  ): this {
+    console.log('fetch data')
+    this.subdisciplineProcessor = this.processorService.createProcessor<Subdiscipline & Datum<any>, any>(
+      stream, 
+      subdisciplineIdField,
+      {
+        size: subdisciplineSizeField,
+        tooltipText: tooltipTextField
+      }
+    );
+
+    if (this.streamSubscription) {
+      this.streamSubscription.unsubscribe();
+    }
+
+    this.streamSubscription = this.subdisciplineProcessor.asObservable().subscribe(
+      (change) => this.subdisciplineChange.next(change));
+  
+    return this;
+  }
+
+  updateData(
+    subdisciplineIdField: BoundField<number | string>,
+    subdisciplineSizeField: BoundField<number | string>
+  ) {
+    this.subdisciplineProcessor.updateFields();
   }
 }

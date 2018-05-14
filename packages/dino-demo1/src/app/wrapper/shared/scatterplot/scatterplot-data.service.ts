@@ -9,7 +9,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 export class ScatterplotDataService {
   private pointsChange = new BehaviorSubject<RawChangeSet<any>>(new RawChangeSet());
   data = this.pointsChange.asObservable();
-  tempArray = [];
+  
   constructor() {
     dummyData.forEach((element, i) => {
      setTimeout(() => {

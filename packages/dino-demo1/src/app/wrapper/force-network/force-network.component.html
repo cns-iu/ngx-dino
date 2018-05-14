@@ -4,19 +4,22 @@
 [margin]="margin"
 
 [nodeSizeField]="nodeSize"
-[nodeIDField]="nodeId"
+[nodeIdField]="nodeId"
 [nodeColorField]="nodeColor"
 [nodeLabelField]="nodeLabel"
 
+[linkSourceField]="edgeSource"
+[linkTargetField]="edgeTarget"
 [linkSizeField]="edgeSize"
 
 [nodeColorRange]="nodeColorRange"
+[nodeSizeRange]="nodeSizeRange"
 
 [enableTooltip]="enableTooltip"
 [tooltipTextField]="tooltipText"
 
 [chargeStrength]="visChargeStrength"
 
-[dataNodes]="networkGraph.nodes"
-[dataEdges]="networkGraph.links">
+[nodeStream]="nodesData"
+[linkStream]="edgesData">
 </dino-force-network>

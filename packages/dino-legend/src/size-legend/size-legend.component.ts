@@ -23,14 +23,19 @@ import { BoundField } from '@ngx-dino/core';
 })
 export class SizeLegendComponent implements OnInit, OnChanges {
   @Input() dataStream: any[];
+  
   @Input() sizeField: BoundField<string>;
   @Input() title: string = 'Weighted Journal Score';
+  
+  @Input()  nodeSizeRange = [5, 15];
+
   parentNativeElement: any;
   legendSizeScale: any;
-  defaultSizeRange = [4, 14];
+  
   max: number;
   mid: number;
   min: number;
+  
   maxLabel: string;
   midLabel: string;
   minLabel: string;
@@ -44,12 +49,15 @@ export class SizeLegendComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
       if ('dataStream' in changes && this.dataStream) {
         const values = changes['dataStream'].currentValue;
+        
         this.max = Math.round(parseInt(d3Array.max(values, (d: any) => this.sizeField.get(d))));
         this.min = Math.round(parseInt(d3Array.min(values, (d: any) => this.sizeField.get(d))));
         this.mid = Math.round((this.max + this.min) / 2);
+        
         this.maxLabel = (!isNaN(this.max))? this.max.toString(): '';
         this.midLabel = (!isNaN(this.mid))? this.mid.toString(): '';
         this.minLabel = (!isNaN(this.min))? this.min.toString(): '';
+        
         this.setScales();
         this.setSizes();
         this.setTexts();
@@ -64,7 +72,7 @@ export class SizeLegendComponent implements OnInit, OnChanges {
   setScales() {
     this.legendSizeScale = scaleLinear()
       .domain([this.min, this.max])
-      .range(this.defaultSizeRange);
+      .range(this.nodeSizeRange);
   }
 
   setSizes() {
@@ -74,7 +82,7 @@ export class SizeLegendComponent implements OnInit, OnChanges {
     d3Selection.select(this.parentNativeElement)
       .select('#midNode').transition().attr('r', this.legendSizeScale(this.mid));
 
-      d3Selection.select(this.parentNativeElement)
+    d3Selection.select(this.parentNativeElement)
       .select('#minNode').transition().attr('r', this.legendSizeScale(this.min));
   }
 

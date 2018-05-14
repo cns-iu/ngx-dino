@@ -37,12 +37,12 @@ import { Point } from '../shared/point';
   providers: [ScatterplotDataService]
 })
 export class ScatterplotComponent implements OnInit, OnChanges {
-  @Input() pointIdField: BoundField<string>;
-  @Input() strokeColorField: BoundField<string>;
+  @Input() pointIdField: BoundField<number | string>;
+  @Input() strokeColorField: BoundField<number | string>;
   @Input() xField: BoundField<number | string>;
   @Input() yField: BoundField<number | string>;
-  @Input() colorField: BoundField<string>;
-  @Input() shapeField: BoundField<string>;
+  @Input() colorField: BoundField<number | string>;
+  @Input() shapeField: BoundField<number | string>;
   @Input() sizeField: BoundField<number | string>;
 
   @Input() tooltipTextField: BoundField<number | string>;
@@ -105,14 +105,14 @@ export class ScatterplotComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-      if ('dataStream' in changes && this.dataStream) {
-        this.data = [];
-        this.updateStreamProcessor(false);
-      } else if (Object.keys(changes).filter((k) => k.endsWith('Field'))) {
-        this.updateStreamProcessor();
-        this.updateAxisLabels();
-        // updateField(....)
-      }
+    if ('dataStream' in changes && this.dataStream) {
+      this.data = [];
+      this.updateStreamProcessor(false);
+    } else if (Object.keys(changes).filter((k) => k.endsWith('Field'))) {
+      this.updateStreamProcessor();
+      this.updateAxisLabels();
+      // updateField(....)
+    }
   }
 
   updateStreamProcessor(update = true) {

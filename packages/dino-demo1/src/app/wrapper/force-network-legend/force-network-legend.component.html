@@ -14,9 +14,10 @@
   <br>
   </div>
   <size-legend
-    [dataStream]="networkGraph.nodes"
+    [dataStream]="nodes"
     [sizeField]="nodeSize"
-    [title]="'# Publications'">
+    [title]="'Group #'"
+    [nodeSizeRange]="nodeSizeRange">
   </size-legend>
   <br>
   <div class="gradient-title"><b>Edge Size</b></div>

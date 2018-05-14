@@ -19,17 +19,17 @@ export class ScatterplotDataService {
   fetchData(
     stream: Observable<RawChangeSet<any>>,
     
-    pointIdField: BoundField<string>,
+    pointIdField: BoundField<number | string>,
     
     xField: BoundField<number | string>,
     yField: BoundField<number | string>,
     
-    colorField: BoundField<string>,
-    shapeField: BoundField<string>,
+    colorField: BoundField<number | string>,
+    shapeField: BoundField<number | string>,
     sizeField: BoundField<number | string>,
-    strokeColorField: BoundField<string>,
+    strokeColorField: BoundField<number | string>,
   
-    tooltipTextField: BoundField<number| string>
+    tooltipTextField: BoundField<number | string>
   ): this {
     this.pointProcessor = this.processorService.createProcessor<Point & Datum<any>, any>(
       stream, 

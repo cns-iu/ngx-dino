@@ -29,6 +29,20 @@ export const nodeLabelField = simpleField<string>({
   operator: Operator.access('id')
 });
 
+export const edgeSourceField = simpleField<string>({
+  bfieldId: 'edgeSource',
+  label: 'Edge Source',
+
+  operator: Operator.access('source')
+});
+
+export const edgeTargetField = simpleField<string>({
+  bfieldId: 'edgeTarget',
+  label: 'Edge Target',
+
+  operator: Operator.access('target')
+});
+
 export const edgeSizeField = simpleField<number>({
   bfieldId: 'edgeSize',
   label: 'Edge size',

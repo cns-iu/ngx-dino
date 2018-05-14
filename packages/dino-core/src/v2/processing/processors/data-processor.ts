@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/observable/merge';
+import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/map';
 
 import { Collection, Seq, Map } from 'immutable';
@@ -43,7 +44,9 @@ export class DataProcessor<R, T extends Datum<R>> {
     });
 
     const boundProcessChanges = bind(this.processChanges, this);
-    const processedStream = rawCache.asObservable().map(boundProcessChanges);
+    const processedStream = rawCache.asObservable()
+      .map(boundProcessChanges)
+      .do({complete: () => this.emitStream.complete()});
     this.processedCache = new CachedChangeStream(Observable.merge(
       processedStream, this.emitStream
     ), this.config.strictMode);

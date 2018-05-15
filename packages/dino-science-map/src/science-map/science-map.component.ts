@@ -86,7 +86,8 @@ export class ScienceMapComponent implements OnInit, OnChanges {
     this.setScales();
     this.initVisualization();
     this.createEdges();
-    this.createLabels('black', 17);
+    this.createLabels('white', 3);
+    this.createLabels('black', 1);
 
     this.dataService.subdisciplines.subscribe((data) => {
       this.data = this.data.filter((e: Subdiscipline) => !data.remove
@@ -186,7 +187,9 @@ export class ScienceMapComponent implements OnInit, OnChanges {
       .on('mouseout', (d) => this.onMouseOut(this.dataForSubdiscipline(<number>d[idSymbol])));
   }
 
-  createLabels(strokeColor: string, fontSize: number) {
+  createLabels(
+    strokeColor: string,
+    strokeWidth: number) {
     const numUnclassified = this.data.filter((entry) => entry[idSymbol] == -1);
     const numMultidisciplinary = this.data.filter((entry) => entry[idSymbol] == -2);
         
@@ -209,7 +212,9 @@ export class ScienceMapComponent implements OnInit, OnChanges {
       .attr('y', (d) => this.translateYScale(d.y))
       .style('fill', (d) => d.color)
       .attr('stroke', strokeColor)
-      .attr('font-size', fontSize)
+      .attr('stroke-width', strokeWidth)
+      .attr('font-size', 17)
+      .attr('stroke-opacity', 1)
       .attr('display', (d) => {
         if (((numUnclassified.length === 0) && (d.disc_id === -1)) || ((numMultidisciplinary.length === 0) && (d.disc_id === -2))) {
           return 'none';
@@ -230,7 +235,7 @@ export class ScienceMapComponent implements OnInit, OnChanges {
       .enter().append('line')
       .attr('class', (d1) => 'edge s' + d1.subd_id1 + ' t' + d1.subd_id2)
       .attr('stroke', '#9b9b9b')
-      .attr('stroke-width', '1px')
+      .attr('stroke-width', 1)
       .attr('opacity', 0.5)
       .attr('x1', (d) => this.translateXScale(this.dataService.subdIdToPosition[d.subd_id1].x))
       .attr('y1', (d) => this.translateYScale(this.dataService.subdIdToPosition[d.subd_id1].y))

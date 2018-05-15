@@ -1,5 +1,5 @@
 import { vega } from './vega';
-import { Changes, DatumId, isDatumId } from '@ngx-dino/core';
+import { ChangeSet, DatumId, isDatumId, idSymbol } from '@ngx-dino/core';
 
 function addToSet<T>(changeSet: any, items: T[]): void {
   changeSet.insert(items);
@@ -40,11 +40,16 @@ function updateInSet<T>(changeSet: any, items: [T | DatumId, Partial<T>][], key:
   });
 }
 
-export function makeChangeSet<T>(change: Changes<T>, key: keyof T): any {
+export function makeChangeSet<T>(change: ChangeSet<T>, key: keyof T): any {
   const changeSet = new vega.changeset();
-  addToSet(changeSet, change.add);
-  removeFromSet(changeSet, change.remove, key);
-  updateInSet(changeSet, change.update, key);
+  addToSet(changeSet, change.insert.toArray());
+  removeFromSet(changeSet, change.remove.toArray(), key);
+  updateInSet(changeSet, change.update.map((d): [any, any] => {
+    return [d[idSymbol], d];
+  }).toArray(), key);
+  updateInSet(changeSet, change.replace.map((d): [any, any] => {
+    return [d[idSymbol], d];
+  }).toArray(), key);
 
   return changeSet;
 }

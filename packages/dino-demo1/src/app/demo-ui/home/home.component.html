@@ -10,7 +10,7 @@
     class="sidenav"
     mode="side"
     [(opened)]="openState">
-      
+
       <div [hidden]="tabIndex === 4" class="sidenavLegend">
         <p class="sidenavTitle">Data Simulator</p>
         <hr>
@@ -49,7 +49,10 @@
         <app-scatterplot></app-scatterplot>
       </mat-tab>
       <mat-tab label="Geomap">
-        <app-geomap></app-geomap>
+        <app-geomap
+          [width]="openState ? narrowWidth : wideWidth"
+          [height]="height">
+        </app-geomap>
       </mat-tab>
     </mat-tab-group>
 </mat-sidenav-content>

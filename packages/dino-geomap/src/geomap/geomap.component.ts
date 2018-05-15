@@ -3,7 +3,8 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
 import { defaultLogLevel } from '../shared/log-level';
-import { Changes, IField, Field, FieldProcessor, StreamCache } from '@ngx-dino/core';
+import { map } from '@ngx-dino/core/src/v2/operators/methods/transforming/map';
+import { simpleField, BoundField, RawChangeSet, ChangeSet } from '@ngx-dino/core';
 import { vega, makeChangeSet } from '@ngx-dino/vega';
 import { State } from '../shared/state';
 import { Point } from '../shared/point';
@@ -12,48 +13,46 @@ import { GeomapDataService } from '../shared/geomap.dataservice';
 import * as us10m from '../shared/us-10m.json';
 import * as geomapSpec from '../shared/spec.json';
 
+
 @Component({
   selector: 'dino-geomap',
   templateUrl: './geomap.component.html',
   styleUrls: ['./geomap.component.sass'],
   providers: [GeomapDataService]
 })
-
 export class GeomapComponent implements OnInit, OnDestroy, OnChanges {
   @Input() width: number = 900;
   @Input() height: number = 560;
 
-  @Input() stateDataStream: Observable<Changes>;
-  @Input() stateField: IField<string>;
-  @Input() stateColorField: IField<string>;
+  @Input() stateDataStream: Observable<RawChangeSet>;
+  @Input() stateField: BoundField<string>;
+  @Input() stateColorField: BoundField<string>;
   @Input() stateDefaultColor: string = '#bebebe';
 
-  @Input() pointDataStream: Observable<Changes>;
-  @Input() pointIdField: IField<string>;
-  @Input() pointLatLongField: IField<[number, number]>;
-  @Input() pointSizeField: IField<number>;
-  @Input() pointColorField: IField<string>;
-  @Input() pointShapeField: IField<string>;
-  @Input() strokeColorField: IField<string>;
-  @Input() pointTitleField: IField<string>;
+  @Input() pointDataStream: Observable<RawChangeSet>;
+  @Input() pointIdField: BoundField<string>;
+  @Input() pointLatLongField: BoundField<[number, number]>;
+  @Input() pointSizeField: BoundField<number>;
+  @Input() pointColorField: BoundField<string>;
+  @Input() pointShapeField: BoundField<string>;
+  @Input() strokeColorField: BoundField<string>;
+  @Input() pointTitleField: BoundField<string>;
 
-  private stateIdField: IField<number>;
+  private stateIdField: BoundField<number>;
   private nativeElement: any;
   private view: any = null;
   private statesSubscription: Subscription;
   private pointSubscription: Subscription;
-  private pointStreamCache: StreamCache<any>;
-  private stateStreamCache: StreamCache<any>;
 
   constructor(element: ElementRef, private dataService: GeomapDataService) {
     this.nativeElement = element.nativeElement;
-    this.stateIdField = new Field({
-      name: 'id', label: 'State ANSI Id', datatype: 'number',
-      accessor: (data: any): number => {
+    this.stateIdField = simpleField({
+      label: 'State ANSI Id',
+      operator: map((data: any): number => {
         const state = this.stateField.get(data);
         return state ? lookupStateCode(state) : -1;
-      }
-    });
+      })
+    }).getBoundField();
   }
 
   ngOnInit() {
@@ -61,19 +60,7 @@ export class GeomapComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnChanges(changes) {
-    for (const propName in changes) {
-      if (propName.endsWith('Stream') && this[propName]) {
-        this.stateStreamCache = new StreamCache<any>(this.stateIdField, this.stateDataStream);
-        this.pointStreamCache = new StreamCache<any>(this.pointIdField, this.pointDataStream);
-        this.updateStreamProcessor();
-      } else if (propName.endsWith('Field') && this[propName]) {
-        if (propName.startsWith('point')) {
-          this.updateStreamProcessor('point');
-        } else {
-          this.updateStreamProcessor('state');
-        }
-      }
-    }
+    this.updateProcessor(changes);
 
     if (this.view) {
       let rerun = false;
@@ -98,31 +85,46 @@ export class GeomapComponent implements OnInit, OnDestroy, OnChanges {
     this.finalizeView();
   }
 
-  updateStreamProcessor(update: string = null) {
-    if (this.pointStreamCache && this.stateStreamCache &&
-        this.stateColorField && this.pointColorField &&
-        this.pointShapeField && this.pointSizeField) {
-      this.dataService.fetchData(
-        this.pointStreamCache.asObservable(),
-        this.stateStreamCache.asObservable(),
-        this.strokeColorField,
-        this.stateField,
-        this.stateColorField,
-        this.stateIdField,
-        this.pointIdField,
-        this.pointLatLongField,
-        this.pointSizeField,
-        this.pointColorField,
-        this.pointShapeField,
-        this.pointTitleField
-      );
+  updateProcessor(changes): void {
+    let updateFields = true;
+    for (const name in changes) {
+      if (name.endsWith('Stream')) {
+        this.dataService.fetchData(
+          this.pointDataStream,
+          this.stateDataStream,
+          this.strokeColorField,
+          this.stateField,
+          this.stateColorField,
+          this.stateIdField,
+          this.pointIdField,
+          this.pointLatLongField,
+          this.pointSizeField,
+          this.pointColorField,
+          this.pointShapeField,
+          this.pointTitleField
+        );
+        updateFields = false;
+        break;
+      }
     }
 
-    if (this.pointStreamCache && this.stateStreamCache && update) {
-      if (update === 'point') {
-        this.pointStreamCache.sendUpdate();
-      } else {
-        this.stateStreamCache.sendUpdate();
+    if (updateFields) {
+      for (const name in changes) {
+        if (name.endsWith('Field')) {
+          this.dataService.update(
+            this.strokeColorField,
+            this.stateField,
+            this.stateColorField,
+            this.stateIdField,
+            this.pointIdField,
+            this.pointLatLongField,
+            this.pointSizeField,
+            this.pointColorField,
+            this.pointShapeField,
+            this.pointTitleField
+          );
+          break;
+        }
       }
     }
   }
@@ -144,11 +146,11 @@ export class GeomapComponent implements OnInit, OnDestroy, OnChanges {
       .signal('stateDefaultColor', this.stateDefaultColor)
       .run();
 
-    this.statesSubscription = this.dataService.states.subscribe((change: Changes<State>) => {
+    this.statesSubscription = this.dataService.states.subscribe((change: ChangeSet<State>) => {
       this.view.change('stateColorCoding', makeChangeSet<State>(change, 'id')).run();
     });
 
-    this.pointSubscription = this.dataService.points.subscribe((change: Changes<Point>) => {
+    this.pointSubscription = this.dataService.points.subscribe((change: ChangeSet<Point>) => {
       this.view.change('points', makeChangeSet<Point>(change, 'id')).run();
     });
   }

@@ -66,8 +66,8 @@ export class ScienceMapComponent implements OnInit, OnChanges {
           this.initVisualization();
           this.createNodes();
           this.createEdges();
-          this.createLabels('white', 3);
-          this.createLabels('black', 1);
+          this.createLabels('white', 6.0, 0.9);
+          this.createLabels('black', 0.7, 0.6);
         } else {
           this.clearNodes();
         }
@@ -148,10 +148,10 @@ export class ScienceMapComponent implements OnInit, OnChanges {
     subd_labels.exit().remove();
   }
 
-  createLabels(strokeColor: string, strokeWidth: number) {
+  createLabels(strokeColor: string, strokeWidth: number, strokeOpacity = 1) {
     const numUnclassified = this.data.filter((entry) => this.subdisciplineIDField.get(entry) == -1);
     const numMultidisciplinary = this.data.filter((entry) => this.subdisciplineIDField.get(entry) == -2);
-        
+
     this.svgContainer.selectAll('.underlyingLabels')
       .append('g')
       .data<any>(this.dataService.underlyingScimapData.labels).enter()
@@ -170,10 +170,10 @@ export class ScienceMapComponent implements OnInit, OnChanges {
       .attr('x', (d) => this.translateXScale(d.x))
       .attr('y', (d) => this.translateYScale(d.y))
       .style('fill', (d) => d.color)
-      .attr('stroke', strokeColor)
+      .attr('stroke', (d) => strokeColor === 'FILL_COLOR' ? d.color : strokeColor)
       .attr('stroke-width', strokeWidth)
-      .attr('stroke-opacity', 1)
-      .attr('font-size', 17)
+      .attr('stroke-opacity', strokeOpacity)
+      .attr('font-size', 14)
       .attr('display', (d) => {
         if (((numUnclassified.length === 0) && (d.disc_id === -1)) || ((numMultidisciplinary.length === 0) && (d.disc_id === -2))) {
           return 'none';

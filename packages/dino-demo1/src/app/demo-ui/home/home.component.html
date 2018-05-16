@@ -16,9 +16,9 @@
         <hr>
         <p class="sidenavTitle">Legend</p>
         <hr>
-          <app-science-map-legend *ngIf="tabIndex === 0">
+          <app-science-map-legend [hidden]="tabIndex !== 0">
           </app-science-map-legend>
-          <app-force-network-legend *ngIf="tabIndex === 1">
+          <app-force-network-legend [hidden]="tabIndex !== 1">
           </app-force-network-legend>
       </div>
   </mat-sidenav>

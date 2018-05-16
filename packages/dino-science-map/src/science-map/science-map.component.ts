@@ -34,6 +34,8 @@ export class ScienceMapComponent implements OnInit, OnChanges {
   @Input() subdisciplineIDField: BoundField<number|string>;
   @Input() data: any[];
   @Input() nodeSizeRange = [2, 18];
+  @Input() minPositionX = 0;
+  @Input() minPositionY = 0;
   @Output() nodeClicked = new EventEmitter<any>();
 
   private parentNativeElement: any;
@@ -75,7 +77,9 @@ export class ScienceMapComponent implements OnInit, OnChanges {
   }
 
   clearNodes() {
-    this.svgContainer.selectAll('.node').remove();
+    if(this.svgContainer) {
+      this.svgContainer.selectAll('.node').remove();
+    }
   }
 
   setScales() {
@@ -102,15 +106,21 @@ export class ScienceMapComponent implements OnInit, OnChanges {
     let container = d3Selection.select(this.parentNativeElement)
       .select('#scienceMapContainer');
 
-    this.svgContainer = container.append('svg')
-      .attr('width', this.width)
-      .attr('height', this.height)
-      .attr('id', 'scienceMapcontainer');
+    // this.svgContainer = container.append('svg')
+    //   .attr('width', this.width)
+    //   .attr('height', this.height)
+    //   .attr('id', 'scienceMapcontainer');
       // .call(this.zoom);
+
+    this.svgContainer = container.append('svg')
+      .attr('preserveAspectRatio', 'xMidYMid slice')
+      .attr('viewBox', ''+ this.minPositionX +' '+ this.minPositionY +' ' + (this.width) + ' ' + (this.height))
+      .classed('svg-content-responsive', true)
+      .attr('class', 'scienceMapSvgcontainer');
   }
 
   createNodes() {
-    this.nodes = this.svgContainer.selectAll('.underlyingNodes')
+    this.nodes = this.svgContainer.selectAll('circle')
       .data<any>(this.data, (d) => <any>this.subdisciplineIDField.get(d));
 
     this.nodes.selectAll('circle')

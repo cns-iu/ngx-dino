@@ -60,13 +60,22 @@ export class ScienceMapComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-      if ('data' in changes && this.data.length !== 0) {
-        this.setScales();
-        this.initVisualization();
-        this.createNodes();
-        this.createEdges();
-        this.createLabels('black', 17);
+      if ('data' in changes) {
+        if(this.data.length !== 0) {
+          this.setScales();
+          this.initVisualization();
+          this.createNodes();
+          this.createEdges();
+          this.createLabels('white', 3);
+          this.createLabels('black', 1);
+        } else {
+          this.clearNodes();
+        }
       }
+  }
+
+  clearNodes() {
+    this.svgContainer.selectAll('.node').remove();
   }
 
   setScales() {
@@ -139,7 +148,7 @@ export class ScienceMapComponent implements OnInit, OnChanges {
     subd_labels.exit().remove();
   }
 
-  createLabels(strokeColor: string, fontSize: number) {
+  createLabels(strokeColor: string, strokeWidth: number) {
     const numUnclassified = this.data.filter((entry) => this.subdisciplineIDField.get(entry) == -1);
     const numMultidisciplinary = this.data.filter((entry) => this.subdisciplineIDField.get(entry) == -2);
         
@@ -162,7 +171,9 @@ export class ScienceMapComponent implements OnInit, OnChanges {
       .attr('y', (d) => this.translateYScale(d.y))
       .style('fill', (d) => d.color)
       .attr('stroke', strokeColor)
-      .attr('font-size', fontSize)
+      .attr('stroke-width', strokeWidth)
+      .attr('stroke-opacity', 1)
+      .attr('font-size', 17)
       .attr('display', (d) => {
         if (((numUnclassified.length === 0) && (d.disc_id === -1)) || ((numMultidisciplinary.length === 0) && (d.disc_id === -2))) {
           return 'none';

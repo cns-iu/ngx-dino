@@ -20,8 +20,8 @@ export class ColorLegendComponent implements OnInit, OnChanges {
   @Input() colorEncodingTitle: string;
   @Input() labelToColor: Map<string, string>;
 
-  private viewBox: string;
-  private colorEncodings: any[] = [];
+  viewBox: string;
+  colorEncodings: any[] = [];
 
   private labelTransforms = [
     'matrix(1 0 0 1 628.31 76.0977)', 

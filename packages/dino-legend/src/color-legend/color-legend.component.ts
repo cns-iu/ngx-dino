@@ -63,7 +63,7 @@ export class ColorLegendComponent implements OnInit, OnChanges {
 
   rects = this.colorRectPositions; // this will be a subset based on # of categories < 15
 
-  viewBoxParams = [565, 20, 1137, 47]; // for color svg
+  viewBoxParams = [565, 20, 1137, 49]; // for color svg
 
   constructor() { }
 

@@ -79,6 +79,7 @@ export class NodeSizeLegendComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if ('dataStream' in changes && this.dataStream) {
+      this.nodesData = [];
       this.updateStreamProcessor(false);
     } else if (Object.keys(changes).filter((k) => k.endsWith('Field'))) {
       this.updateStreamProcessor();

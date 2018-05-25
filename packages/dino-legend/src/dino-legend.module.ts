@@ -5,8 +5,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
 
-import { ScienceMapColorLegendComponent } from './science-map-color-legend/science-map-color-legend.component';
-import { SizeLegendComponent } from './size-legend/size-legend.component';
+import { ColorLegendComponent } from './color-legend/color-legend.component';
+import { NodeSizeLegendComponent } from './node-size-legend/node-size-legend.component';
+import { EdgeSizeLegendComponent } from './edge-size-legend/edge-size-legend.component';
+
+import { LegendDataService } from './shared/legend-data.service';
 
 @NgModule({
   imports: [
@@ -17,12 +20,15 @@ import { SizeLegendComponent } from './size-legend/size-legend.component';
     MatGridListModule
   ],
   exports: [
-    ScienceMapColorLegendComponent,
-    SizeLegendComponent
+    ColorLegendComponent,
+    NodeSizeLegendComponent,
+    EdgeSizeLegendComponent
   ],
   declarations: [
-    ScienceMapColorLegendComponent, 
-    SizeLegendComponent
-  ]
+    ColorLegendComponent, 
+    NodeSizeLegendComponent,
+    EdgeSizeLegendComponent
+  ],
+  providers: [LegendDataService]
 })
 export class DinoLegendModule { }

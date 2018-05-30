@@ -1,7 +1,7 @@
 // Turns a v2 field into a v1 ifield
 
-import { IField } from '../shared/field';
-import { BoundField } from './field';
+import { IField } from './field';
+import { BoundField } from '../fields';
 
 
 export class BoundFieldAdapter<T> implements IField<T> {
@@ -16,7 +16,7 @@ export class BoundFieldAdapter<T> implements IField<T> {
   }
 
   get datatype(): string {
-    return this.bfield.field.datatype;
+    return this.bfield.field.dataType;
   }
 
   get(item: any): T {

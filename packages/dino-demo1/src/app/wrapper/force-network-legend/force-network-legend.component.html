@@ -1,4 +1,4 @@
-<div class="legend-container">
+<div class="gradient-legend">
     <div class="gradient-title"><b>Node Color</b></div>
     <div id="gradient-encoding">{{colorLegendTitle}}</div>
     <div class="gradient-container">
@@ -11,35 +11,25 @@
         <div>{{minColorValueLabel}}</div>
       </div>
     </div>
-  <br>
-  </div>
-  <size-legend
-    [dataStream]="nodesData"
-    [nodeIdField]="nodeId"
-    [nodeSizeField]="nodeSize"
-    [title]="'Group #'"
-    [nodeSizeRange]="nodeSizeRange">
-  </size-legend>
-  <br>
-  <div class="gradient-title"><b>Edge Size</b></div>
-  <div class="edgeLegend">
-    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"  
-    width="300px" height="180px" viewBox="0 0 300 180" preserveAspectRatio="xMidYMid meet">
-        <text id="edgeLegendTitle" transform="matrix(1 0 0 1 10 17)" font-size="15px" >{{edgeLegendTitle}}</text>
-        <g transform="translate(10,-10)">
-            <g id="maxEdge">
-                <text transform="matrix(1 0 0 1 90 60)" text-anchor="start" font-size="13">{{maxEdgeLegendLabel}}</text>
-                <line x1="0" y1="54" x2="80" y2="54" stroke="#000000" opacity= "1"/>
-            </g>
-            <g id="midEdge">
-                <text transform="matrix(1 0 0 1 90 106)" text-anchor="start" font-size="13">{{midEdgeLegendLabel}}</text>
-                <line x1="0" y1="103" x2="80" y2="103"  stroke="#000000" opacity= "1"/>
-            </g>
-            <g id="minEdge">
-                <text transform="matrix(1 0 0 1 90 156)" text-anchor="start" font-size="13">{{minEdgeLegendLabel}}</text>
-                <line x1="0" y1="153" x2="80" y2="153"  stroke="#000000" opacity= "1"/>
-            </g>
-        </g>
-        <text id="note" transform="matrix(1 0 0 1 20 193)" fill="#444445" font-style="italic" font-size="12"></text>
-    </svg>
-  </div>
+</div>
+
+<div class="node-size-legend">
+    <node-size-legend
+        [dataStream]="nodeStream"
+        [nodeIdField]="fields.nodeIdField"
+        [nodeSizeField]="fields.nodeSizeField"
+        [title]="'Group #'"
+        [nodeSizeRange]="nodeSizeRange">
+    </node-size-legend>
+</div>
+
+<div class="edge-size-legend">
+    <edge-size-legend
+        [dataStream]="edgeStream"
+        [edgeIdField]="fields.edgeIdField"
+        [edgeSizeField]="fields.edgeSizeField"
+        [edgeLegendTitle]="edgeLegendTitle"
+        [edgeSizeRange]="edgeSizeRange">
+    </edge-size-legend>
+</div>
+ 

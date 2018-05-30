@@ -1,9 +1,16 @@
-<!-- <science-map-color-legend>
-</science-map-color-legend> -->
-
-<size-legend
-  [dataStream]="filteredSubdisciplines"
-  [nodeSizeField]="subdisciplineSize"
-  [nodeIdField]="subdisciplineId"
-  [title]="nodeSizeEncoding">
-</size-legend>
+<div class="color-legend">
+  <color-legend 
+    [shape]="nodeShape"
+    [colorEncodingTitle]="nodeColorEncoding"
+    [labelToColor]="nodeLabelToColor">
+  </color-legend>
+</div>
+  
+<div class="node-size-legend">
+  <node-size-legend
+    [dataStream]="filteredSubdisciplines"
+    [nodeSizeField]="subdisciplineSize"
+    [nodeIdField]="subdisciplineId"
+    [title]="nodeSizeEncoding">
+  </node-size-legend>
+</div>

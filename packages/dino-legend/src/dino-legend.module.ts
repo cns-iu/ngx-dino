@@ -9,8 +9,6 @@ import { ColorLegendComponent } from './color-legend/color-legend.component';
 import { NodeSizeLegendComponent } from './node-size-legend/node-size-legend.component';
 import { EdgeSizeLegendComponent } from './edge-size-legend/edge-size-legend.component';
 
-import { LegendDataService } from './shared/legend-data.service';
-
 @NgModule({
   imports: [
     CommonModule,
@@ -28,7 +26,6 @@ import { LegendDataService } from './shared/legend-data.service';
     ColorLegendComponent, 
     NodeSizeLegendComponent,
     EdgeSizeLegendComponent
-  ],
-  providers: [LegendDataService]
+  ]
 })
 export class DinoLegendModule { }

@@ -70,7 +70,6 @@ export class ScienceMapDataService {
 
     tooltipTextField: BoundField<number | string>
   ): this {
-    console.log('fetch data')
     this.subdisciplineProcessor = this.processorService.createProcessor<Subdiscipline & Datum<any>, any>(
       stream, 
       subdisciplineIdField,

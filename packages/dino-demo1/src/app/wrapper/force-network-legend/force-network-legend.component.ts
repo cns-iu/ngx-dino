@@ -4,11 +4,14 @@ import { BoundField, RawChangeSet, Datum, idSymbol } from '@ngx-dino/core';
 
 import { Observable } from 'rxjs/Observable';
 
+import { assign, mapValues, pick } from 'lodash';
+
 import * as d3Selection from 'd3-selection';
 import * as d3Array from 'd3-array';
 import { scaleLinear } from 'd3-scale';
 
-import { nodeIdField, nodeSizeField, edgeSizeField, nodeColorField} from '../shared/force-network/force-network-fields';
+import * as fields from '../shared/force-network/force-network-fields';
+
 import { ForceNetworkDataService } from '../shared/force-network/force-network-data.service';
 
 
@@ -19,49 +22,35 @@ import { ForceNetworkDataService } from '../shared/force-network/force-network-d
   providers: [ForceNetworkDataService]
 })
 export class ForceNetworkLegendComponent implements OnInit {
-  nodesData: Observable<RawChangeSet<any>>;
-  edgesData: Observable<RawChangeSet<any>>;
+  nodeStream: Observable<RawChangeSet<any>>;
+  edgeStream: Observable<RawChangeSet<any>>;
 
-  nodeId: BoundField<number | string>;
-  nodeSize: BoundField<number>;
-  edgeSize: BoundField<number>;
-  nodeColorEncoding: BoundField<number>;
-
-  gradient = '';
+  fields: {[key: string]: BoundField<any>};
 
   colorLegendTitle: string;
-  edgeLegendTitle: string;
 
   minColorValueLabel: string;
   midColorValueLabel: string;
   maxColorValueLabel: string;
 
-  maxEdgeLegendLabel: string;
-  midEdgeLegendLabel: string;
-  minEdgeLegendLabel: string;
-
-  maxEdge: number;
-  midEdge: number;
-  minEdge: number;
-
-  edgeSizeScale: any;
   nodeSizeScale: any;
-
   nodeSizeRange: number[];
 
+  gradient = '';
   nodes = [];
-  edges = [];
+  edgeSizeRange = [1, 8];
+  edgeLegendTitle = 'Absolute Distance';
 
-  constructor(private dataService: ForceNetworkDataService) { 
-    this.nodesData = this.dataService.nodesData;
+  constructor(private dataService: ForceNetworkDataService) {
+    this.nodeStream = this.dataService.nodeStream;
 
-    this.dataService.nodesData.subscribe((nodes: any) => {
+    this.dataService.nodeStream.subscribe((nodes: any) => {
       this.nodes = this.nodes.filter((e: any) => !nodes.remove
       .some((obj: Datum<any>) => obj[idSymbol] === e.id)).concat(nodes.insert);
    
       nodes.update.forEach((el) => {
         const index = this.nodes.findIndex((e) => e.id === el[1].id);
-        this.nodesData[index] = Object.assign(this.nodesData[index] || {}, <any>el[1]);
+        this.nodeStream[index] = Object.assign(this.nodeStream[index] || {}, <any>el[1]);
       });
 
       if (this.nodes.length) {
@@ -69,33 +58,19 @@ export class ForceNetworkLegendComponent implements OnInit {
       }
     });
 
-    
-    this.dataService.linksData.subscribe((edges: any) => {
-      this.edges = this.edges.filter((e: any) => !edges.remove
-        .some((obj: Datum<any>) => obj[idSymbol] === e.id)).concat(edges.insert);
-
-      edges.update.forEach((el) => {
-        const index = this.edges.findIndex((e) => e.id === el[1].id);
-        this.edges[index] = Object.assign(this.edges[index] || {}, <any>el[1]);
-      });
-
-      if (this.edges.length) {
-        this.updateEdgeLegendLabels(this.edges);
-        this.updateEdgeLegendSizes(this.edges);
-      }
-    });
-
+    this.edgeStream = this.dataService.edgeStream;
   }
 
   ngOnInit() {
+    const combinedFields = assign({}, fields, pick(this.dataService, [
+      'nodeIdField', 'nodeSizeField', 'nodeColorField',
+      'edgeIdField', 'edgeSizeField'
+    ]));
+    
+    this.fields = mapValues(combinedFields, (f: any) => f.getBoundField());
+
     this.colorLegendTitle = this.dataService.colorLegendEncoding;
     this.edgeLegendTitle = this.dataService.edgeLegendEncoding;
-    
-    // not user facing
-    this.nodeId = nodeIdField.getBoundField('id');
-    this.nodeSize = nodeSizeField.getBoundField('size');
-    this.edgeSize = edgeSizeField.getBoundField('edgeSize');
-    this.nodeColorEncoding = nodeColorField.getBoundField('color');
 
     this.minColorValueLabel = '';
     this.midColorValueLabel = '';
@@ -106,29 +81,9 @@ export class ForceNetworkLegendComponent implements OnInit {
     this.nodeSizeRange = this.dataService.nodeSizeRange;
   }
 
-  updateEdgeLegendLabels(edges: any[]) {
-    this.maxEdge = Math.round(d3Array.max(edges, (d: any) => this.edgeSize.get(d)));
-    this.minEdge = Math.round(d3Array.min(edges, (d: any) => this.edgeSize.get(d)));
-    this.midEdge = Math.round((this.maxEdge + this.minEdge) / 2);
-
-    this.maxEdgeLegendLabel = (!isNaN(this.maxEdge)) ? this.maxEdge.toString() : '';
-    this.midEdgeLegendLabel = (!isNaN(this.midEdge)) ? this.midEdge.toString() : '';
-    this.minEdgeLegendLabel = (!isNaN(this.minEdge)) ? this.minEdge.toString() : '';
-  }
-
-  updateEdgeLegendSizes(edges: any[]) {
-    this.edgeSizeScale = scaleLinear()
-    .domain([0, d3Array.max(edges, (d: any) => this.edgeSize.get(d))])
-    .range(this.dataService.edgeSizeRange);
-
-    d3Selection.select('#maxEdge').select('line').attr('stroke-width', this.edgeSizeScale(this.maxEdge));
-    d3Selection.select('#midEdge').select('line').attr('stroke-width', this.edgeSizeScale(this.midEdge));
-    d3Selection.select('#minEdge').select('line').attr('stroke-width', this.edgeSizeScale(this.minEdge));
-  }
-
   updateColorLegendLabels(nodes: any[]) {
-    const maxColorValue = Math.round(d3Array.max(nodes, (d: any) => this.nodeColorEncoding.get(d)));
-    const minColorValue = Math.round(d3Array.min(nodes, (d: any) => this.nodeColorEncoding.get(d)));
+    const maxColorValue = Math.round(d3Array.max(nodes, (d: any) => this.fields.nodeColorField.get(d)));
+    const minColorValue = Math.round(d3Array.min(nodes, (d: any) => this.fields.nodeColorField.get(d)));
     const midColorValue = Math.round((maxColorValue + minColorValue) / 2);
    
     this.maxColorValueLabel = (!isNaN(maxColorValue)) ? maxColorValue.toString() : '';

@@ -3,18 +3,10 @@ import { BoundField, RawChangeSet } from '@ngx-dino/core';
 
 import { Observable } from 'rxjs/Observable';
 
-import {
-  nodeIdField,
-  nodeSizeField,
-  nodeColorField,
-  nodeLabelField,
+import { assign, mapValues, pick } from 'lodash';
 
-  edgeSourceField,
-  edgeTargetField,
-  edgeSizeField,
+import * as fields from '../shared/force-network/force-network-fields';
 
-  tooltipTextField
-} from '../shared/force-network/force-network-fields';
 import { ForceNetworkDataService } from '../shared/force-network/force-network-data.service';
 
 @Component({
@@ -28,16 +20,10 @@ export class ForceNetworkComponent implements OnInit {
   @Input() height = window.innerHeight;
   @Input() width = window.innerWidth;
 
-  nodesData: Observable<RawChangeSet<any>>;
-  nodeId: BoundField<string>;
-  nodeSize: BoundField<number>;
-  nodeColor: BoundField<number>;
-  nodeLabel: BoundField<string>;
-  
-  edgesData: Observable<RawChangeSet<any>>;
-  edgeSource: BoundField<string>;
-  edgeTarget: BoundField<string>;
-  edgeSize: BoundField<number>;
+  fields: {[key: string]: BoundField<any>};
+
+  nodeStream: Observable<RawChangeSet<any>>;
+  edgeStream: Observable<RawChangeSet<any>>;
 
   tooltipText: BoundField<number|string>;
 
@@ -50,21 +36,18 @@ export class ForceNetworkComponent implements OnInit {
   enableTooltip = true;
 
   constructor(private dataService: ForceNetworkDataService) { 
-    this.nodesData = this.dataService.nodesData;
-    this.edgesData = this.dataService.linksData;
+    this.nodeStream = this.dataService.nodeStream;
+    this.edgeStream = this.dataService.edgeStream;
    }
 
   ngOnInit() {
-    this.nodeId = nodeIdField.getBoundField();
-    this.nodeSize = nodeSizeField.getBoundField();
-    this.nodeColor = nodeColorField.getBoundField();
-    this.nodeLabel = nodeLabelField.getBoundField();
-  
-    this.edgeSource = edgeSourceField.getBoundField();
-    this.edgeTarget = edgeTargetField.getBoundField();
-    this.edgeSize = edgeSizeField.getBoundField();
-
-    this.tooltipText = tooltipTextField.getBoundField();
+    const combinedFields = assign({}, fields, pick(this.dataService, [
+      'nodeIdField', 'nodeSizeField', 'nodeColorField', 'nodeLabelField',
+      'edgeSourceField', 'edgeTargetField', 'edgeSizeField',
+      'tooltipTextField'
+    ]));
+    
+    this.fields = mapValues(combinedFields, (f: any) => f.getBoundField());
     
     this.nodeColorRange = this.dataService.nodeColorRange;
     this.nodeSizeRange = this.dataService.nodeSizeRange

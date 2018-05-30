@@ -1,5 +1,8 @@
 import { Operator, simpleField } from '@ngx-dino/core';
-import '@ngx-dino/core/src/v2/operators/add/common';
+import { access } from '@ngx-dino/core/src/v2/operators/methods/extracting/access';
+import { combine } from '@ngx-dino/core/src/v2/operators/methods/grouping/combine';
+import { chain } from '@ngx-dino/core/src/v2/operators/methods/grouping/chain';
+import { map } from '@ngx-dino/core/src/v2/operators/methods/transforming/map';
 
 export const nodeSizeField = simpleField<number>({
   bfieldId: 'size',
@@ -27,6 +30,14 @@ export const nodeLabelField = simpleField<string>({
   label: 'Node Label',
 
   operator: Operator.access('id')
+});
+
+export const edgeIdField = simpleField({
+  label: 'Edge Id',
+  operator: chain(combine({
+    source: access('source'),
+    target: access('target')
+  }), map(({source, target}) => `${source}|${target}`))
 });
 
 export const edgeSourceField = simpleField<string>({

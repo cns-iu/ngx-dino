@@ -20,6 +20,7 @@ import { LegendDataService } from '../shared/legend-data.service';
   selector: 'edge-size-legend',
   templateUrl: './edge-size-legend.component.html',
   styleUrls: ['./edge-size-legend.component.sass'],
+  providers: [LegendDataService]
 })
 
 export class EdgeSizeLegendComponent implements OnInit, OnChanges {

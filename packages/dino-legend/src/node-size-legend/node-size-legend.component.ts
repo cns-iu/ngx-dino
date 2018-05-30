@@ -21,7 +21,8 @@ import  { LegendDataService } from '../shared/legend-data.service';
 @Component({
   selector: 'node-size-legend',
   templateUrl: './node-size-legend.component.html',
-  styleUrls: ['./node-size-legend.component.sass']
+  styleUrls: ['./node-size-legend.component.sass'],
+  providers: [LegendDataService]
 })
 export class NodeSizeLegendComponent implements OnInit, OnChanges {
   @Input() dataStream: Observable<RawChangeSet<any>>;
@@ -29,7 +30,7 @@ export class NodeSizeLegendComponent implements OnInit, OnChanges {
   @Input() nodeSizeField: BoundField<string>;
   @Input() nodeIdField: BoundField<number | string>;
 
-  @Input() title: string = 'Weighted Journal Score';
+  @Input() title: string;
   
   @Input()  nodeSizeRange = [5, 15];
 
@@ -61,6 +62,7 @@ export class NodeSizeLegendComponent implements OnInit, OnChanges {
       });
 
       if (this.nodesData.length) {
+        console.log(this.nodesData)
         this.max = Math.round(parseInt(d3Array.max(this.nodesData, (d: any) => d.size)));
         this.min = Math.round(parseInt(d3Array.min(this.nodesData, (d: any) => d.size)));
         this.mid = Math.round((this.max + this.min) / 2);

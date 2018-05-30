@@ -3,7 +3,10 @@ import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subscription } from 'rxjs/Subscription';
 
-import { Changes, FieldProcessor, BoundField, CachedChangeStream, DataProcessor, Datum, ChangeSet, DataProcessorService, RawChangeSet } from '@ngx-dino/core';
+import {
+  BoundField, CachedChangeStream, DataProcessor, Datum, ChangeSet,
+  DataProcessorService, RawChangeSet
+} from '@ngx-dino/core';
 import { Node, Link, Graph } from './network';
 
 @Injectable()
@@ -42,7 +45,7 @@ export class ForceNetworkDataService {
     labelSizeField?: BoundField<string>
   ): this {
     this.nodeProcessor = this.processorService.createProcessor<Node & Datum<any>, any>(
-      nodeStream, 
+      nodeStream,
       nodeIdField,
       {
         id: nodeIdField,

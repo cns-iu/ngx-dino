@@ -9,13 +9,11 @@ import {
   SimpleChanges
 } from '@angular/core';
 
-import { 
-  Changes,
-  StreamCache, 
-  BoundField, 
-  RawChangeSet, 
-  Datum, 
-  idSymbol 
+import {
+  BoundField,
+  RawChangeSet,
+  Datum,
+  idSymbol
 } from '@ngx-dino/core';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -41,39 +39,39 @@ export class ScienceMapComponent implements OnInit, OnChanges {
   @Input() margin = { top: 20, right: 15, bottom: 60, left: 60 };
   @Input() width = window.innerWidth - this.margin.left - this.margin.right; // initializing width for map container
   @Input() height = window.innerHeight - this.margin.top - this.margin.bottom; // initializing height for map container
- 
+
   @Input() subdisciplineSizeField: BoundField<string>;
   @Input() subdisciplineIdField: BoundField<number|string>;
- 
+
   @Input() dataStream: Observable<RawChangeSet<any>>;
- 
+
   @Input() nodeSizeRange = [2, 18];
   @Input() minPositionX = 0;
   @Input() minPositionY = -20;
-  
+
   @Input() enableTooltip = false;
   @Input() tooltipTextField: BoundField<number|string>;
-  
+
   @Output() nodeClicked = new EventEmitter<any>();
 
   private parentNativeElement: any;
   private svgContainer: d3Selection.Selection<d3Selection.BaseType, any, HTMLElement, undefined>;
-  
+
   private nodes: any;
   private defaultNodeSize = 4;
   private labels: any;
-  
+
   private links: any;
-  
+
   private translateXScale: any;
   private translateYScale: any;
   private nodeSizeScale: any;
-  
+
   private subdIdToPosition: any;
   private subdIdToDisc: any;
   private discIdToColor: any;
   private subdIdToName: any;
-  
+
   private tooltipDiv: any;
   private data: any[];
   // private zoom = d3Zoom.zoom().scaleExtent([1, 10]).on('zoom', this.zoomed);
@@ -92,7 +90,7 @@ export class ScienceMapComponent implements OnInit, OnChanges {
     this.dataService.subdisciplines.subscribe((data) => {
       this.data = this.data.filter((e: Subdiscipline) => !data.remove
         .some((obj: Datum<Subdiscipline>) => obj[idSymbol] === e.id)).concat(data.insert.toArray() as any);
-     
+
       data.update.forEach((el) => {
         const index = this.data.findIndex((e) => e.id === el[1].id);
         this.data[index] = Object.assign(this.data[index] || {}, <Subdiscipline>el[1]);
@@ -120,7 +118,7 @@ export class ScienceMapComponent implements OnInit, OnChanges {
 
     if (!update) {
       this.dataService.fetchData(
-        this.dataStream, 
+        this.dataStream,
 
         this.subdisciplineIdField,
         this.subdisciplineSizeField,
@@ -179,7 +177,7 @@ export class ScienceMapComponent implements OnInit, OnChanges {
       .attr('stroke', 'black')
       .attr('x', (d) => this.translateXScale(this.dataService.subdIdToPosition[d[idSymbol]].x))
       .attr('y', (d) => this.translateYScale(this.dataService.subdIdToPosition[d[idSymbol]].y))
-      .attr('transform', (d) => 'translate(' 
+      .attr('transform', (d) => 'translate('
         + this.translateXScale(this.dataService.subdIdToPosition[d[idSymbol]].x)
         + ',' + this.translateYScale(this.dataService.subdIdToPosition[d[idSymbol]].y) + ')')
       .on('click', (d) => this.nodeClicked.emit(this.dataForSubdiscipline(<number>d[idSymbol])))
@@ -192,7 +190,7 @@ export class ScienceMapComponent implements OnInit, OnChanges {
     strokeWidth: number) {
     const numUnclassified = this.data.filter((entry) => entry[idSymbol] == -1);
     const numMultidisciplinary = this.data.filter((entry) => entry[idSymbol] == -2);
-        
+
     this.svgContainer.selectAll('.underlyingLabels')
       .append('g')
       .data<any>(this.dataService.underlyingScimapData.labels).enter()
@@ -252,14 +250,14 @@ export class ScienceMapComponent implements OnInit, OnChanges {
           return true;
         }
       });
-    
+
     selection.transition().attr('r', (d: any) => 2 * this.nodeSizeScale(d.size || 2 * this.defaultNodeSize));
-    
+
     this.tooltipDiv.transition().style('opacity', .7)
-        .style('visibility', 'visible');		
-    
+        .style('visibility', 'visible');
+
     this.tooltipDiv.html(this.dataService.subdIdToName[tooltipText].subd_name) // TODO generic content needed
-        .style('left', d3Selection.event.x - 50 + 'px')		
+        .style('left', d3Selection.event.x - 50 + 'px')
         .style('top',  d3Selection.event.y - 40+ 'px');
   }
 

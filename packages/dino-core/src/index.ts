@@ -5,6 +5,3 @@ export { DinoCoreModule } from './dino-core.module';
 export * from './operators';
 export * from './fields';
 export * from './processing';
-
-import * as BackCompat from './backward-compatability';
-export { BackCompat };

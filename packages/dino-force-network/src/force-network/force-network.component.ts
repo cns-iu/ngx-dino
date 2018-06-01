@@ -45,6 +45,7 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
   @Input() nodeLabelField: BoundField<string>;
   @Input() labelSizeField: string = 'total_amount'; // TODO Field
   
+  @Input() linkIdField: BoundField<string>;
   @Input() linkSourceField: BoundField<string>; 
   @Input() linkTargetField: BoundField<string>;
   @Input() linkSizeField: BoundField<number>;
@@ -94,13 +95,11 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
   private linksData = [];
 
   constructor(element: ElementRef, private dataService: ForceNetworkDataService) {
-    this.parentNativeElement = element.nativeElement; // to get native parent element of this component
+    // to get native parent element of this component
+    this.parentNativeElement = element.nativeElement;
   }
 
   ngOnInit() {
-    this.setScales();
-    this.initVisualization();
-  
     this.dataService.nodes.subscribe((data) => {
       this.nodesData = this.nodesData.filter((e: Node) => !data.remove
         .some((obj: Datum<Node>) => obj[idSymbol] === e.id)).concat(data.insert.toArray());
@@ -137,8 +136,18 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
       this.nodesData = [];
       this.linksData = [];
       this.updateStreamProcessor(false);
-    } else if (Object.keys(changes).filter((k) => k.endsWith('Field'))) {
+    } else if (Object.keys(changes).filter((k) => k.endsWith('Field')).length) {
       this.updateStreamProcessor();
+    } 
+    
+    if ('width' in changes) {// if width changes, redraw visualization
+      if (this.svgContainer) {
+        this.svgContainer.remove();
+      }
+      
+      this.setScales();
+      this.initVisualization();
+      this.drawPlots();
     }
   }
 
@@ -156,6 +165,7 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
         this.nodeColorField,
         this.nodeLabelField,
 
+        this.linkIdField,
         this.linkSourceField,
         this.linkTargetField,
         this.linkSizeField,
@@ -218,7 +228,12 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
 
     this.svgContainer = container.append('svg')
       .attr('preserveAspectRatio', 'xMidYMid slice')
-      .attr('viewBox', '' + this.minPositionX + ' ' + this.minPositionY + ' ' + (this.width) + ' ' + (this.height))
+      .attr('viewBox', ' ' 
+        + this.minPositionX + ' ' 
+        + this.minPositionY + ' ' 
+        + (this.width) + ' ' 
+        + (this.height)
+      )
       .classed('svg-content-responsive', true)
       .attr('class', 'container');
     
@@ -237,11 +252,8 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
     let g = this.svgContainer.append('g');
     this.links = g.append('g').attr('stroke', '#000').attr('stroke-width', 1.5).selectAll('.link');
     this.nodes = g.append('g').attr('stroke', '#000').selectAll('.node');
-    // this.labels = g.selectAll('.label');
-    
+
     this.tooltipDiv = container.select('.tooltip');
-    
-    this.drawPlots();
   }
 
   drawPlots() {
@@ -260,7 +272,7 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
     this.nodes.on('mouseover', (d) => this.onMouseOver(d[idSymbol]));
     this.nodes.on('mouseout', (d) => this.onMouseOut(d[idSymbol]));
 
-    this.links = this.links.data(this.linksData, (d) => d.source + '-' + d.target);
+    this.links = this.links.data(this.linksData, (d) => d.id);
     this.links.transition().attr('stroke-width', (d) => this.linkSizeScale(d.size))
       .attr('stroke', (d) => this.linkColorScale(d[this.linkColorField]) === undefined ? 'black' : this.linkColorScale(d[this.linkColorField]))
       .attr('opacity', (d) => (d) => isNaN(this.linkOpacityScale(d[this.linkOpacityField])) ? 1 : this.linkOpacityScale(d[this.linkOpacityField]));
@@ -302,7 +314,6 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
       .attr('y1', (d) => d.source.y)
       .attr('x2', (d) => d.target.x)
       .attr('y2', (d) => d.target.y);
-    
     }
   
   onMouseOver(targetID: any) {

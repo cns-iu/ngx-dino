@@ -33,6 +33,7 @@ export const nodeLabelField = simpleField<string>({
 });
 
 export const edgeIdField = simpleField({
+  bfieldId: 'edgeId',
   label: 'Edge Id',
   operator: chain(combine({
     source: access('source'),

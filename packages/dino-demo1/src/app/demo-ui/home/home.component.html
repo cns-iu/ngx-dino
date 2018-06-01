@@ -27,28 +27,24 @@
   <mat-sidenav-content>
     <mat-tab-group #tabs>
       <mat-tab label="Science Map">
-        <app-science-map *ngIf="openState"
-          [width]="narrowWidth"
-          [height]="height">
-        </app-science-map>
-        <app-science-map *ngIf="!openState"
-          [width]="wideWidth"
+        <app-science-map
+          [width]="openState ? narrowWidth : wideWidth"
           [height]="height">
         </app-science-map>
       </mat-tab>
+
       <mat-tab label="Force Network">
-        <app-force-network *ngIf="openState"
-          [width]="narrowWidth"
-          [height]="height">
-        </app-force-network>
-        <app-force-network *ngIf="!openState"
-          [width]="wideWidth"
+        <app-force-network
+          [width]="openState ? narrowWidth : wideWidth"
           [height]="height">
         </app-force-network>
       </mat-tab>
+
       <mat-tab label="Scatterplot">
-        <app-scatterplot></app-scatterplot>
+        <app-scatterplot>
+        </app-scatterplot>
       </mat-tab>
+
       <mat-tab label="Geomap">
         <app-geomap
           [width]="openState ? narrowWidth : wideWidth"

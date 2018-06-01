@@ -31,6 +31,7 @@ export class ForceNetworkDataService {
     nodeColorField: BoundField<number>,
     nodeLabelField: BoundField<string>,
 
+    linkIdField: BoundField<number | string>,
     linkSourceField: BoundField<number | string>,
     linkTargetField: BoundField<number | string>,
     linkSizeField: BoundField<number>,
@@ -58,6 +59,7 @@ export class ForceNetworkDataService {
       linkStream,
       linkSourceField,
       {
+        id: linkIdField,
         source: linkSourceField,
         target: linkTargetField,
         size: linkSizeField

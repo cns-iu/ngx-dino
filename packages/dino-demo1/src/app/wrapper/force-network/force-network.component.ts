@@ -43,7 +43,7 @@ export class ForceNetworkComponent implements OnInit {
   ngOnInit() {
     const combinedFields = assign({}, fields, pick(this.dataService, [
       'nodeIdField', 'nodeSizeField', 'nodeColorField', 'nodeLabelField',
-      'edgeSourceField', 'edgeTargetField', 'edgeSizeField',
+      'edgeIdfield', 'edgeSourceField', 'edgeTargetField', 'edgeSizeField',
       'tooltipTextField'
     ]));
     

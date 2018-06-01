@@ -49,7 +49,7 @@ export class ScienceMapComponent implements OnInit, OnChanges {
  
   @Input() nodeSizeRange = [2, 18];
   @Input() minPositionX = 0;
-  @Input() minPositionY = -20;
+  @Input() minPositionY = 0;
   
   @Input() enableTooltip = false;
   @Input() tooltipTextField: BoundField<number|string>;
@@ -83,12 +83,6 @@ export class ScienceMapComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.setScales();
-    this.initVisualization();
-    this.createEdges();
-    this.createLabels('white', 3);
-    this.createLabels('black', 1);
-
     this.dataService.subdisciplines.subscribe((data) => {
       this.data = this.data.filter((e: Subdiscipline) => !data.remove
         .some((obj: Datum<Subdiscipline>) => obj[idSymbol] === e.id)).concat(data.insert.toArray() as any);
@@ -107,9 +101,21 @@ export class ScienceMapComponent implements OnInit, OnChanges {
     if ('dataStream' in changes && this.dataStream) {
       this.data = [];
       this.updateStreamProcessor(false);
-    } else if (Object.keys(changes).filter((k) => k.endsWith('Field'))) {
+    } else if (Object.keys(changes).filter((k) => k.endsWith('Field')).length) {
       this.updateStreamProcessor();
       // updateField(....)
+    }
+    if ('width' in changes) { // if width changes, redraw visualization
+      if (this.svgContainer) {
+        this.svgContainer.remove();
+      }
+
+      this.setScales();
+      this.initVisualization();
+      this.createEdges();
+      this.createLabels('white', 3);
+      this.createLabels('black', 1);
+      this.createNodes();
     }
   }
 
@@ -152,8 +158,13 @@ export class ScienceMapComponent implements OnInit, OnChanges {
       .select('.scienceMapContainer');
 
     this.svgContainer = container.append('svg')
-      .attr('preserveAspectRatio', 'xMidYMid slice')
-      .attr('viewBox', ''+ this.minPositionX +' '+ this.minPositionY +' ' + (this.width) + ' ' + (this.height))
+      .attr('preserveAspectRatio', 'xMinYMax slice')
+      .attr('viewBox', ' ' 
+        + this.minPositionX + ' '
+        + this.minPositionY + ' ' 
+        + (this.width) + ' ' 
+        + (this.height)
+      )
       .classed('svg-content-responsive', true)
       .attr('class', 'scienceMapSvgcontainer');
         // .call(this.zoom);

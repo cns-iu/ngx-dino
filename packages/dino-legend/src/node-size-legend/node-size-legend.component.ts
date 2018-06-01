@@ -62,7 +62,6 @@ export class NodeSizeLegendComponent implements OnInit, OnChanges {
       });
 
       if (this.nodesData.length) {
-        console.log(this.nodesData)
         this.max = Math.round(parseInt(d3Array.max(this.nodesData, (d: any) => d.size)));
         this.min = Math.round(parseInt(d3Array.min(this.nodesData, (d: any) => d.size)));
         this.mid = Math.round((this.max + this.min) / 2);

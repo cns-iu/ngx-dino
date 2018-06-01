@@ -1,5 +1,13 @@
 {
 	"private": true,
+	"license": "MIT",
+	"scripts": {
+		"build": "lerna run build-demo --scope=dino-demo1",
+		"start": "cd packages/dino-demo1 && yarn start",
+		"setup": "npm install -g yarn lerna @angular/cli && yarn update",
+		"update": "lerna bootstrap && lerna link",
+		"clean": "lerna clean --yes"
+	},
 	"devDependencies": {
 		"lerna": "^2.9.0"
 	},

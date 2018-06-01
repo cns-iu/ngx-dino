@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { Map } from 'immutable';
 
-import { access } from '@ngx-dino/core/src/v2/operators/methods/extracting/access';
+import { access } from '@ngx-dino/core/src/operators/methods/extracting/access';
 import {
   simpleField, BoundField,
   Datum, RawChangeSet, ChangeSet,

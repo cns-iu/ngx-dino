@@ -11,7 +11,7 @@ export class ScienceMapDataService {
   private subdisciplineChange = new BehaviorSubject<RawChangeSet<any>>(new RawChangeSet());
   filteredSubdisciplines = this.subdisciplineChange.asObservable();
 
-  constructor() { 
+  constructor() {
     dummyData.data.forEach((element, i) => {
       setTimeout(() => {
          this.subdisciplineChange.next(RawChangeSet.fromArray([element]));

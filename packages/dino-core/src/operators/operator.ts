@@ -1,34 +1,42 @@
 import { Collection } from 'immutable';
 
-import { BaseOperator } from './base-operator';
+import { State, BaseOperator, BaseCache } from './base/base';
+import { NoopCache } from './caches/noop-cache';
 
 
 export class Operator<In, Out> extends BaseOperator<In, Out> {
-  private cachedGetter: (data: In) => Out = undefined;
+  private cachedGetter: (data: In) => Out;
 
-  constructor(private readonly wrapped: BaseOperator<In, Out>) {
-    super(wrapped.cachable);
+  constructor(readonly wrapped: BaseOperator<In, Out>) {
+    super(wrapped.flags);
 
+    // No nesting wrapped operators
     if (wrapped instanceof Operator) {
-      return wrapped; // Prevent wrapping a wrapper
+      return wrapped;
     }
   }
 
+
   // Override base class methods
-  protected getImpl(data: In): Out {
-    return this.wrapped.get(data);
+  protected getImpl(data: In, cache: BaseCache): Out {
+    return (this.wrapped as any).getImpl(data, cache);
   }
 
-  protected getStateImpl(): Collection<any, any> {
-    return this.wrapped.getState();
+  protected getStateImpl(): State {
+    return (this.wrapped as any).getStateImpl();
   }
 
-  unwrap(): BaseOperator<In, Out> {
-    return this.wrapped;
+  get(data: In, cache: BaseCache = new NoopCache()): Out {
+    return this.wrapped.get(data, cache);
   }
 
-  // Binding
+
+  // Binding for Operator#get. Makes it easier to use as a callback i.e.
+  // [...].map(op.getter)
   get getter(): (data: In) => Out {
-    return this.cachedGetter || (this.cachedGetter = this.get.bind(this));
+    if (this.cachedGetter === undefined) {
+      this.cachedGetter = (data) => this.get(data);
+    }
+    return this.cachedGetter;
   }
 }

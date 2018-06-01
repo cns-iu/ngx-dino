@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
 import { defaultLogLevel } from '../shared/log-level';
-import { map } from '@ngx-dino/core/src/v2/operators/methods/transforming/map';
+import { map } from '@ngx-dino/core/src/operators/methods/transforming/map';
 import { simpleField, BoundField, RawChangeSet, ChangeSet } from '@ngx-dino/core';
 import { vega, makeChangeSet } from '@ngx-dino/vega';
 import { State } from '../shared/state';

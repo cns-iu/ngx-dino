@@ -1,5 +1,5 @@
 import { Operator, simpleField } from '@ngx-dino/core';
-import '@ngx-dino/core/src/v2/operators/add/common';
+import '@ngx-dino/core/src/operators/add/common';
 
 export const subdisciplineSizeField = simpleField<number>({
   bfieldId: 'size',

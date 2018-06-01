@@ -13,7 +13,7 @@
     "../../dino-*/**/index.d.ts",
     "../node_modules",
     "../../../packages/dino-*/node_modules/**/*.ts",
-    "../../../packages/dino-core/src/v2/test-*/**/*.ts"
+    "../../../packages/dino-core/src/test-*/**/*.ts"
   ],
   "include": [
     "../../dino-*/**/*.ts"

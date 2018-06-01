@@ -11,14 +11,14 @@
     mode="side"
     [(opened)]="openState">
 
-      <div [hidden]="tabIndex === 4" class="sidenavLegend">
+      <div class="sidenavLegend">
         <p class="sidenavTitle">Data Simulator</p>
         <hr>
         <p class="sidenavTitle">Legend</p>
         <hr>
           <app-science-map-legend [hidden]="tabIndex !== 0">
           </app-science-map-legend>
-          
+
           <app-force-network-legend [hidden]="tabIndex !== 1">
           </app-force-network-legend>
       </div>
@@ -54,6 +54,9 @@
           [width]="openState ? narrowWidth : wideWidth"
           [height]="height">
         </app-geomap>
+      </mat-tab>
+      <mat-tab label="Datatable">
+        <app-datatable></app-datatable>
       </mat-tab>
     </mat-tab-group>
 </mat-sidenav-content>

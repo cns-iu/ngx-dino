@@ -31,6 +31,7 @@ export class ScienceMapComponent implements OnInit {
   margin = { top: 0, bottom: 0, left: 0, right: 0 };
   minPositionX = 0; // viewbox min-x position in pixels
   minPositionY = -15; // viewbox min-y position in pixels
+  autoresize = true;
   
   enableTooltip = true;
   

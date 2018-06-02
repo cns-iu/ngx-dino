@@ -6,7 +6,8 @@ import {
   Output,
   EventEmitter,
   OnChanges,
-  SimpleChanges
+  SimpleChanges,
+  ViewChild
 } from '@angular/core';
 
 import {
@@ -39,26 +40,28 @@ export class ScienceMapComponent implements OnInit, OnChanges {
   @Input() margin = { top: 20, right: 15, bottom: 60, left: 60 };
   @Input() width = window.innerWidth - this.margin.left - this.margin.right; // initializing width for map container
   @Input() height = window.innerHeight - this.margin.top - this.margin.bottom; // initializing height for map container
+  @Input() autoresize = false;
 
   @Input() subdisciplineSizeField: BoundField<string>;
   @Input() subdisciplineIdField: BoundField<number|string>;
 
   @Input() dataStream: Observable<RawChangeSet<any>>;
 
+  @Input() enableTooltip = false;
+  @Input() tooltipTextField: BoundField<number|string>;
+
   @Input() nodeSizeRange = [2, 18];
   @Input() minPositionX = 0;
   @Input() minPositionY = -20;
 
-  @Input() enableTooltip = false;
-  @Input() tooltipTextField: BoundField<number|string>;
-
   @Output() nodeClicked = new EventEmitter<any>();
 
-  private parentNativeElement: any;
+  @ViewChild('scienceMapContainer') scienceMapElement: ElementRef;
+  
   private svgContainer: d3Selection.Selection<d3Selection.BaseType, any, HTMLElement, undefined>;
+  private parentNativeElement: any;
 
   private nodes: any;
-  private defaultNodeSize = 4;
   private labels: any;
 
   private links: any;
@@ -74,6 +77,12 @@ export class ScienceMapComponent implements OnInit, OnChanges {
 
   private tooltipDiv: any;
   private data: any[];
+
+  private defaultNodeSize = 4;
+
+  private elementWidth = 0;
+  private elementHeight = 0;
+  
   // private zoom = d3Zoom.zoom().scaleExtent([1, 10]).on('zoom', this.zoomed);
 
   constructor(element: ElementRef, private dataService: ScienceMapDataService) {
@@ -81,6 +90,12 @@ export class ScienceMapComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    this.setScales();
+    this.initVisualization();
+    this.createEdges();
+    this.createLabels('white', 3);
+    this.createLabels('black', 1);
+
     this.dataService.subdisciplines.subscribe((data) => {
       this.data = this.data.filter((e: Subdiscipline) => !data.remove
         .some((obj: Datum<Subdiscipline>) => obj[idSymbol] === e.id)).concat(data.insert.toArray() as any);
@@ -100,10 +115,28 @@ export class ScienceMapComponent implements OnInit, OnChanges {
       this.data = [];
       this.updateStreamProcessor(false);
     } else if (Object.keys(changes).filter((k) => k.endsWith('Field')).length) {
-      this.updateStreamProcessor();
+      this.updateStreamProcessor(); // TODO 
       // updateField(....)
     }
-    if ('width' in changes) { // if width changes, redraw visualization
+    if ((!this.autoresize) && (('width' in changes) || ('height' in changes))) {
+      this.resize(this.width, this.height);
+    }
+  }
+
+  ngDoCheck() {
+    if (this.autoresize && this.scienceMapElement && this.svgContainer) {
+      const width = this.scienceMapElement.nativeElement.clientWidth;
+      const height = window.innerHeight - 120;
+      
+      this.resize(width, height);
+    }
+  }
+
+  resize(width: number, height: number): void {
+    if (width !== this.elementWidth || height !== this.elementHeight) {
+      this.elementWidth = width;
+      this.elementHeight = height;
+
       if (this.svgContainer) {
         this.svgContainer.remove();
       }
@@ -137,11 +170,11 @@ export class ScienceMapComponent implements OnInit, OnChanges {
   setScales() {
     this.translateXScale = scaleLinear()
       .domain(d3Array.extent(this.dataService.underlyingScimapData.nodes, (d: any) => <number>d.x))
-      .range([0, this.width]);
+      .range([0, this.elementWidth]);
 
     this.translateYScale = scaleLinear()
       .domain(d3Array.extent(this.dataService.underlyingScimapData.nodes, (d: any) => <number>d.y))
-      .range([this.height, 0]);
+      .range([this.elementHeight, 0]);
 
     const nodeSizeScale = scaleLog()
       .domain(d3Array.extent(this.data, (d: any) => Math.max(1, parseInt(d.size))))
@@ -153,16 +186,11 @@ export class ScienceMapComponent implements OnInit, OnChanges {
   initVisualization() {
     // initializing svg container
     let container = d3Selection.select(this.parentNativeElement)
-      .select('.scienceMapContainer');
+      .select('.science-map-container');
 
     this.svgContainer = container.append('svg')
-      .attr('preserveAspectRatio', 'xMinYMax slice')
-      .attr('viewBox', ' ' 
-        + this.minPositionX + ' '
-        + this.minPositionY + ' ' 
-        + (this.width) + ' ' 
-        + (this.height)
-      )
+      .attr('width', this.elementWidth)
+      .attr('height', this.elementHeight)
       .classed('svg-content-responsive', true)
       .attr('class', 'scienceMapSvgcontainer');
         // .call(this.zoom);

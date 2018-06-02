@@ -3,11 +3,14 @@ import {
   OnInit, OnChanges,
   SimpleChanges, EventEmitter
 } from '@angular/core';
+
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/map';
 
-import { BoundField } from '@ngx-dino/core';
+import { isArray } from 'lodash';
 
+import { DatumId, BoundField, RawChangeSet } from '@ngx-dino/core';
 import { DataType } from '../shared/data-types';
 import { DatatableService } from '../shared/datatable.service';
 
@@ -18,13 +21,14 @@ import { DatatableService } from '../shared/datatable.service';
   styleUrls: ['./datatable.component.sass']
 })
 export class DatatableComponent implements OnInit, OnChanges {
-  @Input() data: any[] | Observable<any[]>;
+  @Input() dataStream: any[] | Observable<any[]> | Observable<RawChangeSet>;
+  @Input() idField: BoundField<DatumId>;
   @Input() fields: BoundField<DataType>[];
   @Output() rowClick: Observable<number> = new EventEmitter();
 
   dataSource: Observable<DataType[][]>;
   get columns(): string[] {
-    return this.fields.map((f) => f.field.label);
+    return (this.fields || []).map((f) => f.field.label);
   }
 
   constructor(private service: DatatableService) { }
@@ -33,20 +37,22 @@ export class DatatableComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if ('data' in changes && this.data !== undefined) {
-      this.updateDataSource();
+    const props = ['dataStream', 'idField', 'fields'];
+    if (props.some((p) => (p in changes)) && props.every((p) => this[p])) {
+      const stream = this.normalizeDataStream();
+      this.dataSource = this.service.processData(
+        stream, this.idField, this.fields
+      );
     }
   }
 
-  private updateDataSource(): void {
-    let dataObservable: Observable<any[]>;
-
-    if (this.data instanceof Observable) {
-      dataObservable = this.data;
+  private normalizeDataStream(): Observable<RawChangeSet> {
+    if (isArray(this.dataStream)) {
+      return Observable.of(this.dataStream).map(RawChangeSet.fromArray);
     } else {
-      dataObservable = Observable.of(this.data || []);
+      return (this.dataStream as Observable<any>).map((data) => {
+        return isArray(data) ? RawChangeSet.fromArray(data) : data;
+      });
     }
-
-    this.dataSource = this.service.makeDataSource(dataObservable, this.fields);
   }
 }

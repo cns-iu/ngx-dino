@@ -1,4 +1,8 @@
-import { ElementRef, Component, Input, OnInit, OnDestroy, OnChanges } from '@angular/core';
+import {
+  Component, Input, ViewChild,
+  OnInit, AfterViewInit, OnChanges, DoCheck, OnDestroy,
+  ElementRef
+ } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -20,14 +24,15 @@ import * as geomapSpec from '../shared/spec.json';
   styleUrls: ['./geomap.component.sass'],
   providers: [GeomapDataService]
 })
-export class GeomapComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() width: number = 900;
-  @Input() height: number = 560;
+export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoCheck, OnDestroy {
+  @Input() width: number;
+  @Input() height: number;
+  @Input() autoresize = true;
 
   @Input() stateDataStream: Observable<RawChangeSet>;
   @Input() stateField: BoundField<string>;
   @Input() stateColorField: BoundField<string>;
-  @Input() stateDefaultColor: string = '#bebebe';
+  @Input() stateDefaultColor = '#bebebe';
 
   @Input() pointDataStream: Observable<RawChangeSet>;
   @Input() pointIdField: BoundField<string>;
@@ -38,14 +43,14 @@ export class GeomapComponent implements OnInit, OnDestroy, OnChanges {
   @Input() strokeColorField: BoundField<string>;
   @Input() pointTitleField: BoundField<string>;
 
+  @ViewChild('mountPoint') mountPoint: ElementRef;
+
   private stateIdField: BoundField<number>;
-  private nativeElement: any;
   private view: any = null;
   private statesSubscription: Subscription;
   private pointSubscription: Subscription;
 
   constructor(element: ElementRef, private dataService: GeomapDataService) {
-    this.nativeElement = element.nativeElement;
     this.stateIdField = simpleField({
       label: 'State ANSI Id',
       operator: map((data: any): number => {
@@ -55,29 +60,30 @@ export class GeomapComponent implements OnInit, OnDestroy, OnChanges {
     }).getBoundField();
   }
 
-  ngOnInit() {
+  ngOnInit() { }
+
+  ngAfterViewInit() {
     this.renderView(geomapSpec);
   }
 
   ngOnChanges(changes) {
     this.updateProcessor(changes);
 
-    if (this.view) {
-      let rerun = false;
-      if ('width' in changes || 'height' in changes) {
-        this.view.signal('width', this.width);
-        this.view.signal('height', this.height);
-        rerun = true;
-      }
+    const signals = {stateDefaultColor: this.stateDefaultColor};
+    if (!this.autoresize) {
+      Object.assign(signals, {width: this.width, height: this.height});
+    }
+    this.updateSignals(signals);
+  }
 
-      if ('stateDefaultColor' in changes && this.view) {
-        this.view.signal('stateDefaultColor', this.stateDefaultColor);
-        rerun = true;
-      }
-
-      if (rerun) {
-        this.view.run();
-      }
+  ngDoCheck(): void {
+    if (this.autoresize && this.mountPoint) {
+      const element = this.mountPoint.nativeElement;
+      const signals = {
+        width: element.clientWidth,
+        height: element.clientHeight - 4
+      };
+      this.updateSignals(signals);
     }
   }
 
@@ -134,16 +140,13 @@ export class GeomapComponent implements OnInit, OnDestroy, OnChanges {
 
     this.view = new vega.View(vega.parse(spec))
       .renderer('svg')
-      .initialize(this.nativeElement)
+      .initialize(this.mountPoint.nativeElement)
       .logLevel(defaultLogLevel)
       .hover()
       .insert('states', vega.read(us10m, {
         type: 'topojson',
         feature: 'states'
-      }))
-      .signal('width', this.width)
-      .signal('height', this.height)
-      .signal('stateDefaultColor', this.stateDefaultColor)
+      })).signal('stateDefaultColor', this.stateDefaultColor)
       .run();
 
     this.statesSubscription = this.dataService.states.subscribe((change: ChangeSet<State>) => {
@@ -164,6 +167,26 @@ export class GeomapComponent implements OnInit, OnDestroy, OnChanges {
     }
     if (this.view) {
       this.view.finalize();
+    }
+  }
+
+
+  private updateSignals(signals: {[name: string]: any}): void {
+    if (this.view) {
+      let rerun = false;
+      // tslint:disable:forin
+      for (const name in signals) {
+        const oldValue = this.view.signal(name);
+        const newValue = signals[name];
+        if (newValue !== oldValue) {
+          this.view.signal(name, newValue);
+          rerun = true;
+        }
+      }
+
+      if (rerun) {
+        this.view.run();
+      }
     }
   }
 }

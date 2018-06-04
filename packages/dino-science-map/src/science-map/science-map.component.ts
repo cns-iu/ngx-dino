@@ -126,7 +126,7 @@ export class ScienceMapComponent implements OnInit, OnChanges {
   ngDoCheck() {
     if (this.autoresize && this.scienceMapElement && this.svgContainer) {
       const width = this.scienceMapElement.nativeElement.clientWidth;
-      const height = window.innerHeight - 120;
+      const height = window.innerHeight - 120; // FIXME 
       
       this.resize(width, height);
     }

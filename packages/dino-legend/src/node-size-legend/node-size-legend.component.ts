@@ -90,6 +90,12 @@ export class NodeSizeLegendComponent implements OnInit, OnChanges {
       d3Selection.select(this.parentNativeElement)
         .select('#title').transition().text(this.title);
     }
+    
+    if ('nodeSizeRange' in changes) {
+      this.setScales();
+      this.setSizes();
+      this.setTexts();
+    }
   }
 
   updateStreamProcessor(update = true) {

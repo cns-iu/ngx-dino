@@ -26,21 +26,21 @@ import  { LegendDataService } from '../shared/legend-data.service';
 })
 export class NodeSizeLegendComponent implements OnInit, OnChanges {
   @Input() dataStream: Observable<RawChangeSet<any>>;
-  
+
   @Input() nodeSizeField: BoundField<string>;
   @Input() nodeIdField: BoundField<number | string>;
 
   @Input() title: string;
-  
+
   @Input()  nodeSizeRange = [5, 15];
 
   parentNativeElement: any;
   legendSizeScale: any;
-  
+
   max: number;
   mid: number;
   min: number;
-  
+
   maxLabel: string;
   midLabel: string;
   minLabel: string;
@@ -55,7 +55,7 @@ export class NodeSizeLegendComponent implements OnInit, OnChanges {
     this.dataService.nodes.subscribe((data) => {
       this.nodesData = this.nodesData.filter((e: any) => !data.remove
         .some((obj: Datum<any>) => obj[idSymbol] === e.id)).concat(data.insert.toArray());
-     
+
       data.update.forEach((el) => {
         const index = this.nodesData.findIndex((e) => e.id === el[1].id);
         this.nodesData[index] = Object.assign(this.nodesData[index] || {}, el[1]);
@@ -69,7 +69,7 @@ export class NodeSizeLegendComponent implements OnInit, OnChanges {
         this.maxLabel = (!isNaN(this.max))? this.max.toString(): '';
         this.midLabel = (!isNaN(this.mid))? this.mid.toString(): '';
         this.minLabel = (!isNaN(this.min))? this.min.toString(): '';
-            
+
         this.setScales();
         this.setSizes();
         this.setTexts();
@@ -90,7 +90,7 @@ export class NodeSizeLegendComponent implements OnInit, OnChanges {
       d3Selection.select(this.parentNativeElement)
         .select('#title').transition().text(this.title);
     }
-    
+
     if ('nodeSizeRange' in changes) {
       this.setScales();
       this.setSizes();
@@ -106,8 +106,8 @@ export class NodeSizeLegendComponent implements OnInit, OnChanges {
       this.dataService.fetchData(
         this.dataStream,
         this.nodeIdField,
-        this.nodeSizeField, 
-        
+        this.nodeSizeField,
+
         // TODO
         undefined,
         undefined,
@@ -117,9 +117,13 @@ export class NodeSizeLegendComponent implements OnInit, OnChanges {
   }
 
   setScales() {
-    this.legendSizeScale = scaleLinear()
-      .domain([this.min, this.max])
-      .range(this.nodeSizeRange);
+    if (this.min === this.max) {
+      this.legendSizeScale = (value: number) => this.nodeSizeRange[1];
+    } else {
+      this.legendSizeScale = scaleLinear()
+        .domain([this.min, this.max])
+        .range(this.nodeSizeRange);
+    }
   }
 
   setSizes() {

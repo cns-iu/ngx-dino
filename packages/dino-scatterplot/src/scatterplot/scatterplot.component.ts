@@ -128,9 +128,7 @@ export class ScatterplotComponent implements OnInit, OnChanges {
         this.xField, this.yField,
         
         this.colorField, this.shapeField,
-        this.sizeField, this.strokeColorField,
-
-        this.tooltipTextField
+        this.sizeField, this.strokeColorField
       );
     }
   }

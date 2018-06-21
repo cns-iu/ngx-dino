@@ -21,15 +21,18 @@ function updateInSet<T>(changeSet: any, items: [T | DatumId, Partial<T>][], key:
   const changesById = {};
   const changedFields = {};
 
-  items.forEach(([valueOrId, change]) => {
-    const id = isDatumId(valueOrId) ? valueOrId : valueOrId[key];
-    changesById[id] = change;
-
-    Object.keys(change).forEach((field) => {
-      changedFields[field] = true;
+  if (items) {
+    items.forEach(([valueOrId, change]) => {
+      if (valueOrId && change) {
+        const id = isDatumId(valueOrId) ? valueOrId : valueOrId[key];
+        changesById[id] = change;
+      
+        Object.keys(change).forEach((field) => {
+          changedFields[field] = true;
+        });
+      }
     });
-  });
-
+  }
   Object.keys(changedFields).forEach((field) => {
     changeSet.modify((value) => {
       const change = changesById[value[key]];

@@ -65,7 +65,9 @@ export class GeomapDataService {
     if (this.stateStreamSubscription) {
       this.stateStreamSubscription.unsubscribe();
     }
-
+    if (!pointIdField || !stateIdField) {
+      return;
+    }
 
     this.pointProcessor = this.service.createProcessor<Point & Datum<any>, any>(
       pointStream,

@@ -13,8 +13,7 @@ export class DatumProcessor<R, T extends Datum<R>> {
 
   process(datum: T): T {
     const rawData = datum[rawDataSymbol];
-
-    this.extracted.forEach((bfield, prop) => {
+    this.extracted.forEach((bfield: any, prop) => {
       datum[prop] = bfield.get(rawData);
     });
     this.computed.forEach((bfield, prop) => {

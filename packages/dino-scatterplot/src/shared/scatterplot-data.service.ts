@@ -39,8 +39,11 @@ export class ScatterplotDataService {
     sizeField: BoundField<number | string>,
     strokeColorField: BoundField<number | string>,
   
-    tooltipTextField: BoundField<number | string>
+    tooltipTextField?: BoundField<number | string>
   ): this {
+    if (!pointIdField) {
+      return;
+    }
     this.pointProcessor = this.processorService.createProcessor<Point & Datum<any>, any>(
       stream, 
       pointIdField,
@@ -51,7 +54,7 @@ export class ScatterplotDataService {
         shape: shapeField,
         size: sizeField,
         stroke: strokeColorField,
-        tooltip: tooltipTextField
+        // tooltip: tooltipTextField
       }
     );
 

@@ -32,6 +32,7 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
   @Input() stateDataStream: Observable<RawChangeSet>;
   @Input() stateField: BoundField<string>;
   @Input() stateColorField: BoundField<string>;
+  @Input() stateDefaultStrokeColor = 'white';
   @Input() stateDefaultColor = '#bebebe';
 
   @Input() pointDataStream: Observable<RawChangeSet>;
@@ -69,7 +70,10 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
   ngOnChanges(changes) {
     this.updateProcessor(changes);
 
-    const signals = {stateDefaultColor: this.stateDefaultColor};
+    const signals = {
+      stateDefaultColor: this.stateDefaultColor,
+      stateDefaultStrokeColor: this.stateDefaultStrokeColor
+    };
     if (!this.autoresize) {
       Object.assign(signals, {width: this.width, height: this.height});
     }

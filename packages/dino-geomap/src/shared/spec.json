@@ -35,6 +35,11 @@
           "type": "formula",
           "expr": "datum.rawColorValue !== null ? datum.rawColorValue : stateDefaultColor",
           "as": "colorValue"
+        },
+        {
+          "type": "formula",
+          "expr": "datum.rawStrokeColorValue !== null ? datum.rawStrokeColorValue : stateDefaultStrokeColor",
+          "as": "strokeValue"
         }
       ]
     },
@@ -80,6 +85,10 @@
     {
       "name": "stateDefaultColor",
       "value": "#bebebe"
+    },
+    {
+      "name": "stateDefaultStrokeColor",
+      "value": "#ffffff"
     }
   ],
   "scales": [],
@@ -107,14 +116,12 @@
         "data": "states"
       },
       "encode": {
-        "enter": {
-          "stroke": {
-            "value": "white"
-          }
-        },
         "update": {
           "fill": {
             "field": "colorValue"
+          },
+          "stroke": {
+            "field": "strokeColorValue"
           },
           "path": {
             "field": "path"

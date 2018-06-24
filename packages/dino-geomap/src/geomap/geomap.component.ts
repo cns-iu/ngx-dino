@@ -150,7 +150,9 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
       .insert('states', vega.read(us10m, {
         type: 'topojson',
         feature: 'states'
-      })).signal('stateDefaultColor', this.stateDefaultColor)
+      }))
+      .signal('stateDefaultColor', this.stateDefaultColor)
+      .signal('stateDefaultStrokeColor', this.stateDefaultStrokeColor)
       .run();
 
     this.statesSubscription = this.dataService.states.subscribe((change: ChangeSet<State>) => {

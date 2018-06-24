@@ -11,6 +11,9 @@
       "name": "stateColorCoding"
     },
     {
+      "name": "stateStrokeColorCoding"
+    },
+    {
       "name": "states",
       "transform": [
         {
@@ -32,6 +35,20 @@
           ]
         },
         {
+          "type": "lookup",
+          "from": "stateStrokeColorCoding",
+          "key": "id",
+          "fields": [
+            "id"
+          ],
+          "values": [
+            "strokeColor"
+          ],
+          "as": [
+            "rawStrokeColorValue"
+          ]
+        },
+        {
           "type": "formula",
           "expr": "datum.rawColorValue !== null ? datum.rawColorValue : stateDefaultColor",
           "as": "colorValue"
@@ -39,7 +56,7 @@
         {
           "type": "formula",
           "expr": "datum.rawStrokeColorValue !== null ? datum.rawStrokeColorValue : stateDefaultStrokeColor",
-          "as": "strokeValue"
+          "as": "strokeColorValue"
         }
       ]
     },

@@ -6,7 +6,7 @@ import {
   Input,
   SimpleChanges,
   DoCheck,
-  ViewChild
+  ViewChild, ViewEncapsulation
 } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
@@ -34,7 +34,8 @@ import { Point } from '../shared/point';
   selector: 'dino-scatterplot',
   templateUrl: './scatterplot.component.html',
   styleUrls: ['./scatterplot.component.sass'],
-  providers: [ScatterplotDataService]
+  providers: [ScatterplotDataService],
+  encapsulation: ViewEncapsulation.None
 })
 export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
   @Input() pointIdField: BoundField<number | string>;
@@ -49,6 +50,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
   @Input() enableTooltip = false;
 
   @Input() dataStream: Observable<RawChangeSet<any>>;
+  @Input() pulseItem: any;
 
   @Input() margin = { top: 20, right: 15, bottom: 60, left: 60 };
 
@@ -118,6 +120,18 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
       this.updateStreamProcessor();
       this.updateAxisLabels();
       // updateField(....)
+    }
+
+    if ('pulseItem' in changes && this.mainG) {
+      const {previousValue, currentValue} = changes['pulseItem'];
+      const plots = this.mainG.selectAll('.plots');
+
+      if (previousValue) {
+        plots.data([previousValue], (d) => d[idSymbol]).classed('pulse', false);
+      }
+      if (currentValue) {
+        plots.data([currentValue], (d) => d[idSymbol]).classed('pulse', true);
+      }
     }
 
     if ((!this.autoresize) && (('width' in changes) && ('height' in changes))) {

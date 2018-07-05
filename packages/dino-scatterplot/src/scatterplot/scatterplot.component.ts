@@ -25,7 +25,7 @@ import {
   BoundField,
   RawChangeSet,
   Datum,
-  idSymbol
+  idSymbol, rawDataSymbol
 } from '@ngx-dino/core';
 import { ScatterplotDataService } from '../shared/scatterplot-data.service';
 import { Point } from '../shared/point';
@@ -127,10 +127,14 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
       const plots = this.mainG.selectAll('.plots');
 
       if (previousValue) {
-        plots.data([previousValue], (d) => d[idSymbol]).classed('pulse', false);
+        const id = this.pointIdField.get(previousValue[rawDataSymbol]);
+        plots.data([{[idSymbol]: id}], (d) => d[idSymbol])
+          .classed('pulse', false);
       }
       if (currentValue) {
-        plots.data([currentValue], (d) => d[idSymbol]).classed('pulse', true);
+        const id = this.pointIdField.get(currentValue[rawDataSymbol]);
+        plots.data([{[idSymbol]: id}], (d) => d[idSymbol])
+          .classed('pulse', true);
       }
     }
 

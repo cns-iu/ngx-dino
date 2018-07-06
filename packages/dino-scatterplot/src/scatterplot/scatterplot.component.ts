@@ -123,18 +123,23 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
     }
 
     if ('pulseItem' in changes && this.mainG) {
-      const {previousValue, currentValue} = changes['pulseItem'];
-      const plots = this.mainG.selectAll('.plots');
+      this.mainG.selectAll('.pulse-container').remove();
 
-      if (previousValue) {
-        const id = this.pointIdField.get(previousValue[rawDataSymbol]);
-        plots.data([{[idSymbol]: id}], (d) => d[idSymbol])
-          .classed('pulse', false);
-      }
+      const {currentValue} = changes['pulseItem'];
       if (currentValue) {
         const id = this.pointIdField.get(currentValue[rawDataSymbol]);
-        plots.data([{[idSymbol]: id}], (d) => d[idSymbol])
-          .classed('pulse', true);
+        const node = this.mainG.selectAll('.plots')
+          .filter((d) => d[idSymbol] === id);
+        const datum = node.datum();
+        const path = node.attr('d');
+
+        const pulseGroup = this.mainG.insert('g', ':first-child')
+          .classed('pulse-container', true)
+          .datum(datum)
+          .attr('transform', this.shapeTransform(datum));
+        const pulsePath = pulseGroup.append('path')
+          .classed('pulse-path', true)
+          .attr('d', path);
       }
     }
 
@@ -289,6 +294,9 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
       .attr('transform', (d) => this.shapeTransform(d))
       .transition().duration(1000)
       .attr('fill', (d) => d.color).attr('r', 8);
+
+      this.mainG.selectAll('.pulse-container').transition().duration(500)
+        .attr('transform', (d) => this.shapeTransform(d));
 
     plots.enter().append('path')
       .data(data)

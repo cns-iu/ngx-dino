@@ -59,6 +59,10 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
   @Input() height = 560 - this.margin.top - this.margin.bottom;
   @Input() autoresize = false;
 
+  @Input() gridlines = false;
+  @Input() gridlinesColor: string = 'lightgrey';
+  @Input() gridlinesOpacity = 0.7;
+
   @ViewChild('plotContainer') scatterplotElement: ElementRef;
 
   // This is the better way, but is inconsistent with geomap
@@ -261,7 +265,12 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
       .text(this.yAxisLabel);
 
     // draw the x axis
-    this.xAxis = d3Axis.axisBottom(this.xScale).tickSizeOuter(0);
+    this.xAxis = d3Axis.axisBottom(this.xScale)
+      .tickSizeOuter(0)
+      .tickPadding(10);
+    if (this.gridlines) {
+      this.xAxis.tickSizeInner(-this.elementHeight); // for gridlines
+    }
     this.xAxisGroup = this.containerMain.append('g')
       .attr('transform', 'translate(0,' + this.elementHeight + ')')
       .attr('class', 'xAxis')
@@ -269,12 +278,23 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
     this.xAxisGroup.select('path').attr('marker-end', 'url(#arrowhead)');
 
     // draw the y axis
-    this.yAxis = d3Axis.axisLeft(this.yScale).tickSizeOuter(0);
+    this.yAxis = d3Axis.axisLeft(this.yScale)
+      .tickSizeOuter(0)
+      .tickPadding(10);
+    if (this.gridlines) {
+      this.yAxis.tickSizeInner(-this.elementWidth); // for gridlines
+    }
     this.yAxisGroup = this.containerMain.append('g')
       .attr('transform', 'translate(0,0)')
       .attr('class', 'yAxis')
       .call(this.yAxis);
     this.yAxisGroup.select('path').attr('marker-end', 'url(#arrowhead)');
+
+    if (this.gridlines) { // set color and opacity of gridlines
+      this.svgContainer.selectAll('line')
+        .attr('stroke', this.gridlinesColor)
+        .attr('stroke-opacity', this.gridlinesOpacity);
+    }
 
     this.mainG = this.containerMain.append('g');
 
@@ -282,6 +302,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
       this.tooltipDiv = d3Selection.select(this.parentNativeElement)
         .select('.plotContainer').select('.tooltip');
     }
+
   }
 
   /********* This function draws points on the scatterplot ********/
@@ -289,8 +310,28 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
     const xscale = this.xScale;
     const yscale = this.yScale;
 
+    
+    if (this.gridlines) { // update axis and gridlines according to new scale 
+      this.xAxis = d3Axis.axisBottom(this.xScale)
+      .tickSizeInner(-this.elementHeight)
+      .tickSizeOuter(0)
+      .tickPadding(10);
+    }
     this.xAxisGroup.transition().call(this.xAxis);  // Update X-Axis
+
+    if (this.gridlines) {  // update axis and gridlines according to new scale 
+      this.yAxis = d3Axis.axisLeft(this.yScale)
+        .tickSizeInner(-this.elementWidth)
+        .tickSizeOuter(0)
+        .tickPadding(10);
+    }
     this.yAxisGroup.transition().call(this.yAxis);  // Update Y-Axis
+
+    if (this.gridlines) { // set color and opacity of updated gridlines
+      this.svgContainer.selectAll('line')
+      .attr('stroke', this.gridlinesColor)
+      .attr('stroke-opacity', this.gridlinesOpacity);
+    }
 
     const plots = this.mainG.selectAll('.plots')
       .data(data, (d: Point) => d[idSymbol]);

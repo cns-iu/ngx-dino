@@ -265,7 +265,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
       .tickSizeOuter(0)
       .tickPadding(10);
     if (this.gridlines) {
-      this.xAxis.tickSizeInner(-this.elementHeight); // for gridlines
+      this.xAxis.tickSizeInner(-this.elementHeight); // for x-gridlines
     }
     this.xAxisGroup = this.containerMain.append('g')
       .attr('transform', 'translate(0,' + this.elementHeight + ')')
@@ -279,7 +279,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
       .tickSizeOuter(0)
       .tickPadding(10);
     if (this.gridlines) {
-      this.yAxis.tickSizeInner(-this.elementWidth); // for gridlines
+      this.yAxis.tickSizeInner(-this.elementWidth); // for y-gridlines
     }
     this.yAxisGroup = this.containerMain.append('g')
       .attr('transform', 'translate(0,0)')
@@ -289,9 +289,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
       .attr('marker-end', this.yAxisArrow ? 'url(#arrowhead)' : null);
 
     if (this.gridlines) { // set color and opacity of gridlines
-      this.svgContainer.selectAll('.tick line')
-        .attr('stroke', this.gridlinesColor)
-        .attr('stroke-opacity', this.gridlinesOpacity);
+      this.setGridlineProperties();
     }
 
     this.pulseG = this.containerMain.append('g');
@@ -308,27 +306,23 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
     const xscale = this.xScale;
     const yscale = this.yScale;
 
-
-    if (this.gridlines) { // update axis and gridlines according to new scale
+    if (this.gridlines) {  // update axis and gridlines according to new scale
       this.xAxis = d3Axis.axisBottom(this.xScale)
       .tickSizeInner(-this.elementHeight)
       .tickSizeOuter(0)
       .tickPadding(10);
-    }
-    this.xAxisGroup.transition().call(this.xAxis);  // Update X-Axis
-
-    if (this.gridlines) {  // update axis and gridlines according to new scale
+  
       this.yAxis = d3Axis.axisLeft(this.yScale)
         .tickSizeInner(-this.elementWidth)
         .tickSizeOuter(0)
         .tickPadding(10);
     }
+
+    this.xAxisGroup.transition().call(this.xAxis);  // Update X-Axis
     this.yAxisGroup.transition().call(this.yAxis);  // Update Y-Axis
 
     if (this.gridlines) { // set color and opacity of updated gridlines
-      this.svgContainer.selectAll('.tick line')
-      .attr('stroke', this.gridlinesColor)
-      .attr('stroke-opacity', this.gridlinesOpacity);
+      this.setGridlineProperties();
     }
 
     if (this.tickLabelColor) {
@@ -418,6 +412,20 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
 
       labels.exit().remove();
     }
+  }
+
+  setGridlineProperties() {
+    this.svgContainer.selectAll('.tick line')
+    .attr('stroke', this.gridlinesColor)
+    .attr('stroke-opacity', this.gridlinesOpacity);
+
+    this.svgContainer.select('.xAxis > g:first-of-type').select('line')
+    .attr('stroke', 'black')
+    .attr('stroke-opacity', 1);
+  
+    this.svgContainer.select('.yAxis > g:first-of-type').select('line')
+    .attr('stroke', 'black')
+    .attr('stroke-opacity', 1);
   }
 
   /**** This function draws the shape encoded on the data ****/

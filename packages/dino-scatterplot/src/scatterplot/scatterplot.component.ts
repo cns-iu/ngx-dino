@@ -45,12 +45,12 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
   @Input() colorField: BoundField<number | string>;
   @Input() shapeField: BoundField<number | string>;
   @Input() sizeField: BoundField<number | string>;
+  @Input() pulseField: BoundField<boolean>;
 
   @Input() tooltipTextField: BoundField<number | string>;
   @Input() enableTooltip = false;
 
   @Input() dataStream: Observable<RawChangeSet<any>>;
-  @Input() pulseItem: any;
 
   @Input() margin = { top: 20, right: 15, bottom: 60, left: 60 };
 
@@ -78,6 +78,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
   private parentNativeElement: any; // a native Element to access this component's selector for drawing the map
   svgContainer: d3Selection.Selection<d3Selection.BaseType, any, HTMLElement, undefined>;
   containerMain: d3Selection.Selection<d3Selection.BaseType, any, HTMLElement, undefined>;
+  pulseG: d3Selection.Selection<SVGGElement, undefined, d3Selection.BaseType, any>;
   mainG: d3Selection.Selection<SVGGElement, undefined, d3Selection.BaseType, any>;
   xAxisGroup: d3Selection.Selection<d3Selection.BaseType, any, d3Selection.BaseType, undefined>;
   yAxisGroup: d3Selection.Selection<d3Selection.BaseType, any, d3Selection.BaseType, undefined>;
@@ -140,27 +141,6 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
       // updateField(....)
     }
 
-    if ('pulseItem' in changes && this.mainG) {
-      this.mainG.selectAll('.pulse-container').remove();
-
-      const {currentValue} = changes['pulseItem'];
-      if (currentValue) {
-        const id = this.pointIdField.get(currentValue[rawDataSymbol]);
-        const node = this.mainG.selectAll('.plots')
-          .filter((d) => d[idSymbol] === id);
-        const datum = node.datum();
-        const path = node.attr('d');
-
-        const pulseGroup = this.mainG.insert('g', ':first-child')
-          .classed('pulse-container', true)
-          .datum(datum)
-          .attr('transform', this.shapeTransform(datum));
-        const pulsePath = pulseGroup.append('path')
-          .classed('pulse-path', true)
-          .attr('d', path);
-      }
-    }
-
     if ('xAxisArrow' in changes && this.xAxis) {
       this.xAxisGroup.select('path')
         .attr('marker-end', this.xAxisArrow ? 'url(#arrowhead)' : null);
@@ -216,7 +196,9 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
         this.xField, this.yField,
 
         this.colorField, this.shapeField,
-        this.sizeField, this.strokeColorField
+        this.sizeField, this.strokeColorField,
+
+        this.pulseField
       );
     }
   }
@@ -312,6 +294,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
         .attr('stroke-opacity', this.gridlinesOpacity);
     }
 
+    this.pulseG = this.containerMain.append('g');
     this.mainG = this.containerMain.append('g');
 
     if (this.enableTooltip) {
@@ -352,6 +335,33 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
       this.svgContainer.selectAll('.tick text').attr('stroke', this.tickLabelColor);
     }
 
+    // Insert pulses
+    const pulse = this.pulseG.selectAll('g')
+      .data(data.filter((p) => p.pulse), (p) => p[idSymbol]);
+
+    pulse.attr('transform', (d) => this.shapeTransform(d))
+      .selectAll('.pulsing')
+      .attr('d', d3Shape.symbol()
+        .size((d) => <number>2 * d.size)
+        .type((d) => this.selectShape(d)))
+      .attr('stroke', (d: any) => d.stroke)
+      .attr('stroke-width', '2px')
+      .attr('fill', (d: any) => d.color).attr('r', 8);
+
+    pulse.enter().append('g')
+      .attr('transform', (d) => this.shapeTransform(d))
+      .append('path')
+      .classed('pulsing', true)
+      .attr('d', d3Shape.symbol()
+        .size((d) => <number>2 * d.size)
+        .type((d) => this.selectShape(d)))
+      .attr('stroke', (d) => d.stroke)
+      .attr('stroke-width', '2px')
+      .attr('fill', (d) => d.color).attr('r', 8);
+
+    pulse.exit().remove();
+
+    // Insert items
     const plots = this.mainG.selectAll('.plots')
       .data(data, (d: Point) => d[idSymbol]);
 
@@ -363,9 +373,6 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
       .attr('stroke-width', '2px')
       .attr('transform', (d) => this.shapeTransform(d))
       .attr('fill', (d) => d.color).attr('r', 8);
-
-    this.mainG.selectAll('.pulse-container').transition().duration(500)
-      .attr('transform', (d) => this.shapeTransform(d));
 
     plots.enter().append('path')
       .data(data)

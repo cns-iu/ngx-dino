@@ -7,11 +7,11 @@ import { Subscription } from 'rxjs/Subscription';
 import {
   BoundField,
   CachedChangeStream,
-  DataProcessor, 
-  Datum, 
+  DataProcessor,
+  Datum,
   ChangeSet,
   DataProcessorService,
-  RawChangeSet 
+  RawChangeSet
 } from '@ngx-dino/core';
 
 import { Point } from './point';
@@ -28,24 +28,26 @@ export class ScatterplotDataService {
 
   fetchData(
     stream: Observable<RawChangeSet<any>>,
-    
+
     pointIdField: BoundField<number | string>,
-    
+
     xField: BoundField<number | string>,
     yField: BoundField<number | string>,
-    
+
     colorField: BoundField<number | string>,
     shapeField: BoundField<number | string>,
     sizeField: BoundField<number | string>,
     strokeColorField: BoundField<number | string>,
-  
+
+    pulseField: BoundField<boolean>,
+
     tooltipTextField?: BoundField<number | string>
   ): this {
     if (!pointIdField) {
       return;
     }
     this.pointProcessor = this.processorService.createProcessor<Point & Datum<any>, any>(
-      stream, 
+      stream,
       pointIdField,
       {
         x: xField,
@@ -54,6 +56,7 @@ export class ScatterplotDataService {
         shape: shapeField,
         size: sizeField,
         stroke: strokeColorField,
+        pulse: pulseField,
         // tooltip: tooltipTextField
       }
     );

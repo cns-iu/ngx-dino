@@ -17,7 +17,7 @@ import * as d3Selection from 'd3-selection';
 import 'd3-transition'; // This adds transition support to d3-selection
 import * as d3Array from 'd3-array';
 import {
-  scaleLinear, scaleOrdinal, scalePow, scaleTime, scalePoint
+  scaleLinear, scalePoint
 } from 'd3-scale';
 import * as d3Shape from 'd3-shape';
 
@@ -62,6 +62,8 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
   @Input() gridlines = false;
   @Input() gridlinesColor: string = 'lightgrey';
   @Input() gridlinesOpacity = 0.7;
+
+  @Input() tickLabelColor: string = 'lightblack';
 
   @ViewChild('plotContainer') scatterplotElement: ElementRef;
 
@@ -118,7 +120,6 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
           this.data[index] = el as Point;
         }
       });
-
 
       this.setScales(this.data);
       this.drawPlots(this.data);
@@ -291,7 +292,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
     this.yAxisGroup.select('path').attr('marker-end', 'url(#arrowhead)');
 
     if (this.gridlines) { // set color and opacity of gridlines
-      this.svgContainer.selectAll('line')
+      this.svgContainer.selectAll('.tick line')
         .attr('stroke', this.gridlinesColor)
         .attr('stroke-opacity', this.gridlinesOpacity);
     }
@@ -302,7 +303,6 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
       this.tooltipDiv = d3Selection.select(this.parentNativeElement)
         .select('.plotContainer').select('.tooltip');
     }
-
   }
 
   /********* This function draws points on the scatterplot ********/
@@ -328,11 +328,15 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
     this.yAxisGroup.transition().call(this.yAxis);  // Update Y-Axis
 
     if (this.gridlines) { // set color and opacity of updated gridlines
-      this.svgContainer.selectAll('line')
+      this.svgContainer.selectAll('.tick line')
       .attr('stroke', this.gridlinesColor)
       .attr('stroke-opacity', this.gridlinesOpacity);
     }
-
+    
+    if (this.tickLabelColor) {
+      this.svgContainer.selectAll('.tick text').attr('stroke', this.tickLabelColor);
+    }
+    
     const plots = this.mainG.selectAll('.plots')
       .data(data, (d: Point) => d[idSymbol]);
 

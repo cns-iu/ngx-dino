@@ -59,6 +59,9 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
   @Input() height = 560 - this.margin.top - this.margin.bottom;
   @Input() autoresize = false;
 
+  @Input() xAxisArrow = true;
+  @Input() yAxisArrow = true;
+
   @Input() gridlines = false;
   @Input() gridlinesColor: string = 'lightgrey';
   @Input() gridlinesOpacity = 0.7;
@@ -113,7 +116,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
           this.data[index] = Object.assign(this.data[index] || {}, el as Point);
         }
       });
-  
+
       data.replace.forEach((el: any) => { // TODO typing for el
         const index = this.data.findIndex((e) => e[idSymbol] === el[idSymbol]); // TODO id
         if (index != -1) {
@@ -156,6 +159,16 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
           .classed('pulse-path', true)
           .attr('d', path);
       }
+    }
+
+    if ('xAxisArrow' in changes && this.xAxis) {
+      this.xAxisGroup.select('path')
+        .attr('marker-end', this.xAxisArrow ? 'url(#arrowhead)' : null);
+    }
+
+    if ('yAxisArrow' in changes && this.yAxis) {
+      this.yAxisGroup.select('path')
+        .attr('marker-end', this.yAxisArrow ? 'url(#arrowhead)' : null);
     }
 
     if ((!this.autoresize) && (('width' in changes) && ('height' in changes))) {
@@ -276,7 +289,8 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
       .attr('transform', 'translate(0,' + this.elementHeight + ')')
       .attr('class', 'xAxis')
       .call(this.xAxis);
-    this.xAxisGroup.select('path').attr('marker-end', 'url(#arrowhead)');
+    this.xAxisGroup.select('path')
+      .attr('marker-end', this.xAxisArrow ? 'url(#arrowhead)' : null);
 
     // draw the y axis
     this.yAxis = d3Axis.axisLeft(this.yScale)
@@ -289,7 +303,8 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
       .attr('transform', 'translate(0,0)')
       .attr('class', 'yAxis')
       .call(this.yAxis);
-    this.yAxisGroup.select('path').attr('marker-end', 'url(#arrowhead)');
+    this.yAxisGroup.select('path')
+      .attr('marker-end', this.yAxisArrow ? 'url(#arrowhead)' : null);
 
     if (this.gridlines) { // set color and opacity of gridlines
       this.svgContainer.selectAll('.tick line')
@@ -310,8 +325,8 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
     const xscale = this.xScale;
     const yscale = this.yScale;
 
-    
-    if (this.gridlines) { // update axis and gridlines according to new scale 
+
+    if (this.gridlines) { // update axis and gridlines according to new scale
       this.xAxis = d3Axis.axisBottom(this.xScale)
       .tickSizeInner(-this.elementHeight)
       .tickSizeOuter(0)
@@ -319,7 +334,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
     }
     this.xAxisGroup.transition().call(this.xAxis);  // Update X-Axis
 
-    if (this.gridlines) {  // update axis and gridlines according to new scale 
+    if (this.gridlines) {  // update axis and gridlines according to new scale
       this.yAxis = d3Axis.axisLeft(this.yScale)
         .tickSizeInner(-this.elementWidth)
         .tickSizeOuter(0)
@@ -332,11 +347,11 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
       .attr('stroke', this.gridlinesColor)
       .attr('stroke-opacity', this.gridlinesOpacity);
     }
-    
+
     if (this.tickLabelColor) {
       this.svgContainer.selectAll('.tick text').attr('stroke', this.tickLabelColor);
     }
-    
+
     const plots = this.mainG.selectAll('.plots')
       .data(data, (d: Point) => d[idSymbol]);
 

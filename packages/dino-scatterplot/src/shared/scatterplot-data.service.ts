@@ -50,6 +50,7 @@ export class ScatterplotDataService {
       stream,
       pointIdField,
       {
+        id: pointIdField,
         x: xField,
         y: yField,
         color: colorField,

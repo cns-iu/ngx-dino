@@ -112,14 +112,14 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
         .some((obj: Datum<Point>) => obj[idSymbol] === e.id)).concat(data.insert.toArray() as any);
 
       data.update.forEach((el: any) => { // TODO typing for el
-        const index = this.data.findIndex((e) => e.id === el.id); // TODO idsymbol
+        const index = this.data.findIndex((e) => e.id === el.id);
         if (index != -1) {
           this.data[index] = Object.assign(this.data[index] || {}, el as Point);
         }
       });
 
       data.replace.forEach((el: any) => { // TODO typing for el
-        const index = this.data.findIndex((e) => e[idSymbol] === el[idSymbol]); // TODO id
+        const index = this.data.findIndex((e) => e.id === el.id);
         if (index != -1) {
           this.data[index] = el as Point;
         }

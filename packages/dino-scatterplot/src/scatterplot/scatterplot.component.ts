@@ -295,14 +295,13 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
     const plots = this.mainG.selectAll('.plots')
       .data(data, (d: Point) => d[idSymbol]);
 
-    plots.transition().duration(500)
+    plots
       .attr('d', d3Shape.symbol()
         .size((d) => <number>2 * d.size)
         .type((d) => this.selectShape(d)))
       .attr('stroke', (d) => d.stroke)
       .attr('stroke-width', '2px')
       .attr('transform', (d) => this.shapeTransform(d))
-      .transition().duration(1000)
       .attr('fill', (d) => d.color).attr('r', 8);
 
     this.mainG.selectAll('.pulse-container').transition().duration(500)

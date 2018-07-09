@@ -101,10 +101,20 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
       this.data = this.data.filter((e: Point) => !data.remove
         .some((obj: Datum<Point>) => obj[idSymbol] === e.id)).concat(data.insert.toArray() as any);
 
-      data.update.forEach((el) => {
-        const index = this.data.findIndex((e) => e.id === el[1].id);
-        this.data[index] = Object.assign(this.data[index] || {}, <Point>el[1]);
+      data.update.forEach((el: any) => { // TODO typing for el
+        const index = this.data.findIndex((e) => e.id === el.id); // TODO idsymbol
+        if (index != -1) {
+          this.data[index] = Object.assign(this.data[index] || {}, el as Point);
+        }
       });
+  
+      data.replace.forEach((el: any) => { // TODO typing for el
+        const index = this.data.findIndex((e) => e[idSymbol] === el[idSymbol]); // TODO id
+        if (index != -1) {
+          this.data[index] = el as Point;
+        }
+      });
+
 
       this.setScales(this.data);
       this.drawPlots(this.data);
@@ -295,8 +305,8 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
       .transition().duration(1000)
       .attr('fill', (d) => d.color).attr('r', 8);
 
-      this.mainG.selectAll('.pulse-container').transition().duration(500)
-        .attr('transform', (d) => this.shapeTransform(d));
+    this.mainG.selectAll('.pulse-container').transition().duration(500)
+      .attr('transform', (d) => this.shapeTransform(d));
 
     plots.enter().append('path')
       .data(data)

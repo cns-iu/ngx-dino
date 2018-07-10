@@ -361,7 +361,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
 
     plots
       .attr('d', d3Shape.symbol()
-        .size((d) => <number>2 * d.size)
+        .size((d) => d.size as number)
         .type((d) => this.selectShape(d)))
       .attr('stroke', (d) => d.stroke)
       .attr('stroke-width', '2px')
@@ -373,7 +373,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
       .attr('class', 'plots')
       .attr('id', (d) => d[idSymbol])
       .attr('d', d3Shape.symbol()
-        .size((d) => <number>2 * d.size)
+        .size((d) => d.size as number)
         .type((d) => this.selectShape(d)))
       .attr('transform', (d) => this.shapeTransform(d))
       .attr('fill', 'red')
@@ -514,7 +514,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
       });
 
     selection.transition().attr('d', d3Shape.symbol()
-    .size((d) => <number>4 * <number>d.size)
+    .size((d) => 2 * d.size as number)
     .type((d) => this.selectShape(d)))
 
     if(this.enableTooltip) {
@@ -532,7 +532,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
     .filter((d: any) => d[idSymbol] === targetId);
 
     selection.transition().attr('d', d3Shape.symbol()
-    .size((d) => <number>2 * <number>d.size)
+    .size((d) => d.size as number)
     .type((d) => this.selectShape(d)))
 
     if(this.enableTooltip) {

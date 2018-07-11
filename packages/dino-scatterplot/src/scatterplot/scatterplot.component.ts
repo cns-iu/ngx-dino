@@ -68,6 +68,8 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
 
   @Input() tickLabelColor: string = 'lightblack';
 
+  @Input() showAxisIndicators = false; // Toggle texts over axes indicating the type of axis
+
   @ViewChild('plotContainer') scatterplotElement: ElementRef;
 
   // This is the better way, but is inconsistent with geomap
@@ -86,7 +88,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
   xScale: any; // d3Axis.AxisScale<any> couldn't figure out domain and range definition
   yScale: any; // d3Axis.AxisScale<any>
 
-  // x & y labels are field labels  - not drawn over the axes
+  // x & y labels are field labels  - not drawnq over the axes
   xAxisLabel = 'x-axis'; // defaults
   yAxisLabel = 'y-axis'; // defaults
   
@@ -133,9 +135,12 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
 
       if (this.data.length > 0) {
         this.setScales(this.data);
-        this.updateAxisTexts();
         this.drawPlots(this.data);
         this.drawText(this.data);
+  
+        if (this.showAxisIndicators) {
+          this.updateAxisTexts();
+        }
       }
     });
   }
@@ -189,7 +194,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
       this.updateAxisLabels();
       this.drawPlots(this.data);
       this.drawText(this.data);
-      if (this.data.length > 0) {
+      if (this.data.length > 0 && this.showAxisIndicators) {
         this.updateAxisTexts();
       }
     }
@@ -314,25 +319,27 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
       this.setGridlineProperties();
     }
 
-    // draw the text over axes 
-    this.xAxisText = this.containerMain.append('g');
-    this.xAxisText.append('rect')
-      .attr('x', 0).attr('y', 0)
-      .attr('width', 50). attr('height', 20).attr('fill', 'white');
-    this.xAxisText.append('text').text('X axis')
-      .attr('x', 5).attr('y', 20)
-      .attr('dy', '0.1em').attr('fill', 'black');
-    this.xAxisText.attr('visibility', 'hidden');
+    if (this.showAxisIndicators) {
+      // draw the text over axes 
+      this.xAxisText = this.containerMain.append('g');
+      this.xAxisText.append('rect')
+        .attr('x', 0).attr('y', 0)
+        .attr('width', 50). attr('height', 20).attr('fill', 'white');
+      this.xAxisText.append('text').text('X axis')
+        .attr('x', 5).attr('y', 20)
+        .attr('dy', '0.1em').attr('fill', 'black');
+      this.xAxisText.attr('visibility', 'hidden');
 
-    this.yAxisText = this.containerMain.append('g');
-    this.yAxisText.append('rect')
-      .attr('x', 0).attr('y', 10)
-      .attr('width', 50). attr('height', 20).attr('fill', 'white');
-    this.yAxisText.append('text').text('Y axis')
-      .attr('x', 5).attr('y', 20)
-      .attr('dy', '0.1em').attr('fill', 'black');
-    this.yAxisText.attr('visibility', 'hidden');
-  
+      this.yAxisText = this.containerMain.append('g');
+      this.yAxisText.append('rect')
+        .attr('x', 0).attr('y', 10)
+        .attr('width', 50). attr('height', 20).attr('fill', 'white');
+      this.yAxisText.append('text').text('Y axis')
+        .attr('x', 5).attr('y', 20)
+        .attr('dy', '0.1em').attr('fill', 'black');
+      this.yAxisText.attr('visibility', 'hidden');
+    }
+
     this.pulseG = this.containerMain.append('g');
     this.mainG = this.containerMain.append('g');
   

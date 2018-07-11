@@ -86,8 +86,14 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
   xScale: any; // d3Axis.AxisScale<any> couldn't figure out domain and range definition
   yScale: any; // d3Axis.AxisScale<any>
 
+  // x & y labels are field labels  - not drawn over the axes
   xAxisLabel = 'x-axis'; // defaults
   yAxisLabel = 'y-axis'; // defaults
+  
+  // x & y text are svg elements with text drawn over the axes denoting the type of axis.
+  xAxisText: any;
+  yAxisText: any;
+  
   xAxis: any; // d3Axis.Axis<any>;
   yAxis: any; // d3Axis.Axis<{}>;
 
@@ -125,9 +131,12 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
         }
       });
 
-      this.setScales(this.data);
-      this.drawPlots(this.data);
-      this.drawText(this.data);
+      if (this.data.length > 0) {
+        this.setScales(this.data);
+        this.updateAxisTexts();
+        this.drawPlots(this.data);
+        this.drawText(this.data);
+      }
     });
   }
 
@@ -180,6 +189,9 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
       this.updateAxisLabels();
       this.drawPlots(this.data);
       this.drawText(this.data);
+      if (this.data.length > 0) {
+        this.updateAxisTexts();
+      }
     }
   }
 
@@ -210,6 +222,16 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
     if (this.yField) {
       this.containerMain.select('.yAxisLabel').text(this.yField.label); // text label for the x axis
     }
+  }
+
+  updateAxisTexts() {
+    this.xAxisText.attr('transform', 'translate(' + (this.xScale(0) + 10) + ' ,' +
+      (this.yScale(0) - 15) + ')');
+    this.xAxisText.attr('visibility', 'visible');
+  
+    this.yAxisText.attr('transform', 'translate(' + (this.xScale(0) - 15) + ' ,' +
+      (this.yScale(0) - 10) + ') rotate(-90)');
+    this.yAxisText.attr('visibility', 'visible');
   }
 
   /****** This function draws the svg container, axes and their labels ******/
@@ -292,9 +314,28 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
       this.setGridlineProperties();
     }
 
+    // draw the text over axes 
+    this.xAxisText = this.containerMain.append('g');
+    this.xAxisText.append('rect')
+      .attr('x', 0).attr('y', 0)
+      .attr('width', 50). attr('height', 20).attr('fill', 'white');
+    this.xAxisText.append('text').text('X axis')
+      .attr('x', 5).attr('y', 20)
+      .attr('dy', '0.1em').attr('fill', 'black');
+    this.xAxisText.attr('visibility', 'hidden');
+
+    this.yAxisText = this.containerMain.append('g');
+    this.yAxisText.append('rect')
+      .attr('x', 0).attr('y', 10)
+      .attr('width', 50). attr('height', 20).attr('fill', 'white');
+    this.yAxisText.append('text').text('Y axis')
+      .attr('x', 5).attr('y', 20)
+      .attr('dy', '0.1em').attr('fill', 'black');
+    this.yAxisText.attr('visibility', 'hidden');
+  
     this.pulseG = this.containerMain.append('g');
     this.mainG = this.containerMain.append('g');
-
+  
     if (this.enableTooltip) {
       this.tooltipDiv = d3Selection.select(this.parentNativeElement)
         .select('.plotContainer').select('.tooltip');
@@ -308,9 +349,9 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
 
     if (this.gridlines) {  // update axis and gridlines according to new scale
       this.xAxis = d3Axis.axisBottom(this.xScale)
-      .tickSizeInner(-this.elementHeight)
-      .tickSizeOuter(0)
-      .tickPadding(10);
+        .tickSizeInner(-this.elementHeight)
+        .tickSizeOuter(0)
+        .tickPadding(10);
   
       this.yAxis = d3Axis.axisLeft(this.yScale)
         .tickSizeInner(-this.elementWidth)

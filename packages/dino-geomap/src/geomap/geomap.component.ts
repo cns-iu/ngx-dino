@@ -5,6 +5,7 @@ import {
  } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
+import { throttle } from 'lodash';
 
 import { defaultLogLevel } from '../shared/log-level';
 import { map } from '@ngx-dino/core/src/operators/methods/transforming/map';
@@ -177,7 +178,7 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
   }
 
 
-  private updateSignals(signals: {[name: string]: any}): void {
+  private updateSignals = throttle(function (signals: {[name: string]: any}): void {
     if (this.view) {
       let rerun = false;
       // tslint:disable:forin
@@ -194,5 +195,5 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
         this.view.run();
       }
     }
-  }
+  }, 100);
 }

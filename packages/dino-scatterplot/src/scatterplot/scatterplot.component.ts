@@ -381,7 +381,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
         .size((d) => <number>2 * d.size)
         .type((d) => this.selectShape(d)))
       .attr('stroke', (d: any) => d.stroke)
-      .attr('stroke-width', '2px')
+      .attr('stroke-width', 1)
       .attr('fill', (d: any) => d.color).attr('r', 8);
 
     pulse.enter().append('g')
@@ -392,7 +392,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
         .size((d) => <number>2 * d.size)
         .type((d) => this.selectShape(d)))
       .attr('stroke', (d) => d.stroke)
-      .attr('stroke-width', '2px')
+      .attr('stroke-width', 1)
       .attr('fill', (d) => d.color).attr('r', 8);
 
     pulse.exit().remove();
@@ -406,7 +406,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
         .size((d) => d.size as number)
         .type((d) => this.selectShape(d)))
       .attr('stroke', (d) => d.stroke)
-      .attr('stroke-width', '2px')
+      .attr('stroke-width', 1)
       .attr('transform', (d) => this.shapeTransform(d))
       .attr('fill', (d) => d.color).attr('r', 8);
 
@@ -420,7 +420,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
       .attr('transform', (d) => this.shapeTransform(d))
       .attr('fill', 'red')
       .attr('stroke', (d) => d.stroke)
-      .attr('stroke-width', '2px')
+      .attr('stroke-width', 1)
       .transition().duration(1000).attr('fill', (d) => d.color);
 
     this.svgContainer.selectAll('.plots')

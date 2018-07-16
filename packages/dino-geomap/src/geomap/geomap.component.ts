@@ -86,7 +86,7 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
       const element = this.mountPoint.nativeElement;
       const signals = {
         width: element.clientWidth,
-        height: element.clientHeight - 4
+        height: Math.max(0, element.clientHeight - 4)
       };
       this.updateSignals(signals);
     }
@@ -195,5 +195,5 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
         this.view.run();
       }
     }
-  }, 100);
+  }, 200);
 }

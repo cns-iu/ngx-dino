@@ -91,11 +91,11 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
   // x & y labels are field labels  - not drawnq over the axes
   xAxisLabel = 'x-axis'; // defaults
   yAxisLabel = 'y-axis'; // defaults
-  
+
   // x & y text are svg elements with text drawn over the axes denoting the type of axis.
   xAxisText: any;
   yAxisText: any;
-  
+
   xAxis: any; // d3Axis.Axis<any>;
   yAxis: any; // d3Axis.Axis<{}>;
 
@@ -133,7 +133,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
         this.setScales(this.data);
         this.drawPlots(this.data);
         this.drawText(this.data);
-  
+
         if (this.showAxisIndicators) {
           this.updateAxisTexts();
         }
@@ -227,7 +227,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
     this.xAxisText.attr('transform', 'translate(' + (this.xScale(0) + 10) + ' ,' +
       (this.yScale(0) - 15) + ')');
     this.xAxisText.attr('visibility', 'visible');
-  
+
     this.yAxisText.attr('transform', 'translate(' + (this.xScale(0) - 15) + ' ,' +
       (this.yScale(0) - 10) + ') rotate(-90)');
     this.yAxisText.attr('visibility', 'visible');
@@ -314,7 +314,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
     }
 
     if (this.showAxisIndicators) {
-      // draw the text over axes 
+      // draw the text over axes
       this.xAxisText = this.containerMain.append('g');
       this.xAxisText.append('rect')
         .attr('x', 0).attr('y', 0)
@@ -336,7 +336,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
 
     this.pulseG = this.containerMain.append('g');
     this.mainG = this.containerMain.append('g');
-  
+
     if (this.enableTooltip) {
       this.tooltipDiv = d3Selection.select(this.parentNativeElement)
         .select('.plotContainer').select('.tooltip');
@@ -353,7 +353,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
         .tickSizeInner(-this.elementHeight)
         .tickSizeOuter(0)
         .tickPadding(10);
-  
+
       this.yAxis = d3Axis.axisLeft(this.yScale)
         .tickSizeInner(-this.elementWidth)
         .tickSizeOuter(0)
@@ -464,7 +464,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
     this.svgContainer.select('.xAxis > g:first-of-type').select('line')
     .attr('stroke', 'black')
     .attr('stroke-opacity', 1);
-  
+
     this.svgContainer.select('.yAxis > g:first-of-type').select('line')
     .attr('stroke', 'black')
     .attr('stroke-opacity', 1);

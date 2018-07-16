@@ -111,10 +111,6 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
   }
 
   ngOnInit() {
-    this.setScales([]);
-    this.initVisualization();
-    this.updateAxisLabels();
-
     this.dataService.points.subscribe((data) => {
       this.data = this.data.filter((e: Point) => !data.remove
         .some((obj: Datum<Point>) => obj[idSymbol] === e.id)).concat(data.insert.toArray() as any);
@@ -172,10 +168,8 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
 
   ngDoCheck() {
     if (this.autoresize && this.scatterplotElement) {
-      const width = this.scatterplotElement.nativeElement.clientWidth
-        - 1 / 5 * this.scatterplotElement.nativeElement.clientWidth; // FIXME - hack
-      const height = this.scatterplotElement.nativeElement.clientWidth
-        - 1 / 2 * this.scatterplotElement.nativeElement.clientWidth; // FIXME - hack
+      const width = 85 / 100 * this.scatterplotElement.nativeElement.clientWidth; // FIXME - hack
+      const height = 35 / 100 * this.scatterplotElement.nativeElement.clientWidth; // FIXME - hack
       this.resize(width, height);
     }
   }

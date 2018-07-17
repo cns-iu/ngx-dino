@@ -29,6 +29,7 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
   @Input() width: number;
   @Input() height: number;
   @Input() autoresize = true;
+  @Input() showCounties = false;
 
   @Input() stateDataStream: Observable<RawChangeSet>;
   @Input() stateField: BoundField<string>;
@@ -44,6 +45,7 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
   @Input() pointShapeField: BoundField<string>;
   @Input() strokeColorField: BoundField<string>;
   @Input() pointTitleField: BoundField<string>;
+  @Input() pointPulseField: BoundField<boolean>;
 
   @ViewChild('mountPoint') mountPoint: ElementRef;
 
@@ -71,6 +73,16 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
   ngOnChanges(changes) {
     this.updateProcessor(changes);
 
+    if ('showCounties' in changes && this.view) {
+      const change = vega.changeset()
+        .remove((d) => true)
+        .insert(vega.read(us10m, {
+          type: 'topojson',
+          feature: this.showCounties ? 'counties' : 'states'
+        }));
+      this.view.change('states', change).run();
+    }
+
     const signals = {
       stateDefaultColor: this.stateDefaultColor,
       stateDefaultStrokeColor: this.stateDefaultStrokeColor
@@ -84,9 +96,10 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
   ngDoCheck(): void {
     if (this.autoresize && this.mountPoint) {
       const element = this.mountPoint.nativeElement;
+      const rect = element.getBoundingClientRect();
       const signals = {
-        width: element.clientWidth,
-        height: element.clientHeight - 4
+        width: rect.width,
+        height: Math.max(0, rect.height - 3)
       };
       this.updateSignals(signals);
     }
@@ -112,7 +125,8 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
           this.pointSizeField,
           this.pointColorField,
           this.pointShapeField,
-          this.pointTitleField
+          this.pointTitleField,
+          this.pointPulseField
         );
         updateFields = false;
         break;
@@ -132,7 +146,8 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
             this.pointSizeField,
             this.pointColorField,
             this.pointShapeField,
-            this.pointTitleField
+            this.pointTitleField,
+            this.pointPulseField
           );
           break;
         }
@@ -150,7 +165,7 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
       .hover()
       .insert('states', vega.read(us10m, {
         type: 'topojson',
-        feature: 'states'
+        feature: this.showCounties ? 'counties' : 'states'
       }))
       .signal('stateDefaultColor', this.stateDefaultColor)
       .signal('stateDefaultStrokeColor', this.stateDefaultStrokeColor)
@@ -190,10 +205,11 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
           rerun = true;
         }
       }
+      // tslint:enable:forin
 
       if (rerun) {
         this.view.run();
       }
     }
-  }, 100);
+  }, 200);
 }

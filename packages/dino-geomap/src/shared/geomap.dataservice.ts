@@ -57,7 +57,8 @@ export class GeomapDataService {
     pointSizeField: BoundField<number>,
     pointColorField: BoundField<string>,
     pointShapeField: BoundField<string>,
-    pointTitleField: BoundField<string>
+    pointTitleField: BoundField<string>,
+    pointPulseField: BoundField<boolean>
   ): this {
     if (this.pointStreamSubscription) {
       this.pointStreamSubscription.unsubscribe();
@@ -79,7 +80,8 @@ export class GeomapDataService {
         color: pointColorField,
         shape: pointShapeField,
         stroke: strokeColorField,
-        title: pointTitleField
+        title: pointTitleField,
+        pulse: pointPulseField
       }, {
         latitude: computedPointLatitudeField,
         longitude: computedPointLongitudeField
@@ -117,7 +119,8 @@ export class GeomapDataService {
     pointSizeField: BoundField<number>,
     pointColorField: BoundField<string>,
     pointShapeField: BoundField<string>,
-    pointTitleField: BoundField<string>
+    pointTitleField: BoundField<string>,
+    pointPulseField: BoundField<boolean>
   ): this {
     this.pointProcessor.updateFields(Map({
       id: pointIdField,
@@ -126,7 +129,8 @@ export class GeomapDataService {
       color: pointColorField,
       shape: pointShapeField,
       stroke: strokeColorField,
-      title: pointTitleField
+      title: pointTitleField,
+      pulse: pointPulseField
     }));
 
     this.stateProcessor.updateFields(Map({

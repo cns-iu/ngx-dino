@@ -29,6 +29,7 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
   @Input() width: number;
   @Input() height: number;
   @Input() autoresize = true;
+  @Input() showCounties = false;
 
   @Input() stateDataStream: Observable<RawChangeSet>;
   @Input() stateField: BoundField<string>;
@@ -70,6 +71,16 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
 
   ngOnChanges(changes) {
     this.updateProcessor(changes);
+
+    if ('showCounties' in changes && this.view) {
+      const change = vega.changeset()
+        .remove((d) => true)
+        .insert(vega.read(us10m, {
+          type: 'topojson',
+          feature: this.showCounties ? 'counties' : 'states'
+        }));
+      this.view.change('states', change).run();
+    }
 
     const signals = {
       stateDefaultColor: this.stateDefaultColor,
@@ -150,7 +161,7 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
       .hover()
       .insert('states', vega.read(us10m, {
         type: 'topojson',
-        feature: 'states'
+        feature: this.showCounties ? 'counties' : 'states'
       }))
       .signal('stateDefaultColor', this.stateDefaultColor)
       .signal('stateDefaultStrokeColor', this.stateDefaultStrokeColor)
@@ -190,6 +201,7 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
           rerun = true;
         }
       }
+      // tslint:enable:forin
 
       if (rerun) {
         this.view.run();

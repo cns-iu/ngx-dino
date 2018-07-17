@@ -96,6 +96,16 @@
           "as": "offset"
         }
       ]
+    },
+    {
+      "name": "pulsingPoints",
+      "source": "points",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum.pulse === true"
+        }
+      ]
     }
   ],
   "signals": [

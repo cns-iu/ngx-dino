@@ -45,6 +45,7 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
   @Input() pointShapeField: BoundField<string>;
   @Input() strokeColorField: BoundField<string>;
   @Input() pointTitleField: BoundField<string>;
+  @Input() pointPulseField: BoundField<boolean>;
 
   @ViewChild('mountPoint') mountPoint: ElementRef;
 
@@ -95,9 +96,10 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
   ngDoCheck(): void {
     if (this.autoresize && this.mountPoint) {
       const element = this.mountPoint.nativeElement;
+      const rect = element.getBoundingClientRect();
       const signals = {
-        width: element.clientWidth,
-        height: Math.max(0, element.clientHeight - 4)
+        width: rect.width,
+        height: Math.max(0, rect.height - 3)
       };
       this.updateSignals(signals);
     }
@@ -123,7 +125,8 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
           this.pointSizeField,
           this.pointColorField,
           this.pointShapeField,
-          this.pointTitleField
+          this.pointTitleField,
+          this.pointPulseField
         );
         updateFields = false;
         break;
@@ -143,7 +146,8 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
             this.pointSizeField,
             this.pointColorField,
             this.pointShapeField,
-            this.pointTitleField
+            this.pointTitleField,
+            this.pointPulseField
           );
           break;
         }

@@ -10,7 +10,7 @@ import { throttle } from 'lodash';
 import { defaultLogLevel } from '../shared/log-level';
 import { map } from '@ngx-dino/core/src/operators/methods/transforming/map';
 import { simpleField, BoundField, RawChangeSet, ChangeSet } from '@ngx-dino/core';
-import { vega, makeChangeSet } from '@ngx-dino/vega';
+import { vega, VegaChangeSet } from '@ngx-dino/vega';
 import { State } from '../shared/state';
 import { Point } from '../shared/point';
 import { lookupStateCode } from '../shared/state-lookup';
@@ -171,13 +171,17 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
       .signal('stateDefaultStrokeColor', this.stateDefaultStrokeColor)
       .run();
 
-    this.statesSubscription = this.dataService.states.subscribe((change: ChangeSet<State>) => {
-      this.view.change('stateColorCoding', makeChangeSet<State>(change, 'id')).run();
-    });
+    this.statesSubscription = this.dataService.states
+      .subscribe((change: ChangeSet<State>) => {
+        const set = VegaChangeSet.fromDinoChangeSet(change);
+        this.view.change('stateColorCoding', set).run();
+      });
 
-    this.pointSubscription = this.dataService.points.subscribe((change: ChangeSet<Point>) => {
-      this.view.change('points', makeChangeSet<Point>(change, 'id')).run();
-    });
+    this.pointSubscription = this.dataService.points
+      .subscribe((change: ChangeSet<Point>) => {
+        const set = VegaChangeSet.fromDinoChangeSet(change);
+        this.view.change('points', set).run();
+      });
   }
 
   private finalizeView() {

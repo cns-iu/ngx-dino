@@ -5,7 +5,7 @@ import {
  } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import { throttle } from 'lodash';
+import { isFunction, throttle } from 'lodash';
 
 import { defaultLogLevel } from '../shared/log-level';
 import { map } from '@ngx-dino/core/src/operators/methods/transforming/map';
@@ -99,7 +99,10 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
       const rect = element.getBoundingClientRect();
       const signals = {
         width: rect.width,
-        height: Math.max(0, rect.height - 3)
+        height(oldHeight) {
+          const diff = Math.abs(rect.height - oldHeight);
+          return diff < 10 ? oldHeight : rect.height;
+        }
       };
       this.updateSignals(signals);
     }
@@ -203,8 +206,12 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
       // tslint:disable:forin
       for (const name in signals) {
         const oldValue = this.view.signal(name);
-        const newValue = signals[name];
-        if (newValue !== oldValue) {
+        let newValue = signals[name];
+        if (isFunction(newValue)) {
+          newValue = newValue(oldValue);
+        }
+        if (newValue != oldValue) {
+          console.log(name, newValue)
           this.view.signal(name, newValue);
           rerun = true;
         }

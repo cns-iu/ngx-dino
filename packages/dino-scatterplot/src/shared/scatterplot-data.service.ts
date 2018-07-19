@@ -4,6 +4,8 @@ import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { Map } from 'immutable';
+
 import {
   BoundField,
   CachedChangeStream,
@@ -72,7 +74,10 @@ export class ScatterplotDataService {
     return this;
   }
 
-  updateData() {
-    this.pointProcessor.updateFields();
+  updateData(changedField: BoundField<number | string>) {
+    const fieldName = changedField.id;
+    this.pointProcessor.updateFields(Map({
+       [fieldName]: changedField
+    }));
   }
 }

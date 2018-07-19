@@ -116,14 +116,14 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
         .some((obj: Datum<Point>) => obj[idSymbol] === e.id)).concat(data.insert.toArray() as any);
 
       data.update.forEach((el: any) => { // TODO typing for el
-        const index = this.data.findIndex((e) => e.id === el.id);
+        const index = this.data.findIndex((e) => e.id === el[idSymbol]);
         if (index != -1) {
           this.data[index] = Object.assign(this.data[index] || {}, el as Point);
         }
       });
 
       data.replace.forEach((el: any) => { // TODO typing for el
-        const index = this.data.findIndex((e) => e.id === el.id);
+        const index = this.data.findIndex((e) => e.id === el[idSymbol]);
         if (index != -1) {
           this.data[index] = el as Point;
         }
@@ -145,11 +145,11 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
     if ('dataStream' in changes && this.dataStream) {
       this.data = [];
       this.updateStreamProcessor(false);
-    } else if (Object.keys(changes).filter((k) => k.endsWith('Field'))) {
-      this.updateStreamProcessor();
-      this.updateAxisLabels();
-      // updateField(....)
-    }
+    } else if (Object.keys(changes).find((k) => k.endsWith('Field')).length > 0) {  
+          const changedField =  changes[Object.keys(changes).find((k) => k.endsWith('Field'))].currentValue;
+          this.updateStreamProcessor(true, changedField);
+          this.updateAxisLabels();
+      }
 
     if ('xAxisArrow' in changes && this.xAxis) {
       this.xAxisGroup.select('path')
@@ -194,9 +194,9 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
     }
   }
 
-  updateStreamProcessor(update = true) {
+  updateStreamProcessor(update = true, changedField?: BoundField<number | string>) {
     if (this.xField && this.yField && this.dataService.pointProcessor) {
-      this.dataService.updateData();
+      this.dataService.updateData(changedField);
     }
     if (!update) {
       this.dataService.fetchData(

@@ -17,6 +17,10 @@
       "name": "states",
       "transform": [
         {
+          "type": "filter",
+          "expr": "!selectedState || substring(datum.id, 0, 2) == selectedState"
+        },
+        {
           "type": "geopath",
           "projection": "projection"
         },
@@ -116,6 +120,10 @@
     {
       "name": "stateDefaultStrokeColor",
       "value": "#ffffff"
+    },
+    {
+      "name": "selectedState",
+      "value": null
     }
   ],
   "scales": [],

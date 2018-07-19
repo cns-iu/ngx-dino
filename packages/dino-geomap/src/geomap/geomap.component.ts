@@ -28,9 +28,11 @@ import * as geomapSpec from '../shared/spec.json';
 export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoCheck, OnDestroy {
   @Input() width: number;
   @Input() height: number;
-  @Input() heightDiffThreshold = 10;
+  @Input() widthDiffThreshold = 20;
+  @Input() heightDiffThreshold = 20;
   @Input() autoresize = true;
   @Input() showCounties = false;
+  @Input() mapDisplayLevel = 'us';
 
   @Input() stateDataStream: Observable<RawChangeSet>;
   @Input() stateField: BoundField<string>;
@@ -88,9 +90,15 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
       stateDefaultColor: this.stateDefaultColor,
       stateDefaultStrokeColor: this.stateDefaultStrokeColor
     };
+
+    if ('mapDisplayLevel' in changes && this.view) {
+      Object.assign(signals, {selectedState: this.getMapDisplayLevelId()});
+    }
+
     if (!this.autoresize) {
       Object.assign(signals, {width: this.width, height: this.height});
     }
+
     this.updateSignals(signals);
   }
 
@@ -99,12 +107,8 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
       const element = this.mountPoint.nativeElement;
       const rect = element.getBoundingClientRect();
       const signals = {
-        width: rect.width,
-        height: (oldHeight) => {
-          const newHeight = rect.height;
-          const diff = Math.abs(newHeight - oldHeight);
-          return diff < this.heightDiffThreshold ? oldHeight : newHeight;
-        }
+        width: this.makeExtentCalc(rect.width, this.widthDiffThreshold),
+        height: this.makeExtentCalc(rect.height, this.heightDiffThreshold)
       };
       this.updateSignals(signals);
     }
@@ -174,6 +178,7 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
       }))
       .signal('stateDefaultColor', this.stateDefaultColor)
       .signal('stateDefaultStrokeColor', this.stateDefaultStrokeColor)
+      .signal('selectedState', this.getMapDisplayLevelId())
       .run();
 
     this.statesSubscription = this.dataService.states
@@ -224,4 +229,24 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
       }
     }
   }, 200);
+
+  private getMapDisplayLevelId(): string | null {
+    const stateCode = lookupStateCode(this.mapDisplayLevel);
+    if (stateCode !== -1) {
+      return String(stateCode);
+    } else if (this.mapDisplayLevel.toLowerCase() === 'us') {
+      return null;
+    } else {
+      return null;
+    }
+  }
+
+  private makeExtentCalc(
+    newValue: number, threshold: number
+  ): (oldValue: number) => number {
+    return (oldValue) => {
+      const diff = newValue - oldValue;
+      return 0 < diff && diff < threshold ? oldValue : newValue;
+    };
+  }
 }

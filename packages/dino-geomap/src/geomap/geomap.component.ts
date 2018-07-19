@@ -28,6 +28,7 @@ import * as geomapSpec from '../shared/spec.json';
 export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoCheck, OnDestroy {
   @Input() width: number;
   @Input() height: number;
+  @Input() heightDiffThreshold = 10;
   @Input() autoresize = true;
   @Input() showCounties = false;
 
@@ -99,9 +100,10 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
       const rect = element.getBoundingClientRect();
       const signals = {
         width: rect.width,
-        height(oldHeight) {
-          const diff = Math.abs(rect.height - oldHeight);
-          return diff < 10 ? oldHeight : rect.height;
+        height: (oldHeight) => {
+          const newHeight = rect.height;
+          const diff = Math.abs(newHeight - oldHeight);
+          return diff < this.heightDiffThreshold ? oldHeight : newHeight;
         }
       };
       this.updateSignals(signals);
@@ -211,7 +213,6 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
           newValue = newValue(oldValue);
         }
         if (newValue != oldValue) {
-          console.log(name, newValue)
           this.view.signal(name, newValue);
           rerun = true;
         }

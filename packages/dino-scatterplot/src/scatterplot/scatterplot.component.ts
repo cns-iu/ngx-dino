@@ -147,7 +147,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
       this.data = [];
       this.updateStreamProcessor(false);
     } else {
-        if (Object.keys(changes).find((k) => k.endsWith('Field')).length > 0 
+        if (Object.keys(changes).find((k) => k.endsWith('Field')) !== undefined
           && (!('xField' in changes) && !('yField' in changes))
         ) {
             const changedField =  changes[Object.keys(changes).find((k) => k.endsWith('Field'))].currentValue;

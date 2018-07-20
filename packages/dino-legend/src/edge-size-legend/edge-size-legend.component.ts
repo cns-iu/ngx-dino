@@ -50,11 +50,20 @@ export class EdgeSizeLegendComponent implements OnInit, OnChanges {
   ngOnInit() { 
     this.dataService.edges.subscribe((data) => {
       this.edgesData = this.edgesData.filter((e: any) => !data.remove
-        .some((obj: Datum<any>) => obj[idSymbol] === e.id)).concat(data.insert.toArray());
-     
-      data.update.forEach((el) => {
-        const index = this.edgesData.findIndex((e) => e.id === el[1].id);
-        this.edgesData[index] = Object.assign(this.edgesData[index] || {}, el[1]);
+      .some((obj: Datum<any>) => obj[idSymbol] === e.id)).concat(data.insert.toArray() as any);
+
+      data.update.forEach((el: any) => { // TODO typing for el
+        const index = this.edgesData.findIndex((e) => e.id === el[idSymbol]);
+        if (index != -1) {
+          this.edgesData[index] = Object.assign(this.edgesData[index] || {}, el );
+        }
+      });
+
+      data.replace.forEach((el: any) => { // TODO typing for el
+        const index = this.edgesData.findIndex((e) => e.id === el[idSymbol]);
+        if (index != -1) {
+          this.edgesData[index] = el;
+        }
       });
 
       if (this.edgesData.length) {
@@ -69,13 +78,16 @@ export class EdgeSizeLegendComponent implements OnInit, OnChanges {
       this.edgesData = [];
       this.updateStreamProcessor(false);
     } else if (Object.keys(changes).filter((k) => k.endsWith('Field'))) {
-      this.updateStreamProcessor();
+        const changedField =  changes[Object.keys(changes).find((k) => k.endsWith('Field'))].currentValue;
+        this.updateStreamProcessor(true, changedField);
+        this.updateEdgeLegendLabels(this.edgesData);
+        this.updateEdgeLegendSizes(this.edgesData);
     }
   }
 
-  updateStreamProcessor(update = true) {
-    if (update) {
-      this.dataService.updateData(); // TODO
+  updateStreamProcessor(update = true, changedField?: BoundField<number | string>) {
+    if (update && changedField) {
+      this.dataService.updateData(changedField);
     }
     if (!update) {
       this.dataService.fetchData(

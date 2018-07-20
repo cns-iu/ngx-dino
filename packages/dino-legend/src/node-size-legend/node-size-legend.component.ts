@@ -54,22 +54,24 @@ export class NodeSizeLegendComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.dataService.nodes.subscribe((data) => {
       this.nodesData = this.nodesData.filter((e: any) => !data.remove
-        .some((obj: Datum<any>) => obj[idSymbol] === e.id)).concat(data.insert.toArray());
+      .some((obj: Datum<any>) => obj[idSymbol] === e.id)).concat(data.insert.toArray() as any);
 
-      data.update.forEach((el) => {
-        const index = this.nodesData.findIndex((e) => e.id === el[1].id);
-        this.nodesData[index] = Object.assign(this.nodesData[index] || {}, el[1]);
+      data.update.forEach((el: any) => { // TODO typing for el
+        const index = this.nodesData.findIndex((e) => e.id === el[idSymbol]);
+        if (index != -1) {
+          this.nodesData[index] = Object.assign(this.nodesData[index] || {}, el );
+        }
+      });
+
+      data.replace.forEach((el: any) => { // TODO typing for el
+        const index = this.nodesData.findIndex((e) => e.id === el[idSymbol]);
+        if (index != -1) {
+          this.nodesData[index] = el;
+        }
       });
 
       if (this.nodesData.length) {
-        this.max = Math.round(parseInt(d3Array.max(this.nodesData, (d: any) => d.size)));
-        this.min = Math.round(parseInt(d3Array.min(this.nodesData, (d: any) => d.size)));
-        this.mid = Math.round((this.max + this.min) / 2);
-
-        this.maxLabel = (!isNaN(this.max))? this.max.toString(): '';
-        this.midLabel = (!isNaN(this.mid))? this.mid.toString(): '';
-        this.minLabel = (!isNaN(this.min))? this.min.toString(): '';
-
+        this.calculateBoundsAndLabels(this.nodesData);
         this.setScales();
         this.setSizes();
         this.setTexts();
@@ -82,9 +84,14 @@ export class NodeSizeLegendComponent implements OnInit, OnChanges {
     if ('dataStream' in changes && this.dataStream) {
       this.nodesData = [];
       this.updateStreamProcessor(false);
-    } else if (Object.keys(changes).filter((k) => k.endsWith('Field'))) {
-      this.updateStreamProcessor();
-    }
+    } else if (Object.keys(changes).find((k) => k.endsWith('Field')) !== undefined) {
+        const changedField =  changes[Object.keys(changes).find((k) => k.endsWith('Field'))].currentValue;
+        this.updateStreamProcessor(true, changedField);
+        this.calculateBoundsAndLabels(this.nodesData);
+        this.setScales();
+        this.setSizes();
+        this.setTexts();
+      }
 
     if ('title' in changes) {
       d3Selection.select(this.parentNativeElement)
@@ -92,15 +99,16 @@ export class NodeSizeLegendComponent implements OnInit, OnChanges {
     }
 
     if ('nodeSizeRange' in changes) {
+      this.calculateBoundsAndLabels(this.nodesData);
       this.setScales();
       this.setSizes();
       this.setTexts();
     }
   }
 
-  updateStreamProcessor(update = true) {
-    if (update) {
-      this.dataService.updateData(); // TODO
+  updateStreamProcessor(update = true, changedField?: BoundField<number | string>) {
+    if (update && changedField) {
+      this.dataService.updateData(changedField);
     }
     if (!update) {
       this.dataService.fetchData(
@@ -149,5 +157,15 @@ export class NodeSizeLegendComponent implements OnInit, OnChanges {
 
     d3Selection.select(this.parentNativeElement)
       .select('#minG').select('text').transition().text(this.minLabel);
+  }
+
+  calculateBoundsAndLabels(data: any) {
+    this.max = Math.round(parseInt(d3Array.max(data, (d: any) => d.size)));
+    this.min = Math.round(parseInt(d3Array.min(data, (d: any) => d.size)));
+    this.mid = Math.round((this.max + this.min) / 2);
+
+    this.maxLabel = (!isNaN(this.max))? this.max.toString(): '';
+    this.midLabel = (!isNaN(this.mid))? this.mid.toString(): '';
+    this.minLabel = (!isNaN(this.min))? this.min.toString(): '';
   }
 }

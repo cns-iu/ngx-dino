@@ -3,6 +3,8 @@ import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { Map } from 'immutable';
+
 import { 
   BoundField,
   CachedChangeStream,
@@ -78,12 +80,17 @@ export class LegendDataService {
     }
   }
 
-  updateData() {
+  updateData(changedField: BoundField<number | string>) {
+    const fieldName = changedField.id.slice(0,4);
     if(this.nodeSizeProcessor) {
-      this.nodeSizeProcessor.updateFields(); // TODO
+      this.nodeSizeProcessor.updateFields(Map({
+        [fieldName]: changedField
+      }));
     }
     if(this.edgeSizeProcessor) {
-      this.edgeSizeProcessor.updateFields(); // TODO
+      this.edgeSizeProcessor.updateFields(Map({
+        [fieldName]: changedField
+      })); 
     }
   }
 }

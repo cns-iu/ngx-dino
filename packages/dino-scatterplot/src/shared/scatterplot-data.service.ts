@@ -74,10 +74,16 @@ export class ScatterplotDataService {
     return this;
   }
 
-  updateData(changedField: BoundField<number | string>) {
-    const fieldName = changedField.id;
-    this.pointProcessor.updateFields(Map({
-       [fieldName]: changedField
-    }));
+  updateData(changedField: BoundField<number | string>, label = undefined) {
+    if (!label) {
+      const fieldName = changedField.id;
+      this.pointProcessor.updateFields(Map({
+        [fieldName]: changedField
+      }));
+    } else {
+      this.pointProcessor.updateFields(Map({
+        [label]: changedField
+      }));
+    }
   }
 }

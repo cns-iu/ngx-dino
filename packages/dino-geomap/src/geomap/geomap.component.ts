@@ -28,8 +28,8 @@ import * as geomapSpec from '../shared/spec.json';
 export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoCheck, OnDestroy {
   @Input() width: number;
   @Input() height: number;
-  @Input() widthDiffThreshold = 20;
-  @Input() heightDiffThreshold = 20;
+  @Input() widthDiffThreshold = 0;
+  @Input() heightDiffThreshold = 0;
   @Input() autoresize = true;
   @Input() showCounties = false;
   @Input() mapDisplayLevel = 'us';
@@ -83,16 +83,16 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
           type: 'topojson',
           feature: this.showCounties ? 'counties' : 'states'
         }));
-      this.view.change('states', change).run();
+      this.view.change('geoJson', change).run();
     }
 
     const signals = {
-      stateDefaultColor: this.stateDefaultColor,
-      stateDefaultStrokeColor: this.stateDefaultStrokeColor
+      defaultRegionColor: this.stateDefaultColor,
+      defaultRegionStrokeColor: this.stateDefaultStrokeColor
     };
 
     if ('mapDisplayLevel' in changes && this.view) {
-      Object.assign(signals, {selectedState: this.getMapDisplayLevelId()});
+      Object.assign(signals, {selectedRegion: this.getMapDisplayLevelId()});
     }
 
     if (!this.autoresize) {
@@ -108,7 +108,10 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
       const rect = element.getBoundingClientRect();
       const signals = {
         width: this.makeExtentCalc(rect.width, this.widthDiffThreshold),
-        height: this.makeExtentCalc(rect.height, this.heightDiffThreshold)
+        height: this.makeExtentCalc(
+          Math.max(0, rect.height - 10),
+          this.heightDiffThreshold
+        )
       };
       this.updateSignals(signals);
     }
@@ -172,19 +175,19 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
       .initialize(this.mountPoint.nativeElement)
       .logLevel(defaultLogLevel)
       .hover()
-      .insert('states', vega.read(us10m, {
+      .insert('geoJson', vega.read(us10m, {
         type: 'topojson',
         feature: this.showCounties ? 'counties' : 'states'
       }))
-      .signal('stateDefaultColor', this.stateDefaultColor)
-      .signal('stateDefaultStrokeColor', this.stateDefaultStrokeColor)
-      .signal('selectedState', this.getMapDisplayLevelId())
+      .signal('selectedRegion', this.getMapDisplayLevelId())
+      .signal('defaultRegionColor', this.stateDefaultColor)
+      .signal('defaultRegionStrokeColor', this.stateDefaultStrokeColor)
       .run();
 
     this.statesSubscription = this.dataService.states
       .subscribe((change: ChangeSet<State>) => {
         const set = VegaChangeSet.fromDinoChangeSet(change);
-        this.view.change('stateColorCoding', set).run();
+        this.view.change('regionColors', set).run();
       });
 
     this.pointSubscription = this.dataService.points

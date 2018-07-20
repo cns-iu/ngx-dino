@@ -69,6 +69,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
   @Input() tickLabelColor: string = 'lightblack';
 
   @Input() showAxisIndicators = false; // Toggle texts over axes indicating the type of axis
+  @Input() showAxisLabels = false;
 
   @ViewChild('plotContainer') scatterplotElement: ElementRef;
 
@@ -89,8 +90,8 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
   yScale: any; // d3Axis.AxisScale<any>
 
   // x & y labels are field labels  - not drawnq over the axes
-  xAxisLabel = 'x-axis'; // defaults
-  yAxisLabel = 'y-axis'; // defaults
+  xAxisLabel = ''; // defaults
+  yAxisLabel = ''; // defaults
 
   // x & y text are svg elements with text drawn over the axes denoting the type of axis.
   xAxisText: any;
@@ -145,10 +146,33 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
     if ('dataStream' in changes && this.dataStream) {
       this.data = [];
       this.updateStreamProcessor(false);
-    } else if (Object.keys(changes).find((k) => k.endsWith('Field')).length > 0) {  
-          const changedField =  changes[Object.keys(changes).find((k) => k.endsWith('Field'))].currentValue;
-          this.updateStreamProcessor(true, changedField);
+    } else {
+        if (Object.keys(changes).find((k) => k.endsWith('Field')).length > 0 
+          && (!('xField' in changes) && !('yField' in changes))
+        ) {
+            const changedField =  changes[Object.keys(changes).find((k) => k.endsWith('Field'))].currentValue;
+            this.updateStreamProcessor(true, changedField);
+        }
+
+        if (('xField' in changes) || ('yField' in changes)) {
+          if(this.showAxisLabels) {
+            this.updateAxisLabels();
+          }
+
+          const axis = Object.keys(changes)[0][0];
+          if (axis === 'x') {
+            this.updateStreamProcessor(true, changes.xField.currentValue, axis);
+          } else if (axis === 'y') {
+            this.updateStreamProcessor(true, changes.yField.currentValue, axis);
+          }
+
+          this.setScales(this.data);
+          this.drawPlots(this.data);
+        }
+
+        if ('showAxisLabels' in changes) {
           this.updateAxisLabels();
+        }
       }
 
     if ('xAxisArrow' in changes && this.xAxis) {
@@ -185,7 +209,9 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
 
       this.setScales(this.data);
       this.initVisualization();
-      this.updateAxisLabels();
+      if (this.showAxisLabels) {
+        this.updateAxisLabels();
+      }
       this.drawPlots(this.data);
       this.drawText(this.data);
       if (this.data.length > 0 && this.showAxisIndicators) {
@@ -194,9 +220,13 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
     }
   }
 
-  updateStreamProcessor(update = true, changedField?: BoundField<number | string>) {
+  updateStreamProcessor(
+    update = true,
+    changedField?: BoundField<number | string>,
+    label: string = undefined
+    ) {
     if (this.xField && this.yField && this.dataService.pointProcessor) {
-      this.dataService.updateData(changedField);
+      this.dataService.updateData(changedField, label);
     }
     if (!update) {
       this.dataService.fetchData(
@@ -224,12 +254,12 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
   }
 
   updateAxisTexts() {
-    this.xAxisText.attr('transform', 'translate(' + (this.xScale(0) + 10) + ' ,' +
-      (this.yScale(0) - 15) + ')');
+    this.xAxisText.attr('transform', 'translate(' + (this.xScale(this.xScale.domain()[0]) + 10) + ' ,' +
+      (this.yScale(this.yScale.domain()[0]) - 15) + ')');
     this.xAxisText.attr('visibility', 'visible');
 
-    this.yAxisText.attr('transform', 'translate(' + (this.xScale(0) - 15) + ' ,' +
-      (this.yScale(0) - 10) + ') rotate(-90)');
+    this.yAxisText.attr('transform', 'translate(' + (this.xScale(this.xScale.domain()[0]) - 15) + ' ,' +
+      (this.yScale(this.yScale.domain()[0]) - 10) + ') rotate(-90)');
     this.yAxisText.attr('visibility', 'visible');
   }
 

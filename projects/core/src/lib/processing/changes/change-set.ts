@@ -1,5 +1,5 @@
 import { Collection, Seq } from 'immutable';
-import { curry } from 'lodash';
+import { curry, CurriedFunction2 } from 'lodash';
 
 import { BoundField } from '../../fields';
 import { DatumId, Datum, extractId } from '../datums';
@@ -17,6 +17,7 @@ function datumFromKVPair<K, V>(
 }
 
 
+// @dynamic
 export class ChangeSet<R> {
   // tslint:disable-next-line:member-ordering
   static fromRawChangeSet = curry(<R>(

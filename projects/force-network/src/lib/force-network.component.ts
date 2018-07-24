@@ -330,14 +330,14 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
     selection.transition().attr('r', (d: any) => 2 * this.nodeSizeScale(d.size));
 
     const textSelection = this.svgContainer.selectAll('text')
-      .filter((d: any) => d.id == targetID);
+      .filter((d: any) => d.id === targetID);
 
     textSelection.transition().style('font-size', (d) => isNaN(
       this.labelSizeScale(d[this.labelSizeField])) ? '32px' : 2 * this.labelSizeScale(d[this.labelSizeField]))
       .attr('dx', 30)
       .attr('dy', 20);
 
-    if(this.enableTooltip) {
+    if (this.enableTooltip) {
       this.tooltipDiv.transition().style('opacity', .7)
         .style('visibility', 'visible');
 
@@ -355,14 +355,14 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
 
 
     const textSelection = this.svgContainer.selectAll('text')
-      .filter((d: any) => d.id == targetID);
+      .filter((d: any) => d.id === targetID);
 
     textSelection.transition().style('font-size', (d) => isNaN(
       this.labelSizeScale(d[this.labelSizeField])) ? '16px' : this.labelSizeScale(d[this.labelSizeField]))
     .attr('dx', 15)
     .attr('dy', 10);
 
-    if(this.enableTooltip) {
+    if (this.enableTooltip) {
       this.tooltipDiv.style('opacity', 0)
       .style('visibility', 'hidden');
     }

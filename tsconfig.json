@@ -22,6 +22,48 @@
       ],
       "core/*": [
         "dist/core/*"
+      ],
+      "datatable": [
+        "dist/datatable"
+      ],
+      "datatable/*": [
+        "dist/datatable/*"
+      ],
+      "force-network": [
+        "dist/force-network"
+      ],
+      "force-network/*": [
+        "dist/force-network/*"
+      ],
+      "geomap": [
+        "dist/geomap"
+      ],
+      "geomap/*": [
+        "dist/geomap/*"
+      ],
+      "legend": [
+        "dist/legend"
+      ],
+      "legend/*": [
+        "dist/legend/*"
+      ],
+      "scatterplot": [
+        "dist/scatterplot"
+      ],
+      "scatterplot/*": [
+        "dist/scatterplot/*"
+      ],
+      "science-map": [
+        "dist/science-map"
+      ],
+      "science-map/*": [
+        "dist/science-map/*"
+      ],
+      "vega": [
+        "dist/vega"
+      ],
+      "vega/*": [
+        "dist/vega/*"
       ]
     }
   }

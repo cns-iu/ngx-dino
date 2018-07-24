@@ -165,6 +165,286 @@
           }
         }
       }
+    },
+    "datatable": {
+      "root": "projects/datatable",
+      "sourceRoot": "projects/datatable/src",
+      "projectType": "library",
+      "prefix": "dino",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/datatable/tsconfig.lib.json",
+            "project": "projects/datatable/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "project": "projects/datatable/ng-package.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/datatable/src/test.ts",
+            "tsConfig": "projects/datatable/tsconfig.spec.json",
+            "karmaConfig": "projects/datatable/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/datatable/tsconfig.lib.json",
+              "projects/datatable/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "force-network": {
+      "root": "projects/force-network",
+      "sourceRoot": "projects/force-network/src",
+      "projectType": "library",
+      "prefix": "dino",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/force-network/tsconfig.lib.json",
+            "project": "projects/force-network/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "project": "projects/force-network/ng-package.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/force-network/src/test.ts",
+            "tsConfig": "projects/force-network/tsconfig.spec.json",
+            "karmaConfig": "projects/force-network/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/force-network/tsconfig.lib.json",
+              "projects/force-network/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "geomap": {
+      "root": "projects/geomap",
+      "sourceRoot": "projects/geomap/src",
+      "projectType": "library",
+      "prefix": "dino",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/geomap/tsconfig.lib.json",
+            "project": "projects/geomap/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "project": "projects/geomap/ng-package.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/geomap/src/test.ts",
+            "tsConfig": "projects/geomap/tsconfig.spec.json",
+            "karmaConfig": "projects/geomap/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/geomap/tsconfig.lib.json",
+              "projects/geomap/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "legend": {
+      "root": "projects/legend",
+      "sourceRoot": "projects/legend/src",
+      "projectType": "library",
+      "prefix": "dino",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/legend/tsconfig.lib.json",
+            "project": "projects/legend/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "project": "projects/legend/ng-package.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/legend/src/test.ts",
+            "tsConfig": "projects/legend/tsconfig.spec.json",
+            "karmaConfig": "projects/legend/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/legend/tsconfig.lib.json",
+              "projects/legend/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "scatterplot": {
+      "root": "projects/scatterplot",
+      "sourceRoot": "projects/scatterplot/src",
+      "projectType": "library",
+      "prefix": "dino",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/scatterplot/tsconfig.lib.json",
+            "project": "projects/scatterplot/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "project": "projects/scatterplot/ng-package.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/scatterplot/src/test.ts",
+            "tsConfig": "projects/scatterplot/tsconfig.spec.json",
+            "karmaConfig": "projects/scatterplot/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/scatterplot/tsconfig.lib.json",
+              "projects/scatterplot/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "science-map": {
+      "root": "projects/science-map",
+      "sourceRoot": "projects/science-map/src",
+      "projectType": "library",
+      "prefix": "dino",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/science-map/tsconfig.lib.json",
+            "project": "projects/science-map/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "project": "projects/science-map/ng-package.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/science-map/src/test.ts",
+            "tsConfig": "projects/science-map/tsconfig.spec.json",
+            "karmaConfig": "projects/science-map/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/science-map/tsconfig.lib.json",
+              "projects/science-map/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "vega": {
+      "root": "projects/vega",
+      "sourceRoot": "projects/vega/src",
+      "projectType": "library",
+      "prefix": "dino",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/vega/tsconfig.lib.json",
+            "project": "projects/vega/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "project": "projects/vega/ng-package.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/vega/src/test.ts",
+            "tsConfig": "projects/vega/tsconfig.spec.json",
+            "karmaConfig": "projects/vega/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/vega/tsconfig.lib.json",
+              "projects/vega/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "dino-demo"

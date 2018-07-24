@@ -17,53 +17,47 @@
       "dom"
     ],
     "paths": {
-      "core": [
+      "@ngx-dino/core": [
         "dist/core"
       ],
-      "core/*": [
+      "@ngx-dino/core/*": [
         "dist/core/*"
       ],
-      "datatable": [
+      "@ngx-dino/datatable": [
         "dist/datatable"
       ],
-      "datatable/*": [
+      "@ngx-dino/datatable/*": [
         "dist/datatable/*"
       ],
       "force-network": [
         "dist/force-network"
       ],
-      "force-network/*": [
+      "@ngx-dino/force-network/*": [
         "dist/force-network/*"
       ],
-      "geomap": [
+      "@ngx-dino/geomap": [
         "dist/geomap"
       ],
-      "geomap/*": [
+      "@ngx-dino/geomap/*": [
         "dist/geomap/*"
       ],
-      "legend": [
+      "@ngx-dino/legend": [
         "dist/legend"
       ],
-      "legend/*": [
+      "@ngx-dino/legend/*": [
         "dist/legend/*"
       ],
-      "scatterplot": [
+      "@ngx-dino/scatterplot": [
         "dist/scatterplot"
       ],
-      "scatterplot/*": [
+      "@ngx-dino/scatterplot/*": [
         "dist/scatterplot/*"
       ],
-      "science-map": [
+      "@ngx-dino/science-map": [
         "dist/science-map"
       ],
-      "science-map/*": [
+      "@ngx-dino/science-map/*": [
         "dist/science-map/*"
-      ],
-      "vega": [
-        "dist/vega"
-      ],
-      "vega/*": [
-        "dist/vega/*"
       ]
     }
   }

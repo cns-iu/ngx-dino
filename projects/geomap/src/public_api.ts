@@ -2,6 +2,7 @@
  * Public API Surface of geomap
  */
 
-export * from './lib/geomap.service';
+/// <reference path="./lib/typings.d.ts" />
+export * from './lib/shared/geomap.dataservice';
 export * from './lib/geomap.component';
-export * from './lib/geomap.module';
+export { GeomapModule } from './lib/geomap.module';

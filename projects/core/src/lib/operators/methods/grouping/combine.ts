@@ -4,5 +4,5 @@ import { create } from '../../utility/create';
 
 
 export function combine<In, Out>(schema: Schema): Operator<In, Out> {
-  return create(CombineOperator, schema);
+  return create<In, Out>(CombineOperator, schema);
 }

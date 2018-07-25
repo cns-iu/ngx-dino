@@ -9,13 +9,13 @@ import { isFunction, throttle } from 'lodash';
 import { defaultLogLevel } from './shared/log-level';
 import { map } from '@ngx-dino/core/lib/operators';
 import { simpleField, BoundField, RawChangeSet, ChangeSet } from '@ngx-dino/core';
-import { vega, VegaChangeSet } from '@ngx-dino/vega';
+import { vega, VegaChangeSet } from '@ngx-dino/vega-util';
 import { State } from './shared/state';
 import { Point } from './shared/point';
 import { lookupStateCode } from './shared/state-lookup';
 import { GeomapDataService } from './shared/geomap.dataservice';
-import * as us10m from './shared/us-10m.json';
-import * as geomapSpec from './shared/spec.json';
+import * as us10m from 'shared/us-10m.json';
+import * as geomapSpec from 'shared/spec.json';
 
 
 @Component({

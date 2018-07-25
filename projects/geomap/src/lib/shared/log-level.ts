@@ -1,4 +1,4 @@
-import { vega } from '@ngx-dino/vega';
+import { vega } from '@ngx-dino/vega-util';
 
 /*
 // FIXME: Need a more generic/angular way to see if in production mode

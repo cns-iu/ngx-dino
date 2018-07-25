@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/map';
 
 import { Seq, Map } from 'immutable';
 
@@ -34,7 +32,9 @@ function getCache<R>(
 }
 
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class DataProcessorService {
   constructor() {  }
 

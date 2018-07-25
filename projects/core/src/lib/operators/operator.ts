@@ -1,5 +1,3 @@
-import { Collection } from 'immutable';
-
 import { State, BaseOperator, BaseCache } from './base/base';
 import { NoopCache } from './caches/noop-cache';
 

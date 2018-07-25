@@ -1,50 +1,91 @@
+import { Collection, Map, Set } from 'immutable';
+import { forOwn } from 'lodash';
+
 import { vega } from './vega';
-import { Changes, DatumId, isDatumId } from '@ngx-dino/core';
+import {
+  ChangeSet as DinoChangeSet,
+  Datum, DatumId, idSymbol, rawDataSymbol
+} from '@ngx-dino/core';
 
-function addToSet<T>(changeSet: any, items: T[]): void {
-  changeSet.insert(items);
+
+// General utility
+function getDatumId(datum: Datum): DatumId {
+  return datum[idSymbol];
 }
 
-function removeFromSet<T>(changeSet: any, items: (T | DatumId)[], key: any): void {
-  const removeSet = {};
-  items.forEach((value) => {
-    const id = isDatumId(value) ? value : value[key];
-    removeSet[id] = true;
+
+// Dino -> Vega set utility
+function insertDatums(
+  vegaSet: VegaChangeSet<Datum>,
+  datums: Collection.Indexed<Datum>
+): void {
+  vegaSet.insert(datums.toArray());
+}
+
+function removeDatums(
+  vegaSet: VegaChangeSet<Datum>,
+  datums: Collection.Indexed<Datum>
+): void {
+  const ids = datums.map(getDatumId).toSet();
+  vegaSet.remove((datum) => ids.contains(getDatumId(datum)));
+}
+
+function modifyDatums(
+  vegaSet: VegaChangeSet<Datum>,
+  datums: Collection.Indexed<Datum>
+): void {
+  const byIds = Map<DatumId, Datum>().asMutable();
+  const fields = Set<string>().asMutable();
+
+  datums.forEach((datum) => {
+    byIds.set(getDatumId(datum), datum);
+    forOwn(datum, (value, prop) => fields.add(prop));
   });
 
-  changeSet.remove((value) => {
-    return removeSet[value[key]];
+  // Don't modify idSymbol or rawDataSymbol
+  fields.remove(idSymbol).remove(rawDataSymbol);
+
+  // Modify fields
+  fields.forEach((field) => {
+    vegaSet.modify(
+      (datum) => (byIds.has(getDatumId(datum)) && field in datum),
+      field,
+      (datum) => datum[field]
+    );
   });
 }
 
-function updateInSet<T>(changeSet: any, items: [T | DatumId, Partial<T>][], key: any): void {
-  const changesById = {};
-  const changedFields = {};
 
-  items.forEach(([valueOrId, change]) => {
-    const id = isDatumId(valueOrId) ? valueOrId : valueOrId[key];
-    changesById[id] = change;
-
-    Object.keys(change).forEach((field) => {
-      changedFields[field] = true;
-    });
-  });
-
-  Object.keys(changedFields).forEach((field) => {
-    changeSet.modify((value) => {
-      const change = changesById[value[key]];
-      return change && change[field] != null;
-    }, field, (value) => {
-      return changesById[value[key]][field];
-    });
-  });
+// Vega `changeset` interface
+export interface RawVegaChangeSet<T> {
+  insert(items: T[]): this;
+  remove(items: T[] | ((item: T) => boolean)): this;
+  modify<V>(
+    item: T | ((item: T) => boolean),
+    field: string,
+    value: V | ((item: T) => V)
+  ): this;
 }
 
-export function makeChangeSet<T>(change: Changes<T>, key: keyof T): any {
-  const changeSet = new vega.changeset();
-  addToSet(changeSet, change.add);
-  removeFromSet(changeSet, change.remove, key);
-  updateInSet(changeSet, change.update, key);
+// Vega `changeset` wrapper class
+// NOTE: `instanceof` does NOT work for this class
+export class VegaChangeSet<T>
+  extends (vega.changeset as { new(): RawVegaChangeSet<T> })
+  implements RawVegaChangeSet<T> {
+  constructor() {
+    return super() as any;
+  }
 
-  return changeSet;
+  static fromDinoChangeSet<T>(
+    dinoSet: DinoChangeSet<T>
+  ): VegaChangeSet<Datum<T>> {
+    const vegaSet = new VegaChangeSet();
+    insertDatums(vegaSet, dinoSet.insert);
+    removeDatums(vegaSet, dinoSet.remove);
+    modifyDatums(vegaSet, dinoSet.update);
+    removeDatums(vegaSet, dinoSet.replace);
+    insertDatums(vegaSet, dinoSet.replace);
+
+    return vegaSet;
+  }
 }

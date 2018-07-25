@@ -6,4 +6,5 @@ export interface Point {
   shape: string;
   size: string;
   stroke: string;
+  pulse: boolean;
 }

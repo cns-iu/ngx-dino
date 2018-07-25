@@ -8,7 +8,8 @@
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "build-demo": "yarn build --output-hashing=none --sourcemaps --base-href /ngx-dino/demo1/ --output-path ../../dist"
   },
   "private": true,
   "dependencies": {
@@ -24,8 +25,9 @@
     "@ngx-dino/core": "^0.0.0",
     "@ngx-dino/force-network": "^0.0.0",
     "@ngx-dino/science-map": "^0.0.0",
-    "@ngx-dino/science-map-legend": "^0.0.0",
+    "@ngx-dino/legend": "^0.0.0",
     "core-js": "^2.4.1",
+    "material-design-icons": "^3.0.1",
     "rxjs": "^5.5.6",
     "zone.js": "^0.8.19"
   },

@@ -1,0 +1,227 @@
+[
+  {
+    "id": 12,
+    "label": "FL",
+    "color": "rgb(236, 95, 66)"
+  },
+  {
+    "id": 17,
+    "label": "IL",
+    "color": "rgb(253, 203, 150)"
+  },
+  {
+    "id": 24,
+    "label": "MD",
+    "color": "rgb(127, 0, 0)"
+  },
+  {
+    "id": 18,
+    "label": "IN",
+    "color": "rgb(253, 204, 151)"
+  },
+  {
+    "id": 36,
+    "label": "NY",
+    "color": "rgb(237, 98, 67)"
+  },
+  {
+    "id": 6,
+    "label": "CA",
+    "color": "rgb(237, 98, 67)"
+  },
+  {
+    "id": 26,
+    "label": "MI",
+    "color": "rgb(253, 198, 144)"
+  },
+  {
+    "id": 27,
+    "label": "MN",
+    "color": "rgb(253, 197, 142)"
+  },
+  {
+    "id": 39,
+    "label": "OH",
+    "color": "rgb(253, 197, 142)"
+  },
+  {
+    "id": 25,
+    "label": "MA",
+    "color": "rgb(226, 74, 51)"
+  },
+  {
+    "id": 40,
+    "label": "OK",
+    "color": "rgb(253, 209, 157)"
+  },
+  {
+    "id": 31,
+    "label": "NE",
+    "color": "rgb(253, 208, 156)"
+  },
+  {
+    "id": 42,
+    "label": "PA",
+    "color": "rgb(252, 159, 107)"
+  },
+  {
+    "id": 37,
+    "label": "NC",
+    "color": "rgb(253, 192, 138)"
+  },
+  {
+    "id": 55,
+    "label": "WI",
+    "color": "rgb(253, 207, 154)"
+  },
+  {
+    "id": 9,
+    "label": "CT",
+    "color": "rgb(253, 195, 141)"
+  },
+  {
+    "id": 33,
+    "label": "NH",
+    "color": "rgb(253, 201, 147)"
+  },
+  {
+    "id": 35,
+    "label": "NM",
+    "color": "rgb(253, 202, 148)"
+  },
+  {
+    "id": 22,
+    "label": "LA",
+    "color": "rgb(253, 198, 144)"
+  },
+  {
+    "id": 48,
+    "label": "TX",
+    "color": "rgb(253, 173, 119)"
+  },
+  {
+    "id": 44,
+    "label": "RI",
+    "color": "rgb(253, 205, 153)"
+  },
+  {
+    "id": 8,
+    "label": "CO",
+    "color": "rgb(250, 144, 95)"
+  },
+  {
+    "id": 49,
+    "label": "UT",
+    "color": "rgb(253, 199, 145)"
+  },
+  {
+    "id": 47,
+    "label": "TN",
+    "color": "rgb(253, 208, 156)"
+  },
+  {
+    "id": -1,
+    "label": "SP",
+    "color": "rgb(253, 209, 157)"
+  },
+  {
+    "id": 45,
+    "label": "SC",
+    "color": "rgb(253, 201, 147)"
+  },
+  {
+    "id": 50,
+    "label": "VT",
+    "color": "rgb(253, 205, 153)"
+  },
+  {
+    "id": 1,
+    "label": "AL",
+    "color": "rgb(253, 202, 148)"
+  },
+  {
+    "id": 54,
+    "label": "WV",
+    "color": "rgb(253, 209, 157)"
+  },
+  {
+    "id": 34,
+    "label": "NJ",
+    "color": "rgb(253, 209, 157)"
+  },
+  {
+    "id": 53,
+    "label": "WA",
+    "color": "rgb(253, 210, 159)"
+  },
+  {
+    "id": 13,
+    "label": "GA",
+    "color": "rgb(253, 203, 150)"
+  },
+  {
+    "id": 38,
+    "label": "ND",
+    "color": "rgb(253, 209, 157)"
+  },
+  {
+    "id": 4,
+    "label": "AZ",
+    "color": "rgb(253, 208, 156)"
+  },
+  {
+    "id": 11,
+    "label": "DC",
+    "color": "rgb(253, 204, 151)"
+  },
+  {
+    "id": -1,
+    "label": "Crete",
+    "color": "rgb(253, 210, 159)"
+  },
+  {
+    "id": -1,
+    "label": "Quebec",
+    "color": "rgb(253, 210, 159)"
+  },
+  {
+    "id": 21,
+    "label": "KY",
+    "color": "rgb(253, 209, 157)"
+  },
+  {
+    "id": 51,
+    "label": "VA",
+    "color": "rgb(253, 208, 156)"
+  },
+  {
+    "id": 29,
+    "label": "MO",
+    "color": "rgb(253, 203, 150)"
+  },
+  {
+    "id": 30,
+    "label": "MT",
+    "color": "rgb(253, 210, 159)"
+  },
+  {
+    "id": -1,
+    "label": "Guangxi",
+    "color": "rgb(253, 210, 159)"
+  },
+  {
+    "id": 41,
+    "label": "OR",
+    "color": "rgb(253, 209, 157)"
+  },
+  {
+    "id": 20,
+    "label": "KS",
+    "color": "rgb(253, 209, 157)"
+  },
+  {
+    "id": 32,
+    "label": "NV",
+    "color": "rgb(253, 210, 159)"
+  }
+]

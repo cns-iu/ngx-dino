@@ -5539,6 +5539,22 @@
             "disc_id": 10,
             "x": 326.1981,
             "size": 1.46
+        },
+        {
+            "subd_name": "Multidisciplinary",
+            "subd_id": -2,
+            "disc_id": 14,
+            "size": 5.97,
+            "y": 40,
+            "x": 110
+        },
+        {
+            "subd_name": "Unclassified",
+            "subd_id": -1,
+            "disc_id": 15,
+            "size": 5.97,
+            "y": 55,
+            "x": 110
         }
     ],
     "edges": [
@@ -17027,6 +17043,20 @@
             "y": 147,
             "x": 484,
             "disc_id": 13
+        },
+        {
+            "disc_name": "Multidisciplinary",
+            "color": "#000000",
+            "y": 40,
+            "x": 110,
+            "disc_id": 14
+        },
+        {
+            "disc_name": "Unclassified",
+            "color": "#AAAAAA",
+            "y": 55,
+            "x": 110,
+            "disc_id": 15
         }
     ],
     "labels": [
@@ -17172,6 +17202,20 @@
             "lat": 7.651821862,
             "disc_id": 13,
             "x": 484
+        },
+        {
+            "disc_name": "Multidisciplinary",
+            "color": "#000000",
+            "y": 39,
+            "x": 120,
+            "disc_id": -2
+        },
+        {
+            "disc_name": "Unclassified",
+            "color": "#AAAAAA",
+            "y": 54,
+            "x": 120,
+            "disc_id": -1
         }
     ]
 }

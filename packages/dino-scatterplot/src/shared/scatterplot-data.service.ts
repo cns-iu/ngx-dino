@@ -1,48 +1,89 @@
 import { Injectable } from '@angular/core';
+
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subscription } from 'rxjs/Subscription';
 
-import { Changes, IField, FieldProcessor } from '@ngx-dino/core';
+import { Map } from 'immutable';
+
+import {
+  BoundField,
+  CachedChangeStream,
+  DataProcessor,
+  Datum,
+  ChangeSet,
+  DataProcessorService,
+  RawChangeSet
+} from '@ngx-dino/core';
+
 import { Point } from './point';
 
 @Injectable()
 export class ScatterplotDataService {
-  private pointProcessor: FieldProcessor<Point>;
-  private pointsChange = new BehaviorSubject<Changes<Point>>(new Changes<Point>());
-  points: Observable<Changes<Point>> = this.pointsChange.asObservable();
+  public pointProcessor: DataProcessor<any, Point & Datum<any>>;
+  private pointsChange = new BehaviorSubject<ChangeSet<Point>>(new ChangeSet<Point>());
+  points: Observable<ChangeSet<Point>> = this.pointsChange.asObservable();
 
   private streamSubscription: Subscription;
 
-  constructor() { }
+  constructor(private processorService: DataProcessorService) { }
 
   fetchData(
-    stream: Observable<Changes<any>>,
-    pointIDField: IField<string>,
-    xField: IField<number | string>,
-    yField: IField<number | string>,
-    colorField: IField<string>,
-    shapeField: IField<string>,
-    sizeField: IField<string>,
-    strokeColorField: IField<string>): this {
-    this.pointProcessor = new FieldProcessor<Point>(stream, {
-      id: pointIDField,
-      x: xField,
-      y: yField,
-      color: colorField,
-      shape: shapeField,
-      size: sizeField,
-      stroke: strokeColorField
-    });
+    stream: Observable<RawChangeSet<any>>,
+
+    pointIdField: BoundField<number | string>,
+
+    xField: BoundField<number | string>,
+    yField: BoundField<number | string>,
+
+    colorField: BoundField<number | string>,
+    shapeField: BoundField<number | string>,
+    sizeField: BoundField<number | string>,
+    strokeColorField: BoundField<number | string>,
+
+    pulseField: BoundField<boolean>,
+
+    tooltipTextField?: BoundField<number | string>
+  ): this {
+    if (!pointIdField) {
+      return;
+    }
+    this.pointProcessor = this.processorService.createProcessor<Point & Datum<any>, any>(
+      stream,
+      pointIdField,
+      {
+        id: pointIdField,
+        x: xField,
+        y: yField,
+        color: colorField,
+        shape: shapeField,
+        size: sizeField,
+        stroke: strokeColorField,
+        pulse: pulseField,
+        // tooltip: tooltipTextField
+      }
+    );
 
     if (this.streamSubscription) {
       this.streamSubscription.unsubscribe();
     }
 
     this.streamSubscription = this.pointProcessor.asObservable().subscribe(
-      (change) => this.pointsChange.next(change)
-    );
+      (change) => this.pointsChange.next(change));
 
     return this;
+  }
+
+  updateData(changedField: BoundField<number | string>, label = undefined) {
+    if (!label) {
+      const fieldName = changedField.id;
+      this.pointProcessor.updateFields(Map({
+        [fieldName]: changedField
+      }));
+    } else {
+      this.pointProcessor.updateFields(Map({
+        [label]: changedField
+      }));
+    }
   }
 }

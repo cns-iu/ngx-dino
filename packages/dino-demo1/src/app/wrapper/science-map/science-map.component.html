@@ -1,5 +1,20 @@
 <dino-science-map 
   [subdisciplineSizeField]="subdisciplineSize"
-  [subdisciplineIDField]="subdisciplineID">
+  [subdisciplineIdField]="subdisciplineId"
+  [tooltipTextField]="tooltipText"
+
+  [dataStream]="filteredSubdisciplines"
+  
+  [height]="height"
+  [width]="width"
+  [margin]="margin"
+  [minPositionX]="minPositionX"
+  [minPositionY]="minPositionY"
+  [autoresize]="autoresize"
+  
+  [nodeSizeRange]="nodeSizeRange"
+  
+  [enableTooltip]="enableTooltip"
+  
+  (nodeClicked)="log($event)">
 </dino-science-map>
-<dino-science-map-legend></dino-science-map-legend>

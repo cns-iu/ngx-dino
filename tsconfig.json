@@ -58,6 +58,12 @@
       ],
       "@ngx-dino/science-map/*": [
         "dist/science-map/*"
+      ],
+      "@ngx-dino/vega-util": [
+        "dist/vega-util"
+      ],
+      "@ngx-dino/vega-util/*": [
+        "dist/vega-util/*"
       ]
     }
   }

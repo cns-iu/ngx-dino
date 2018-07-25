@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { VegaComponent } from './vega.component';
+import { VegaUtilComponent } from './vega-util.component';
 
-describe('VegaComponent', () => {
-  let component: VegaComponent;
-  let fixture: ComponentFixture<VegaComponent>;
+describe('VegaUtilComponent', () => {
+  let component: VegaUtilComponent;
+  let fixture: ComponentFixture<VegaUtilComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ VegaComponent ]
+      declarations: [ VegaUtilComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(VegaComponent);
+    fixture = TestBed.createComponent(VegaUtilComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

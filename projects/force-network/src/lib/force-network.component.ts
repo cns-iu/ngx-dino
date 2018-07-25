@@ -28,7 +28,7 @@ import { transition } from 'd3-transition';
 @Component({
   selector: 'dino-force-network',
   templateUrl: './force-network.component.html',
-  styleUrls: ['./force-network.component.sass'],
+  styleUrls: ['./force-network.component.css'],
   providers: [ForceNetworkDataService]
 })
 export class ForceNetworkComponent implements OnInit, OnChanges {

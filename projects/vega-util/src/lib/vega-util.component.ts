@@ -9,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
   `,
   styles: []
 })
-export class VegaComponent implements OnInit {
+export class VegaUtilComponent implements OnInit {
 
   constructor() { }
 

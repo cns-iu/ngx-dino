@@ -404,38 +404,38 @@
                 }
             }
         },
-        "vega": {
-            "root": "projects/vega",
-            "sourceRoot": "projects/vega/src",
+        "vega-util": {
+            "root": "projects/vega-util",
+            "sourceRoot": "projects/vega-util/src",
             "projectType": "library",
             "prefix": "dino",
             "architect": {
                 "build": {
                     "builder": "@angular-devkit/build-ng-packagr:build",
                     "options": {
-                        "tsConfig": "projects/vega/tsconfig.lib.json",
-                        "project": "projects/vega/ng-package.json"
+                        "tsConfig": "projects/vega-util/tsconfig.lib.json",
+                        "project": "projects/vega-util/ng-package.json"
                     },
                     "configurations": {
                         "production": {
-                            "project": "projects/vega/ng-package.prod.json"
+                            "project": "projects/vega-util/ng-package.prod.json"
                         }
                     }
                 },
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
                     "options": {
-                        "main": "projects/vega/src/test.ts",
-                        "tsConfig": "projects/vega/tsconfig.spec.json",
-                        "karmaConfig": "projects/vega/karma.conf.js"
+                        "main": "projects/vega-util/src/test.ts",
+                        "tsConfig": "projects/vega-util/tsconfig.spec.json",
+                        "karmaConfig": "projects/vega-util/karma.conf.js"
                     }
                 },
                 "lint": {
                     "builder": "@angular-devkit/build-angular:tslint",
                     "options": {
                         "tsConfig": [
-                            "projects/vega/tsconfig.lib.json",
-                            "projects/vega/tsconfig.spec.json"
+                            "projects/vega-util/tsconfig.lib.json",
+                            "projects/vega-util/tsconfig.spec.json"
                         ],
                         "exclude": [
                             "**/node_modules/**"

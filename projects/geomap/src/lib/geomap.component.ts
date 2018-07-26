@@ -7,8 +7,7 @@ import { Observable, Subscription  } from 'rxjs';
 import { isFunction, throttle } from 'lodash';
 
 import { defaultLogLevel } from './shared/log-level';
-import { map } from '@ngx-dino/core/lib/operators';
-import { simpleField, BoundField, RawChangeSet, ChangeSet } from '@ngx-dino/core';
+import { simpleField, BoundField, RawChangeSet, ChangeSet, map } from '@ngx-dino/core';
 import { vega, VegaChangeSet } from '@ngx-dino/vega-util';
 import { State } from './shared/state';
 import { Point } from './shared/point';
@@ -209,6 +208,7 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
   }
 
 
+  // tslint:disable-next-line:member-ordering
   private updateSignals = throttle(function (signals: {[name: string]: any}): void {
     if (this.view) {
       let rerun = false;

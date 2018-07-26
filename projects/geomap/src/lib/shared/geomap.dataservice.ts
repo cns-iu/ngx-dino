@@ -4,11 +4,9 @@ import { Observable, Subject, Subscription  } from 'rxjs';
 
 import { Map } from 'immutable';
 
-import { access } from '@ngx-dino/core/lib/operators';
 import {
-  simpleField, BoundField,
-  Datum, RawChangeSet, ChangeSet,
-  DataProcessor, DataProcessorService
+  simpleField, BoundField, Datum, RawChangeSet, ChangeSet,
+  DataProcessor, DataProcessorService, access
 } from '@ngx-dino/core';
 import { State } from './state';
 import { Point } from './point';
@@ -26,7 +24,9 @@ const computedPointLongitudeField = simpleField({
 }).getBoundField();
 
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class GeomapDataService {
   private pointProcessor: DataProcessor<any, Point & Datum<any>>;
   private stateProcessor: DataProcessor<any, State & Datum<any>>;

@@ -1,0 +1,43 @@
+.st0 {
+  display: none;
+}
+
+.st1 {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 600;
+}
+
+.st2 {
+  font-size: 22px;
+}
+
+.st3 {
+  font-family: 'Open Sans', sans-serif;
+}
+
+#colorLegendTitle {
+  margin-left: 2%;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+#colorLegendSubTitle {
+  font-size: 15px;
+  transform: matrix(1, 0, 0, 1, 6, 3);
+}
+
+.legend-item-1 {
+  width: 150px !important
+}
+
+.legend-item-2 {
+  width: 650px !important
+}
+
+.legend-item-label {
+  text-align: left
+}
+
+.legend-row {
+  width: 510px
+}

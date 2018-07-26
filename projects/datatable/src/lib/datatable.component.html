@@ -1,26 +1,25 @@
 <div class="datatable">
-  <mat-table [dataSource]="dataSource">
-    <ng-container *ngFor="let col of fields; index as i;" [matColumnDef]="col.field.label">
-      <mat-header-cell *matHeaderCellDef>{{col.field.label}}</mat-header-cell>
-      <mat-cell *matCellDef="let item"
-                [ngSwitch]="item[i].type">
+    <mat-table [dataSource]="dataSource">
+        <ng-container *ngFor="let col of fields; index as i;" [matColumnDef]="col.field.label">
+            <mat-header-cell *matHeaderCellDef>{{col.field.label}}</mat-header-cell>
+            <mat-cell *matCellDef="let item" [ngSwitch]="item[i].type">
 
-        <div *ngSwitchCase="'text'">
-          {{item[i].content}}
-        </div>
+                <div *ngSwitchCase="'text'">
+                    {{item[i].content}}
+                </div>
 
-        <a *ngSwitchCase="'link'" [attr.href]="item[i].href">
+                <a *ngSwitchCase="'link'" [attr.href]="item[i].href">
           {{item[i].content}}
         </a>
 
-        <div *ngSwitchDefault>
-          {{item[i]}}
-        </div>
+                <div *ngSwitchDefault>
+                    {{item[i]}}
+                </div>
 
-      </mat-cell>
-    </ng-container>
+            </mat-cell>
+        </ng-container>
 
-    <mat-header-row *matHeaderRowDef="columns"></mat-header-row>
-    <mat-row *matRowDef="let row; index as i; columns: columns;" (click)="rowClick.emit(i)"></mat-row>
-  </mat-table>
+        <mat-header-row *matHeaderRowDef="columns"></mat-header-row>
+        <mat-row *matRowDef="let row; index as i; columns: columns;" (click)="rowClick.emit(i)"></mat-row>
+    </mat-table>
 </div>

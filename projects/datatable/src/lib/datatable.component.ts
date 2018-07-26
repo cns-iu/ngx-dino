@@ -22,7 +22,7 @@ export class DatatableComponent implements OnInit, OnChanges {
   @Input() dataStream: any[] | Observable<any[]> | Observable<RawChangeSet>;
   @Input() idField: BoundField<DatumId>;
   @Input() fields: BoundField<DataType>[];
-  @Output() rowClick: Observable<number> = new EventEmitter();
+  @Output() rowClick = new EventEmitter();
 
   dataSource: Observable<DataType[][]>;
   get columns(): string[] {

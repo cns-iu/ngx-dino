@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { MatTableModule } from '@angular/material/table';
 import { DatatableComponent } from './datatable.component';
+
 
 describe('DatatableComponent', () => {
   let component: DatatableComponent;
@@ -8,6 +9,7 @@ describe('DatatableComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [MatTableModule],
       declarations: [ DatatableComponent ]
     })
     .compileComponents();

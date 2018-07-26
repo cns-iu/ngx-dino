@@ -1,0 +1,33 @@
+.tooltip {
+  position: fixed;
+  text-align: left;
+  width: auto;
+  height: auto;
+  padding: 5px;
+  font: 12px open-sans;
+  color: white;
+  background: black;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 10;
+  display: inline-block;
+  visibility: hidden;
+}
+
+.plotContainer {
+  padding: 20px;
+}
+
+.pulsing {
+  stroke-width: 5;
+  stroke-opacity: 0.2;
+  fill: #ffb100;
+  opacity: 0.5;
+  animation: 3s infinite alternate pulse;
+}
+
+@keyframes pulse {
+  50% {
+    transform: scale(2)
+  }
+}

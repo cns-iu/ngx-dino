@@ -24,7 +24,11 @@
     "@angular/router": "^6.1.0",
     "@types/lodash": "^4.14.113",
     "core-js": "^2.5.4",
+<<<<<<< HEAD
     "d3-array": "^1.2.1",
+=======
+    "d3-axis": "^1.0.8",
+>>>>>>> 99fbc0dbba81deb3e316ed28f85d1026116497ec
     "d3-drag": "^1.2.1",
     "d3-force": "^1.1.0",
     "d3-scale": "^2.1.0",
@@ -50,7 +54,7 @@
     "codelyzer": "~4.4.2",
     "jasmine-core": "~3.1.0",
     "jasmine-spec-reporter": "~4.2.1",
-    "karma": "^2.0.4",
+    "karma": "^2.0.5",
     "karma-chrome-launcher": "~2.2.0",
     "karma-coverage-istanbul-reporter": "~2.0.0",
     "karma-jasmine": "~1.1.1",
@@ -58,7 +62,7 @@
     "ng-packagr": "^4.0.1",
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
-    "tsickle": ">=0.25.5",
+    "tsickle": "0.32.0",
     "tslib": "^1.7.1",
     "tslint": "~5.11.0",
     "typescript": "~2.9.2"

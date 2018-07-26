@@ -3,6 +3,5 @@
  */
 
 /// <reference path="./lib/typings.d.ts" />
-export * from './lib/shared/geomap.dataservice';
 export * from './lib/geomap.component';
-export { GeomapModule } from './lib/geomap.module';
+export * from './lib/geomap.module';

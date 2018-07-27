@@ -11,7 +11,7 @@ import {
 } from '@ngx-dino/core';
 
 import { Subdiscipline } from './subdiscipline';
-import * as underlyingScimapData from 'underlyingScimapData.json';
+import underlyingScimapData from './underlyingScimapData';
 
 
 @Injectable({

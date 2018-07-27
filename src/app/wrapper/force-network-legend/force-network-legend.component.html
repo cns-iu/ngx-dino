@@ -1,0 +1,35 @@
+<div class="gradient-legend">
+    <div class="gradient-title"><b>Node Color</b></div>
+    <div id="gradient-encoding">{{colorLegendTitle}}</div>
+    <div class="gradient-container">
+      <div class="gradient-bar" [style.background]="gradient"></div>
+      <div class="gradient-labels">
+        <div>{{maxColorValueLabel}}</div>
+        <div class="gradient-label-filler"></div>
+        <div>{{midColorValueLabel}}</div>
+        <div class="gradient-label-filler"></div>
+        <div>{{minColorValueLabel}}</div>
+      </div>
+    </div>
+</div>
+
+<div class="node-size-legend">
+    <node-size-legend
+        [dataStream]="nodeStream"
+        [nodeIdField]="fields.nodeIdField"
+        [nodeSizeField]="fields.nodeSizeField"
+        [title]="'Group #'"
+        [nodeSizeRange]="nodeSizeRange">
+    </node-size-legend>
+</div>
+
+<div class="edge-size-legend">
+    <edge-size-legend
+        [dataStream]="edgeStream"
+        [edgeIdField]="fields.edgeIdField"
+        [edgeSizeField]="fields.edgeSizeField"
+        [edgeLegendTitle]="edgeLegendTitle"
+        [edgeSizeRange]="edgeSizeRange">
+    </edge-size-legend>
+</div>
+ 

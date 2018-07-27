@@ -2,16 +2,13 @@ import { Injectable } from '@angular/core';
 
 import { Observable, BehaviorSubject, Subscription } from 'rxjs';
 
-import * as d3Collection from 'd3-collection';
-import * as d3Array from 'd3-array';
-
 import {
-  Operator, RawChangeSet, BoundField, DataProcessorService,
+  RawChangeSet, BoundField, DataProcessorService,
   DataProcessor, Datum, ChangeSet
 } from '@ngx-dino/core';
 
 import { Subdiscipline } from './subdiscipline';
-import * as underlyingScimapData from 'underlyingScimapData.json';
+import underlyingScimapData from './underlyingScimapData';
 
 
 @Injectable({

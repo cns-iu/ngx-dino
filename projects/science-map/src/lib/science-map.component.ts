@@ -7,7 +7,7 @@ import {
   BoundField, RawChangeSet, Datum, idSymbol
 } from '@ngx-dino/core';
 
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import * as d3Selection from 'd3-selection';
 import { scaleLinear, scaleLog } from 'd3-scale';

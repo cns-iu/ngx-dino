@@ -29,7 +29,7 @@
       "@ngx-dino/datatable/*": [
         "dist/datatable/*"
       ],
-      "force-network": [
+      "@ngx-dino/force-network": [
         "dist/force-network"
       ],
       "@ngx-dino/force-network/*": [

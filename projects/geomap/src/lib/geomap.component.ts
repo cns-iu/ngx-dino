@@ -13,8 +13,8 @@ import { State } from './shared/state';
 import { Point } from './shared/point';
 import { lookupStateCode } from './shared/state-lookup';
 import { GeomapDataService } from './shared/geomap.dataservice';
-import * as us10m from 'shared/us-10m.json';
-import * as geomapSpec from 'shared/spec.json';
+import us10m from './shared/us-10m';
+import geomapSpec from './shared/spec';
 
 
 @Component({

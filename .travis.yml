@@ -17,6 +17,7 @@ branches:
 
 script:
   - npm run build:release
+  - npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
 
 deploy:
   - provider: pages
@@ -29,8 +30,6 @@ deploy:
   - provider: script
     skip-cleanup: true
     script:
-      echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > $HOME/.npmrc;
-      npm whoami
       npm run publish
     on:
       tags: true

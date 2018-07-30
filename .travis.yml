@@ -1,7 +1,6 @@
 language: node_js
 
 node_js:
-  - "9"
   - "10"
 
 sudo: false
@@ -10,12 +9,20 @@ cache:
   directories:
     - "node_modules"
 
+branches:
+  only:
+    - master
+    - develop
+
 before_script:
-  - npm install -g "@angular/cli"
+  - npm install -g --silent "@angular/cli"
 
 script:
-  - npm ci
-  - npm run build-release
+  - npm run build:release
+
+after_success:
+  - echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
+  - test $TRAVIS_TAG && npm run publish
 
 deploy:
   - provider: pages
@@ -25,10 +32,3 @@ deploy:
     local-dir: dist
     on:
       branch: master
-
-  - provider: npm
-      email: $NPM_USER
-      api_key: $NPM_TOKEN
-      on:
-        tags: true
-        repo: cns-iu/ngx-dino

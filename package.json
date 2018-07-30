@@ -1,6 +1,27 @@
 {
-    "name": "@ngx-dino/demo1",
+    "name": "ngx-dino",
     "version": "0.5.0",
+    "description": "Visualization framework and library for Angular 6+",
+    "homepage": "https://github.com/cns-iu/ngx-dino",
+    "bugs": "https://github.com/cns-iu/ngx-dino/issues",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/cns-iu/ngx-dino.git"
+    },
+    "license": "MIT",
+    "keywords": [
+        "angular",
+        "visualization",
+        "typescript",
+        "d3",
+        "vega"
+    ],
+    "author": "Cyberinfrastructure for Network Science Center at Indiana University (http://cns.iu.edu/)",
+    "contributors": [
+        "Bruce W. Herr II <bherr@indiana.edu> (https://github.com/bherr2)",
+        "Daniel Bolin <axbolin@iu.edu> (https://github.com/axdanbol)",
+        "Gagandeep Singh <singhgag@indiana.edu> (https://github.com/GagsdName)"
+    ],
     "scripts": {
         "ng": "ng",
         "start": "ng serve",
@@ -8,8 +29,12 @@
         "test": "ng test",
         "lint": "ng lint",
         "e2e": "ng e2e",
-        "build-release": "for p in core vega-util datatable force-network geomap scatterplot science-map legend; do ng build --prod $p; done && ng build --prod",
-        "publish:libs": "cd dist/core && for p in core vega-util datatable force-network geomap scatterplot science-map legend; do cd ../$p npm publish; done"
+        "build:release": "npm run build:libs-release && npm run build:demo-release",
+        "build:libs-release": "for p in core vega-util datatable force-network geomap scatterplot science-map legend; do ng build --prod $p; done",
+        "build:demo-release": "ng build --prod --aot --base-href /ngx-dino/",
+        "publish": "npm run publish:cp-readme && npm run publish:libs",
+        "publish:cp-readme": "for p in core vega-util datatable force-network geomap scatterplot science-map legend; do cp projects/$p/LICENSE dist/$p && cp -f projects/$p/README.md dist/$p; done",
+        "publish:libs": "cd dist/core && for p in core vega-util datatable force-network geomap scatterplot science-map legend; do cd ../$p && npm publish --dry-run; done"
     },
     "private": true,
     "dependencies": {

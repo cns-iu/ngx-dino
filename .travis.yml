@@ -10,10 +10,10 @@ cache:
     - "node_modules"
 
 branches:
-  tags: true
   only:
     - master
     - develop
+    - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
 
 script:
   - npm run build:release

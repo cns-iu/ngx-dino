@@ -45,20 +45,25 @@ export class ScatterplotDataService {
     if (!pointIdField) {
       return;
     }
+
+    let extracted = {
+      id: pointIdField,
+      x: xField,
+      y: yField,
+      color: colorField,
+      shape: shapeField,
+      size: sizeField,
+      stroke: strokeColorField,
+      pulse: pulseField
+    };
+    if (tooltipTextField !== undefined) {
+      extracted = Object.assign({ tooltip: tooltipTextField }, extracted);
+    }
+
     this.pointProcessor = this.processorService.createProcessor<Point & Datum<any>, any>(
       stream,
       pointIdField,
-      {
-        id: pointIdField,
-        x: xField,
-        y: yField,
-        color: colorField,
-        shape: shapeField,
-        size: sizeField,
-        stroke: strokeColorField,
-        pulse: pulseField,
-        // tooltip: tooltipTextField
-      }
+      extracted
     );
 
     if (this.streamSubscription) {

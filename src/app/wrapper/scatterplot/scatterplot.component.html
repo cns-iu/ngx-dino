@@ -1,16 +1,24 @@
 <dino-scatterplot
-[dataStream]="data"
+  [dataStream]="data"
+  [pointIdField]="id"
 
-[pointIdField]="id"
+  [xField]="x"
+  [yField]="y"
+  [sizeField]="size"
+  [colorField]="color"
+  [strokeColorField]="stroke"
+  [shapeField]="shape"
 
-[xField]="x"
-[yField]="y"
+  [pulseField]="pulse"
 
-[colorField]="color"
-[shapeField]="shape"
-[sizeField]="size"
-[strokeColorField]="stroke"
+  [enableTooltip]="true"
+  [tooltipTextField]="tooltipText"
+  
+  [width]="width"
+  [height]="height"
+  [autoresize]="false"
 
-[tooltipTextField]="tooltipText"
-[enableTooltip]="enableTooltip">
+  [gridlines]="true"
+  [showAxisLabels]="false"
+  [showAxisIndicators]="true">
 </dino-scatterplot>

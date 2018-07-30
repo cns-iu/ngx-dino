@@ -10,6 +10,7 @@ cache:
     - "node_modules"
 
 branches:
+  tags: true
   only:
     - master
     - develop

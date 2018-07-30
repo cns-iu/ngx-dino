@@ -1,3 +1,4 @@
+// tslint:disable
 export default {
   '$schema': 'https://vega.github.io/schema/vega/v3.0.json',
   'autosize': 'none',
@@ -332,4 +333,3 @@ export default {
     }
   ]
 };
-

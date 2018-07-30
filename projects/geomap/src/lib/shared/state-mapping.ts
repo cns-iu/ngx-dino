@@ -1,3 +1,4 @@
+// tslint:disable
 export default [
   {
     'id': 1,
@@ -285,4 +286,3 @@ export default [
     'name': 'U.S. Virgin Islands'
   }
 ];
-

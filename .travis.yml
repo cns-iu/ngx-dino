@@ -14,9 +14,6 @@ branches:
     - master
     - develop
 
-before_script:
-  - npm install -g --silent @angular/cli
-
 script:
   - npm run build:release
 
@@ -27,7 +24,6 @@ deploy:
     keep-history: false
     local-dir: dist/dino-demo
     on:
-      tags: true
       branch: master
   - provider: script
     script:

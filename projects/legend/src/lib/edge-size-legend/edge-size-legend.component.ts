@@ -54,14 +54,14 @@ export class EdgeSizeLegendComponent implements OnInit, OnChanges {
 
       data.update.forEach((el: any) => { // TODO typing for el
         const index = this.edgesData.findIndex((e) => e.id === el[idSymbol]);
-        if (index != -1) {
+        if (index !== -1) {
           this.edgesData[index] = Object.assign(this.edgesData[index] || {}, el );
         }
       });
 
       data.replace.forEach((el: any) => { // TODO typing for el
         const index = this.edgesData.findIndex((e) => e.id === el[idSymbol]);
-        if (index != -1) {
+        if (index !== -1) {
           this.edgesData[index] = el;
         }
       });

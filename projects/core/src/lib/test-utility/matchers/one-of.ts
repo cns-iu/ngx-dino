@@ -12,7 +12,7 @@ function compare<T>(
   const oneOfString = oneOf.join(', ');
   const passMessage = `Expected ${actual} to not be any of ${oneOfString}`;
   const failureMessage = `Expected ${actual} to be one of ${oneOfString}`;
-  const message = pass ? passMessage : failureMessage
+  const message = pass ? passMessage : failureMessage;
 
   if (oneOf.length === 0) {
     throw new Error('Expected must have least one element');

@@ -12,6 +12,6 @@ export interface Link {
 }
 
 export interface Graph {
-  nodes: Node[],
-  edges: Link[]
+  nodes: Node[];
+  edges: Link[];
 }

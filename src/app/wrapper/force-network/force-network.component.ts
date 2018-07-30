@@ -35,7 +35,7 @@ export class ForceNetworkComponent implements OnInit {
 
   enableTooltip = true;
 
-  constructor(private dataService: ForceNetworkDataService) { 
+  constructor(private dataService: ForceNetworkDataService) {
     this.nodeStream = this.dataService.nodeStream;
     this.edgeStream = this.dataService.edgeStream;
    }

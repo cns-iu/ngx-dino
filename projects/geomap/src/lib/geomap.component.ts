@@ -219,7 +219,7 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
         if (isFunction(newValue)) {
           newValue = newValue(oldValue);
         }
-        if (newValue != oldValue) {
+        if (newValue !== oldValue) {
           this.view.signal(name, newValue);
           rerun = true;
         }

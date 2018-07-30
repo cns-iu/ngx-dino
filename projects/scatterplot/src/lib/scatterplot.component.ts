@@ -118,14 +118,14 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
 
       data.update.forEach((el: any) => { // TODO typing for el
         const index = this.data.findIndex((e) => e.id === el[idSymbol]);
-        if (index != -1) {
+        if (index !== -1) {
           this.data[index] = Object.assign(this.data[index] || {}, el as Point);
         }
       });
 
       data.replace.forEach((el: any) => { // TODO typing for el
         const index = this.data.findIndex((e) => e.id === el[idSymbol]);
-        if (index != -1) {
+        if (index !== -1) {
           this.data[index] = el as Point;
         }
       });
@@ -155,7 +155,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
         }
 
         if (('xField' in changes) || ('yField' in changes)) {
-          if(this.showAxisLabels) {
+          if (this.showAxisLabels) {
             this.updateAxisLabels();
           }
 
@@ -414,7 +414,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
       .attr('d', d3Shape.symbol()
         .size((d) => <number>2 * d.size)
         .type((d) => this.selectShape(d)))
-      .attr('stroke', (d: any) => d.color === '#ffffff'? '#000000': d.stroke)
+      .attr('stroke', (d: any) => d.color === '#ffffff' ? '#000000' : d.stroke);
 
     pulse.enter().append('g')
       .attr('transform', (d) => this.shapeTransform(d))
@@ -423,7 +423,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
       .attr('d', d3Shape.symbol()
         .size((d) => <number>2 * d.size)
         .type((d) => this.selectShape(d)))
-      .attr('stroke', (d) => d.color === '#ffffff'? '#000000': d.stroke)
+      .attr('stroke', (d) => d.color === '#ffffff' ? '#000000' : d.stroke);
 
     pulse.exit().remove();
 
@@ -435,7 +435,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
       .attr('d', d3Shape.symbol()
         .size((d) => d.size as number)
         .type((d) => this.selectShape(d)))
-      .attr('stroke', (d) => d.color === '#ffffff'? '#000000': d.stroke)
+      .attr('stroke', (d) => d.color === '#ffffff' ? '#000000' : d.stroke)
       .attr('stroke-width', 1)
       .attr('transform', (d) => this.shapeTransform(d))
       .attr('fill', (d) => d.color);
@@ -589,7 +589,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
     .size((d) => 2 * d.size as number)
     .type((d) => this.selectShape(d)));
 
-    if(this.enableTooltip) {
+    if (this.enableTooltip) {
       this.tooltipDiv.transition().style('opacity', .7)
       .style('visibility', 'visible');
 
@@ -607,7 +607,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
     .size((d) => d.size as number)
     .type((d) => this.selectShape(d)));
 
-    if(this.enableTooltip) {
+    if (this.enableTooltip) {
       this.tooltipDiv.style('opacity', 0)
       .style('visibility', 'hidden');
     }

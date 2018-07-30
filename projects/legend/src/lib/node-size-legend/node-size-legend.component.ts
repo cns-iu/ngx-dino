@@ -58,14 +58,14 @@ export class NodeSizeLegendComponent implements OnInit, OnChanges {
 
       data.update.forEach((el: any) => { // TODO typing for el
         const index = this.nodesData.findIndex((e) => e.id === el[idSymbol]);
-        if (index != -1) {
+        if (index !== -1) {
           this.nodesData[index] = Object.assign(this.nodesData[index] || {}, el );
         }
       });
 
       data.replace.forEach((el: any) => { // TODO typing for el
         const index = this.nodesData.findIndex((e) => e.id === el[idSymbol]);
-        if (index != -1) {
+        if (index !== -1) {
           this.nodesData[index] = el;
         }
       });

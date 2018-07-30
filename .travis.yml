@@ -20,10 +20,6 @@ before_script:
 script:
   - npm run build:release
 
-after_success:
-  - echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
-  - test $TRAVIS_TAG && npm run publish
-
 deploy:
   - provider: pages
     skip-cleanup: true
@@ -32,3 +28,10 @@ deploy:
     local-dir: dist
     on:
       branch: master
+  - provider: script
+    script:
+      echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc;
+      npm run publish
+    on:
+      tags: true
+      all_branches: true

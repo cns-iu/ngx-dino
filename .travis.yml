@@ -1,0 +1,37 @@
+language: node_js
+
+node_js:
+  - "10"
+
+sudo: false
+
+cache:
+  directories:
+    - "node_modules"
+
+branches:
+  only:
+    - master
+    - develop
+
+before_script:
+  - npm install -g --silent "@angular/cli"
+
+script:
+  - npm run build:release
+
+deploy:
+  - provider: pages
+    skip-cleanup: true
+    github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+    keep-history: false
+    local-dir: dist
+    on:
+      branch: master
+  - provider: script
+    script:
+      echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc;
+      npm run publish
+    on:
+      tags: true
+      all_branches: true

@@ -1,0 +1,31 @@
+{
+    "name": "@ngx-dino/vega-util",
+    "version": "0.5.0",
+    "description": "Visualization framework and library for Angular 6+",
+    "homepage": "https://github.com/cns-iu/ngx-dino",
+    "bugs": "https://github.com/cns-iu/ngx-dino/issues",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/cns-iu/ngx-dino.git"
+    },
+    "license": "MIT",
+    "keywords": [
+        "angular",
+        "visualization",
+        "typescript",
+        "d3",
+        "vega"
+    ],
+    "author": "Cyberinfrastructure for Network Science Center at Indiana University (http://cns.iu.edu/)",
+    "contributors": [
+        "Bruce W. Herr II <bherr@indiana.edu> (https://github.com/bherr2)",
+        "Daniel Bolin <axbolin@iu.edu> (https://github.com/axdanbol)",
+        "Gagandeep Singh <singhgag@indiana.edu> (https://github.com/GagsdName)"
+    ],
+    "peerDependencies": {
+        "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
+        "@angular/core": "^6.0.0-rc.0 || ^6.0.0",
+        "@ngx-dino/core": "^0.5.0",
+        "vega": "^4.2.0"
+    }
+}

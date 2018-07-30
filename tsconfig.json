@@ -1,0 +1,70 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es5",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2017",
+      "dom"
+    ],
+    "paths": {
+      "@ngx-dino/core": [
+        "dist/core"
+      ],
+      "@ngx-dino/core/*": [
+        "dist/core/*"
+      ],
+      "@ngx-dino/datatable": [
+        "dist/datatable"
+      ],
+      "@ngx-dino/datatable/*": [
+        "dist/datatable/*"
+      ],
+      "@ngx-dino/force-network": [
+        "dist/force-network"
+      ],
+      "@ngx-dino/force-network/*": [
+        "dist/force-network/*"
+      ],
+      "@ngx-dino/geomap": [
+        "dist/geomap"
+      ],
+      "@ngx-dino/geomap/*": [
+        "dist/geomap/*"
+      ],
+      "@ngx-dino/legend": [
+        "dist/legend"
+      ],
+      "@ngx-dino/legend/*": [
+        "dist/legend/*"
+      ],
+      "@ngx-dino/scatterplot": [
+        "dist/scatterplot"
+      ],
+      "@ngx-dino/scatterplot/*": [
+        "dist/scatterplot/*"
+      ],
+      "@ngx-dino/science-map": [
+        "dist/science-map"
+      ],
+      "@ngx-dino/science-map/*": [
+        "dist/science-map/*"
+      ],
+      "@ngx-dino/vega-util": [
+        "dist/vega-util"
+      ],
+      "@ngx-dino/vega-util/*": [
+        "dist/vega-util/*"
+      ]
+    }
+  }
+}

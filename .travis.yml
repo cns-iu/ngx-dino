@@ -15,9 +15,10 @@ branches:
     - develop
     - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
 
-script:
-  - npm run build:release
-  - npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
+before_install:
+  - npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN --global
+
+script: npm run build:release
 
 deploy:
   - provider: pages
@@ -29,8 +30,7 @@ deploy:
       branch: master
   - provider: script
     skip-cleanup: true
-    script:
-      npm run publish
+    script: npm run publish
     on:
       tags: true
       all_branches: true

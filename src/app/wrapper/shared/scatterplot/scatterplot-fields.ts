@@ -57,3 +57,10 @@ export const tooltipTextField = simpleField<number>({
 
   operator: access('id')
 });
+
+export const pulseField = simpleField<boolean>({
+  bfieldId: 'pulse',
+  label: 'Pulse',
+
+  operator: access('pulse', false)
+});

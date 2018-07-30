@@ -243,7 +243,9 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
         this.colorField, this.shapeField,
         this.sizeField, this.strokeColorField,
 
-        this.pulseField
+        this.pulseField,
+
+        (this.enableTooltip) ? this.tooltipTextField : undefined
       );
     }
   }
@@ -406,6 +408,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
     }
 
     // Insert pulses
+
     const pulse = this.pulseG.selectAll('g')
       .data(data.filter((p) => p.pulse), (p) => p[idSymbol]);
 

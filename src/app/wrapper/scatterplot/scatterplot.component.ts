@@ -13,7 +13,8 @@ import {
   shapeField,
   colorField,
   strokeField,
-  tooltipTextField
+  tooltipTextField,
+  pulseField
 } from '../shared/scatterplot/scatterplot-fields';
 import { ScatterplotDataService } from '../shared/scatterplot/scatterplot-data.service';
 
@@ -24,8 +25,8 @@ import { ScatterplotDataService } from '../shared/scatterplot/scatterplot-data.s
   providers: [ScatterplotDataService]
 })
 export class ScatterplotComponent implements OnInit {
-  @Input() height = window.innerHeight;
-  @Input() width = window.innerWidth;
+  @Input() height = 70 / 100 * window.innerHeight;
+  @Input() width = 65 / 100 * window.innerWidth;
 
   data: Observable<RawChangeSet<any>>;
 
@@ -38,6 +39,8 @@ export class ScatterplotComponent implements OnInit {
   shape: BoundField<string>;
   size: BoundField<number>;
   stroke: BoundField<string>;
+
+  pulse: BoundField<boolean>;
 
   tooltipText: BoundField<number | string>;
   enableTooltip = true;
@@ -56,6 +59,8 @@ export class ScatterplotComponent implements OnInit {
     this.size = sizeField.getBoundField();
     this.color = colorField.getBoundField();
     this.stroke = strokeField.getBoundField();
+
+    this.pulse = pulseField.getBoundField();
 
     this.tooltipText = tooltipTextField.getBoundField();
   }

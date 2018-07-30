@@ -1,6 +1,6 @@
-# @ngx-dino
+# @ngx-dino/science-map
 
-[![NPM Version](https://img.shields.io/npm/v/@ngx-dino/core.svg)](https://www.npmjs.com/package/@ngx-dino/core)
+[![NPM Version](https://img.shields.io/npm/v/@ngx-dino/science-map.svg)](https://www.npmjs.com/package/@ngx-dino/science-map)
 [![Shipping faster with ZenHub](https://raw.githubusercontent.com/ZenHubIO/support/master/zenhub-badge.png)](https://app.zenhub.com/workspace/o/cns-iu/ngx-dino)
 [![Build Status](https://travis-ci.com/cns-iu/ngx-dino.svg?branch=master)](https://travis-ci.com/cns-iu/ngx-dino)
 [![GitHub last commit](https://img.shields.io/github/last-commit/cns-iu/ngx-dino.svg)](https://github.com/cns-iu/ngx-dino/commits/master)
@@ -9,15 +9,11 @@
 
 @ngx-dino is a visualization framework and library for Angular 6+
 
-For information on how to develop / contribute to @ngx-dino, see [DEVELOPMENT.md](DEVELOPMENT.md)
-
-## Demo site
-
-<https://cns-iu.github.io/ngx-dino/>
+For information on how to develop / contribute to @ngx-dino, see [DEVELOPMENT.md](https://github.com/cns-iu/ngx-dino/blob/master/DEVELOPMENT.md)
 
 ## Change Log
 
-See the [ChangeLog](CHANGELOG.md) for the latest developments.
+See the [ChangeLog](https://github.com/cns-iu/ngx-dino/blob/master/CHANGELOG.md) for the latest developments.
 
 ## Usage
 

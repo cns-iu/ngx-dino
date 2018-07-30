@@ -25,8 +25,9 @@ deploy:
     skip-cleanup: true
     github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
     keep-history: false
-    local-dir: dist
+    local-dir: dist/dino-demo
     on:
+      tags: true
       branch: master
   - provider: script
     script:

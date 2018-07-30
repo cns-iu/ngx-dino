@@ -29,7 +29,8 @@ deploy:
   - provider: script
     skip-cleanup: true
     script:
-      echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc;
+      echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > $HOME/.npmrc;
+      npm whoami
       npm run publish
     on:
       tags: true

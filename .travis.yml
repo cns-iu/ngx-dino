@@ -8,6 +8,7 @@ sudo: false
 cache:
   directories:
     - "node_modules"
+    - "package-lock.json"
 
 branches:
   only:
@@ -20,8 +21,9 @@ script: skip
 jobs:
   include:
     - stage: run tests
-    - script: echo "TODO - Testing"
-    - stage: deploy demo
+      script: echo "TODO - Testing"
+    - stage: deploy
+      name: "Deploy demo to GitHub Pages"
       if: branch = master
       script: npm run build:release
       deploy:
@@ -33,7 +35,8 @@ jobs:
         on:
           branch: master
     - &npm-publish
-      stage: npm publish libraries
+      stage: deploy
+      name: "Build and publish @ngx-dino/core"
       if: branch = /^v\d+\.\d+(\.\d+)?(-\S*)?$/
       script: npm run build:lib core
       before_deploy:
@@ -48,24 +51,28 @@ jobs:
           tags: true
           repo: cns-iu/ngx-dino
     - <<: *npm-publish
+      name: "Build and publish @ngx-dino/vega-util"
       script:
         - npm run build:lib core
         - npm run build:lib vega-util
       before_deploy:
         - cd dist/vega-util
     - <<: *npm-publish
+      name: "Build and publish @ngx-dino/datatable"
       script:
         - npm run build:lib core
         - npm run build:lib datatable
       before_deploy:
         - cd dist/datatable
     - <<: *npm-publish
+      name: "Build and publish @ngx-dino/force-network"
       script:
         - npm run build:lib core
         - npm run build:lib force-network
       before_deploy:
         - cd dist/force-network
     - <<: *npm-publish
+      name: "Build and publish @ngx-dino/geomap"
       script:
         - npm run build:lib core
         - npm run build:lib vega-util
@@ -73,18 +80,21 @@ jobs:
       before_deploy:
         - cd dist/geomap
     - <<: *npm-publish
+      name: "Build and publish @ngx-dino/scatterplot"
       script:
         - npm run build:lib core
         - npm run build:lib scatterplot
       before_deploy:
         - cd dist/scatterplot
     - <<: *npm-publish
+      name: "Build and publish @ngx-dino/science-map"
       script:
         - npm run build:lib core
         - npm run build:lib science-map
       before_deploy:
         - cd dist/science-map
     - <<: *npm-publish
+      name: "Build and publish @ngx-dino/legend"
       script:
         - npm run build:lib core
         - npm run build:lib legend

@@ -8,7 +8,6 @@ sudo: false
 cache:
   directories:
     - "node_modules"
-    - "package-lock.json"
 
 branches:
   only:
@@ -38,7 +37,7 @@ jobs:
     - &npm-publish
       stage: deploy
       name: "Build and publish @ngx-dino/core"
-      if: branch = /^v\d+\.\d+(\.\d+)?(-\S*)?$/
+      if: tag IS present
       script: npm run build:lib core
       before_deploy:
         - cd dist/core

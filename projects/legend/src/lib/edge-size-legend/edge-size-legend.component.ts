@@ -17,7 +17,7 @@ import { scaleLinear } from 'd3-scale';
 import { LegendDataService } from '../shared/legend-data.service';
 
 @Component({
-  selector: 'edge-size-legend',
+  selector: 'dino-edge-size-legend',
   templateUrl: './edge-size-legend.component.html',
   styleUrls: ['./edge-size-legend.component.css'],
   providers: [LegendDataService]

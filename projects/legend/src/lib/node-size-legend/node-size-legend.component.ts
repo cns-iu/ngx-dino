@@ -19,7 +19,7 @@ import { BoundField, RawChangeSet, idSymbol, Datum } from '@ngx-dino/core';
 import { LegendDataService } from '../shared/legend-data.service';
 
 @Component({
-  selector: 'node-size-legend',
+  selector: 'dino-node-size-legend',
   templateUrl: './node-size-legend.component.html',
   styleUrls: ['./node-size-legend.component.css'],
   providers: [LegendDataService]

@@ -1,9 +1,25 @@
 <dino-geomap
-  [width]="width" [height]="height"
-  [stateDataStream]="stateDataStream" [pointDataStream]="pointDataStream"
-  [stateField]="stateField" [stateColorField]="stateColorField"
-  [pointIdField]="pointIdField" [pointLatLongField]="pointLatLongField"
-  [pointSizeField]="pointSizeField" [pointColorField]="pointColorField"
-  [pointShapeField]="pointShapeField" [strokeColorField]="strokeColorField"
-  [pointTitleField]="pointTitleField">
+  [showCounties]="false"
+
+  [autoresize]="false"
+  [width]="width"
+  [height]="height"
+
+  [stateDataStream]="stateDataStream"
+  [pointDataStream]="pointDataStream"
+
+  [pointIdField]="pointIdField"
+  [pointLatLongField]="pointLatLongField"
+  [pointTitleField]="pointTitleField"
+
+  [pointSizeField]="pointSizeField"
+  [pointColorField]="pointColorField"
+  [strokeColorField]="strokeColorField"
+  [pointShapeField]="pointShapeField"
+
+  [stateField]="stateField"
+  [stateColorField]="stateColorField"
+
+  [stateDefaultColor]="'#ffffff'"
+  [stateDefaultStrokeColor]="'#000000'">
 </dino-geomap>

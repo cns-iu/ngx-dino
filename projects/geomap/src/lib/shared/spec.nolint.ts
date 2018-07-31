@@ -29,7 +29,7 @@ export default {
       'transform': [
         {
           'type': 'formula',
-          'expr': 'geoBounds(' + 'rawProjection' + ', datum)',
+          'expr': 'geoBounds("rawProjection", datum)',
           'as': 'bounds'
         },
         {
@@ -149,7 +149,7 @@ export default {
         },
         {
           'type': 'formula',
-          'expr': 'datum.shape || ' + 'circle',
+          'expr': 'datum.shape || "circle"',
           'as': 'shape'
         }
       ]
@@ -288,7 +288,7 @@ export default {
               'shape': {'signal': 'parent.shape'},
               'size': {'signal': 'parent.size'},
               'stroke': {
-                'signal': 'if(parent.color === ' + '#ffffff' + ', ' + '#000000' + ', parent.stroke)'
+                'signal': 'if(parent.color === "#ffffff", "#000000", parent.stroke)'
               }
             }
           }
@@ -306,7 +306,7 @@ export default {
           'size': {'field': 'size'},
           'fill': {'field': 'color'},
           'stroke': {
-            'signal': 'if(datum.color === ' + '#ffffff' + ', ' + '#000000' + ', datum.stroke)'
+            'signal': 'if(datum.color === "#ffffff", "#000000", datum.stroke)'
           },
           'strokeWidth': {'value': 1}
         }

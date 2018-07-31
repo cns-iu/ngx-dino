@@ -13,8 +13,8 @@ import { State } from './shared/state';
 import { Point } from './shared/point';
 import { lookupStateCode } from './shared/state-lookup';
 import { GeomapDataService } from './shared/geomap.dataservice';
-import us10m from './shared/us-10m';
-import geomapSpec from './shared/spec';
+import us10m from './shared/us-10m.nolint';
+import geomapSpec from './shared/spec.nolint';
 
 
 @Component({
@@ -219,7 +219,7 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
         if (isFunction(newValue)) {
           newValue = newValue(oldValue);
         }
-        if (newValue != oldValue) {
+        if (newValue !== oldValue) {
           this.view.signal(name, newValue);
           rerun = true;
         }

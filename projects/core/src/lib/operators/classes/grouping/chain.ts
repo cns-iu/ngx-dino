@@ -25,7 +25,7 @@ function processOps(
     // Remove identity operators
     .reject((o) => o instanceof IdentityOperator)
     // Flatten nested chain operators
-    .flatMap((o) => o instanceof ChainOperator ? o.operators.toArray() : o)
+    .flatMap((o) => o instanceof ChainOperator ? o.operators.toArray() : o) // tslint:disable-line:no-use-before-declare
     .value();
 
   return reduceOps(normOps);

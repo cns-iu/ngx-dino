@@ -9,7 +9,7 @@ import {
 import { Map } from 'immutable';
 
 @Component({
-  selector: 'color-legend',
+  selector: 'dino-color-legend',
   templateUrl: './color-legend.component.html',
   styleUrls: ['./color-legend.component.css']
 })

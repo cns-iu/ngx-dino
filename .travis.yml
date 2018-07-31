@@ -15,22 +15,63 @@ branches:
     - develop
     - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
 
-before_install:
-  - npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN --global
-
-script: npm run build:release
-
-deploy:
-  - provider: pages
-    skip-cleanup: true
-    github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
-    keep-history: false
-    local-dir: dist/dino-demo
-    on:
-      branch: master
-  - provider: script
-    skip-cleanup: true
-    script: npm run publish
-    on:
-      tags: true
-      all_branches: true
+jobs:
+  include:
+    - stage: build core library
+      script: npm run build:lib core
+    - stage: build util libraries
+      script: npm run build:lib vega-util
+    - stage: build libraries
+    - script: npm run build:lib datatable
+    - script: npm run build:lib force-network
+    - script: npm run build:lib geomap
+    - script: npm run build:lib scatterplot
+    - script: npm run build:lib science-map
+    - script: npm run build:lib legend
+    - stage: deploy demo
+      if: branch = master
+      script: skip
+      deploy:
+        provider: pages
+        skip-cleanup: true
+        github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+        keep-history: false
+        local-dir: dist/dino-demo
+        on:
+          branch: master
+    - &npm-publish
+    - stage: npm publish libraries
+      if: branch = /^v\d+\.\d+(\.\d+)?(-\S*)?$/
+      script: skip
+      before_deploy:
+        - cd dist/core
+      after_deploy:
+        - cd ../../
+      deploy: &npm
+        provider: npm
+        email: $NPM_EMAIL
+        api_key: $NPM_TOKEN
+        on:
+          tags: true
+          repo: cns-iu/ngx-dino
+    - <<: *npm-publish
+      before_deploy:
+        - cd dist/vega-util
+    - <<: *npm-publish
+      before_deploy:
+        - cd dist/datatable
+    - <<: *npm-publish
+      before_deploy:
+        - cd dist/force-network
+    - <<: *npm-publish
+      before_deploy:
+        - cd dist/geomap
+    - <<: *npm-publish
+      before_deploy:
+        - cd dist/scatterplot
+    - <<: *npm-publish
+      before_deploy:
+        - cd dist/science-map
+    - <<: *npm-publish
+      before_deploy:
+        - cd dist/legend

@@ -15,26 +15,15 @@ branches:
     - develop
     - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
 
-script: echo "Building in parallel"
+script: skip
 
 jobs:
   include:
-    - stage: build core library
-    - script: npm run build:lib core
-    - stage: build util libraries
-    - script: npm run build:lib vega-util
-    - stage: build libraries
-    - script: npm run build:lib datatable
-    - script: npm run build:lib force-network
-    - script: npm run build:lib geomap
-    - script: npm run build:lib scatterplot
-    - script: npm run build:lib science-map
-    - script: npm run build:lib legend
-    - stage: build demo
-    - script: npm run build:demo-release
+    - stage: run tests
+    - script: echo "TODO - Testing"
     - stage: deploy demo
       if: branch = master
-      script: skip
+      script: npm run build:release
       deploy:
         provider: pages
         skip-cleanup: true
@@ -46,7 +35,7 @@ jobs:
     - &npm-publish
       stage: npm publish libraries
       if: branch = /^v\d+\.\d+(\.\d+)?(-\S*)?$/
-      script: skip
+      script: npm run build:lib core
       before_deploy:
         - cd dist/core
       after_deploy:
@@ -59,23 +48,45 @@ jobs:
           tags: true
           repo: cns-iu/ngx-dino
     - <<: *npm-publish
+      script:
+        - npm run build:lib core
+        - npm run build:lib vega-util
       before_deploy:
         - cd dist/vega-util
     - <<: *npm-publish
+      script:
+        - npm run build:lib core
+        - npm run build:lib datatable
       before_deploy:
         - cd dist/datatable
     - <<: *npm-publish
+      script:
+        - npm run build:lib core
+        - npm run build:lib force-network
       before_deploy:
         - cd dist/force-network
     - <<: *npm-publish
+      script:
+        - npm run build:lib core
+        - npm run build:lib vega-util
+        - npm run build:lib geomap
       before_deploy:
         - cd dist/geomap
     - <<: *npm-publish
+      script:
+        - npm run build:lib core
+        - npm run build:lib scatterplot
       before_deploy:
         - cd dist/scatterplot
     - <<: *npm-publish
+      script:
+        - npm run build:lib core
+        - npm run build:lib science-map
       before_deploy:
         - cd dist/science-map
     - <<: *npm-publish
+      script:
+        - npm run build:lib core
+        - npm run build:lib legend
       before_deploy:
         - cd dist/legend

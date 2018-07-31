@@ -18,9 +18,9 @@ branches:
 jobs:
   include:
     - stage: build core library
-      script: npm run build:lib core
+    -  script: npm run build:lib core
     - stage: build util libraries
-      script: npm run build:lib vega-util
+    -  script: npm run build:lib vega-util
     - stage: build libraries
     - script: npm run build:lib datatable
     - script: npm run build:lib force-network
@@ -40,7 +40,7 @@ jobs:
         on:
           branch: master
     - &npm-publish
-    - stage: npm publish libraries
+      stage: npm publish libraries
       if: branch = /^v\d+\.\d+(\.\d+)?(-\S*)?$/
       script: skip
       before_deploy:

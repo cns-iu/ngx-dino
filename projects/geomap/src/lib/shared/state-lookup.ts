@@ -1,5 +1,5 @@
 // const stateMappingData: any = require('./state-mapping.json');
-import stateMappingData from './state-mapping.nolint';
+import stateMappingData from './state-mapping.data';
 
 // Tables
 const stateByName = (stateMappingData as any[]).reduce((result, state) => {

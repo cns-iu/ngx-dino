@@ -279,7 +279,7 @@
                         ],
                         "exclude": [
                             "**/node_modules/**",
-                            "**/*.nolint.ts"
+                            "**/*.data.ts"
                         ]
                     }
                 }
@@ -399,7 +399,8 @@
                             "projects/science-map/tsconfig.spec.json"
                         ],
                         "exclude": [
-                            "**/node_modules/**"
+                            "**/node_modules/**",
+                            "**/*.data.ts"
                         ]
                     }
                 }

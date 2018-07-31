@@ -8,7 +8,7 @@ import {
 } from '@ngx-dino/core';
 
 import { Subdiscipline } from './subdiscipline';
-import underlyingScimapData from './underlyingScimapData';
+import underlyingScimapData from './underlyingScimapData.data';
 
 
 @Injectable({

@@ -1,5 +1,5 @@
 // tslint:disable
-export default {
+export default JSON.parse(`{
     'nodes': [
         {
             'mod_y': 7.412392713,
@@ -17219,4 +17219,4 @@ export default {
             'disc_id': -1
         }
     ]
-};
+}`);

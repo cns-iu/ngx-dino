@@ -47,7 +47,8 @@ jobs:
         provider: npm
         skip-cleanup: true
         email: $NPM_EMAIL
-        api_key: $NPM_TOKEN
+        api_key:
+          secure: e3c4F3fC3OXvL9wN44takL+Q79QeOczn3iosCIEl8pUwoBhiSEdzc1mXjbX4n8S+ihyZ9FJf/Zusgbui+sq8OdbdZkOkxUgusK/b3sRBhi90m7Yk0349T2SEFp4D1J5HHsA3Zmby7cB6bX0OEKmUttcS+1aYmaS7oezKuD2sGpiqKkPt8T2s6N0a05j6TB5xgZKals4ykV24/L1jbLhCeKVNvNLyoJEMWA4xj98rrrsXRIn9mlVC5C3bXqsMdXk9nfxSRzzQ4wAvpy3nNT4PiQTpbrCOxFbJLOguIDMO9f0JF8hh4i+EBBE022pqf3GogbJXpqHBvMwso7yi+SrEQWGpD5yQo/RjdN5KKe+kZDbH+gkANGze2R9nC0B8Swq2gJQzB0Pmpy2Ht9aaJgXpXXB7VnMeEGh4+C6hqLth2p3v/yO8gKfvD3XdCWP7APc/NOlBnb8bUrds//j0ag6Hi8l9D2IZ4aT6jjh0Zm/kwfdj2i+oqAsmVVmxMeZFBtamRlZxmBeZl2jgXyWblP8OptvdjAwumpbDNBF+4j9m7so24Q2gCjuej6kDMgukwgoKYM/GwvbI0rlH0NbdRCvaVa/+Z+ueVEMCcsUG17qO5BbJmLaDNTDyQBrExz/HnTRSkmOfnCOEw00f1/7XtuFWHzjZFXJO+zjNXOeruM6FOlE=
         on:
           tags: true
           repo: cns-iu/ngx-dino

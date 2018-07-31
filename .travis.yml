@@ -15,12 +15,14 @@ branches:
     - develop
     - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
 
+script: echo "Building in parallel"
+
 jobs:
   include:
     - stage: build core library
-    -  script: npm run build:lib core
+    - script: npm run build:lib core
     - stage: build util libraries
-    -  script: npm run build:lib vega-util
+    - script: npm run build:lib vega-util
     - stage: build libraries
     - script: npm run build:lib datatable
     - script: npm run build:lib force-network
@@ -28,6 +30,8 @@ jobs:
     - script: npm run build:lib scatterplot
     - script: npm run build:lib science-map
     - script: npm run build:lib legend
+    - stage: build demo
+    - script: npm run build:demo-release
     - stage: deploy demo
       if: branch = master
       script: skip

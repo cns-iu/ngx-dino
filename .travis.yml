@@ -20,8 +20,9 @@ script: skip
 
 jobs:
   include:
-    - stage: run tests
-      script: echo "TODO - Testing"
+    - stage: test
+      name: "Run Tests"
+      script: npm run lint
     - stage: deploy
       name: "Deploy demo to GitHub Pages"
       if: branch = master

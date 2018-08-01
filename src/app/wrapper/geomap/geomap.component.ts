@@ -6,7 +6,7 @@ import { BoundField, RawChangeSet } from '@ngx-dino/core';
 import {
   stateField, stateColorField,
   pointIdField, pointLatLongField, pointSizeField, pointColorField,
-  pointShapeField, pointStrokeColorField, pointTitleField
+  pointShapeField, pointStrokeColorField, pointTitleField, pulseField
 } from '../shared/geomap/geomap-fields';
 import stateData from '../shared/geomap/state-dummy-data';
 import pointData from '../shared/geomap/point-dummy-data';
@@ -33,6 +33,7 @@ export class GeomapComponent implements OnInit {
   pointShapeField: BoundField<string> = pointShapeField.getBoundField();
   strokeColorField: BoundField<string> = pointStrokeColorField.getBoundField();
   pointTitleField: BoundField<string> = pointTitleField.getBoundField();
+  pointPulseField: BoundField<boolean> = pulseField.getBoundField();
 
   constructor() {
     this.stateDataStream = new Observable((subscriber) => {

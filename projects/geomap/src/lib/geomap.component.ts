@@ -54,6 +54,7 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
   private view: any = null;
   private statesSubscription: Subscription;
   private pointSubscription: Subscription;
+  private signalQueue: any[] = [];
 
   constructor(element: ElementRef, private dataService: GeomapDataService) {
     this.stateIdField = simpleField<number>({
@@ -65,7 +66,8 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
     }).getBoundField();
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+  }
 
   ngAfterViewInit() {
     this.renderView(geomapSpec);
@@ -177,10 +179,11 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
         type: 'topojson',
         feature: this.showCounties ? 'counties' : 'states'
       }))
+      .signal('width', 0)
+      .signal('height', 0)
       .signal('selectedRegion', this.getMapDisplayLevelId())
       .signal('defaultRegionColor', this.stateDefaultColor)
-      .signal('defaultRegionStrokeColor', this.stateDefaultStrokeColor)
-      .run();
+      .signal('defaultRegionStrokeColor', this.stateDefaultStrokeColor);
 
     this.statesSubscription = this.dataService.states
       .subscribe((change: ChangeSet<State>) => {
@@ -193,6 +196,8 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
         const set = VegaChangeSet.fromDinoChangeSet(change);
         this.view.change('points', set).run();
       });
+
+    this.updateSignals({});
   }
 
   private finalizeView() {
@@ -210,21 +215,27 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
 
   // tslint:disable-next-line:member-ordering
   private updateSignals = throttle(function (signals: {[name: string]: any}): void {
+    this.signalQueue.push(signals);
     if (this.view) {
       let rerun = false;
-      // tslint:disable:forin
-      for (const name in signals) {
-        const oldValue = this.view.signal(name);
-        let newValue = signals[name];
-        if (isFunction(newValue)) {
-          newValue = newValue(oldValue);
+      let currentSignals;
+
+      while (currentSignals = this.signalQueue[0]) {
+        this.signalQueue = this.signalQueue.slice(1);
+        // tslint:disable:forin
+        for (const name in currentSignals) {
+          const oldValue = this.view.signal(name);
+          let newValue = currentSignals[name];
+          if (isFunction(newValue)) {
+            newValue = newValue(oldValue);
+          }
+          if (newValue !== oldValue) {
+            this.view.signal(name, newValue);
+            rerun = true;
+          }
         }
-        if (newValue !== oldValue) {
-          this.view.signal(name, newValue);
-          rerun = true;
-        }
+        // tslint:enable:forin
       }
-      // tslint:enable:forin
 
       if (rerun) {
         this.view.run();

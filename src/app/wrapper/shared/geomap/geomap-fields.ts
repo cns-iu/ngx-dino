@@ -45,3 +45,10 @@ export const pointTitleField = simpleField<any>({
   label: 'Point Title',
   operator: access('title')
 });
+
+export const pulseField = simpleField<boolean>({
+  bfieldId: 'pulse',
+  label: 'Pulse',
+
+  operator: access('pulse', false)
+});

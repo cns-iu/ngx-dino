@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { SharedModule } from '../../shared';
+import { LegendModule } from '@ngx-dino/legend';
 import { ForceNetworkLegendComponent } from './force-network-legend.component';
 
 describe('ForceNetworkLegendComponent', () => {
@@ -8,6 +9,7 @@ describe('ForceNetworkLegendComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [SharedModule, LegendModule],
       declarations: [ ForceNetworkLegendComponent ]
     })
     .compileComponents();

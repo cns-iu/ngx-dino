@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { SharedModule } from '../../shared';
+import { DatatableModule } from '@ngx-dino/datatable';
 import { DatatableComponent } from './datatable.component';
 
 describe('DatatableComponent', () => {
@@ -8,6 +9,7 @@ describe('DatatableComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [SharedModule, DatatableModule],
       declarations: [ DatatableComponent ]
     })
     .compileComponents();

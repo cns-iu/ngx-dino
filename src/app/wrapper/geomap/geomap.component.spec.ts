@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { SharedModule } from '../../shared';
+import { GeomapModule } from '@ngx-dino/geomap';
 import { GeomapComponent } from './geomap.component';
 
 describe('GeomapComponent', () => {
@@ -8,6 +9,7 @@ describe('GeomapComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [SharedModule, GeomapModule],
       declarations: [ GeomapComponent ]
     })
     .compileComponents();

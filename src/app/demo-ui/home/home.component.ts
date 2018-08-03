@@ -18,7 +18,6 @@ export class HomeComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log(this.height);
     this.tabs.selectedIndexChange.subscribe((index) => (this.tabIndex = index));
   }
 

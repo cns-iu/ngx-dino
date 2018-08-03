@@ -126,7 +126,7 @@ export class NodeSizeLegendComponent implements OnInit, OnChanges {
 
   setScales() {
     if (this.min === this.max) {
-      this.legendSizeScale = (value: number) => this.nodeSizeRange[1];
+      this.legendSizeScale = (value: number) => this.nodeSizeRange[0];
     } else {
       this.legendSizeScale = scaleLinear()
         .domain([this.min, this.max])

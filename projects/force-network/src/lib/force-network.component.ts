@@ -15,10 +15,7 @@ import * as d3Selection from 'd3-selection';
 import * as d3Force from 'd3-force';
 import { scaleLinear } from 'd3-scale';
 import * as d3Array from 'd3-array';
-import * as d3Color from 'd3-color';
 import * as d3Drag from 'd3-drag';
-import * as d3Shape from 'd3-shape';
-import * as d3Timer from 'd3-timer';
 import 'd3-transition';
 
 import { Node, Link } from './shared/network';

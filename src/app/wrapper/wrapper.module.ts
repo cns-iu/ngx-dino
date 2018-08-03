@@ -20,6 +20,8 @@ import { ScatterplotComponent } from './scatterplot/scatterplot.component';
 import { ScienceMapLegendComponent } from './science-map-legend/science-map-legend.component';
 import { ForceNetworkLegendComponent } from './force-network-legend/force-network-legend.component';
 import { DatatableComponent } from './datatable/datatable.component';
+import { ScatterplotLegendComponent } from './scatterplot-legend/scatterplot-legend.component';
+import { GeomapLegendComponent } from './geomap-legend/geomap-legend.component';
 
 @NgModule({
   imports: [
@@ -43,7 +45,9 @@ import { DatatableComponent } from './datatable/datatable.component';
     DatatableComponent,
 
     ScienceMapLegendComponent,
-    ForceNetworkLegendComponent
+    ForceNetworkLegendComponent,
+    ScatterplotLegendComponent,
+    GeomapLegendComponent
   ],
   declarations: [
     ScienceMapComponent,
@@ -54,6 +58,8 @@ import { DatatableComponent } from './datatable/datatable.component';
 
     ScienceMapLegendComponent,
     ForceNetworkLegendComponent,
+    ScatterplotLegendComponent,
+    GeomapLegendComponent
   ],
   providers: [DataProcessorService]
 })

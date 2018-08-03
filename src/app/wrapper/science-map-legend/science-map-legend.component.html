@@ -1,9 +1,16 @@
 <div class="color-legend">
-    <dino-color-legend [shape]="nodeShape" [colorEncodingTitle]="nodeColorEncoding" [labelToColor]="nodeLabelToColor">
+    <dino-color-legend
+        [shape]="nodeShape"
+        [colorEncodingTitle]="nodeColorEncoding"
+        [labelToColor]="nodeLabelToColor">
     </dino-color-legend>
 </div>
 
 <div class="node-size-legend">
-    <dino-node-size-legend [dataStream]="filteredSubdisciplines" [nodeSizeField]="subdisciplineSize" [nodeIdField]="subdisciplineId" [title]="nodeSizeEncoding">
+    <dino-node-size-legend
+        [dataStream]="filteredSubdisciplines"
+        [nodeSizeField]="subdisciplineSize"
+        [nodeIdField]="subdisciplineId" 
+        [title]="nodeSizeEncoding">
     </dino-node-size-legend>
 </div>

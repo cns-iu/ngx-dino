@@ -13,7 +13,6 @@ import * as d3Selection from 'd3-selection';
 import { scaleLinear, scaleLog } from 'd3-scale';
 import * as d3Array from 'd3-array';
 import 'd3-transition';
-import * as d3Zoom from 'd3-zoom';
 
 import { ScienceMapDataService } from './shared/science-map-data.service';
 import { Subdiscipline } from './shared/subdiscipline';

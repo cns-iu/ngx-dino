@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { SharedModule } from '../../shared';
+import { WrapperModule } from '../../wrapper';
 import { HomeComponent } from './home.component';
+
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -8,6 +10,7 @@ describe('HomeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [SharedModule, WrapperModule],
       declarations: [ HomeComponent ]
     })
     .compileComponents();

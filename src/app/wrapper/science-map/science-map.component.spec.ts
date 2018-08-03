@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { SharedModule } from '../../shared';
+import { ScienceMapModule } from '@ngx-dino/science-map';
 import { ScienceMapComponent } from './science-map.component';
 
 describe('ScienceMapComponent', () => {
@@ -8,6 +9,7 @@ describe('ScienceMapComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [SharedModule, ScienceMapModule],
       declarations: [ ScienceMapComponent ]
     })
     .compileComponents();

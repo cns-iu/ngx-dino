@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { SharedModule } from '../../shared';
+import { ForceNetworkModule } from '@ngx-dino/force-network';
 import { ForceNetworkComponent } from './force-network.component';
 
 describe('ForceNetworkComponent', () => {
@@ -8,6 +9,7 @@ describe('ForceNetworkComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [SharedModule, ForceNetworkModule],
       declarations: [ ForceNetworkComponent ]
     })
     .compileComponents();

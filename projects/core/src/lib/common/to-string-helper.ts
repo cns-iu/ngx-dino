@@ -1,6 +1,14 @@
 import { Seq } from 'immutable';
 
 
+/**
+ * Lexicographically compares two strings.
+ *
+ * @export
+ * @param {string} s1
+ * @param {string} s2
+ * @returns {number}
+ */
 export function stringCompare(s1: string, s2: string): number {
   if (s1 < s2) {
     return -1;
@@ -11,6 +19,15 @@ export function stringCompare(s1: string, s2: string): number {
   }
 }
 
+
+/**
+ * Compares two numbers. -0 is ordered before +0 and NaNs are larger than any other value.
+ *
+ * @export
+ * @param {number} n1
+ * @param {number} n2
+ * @returns {number}
+ */
 export function numberCompare(n1: number, n2: number): number {
   const diff = n1 - n2;
   if (diff === 0) {
@@ -29,6 +46,15 @@ export function numberCompare(n1: number, n2: number): number {
 }
 
 
+/**
+ * Format values as `name<kw1: kv1, kw2: kv2,..., v1, v2,...>`.
+ *
+ * @export
+ * @param {string} name
+ * @param {(Seq<string, any> | Iterable<[string, any]>)} [keywords=[]]
+ * @param {(Seq.Indexed<any> | Iterable<any>)} [values=[]]
+ * @returns {string}
+ */
 export function toStringHelper(
   name: string,
   keywords: Seq<string, any> | Iterable<[string, any]> = [],

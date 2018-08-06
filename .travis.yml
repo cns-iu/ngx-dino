@@ -23,6 +23,7 @@ jobs:
       name: "Run Tests"
       script:
         - npm run lint
+        - npm run build:libs-release
         - npm test
     - stage: deploy
       name: "Deploy demo to GitHub Pages"

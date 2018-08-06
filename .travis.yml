@@ -21,7 +21,9 @@ jobs:
   include:
     - stage: test
       name: "Run Tests"
-      script: npm run lint
+      script:
+        - npm run lint
+        - npm test
     - stage: deploy
       name: "Deploy demo to GitHub Pages"
       if: branch = master

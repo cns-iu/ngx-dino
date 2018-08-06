@@ -80,7 +80,8 @@
                         "assets": [
                             "src/favicon.ico",
                             "src/assets"
-                        ]
+                        ],
+                        "watch": false
                     }
                 },
                 "lint": {
@@ -147,7 +148,8 @@
                     "options": {
                         "main": "projects/core/src/test.ts",
                         "tsConfig": "projects/core/tsconfig.spec.json",
-                        "karmaConfig": "projects/core/karma.conf.js"
+                        "karmaConfig": "projects/core/karma.conf.js",
+                        "watch": false
                     }
                 },
                 "lint": {
@@ -187,7 +189,8 @@
                     "options": {
                         "main": "projects/datatable/src/test.ts",
                         "tsConfig": "projects/datatable/tsconfig.spec.json",
-                        "karmaConfig": "projects/datatable/karma.conf.js"
+                        "karmaConfig": "projects/datatable/karma.conf.js",
+                        "watch": false
                     }
                 },
                 "lint": {
@@ -227,7 +230,8 @@
                     "options": {
                         "main": "projects/force-network/src/test.ts",
                         "tsConfig": "projects/force-network/tsconfig.spec.json",
-                        "karmaConfig": "projects/force-network/karma.conf.js"
+                        "karmaConfig": "projects/force-network/karma.conf.js",
+                        "watch": false
                     }
                 },
                 "lint": {
@@ -267,7 +271,8 @@
                     "options": {
                         "main": "projects/geomap/src/test.ts",
                         "tsConfig": "projects/geomap/tsconfig.spec.json",
-                        "karmaConfig": "projects/geomap/karma.conf.js"
+                        "karmaConfig": "projects/geomap/karma.conf.js",
+                        "watch": false
                     }
                 },
                 "lint": {
@@ -308,7 +313,8 @@
                     "options": {
                         "main": "projects/legend/src/test.ts",
                         "tsConfig": "projects/legend/tsconfig.spec.json",
-                        "karmaConfig": "projects/legend/karma.conf.js"
+                        "karmaConfig": "projects/legend/karma.conf.js",
+                        "watch": false
                     }
                 },
                 "lint": {
@@ -348,7 +354,8 @@
                     "options": {
                         "main": "projects/scatterplot/src/test.ts",
                         "tsConfig": "projects/scatterplot/tsconfig.spec.json",
-                        "karmaConfig": "projects/scatterplot/karma.conf.js"
+                        "karmaConfig": "projects/scatterplot/karma.conf.js",
+                        "watch": false
                     }
                 },
                 "lint": {
@@ -388,7 +395,8 @@
                     "options": {
                         "main": "projects/science-map/src/test.ts",
                         "tsConfig": "projects/science-map/tsconfig.spec.json",
-                        "karmaConfig": "projects/science-map/karma.conf.js"
+                        "karmaConfig": "projects/science-map/karma.conf.js",
+                        "watch": false
                     }
                 },
                 "lint": {
@@ -429,7 +437,8 @@
                     "options": {
                         "main": "projects/vega-util/src/test.ts",
                         "tsConfig": "projects/vega-util/tsconfig.spec.json",
-                        "karmaConfig": "projects/vega-util/karma.conf.js"
+                        "karmaConfig": "projects/vega-util/karma.conf.js",
+                        "watch": false
                     }
                 },
                 "lint": {

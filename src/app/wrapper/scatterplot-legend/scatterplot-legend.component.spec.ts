@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { SharedModule } from '../../shared';
+import { LegendModule } from '@ngx-dino/legend';
 import { ScatterplotLegendComponent } from './scatterplot-legend.component';
 
 describe('ScatterplotLegendComponent', () => {
@@ -8,6 +9,7 @@ describe('ScatterplotLegendComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [SharedModule, LegendModule],
       declarations: [ ScatterplotLegendComponent ]
     })
     .compileComponents();

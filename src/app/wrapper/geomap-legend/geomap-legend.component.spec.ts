@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { SharedModule } from '../../shared';
+import { LegendModule } from '@ngx-dino/legend';
 import { GeomapLegendComponent } from './geomap-legend.component';
 
 describe('GeomapLegendComponent', () => {
@@ -8,6 +9,7 @@ describe('GeomapLegendComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [SharedModule, LegendModule],
       declarations: [ GeomapLegendComponent ]
     })
     .compileComponents();

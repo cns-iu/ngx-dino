@@ -4,10 +4,9 @@ import { Seq } from 'immutable';
 /**
  * Lexicographically compares two strings.
  *
- * @export
- * @param {string} s1
- * @param {string} s2
- * @returns {number}
+ * @param s1 The first string.
+ * @param s2 The second string.
+ * @returns -1 if the first string is less than the second, 0 if they are equal, otherwise 1.
  */
 export function stringCompare(s1: string, s2: string): number {
   if (s1 < s2) {
@@ -23,10 +22,9 @@ export function stringCompare(s1: string, s2: string): number {
 /**
  * Compares two numbers. -0 is ordered before +0 and NaNs are larger than any other value.
  *
- * @export
- * @param {number} n1
- * @param {number} n2
- * @returns {number}
+ * @param n1 The first number.
+ * @param n2 The second number.
+ * @returns -1 if the first number is less than the second, 0 if they are equal, otherwise 1.
  */
 export function numberCompare(n1: number, n2: number): number {
   const diff = n1 - n2;
@@ -49,11 +47,10 @@ export function numberCompare(n1: number, n2: number): number {
 /**
  * Format values as `name<kw1: kv1, kw2: kv2,..., v1, v2,...>`.
  *
- * @export
- * @param {string} name
- * @param {(Seq<string, any> | Iterable<[string, any]>)} [keywords=[]]
- * @param {(Seq.Indexed<any> | Iterable<any>)} [values=[]]
- * @returns {string}
+ * @param name The class/object name.
+ * @param [keywords=[]] Keyword pairs.
+ * @param [values=[]] Non-keyword values.
+ * @returns The formatted string.
  */
 export function toStringHelper(
   name: string,

@@ -7,10 +7,6 @@ export type State = Collection<any, any>;
  * Base class for immutable objects.
  *
  * Implements Immutable.js' `ValueObject` interface.
- *
- * @export
- * @abstract
- * @class ImmutableValue
  */
 export abstract class ImmutableValue {
   private cachedState: State;
@@ -21,10 +17,7 @@ export abstract class ImmutableValue {
    *
    * The state is used to calculate both equality and hash code.
    *
-   * @protected
-   * @abstract
-   * @returns {State}
-   * @memberof ImmutableValue
+   * @returns Any immutable value.
    */
   protected abstract getState(): State;
 
@@ -32,9 +25,8 @@ export abstract class ImmutableValue {
   /**
    * Value equality test.
    *
-   * @param {*} other
-   * @returns {boolean} Whether `this` is considered equal to `other`
-   * @memberof ImmutableValue
+   * @param other The value to compare for equality.
+   * @returns Whether `this` is considered equal to `other`
    */
   equals(other: any): boolean {
     if (this === other) {
@@ -50,8 +42,7 @@ export abstract class ImmutableValue {
   /**
    * Calculates a hash code for this object.
    *
-   * @returns {number} The hash code for `this`
-   * @memberof ImmutableValue
+   * @returns The hash code for `this`
    */
   hashCode(): number {
     return this.getCachedState().hashCode();
@@ -61,9 +52,7 @@ export abstract class ImmutableValue {
   /**
    * Fetches and caches the state on this object using `getState`.
    *
-   * @private
-   * @returns {State}
-   * @memberof ImmutableValue
+   * @returns The immutable value produced by `getState`
    */
   private getCachedState(): State {
     return this.cachedState || (this.cachedState = this.getState());

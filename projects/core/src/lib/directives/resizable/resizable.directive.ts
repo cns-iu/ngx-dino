@@ -1,60 +1,80 @@
-import { Directive, HostListener, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { Cancelable, defaultTo, throttle } from 'lodash';
+import {
+  Directive, HostListener, Input, Output,
+  OnChanges, SimpleChanges, SimpleChange,
+  ElementRef, EventEmitter
+} from '@angular/core';
+import {
+  Cancelable, ThrottleSettings,
+  isUndefined,
+  defaults, throttle
+} from 'lodash';
+
+
+export type ResizeThrottleSettings = ThrottleSettings & {wait?: number};
+export interface ResizeEvent {
+  width: SimpleChange;
+  height: SimpleChange;
+}
 
 /**
- * Directive for listening to the window resize event.
+ * Directive for receiving resize events with the new width and height.
  */
 @Directive({
   selector: '[dinoResizable]'
 })
 export class ResizableDirective implements OnChanges {
   /**
-   * Default throttle wait time used if a wait time is not specified or invalid.
+   * Settings for controlling the throttling of resize events.
    */
-  static defaultThrottleWait = 100;
-  private throttledCallback?: (() => void) & Cancelable;
+  @Input() resizeThrottleSettings?: ResizeThrottleSettings;
+  /**
+   * Output emitting events with the width and height changes.
+   */
+  @Output() resized = new EventEmitter<ResizeEvent>(true);
+
+  private callback: (() => void) & Cancelable = this.createCallback();
   private pending = false;
+  private previousWidth?: number;
+  private previousHeight?: number;
 
-  /**
-   * Specifies the callback for resize events.
-   */
-  // tslint:disable-next-line:no-input-rename
-  @Input('dinoResizable') callback: () => void;
-  /**
-   * Specifies the throttle wait time before invoking the callback.
-   */
-  @Input() resizeThrottleWait = ResizableDirective.defaultThrottleWait;
-
-  constructor() { }
+  constructor(private element: ElementRef) { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if ('callback' in changes || 'resizeThrottleWait' in changes) {
-      if (this.throttledCallback && this.pending) {
-        // Flush any pending callback
-        this.throttledCallback.flush();
+    if ('resizeThrottleSettings' in changes) {
+      if (this.pending) {
+        this.callback.flush();
       }
-
-      this.throttledCallback = undefined;
-      if (this.callback) {
-        const callback = this.callback;
-        const wait = defaultTo(+this.resizeThrottleWait, ResizableDirective.defaultThrottleWait);
-        this.throttledCallback = throttle(() => {
-          this.pending = false;
-          callback();
-        }, wait);
-      }
+      this.callback = this.createCallback();
     }
   }
 
-  /**
-   * Listen to the window's resize event and invoke the callback.
-   *
-   */
   @HostListener('window:resize')
   onResize(): void {
-    if (this.throttledCallback) {
-      this.pending = true;
-      this.throttledCallback();
-    }
+    this.pending = true;
+    this.callback();
+  }
+
+  private onResizeCallback(): void {
+    const {element: {nativeElement}, previousWidth, previousHeight} = this;
+    const {width, height} = (nativeElement as Element).getBoundingClientRect();
+    const widthChange = new SimpleChange(previousWidth, width, isUndefined(previousWidth));
+    const heightChange = new SimpleChange(previousHeight, height, isUndefined(previousHeight));
+    const event: ResizeEvent = {width: widthChange, height: heightChange};
+
+    this.pending = false;
+    this.previousWidth = width;
+    this.previousHeight = height;
+
+    this.resized.emit(event);
+  }
+
+  private createCallback(): (() => void) & Cancelable {
+    const settings = defaults({}, this.resizeThrottleSettings, {
+      wait: 100,
+      leading: true,
+      trailing: true
+    });
+
+    return throttle(this.onResizeCallback.bind(this), settings.wait, settings);
   }
 }

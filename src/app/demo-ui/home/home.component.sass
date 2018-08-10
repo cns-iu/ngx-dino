@@ -7,15 +7,17 @@
 #logo
   height: 54px
 
-#cnsLogo
+.cnsLogo
   position: absolute
-  right: 5px
-  height: 54px
+  right: 54px
+  top: 5px
+  img
+    height: 54px
 
 .toolbar
   font-family: Open-Sans
   color: white
-  background-color: rgb(69,90,100)
+  background-color: #3d3d3d
 
 .sidenav
   width: 360px
@@ -31,3 +33,7 @@
 
 mat-tab-group
   background: #ffffff
+  height: calc(100vh - 64px)
+
+::ng-deep .mat-tab-body-wrapper
+  height: 100%

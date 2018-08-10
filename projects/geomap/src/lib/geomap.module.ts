@@ -1,11 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { CoreModule } from '@ngx-dino/core';
 import { GeomapComponent } from './geomap.component';
 
 @NgModule({
-  imports: [
-    CommonModule
-  ],
+  imports: [CommonModule, CoreModule],
   exports: [GeomapComponent],
   declarations: [GeomapComponent]
 })

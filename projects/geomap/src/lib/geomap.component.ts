@@ -1,7 +1,7 @@
 import {
   Component, Input, ViewChild,
   OnInit, AfterViewInit, OnChanges, DoCheck, OnDestroy,
-  ElementRef
+  ElementRef, SimpleChange
  } from '@angular/core';
 import { Observable, Subscription  } from 'rxjs';
 import { isFunction, throttle } from 'lodash';
@@ -26,8 +26,8 @@ import geomapSpec from './shared/spec.data';
 export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoCheck, OnDestroy {
   @Input() width: number;
   @Input() height: number;
-  @Input() widthDiffThreshold = 0;
-  @Input() heightDiffThreshold = 0;
+  @Input() widthDiffThreshold = 10;
+  @Input() heightDiffThreshold = 10;
   @Input() autoresize = true;
   @Input() showCounties = false;
   @Input() mapDisplayLevel = 'us';
@@ -103,22 +103,27 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
   }
 
   ngDoCheck(): void {
-    if (this.autoresize && this.mountPoint) {
-      const element = this.mountPoint.nativeElement;
-      const rect = element.getBoundingClientRect();
-      const signals = {
-        width: this.makeExtentCalc(rect.width, this.widthDiffThreshold),
-        height: this.makeExtentCalc(
-          Math.max(0, rect.height - 10),
-          this.heightDiffThreshold
-        )
-      };
-      this.updateSignals(signals);
-    }
   }
 
   ngOnDestroy() {
     this.finalizeView();
+  }
+
+  resize({width, height}: {width: SimpleChange, height: SimpleChange}): void {
+    if (this.autoresize) {
+      this.updateSignals({
+        width: this.makeExtentCalc(width.currentValue, this.widthDiffThreshold),
+        height: this.makeExtentCalc(height.currentValue, this.heightDiffThreshold)
+      });
+    }
+  }
+
+  resizeSelf(): void {
+    if (this.mountPoint) {
+      const element = this.mountPoint.nativeElement;
+      const {width, height} = element.getBoundingClientRect();
+      this.updateSignals({width, height});
+    }
   }
 
   updateProcessor(changes): void {

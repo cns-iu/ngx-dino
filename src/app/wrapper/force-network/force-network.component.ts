@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { BoundField, RawChangeSet } from '@ngx-dino/core';
 
 import { Observable } from 'rxjs';
@@ -16,9 +16,9 @@ import { ForceNetworkDataService } from '../shared/force-network/force-network-d
   providers: [ForceNetworkDataService]
 })
 export class ForceNetworkComponent implements OnInit {
-
-  @Input() height = window.innerHeight;
-  @Input() width = window.innerWidth;
+  @Input() height = 0;
+  @Input() width = 0;
+  @ViewChild('forceNetwork') forceNetwork: any;
 
   fields: {[key: string]: BoundField<any>};
 
@@ -53,4 +53,7 @@ export class ForceNetworkComponent implements OnInit {
     this.nodeSizeRange = this.dataService.nodeSizeRange;
   }
 
+  activate(): void {
+    this.forceNetwork.resizeSelf();
+  }
 }

@@ -1,6 +1,6 @@
 {
     "name": "ngx-dino",
-    "version": "0.5.2",
+    "version": "0.6.0",
     "description": "Visualization framework and library for Angular 6+",
     "homepage": "https://github.com/cns-iu/ngx-dino",
     "bugs": "https://github.com/cns-iu/ngx-dino/issues",
@@ -30,6 +30,8 @@
         "lint": "ng lint",
         "e2e": "ng e2e",
         "version-patch": "npm version --no-git-tag-version patch && cd projects/core && for p in core vega-util datatable force-network geomap scatterplot science-map legend; do cd ../$p && npm version --no-git-tag-version patch; done;",
+        "version-minor": "npm version --no-git-tag-version minor && cd projects/core && for p in core vega-util datatable force-network geomap scatterplot science-map legend; do cd ../$p && npm version --no-git-tag-version minor; done;",
+        "version-major": "npm version --no-git-tag-version major && cd projects/core && for p in core vega-util datatable force-network geomap scatterplot science-map legend; do cd ../$p && npm version --no-git-tag-version major; done;",
         "build:release": "npm run build:libs-release && npm run build:demo-release",
         "build:lib": "ng build --prod",
         "build:libs-release": "for p in core vega-util datatable force-network geomap scatterplot science-map legend; do npm run build:lib $p; done",

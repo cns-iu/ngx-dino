@@ -34,14 +34,14 @@
   <mat-sidenav-content>
     <mat-tab-group #tabs >
       <mat-tab label="Science Map">
-        <app-science-map
+        <app-science-map #scienceMap
           [width]="openState ? narrowWidth : wideWidth"
           [height]="height">
         </app-science-map>
       </mat-tab>
 
       <mat-tab label="Force Network">
-        <app-force-network
+        <app-force-network #forceNetwork
           [width]="openState ? narrowWidth : wideWidth"
           [height]="height">
         </app-force-network>
@@ -53,7 +53,7 @@
       </mat-tab>
 
       <mat-tab label="Geomap">
-        <app-geomap
+        <app-geomap #geomap
           [width]="openState ? narrowWidth : wideWidth"
           [height]="height">
         </app-geomap>

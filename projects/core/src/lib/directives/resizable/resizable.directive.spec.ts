@@ -1,6 +1,5 @@
 import { Component, SimpleChange } from '@angular/core';
-import { fakeAsync, flush, flushMicrotasks, tick } from '@angular/core/testing';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, flush, tick } from '@angular/core/testing';
 import { ResizeThrottleSettings, ResizableDirective } from './resizable.directive';
 
 

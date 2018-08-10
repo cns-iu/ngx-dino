@@ -28,7 +28,7 @@ export const pointSizeField = simpleField<any>({
 
 export const pointColorField = simpleField<any>({
   label: 'Point Color',
-  operator: access('color')
+  operator: access('size')
 });
 
 export const pointShapeField = simpleField<any>({
@@ -51,4 +51,18 @@ export const pulseField = simpleField<boolean>({
   label: 'Pulse',
 
   operator: access('pulse', false)
+});
+
+export const stateColorCategoryField = simpleField<string>({
+  bfieldId: 'stateColorCategory',
+  label: 'State Color Category',
+
+  operator: access('label', 'Unknown')
+});
+
+export const pointColorCategoryField = simpleField<number>({
+  bfieldId: 'pointColorCategory',
+  label: 'Point Color Category',
+
+  operator: access('size', 0)
 });

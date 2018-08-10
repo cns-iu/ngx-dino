@@ -14,7 +14,7 @@ import {
 
 @Injectable()
 export class LegendDataService {
-  public nodeSizeProcessor: DataProcessor<any, any>;
+  public nodeLegendProcessor: DataProcessor<any, any>;
   private nodesChange = new BehaviorSubject<ChangeSet<any>>(new ChangeSet<any>());
   public nodes: Observable<ChangeSet<any>> = this.nodesChange.asObservable();
 
@@ -31,26 +31,52 @@ export class LegendDataService {
     nodeStream: Observable<RawChangeSet<any>>,
     nodeIdField: BoundField<number | string>,
     nodeSizeField: BoundField<string>,
+    nodeColorField: BoundField<string|number>,
+    categoryField: BoundField<string>,
 
     edgeStream: Observable<RawChangeSet<any>>,
     edgeIdField: BoundField<string>,
-    edgeSizeField: BoundField<number>
+    edgeSizeField: BoundField<number>,
   ): this {
-    if (nodeStream && nodeIdField && nodeSizeField) {
-      this.nodeSizeProcessor = this.processorService.createProcessor<Node & Datum<any>, any>(
-        nodeStream,
-        nodeIdField,
-        {
-          id: nodeIdField,
-          size: nodeSizeField
+    if (nodeStream && nodeIdField) {
+      if (nodeSizeField) {
+        this.nodeLegendProcessor = this.processorService.createProcessor<Node & Datum<any>, any>(
+          nodeStream,
+          nodeIdField,
+          {
+            id: nodeIdField,
+            size: nodeSizeField
+          }
+        );
+      }
+      if (nodeColorField) {
+        if (categoryField) {
+          this.nodeLegendProcessor = this.processorService.createProcessor<Node & Datum<any>, any>(
+            nodeStream,
+            nodeIdField,
+            {
+              id: nodeIdField,
+              color: nodeColorField,
+              category: categoryField
+            }
+          );
+        } else {
+          this.nodeLegendProcessor = this.processorService.createProcessor<Node & Datum<any>, any>(
+            nodeStream,
+            nodeIdField,
+            {
+              id: nodeIdField,
+              color: nodeColorField
+            }
+          );
         }
-      );
+      }
 
       if (this.nodeStreamSubscription) {
         this.nodeStreamSubscription.unsubscribe();
       }
 
-      this.nodeStreamSubscription = this.nodeSizeProcessor.asObservable().subscribe(
+      this.nodeStreamSubscription = this.nodeLegendProcessor.asObservable().subscribe(
         (change) => this.nodesChange.next(change));
 
       return this;
@@ -71,7 +97,8 @@ export class LegendDataService {
       }
 
       this.edgeStreamSubscription = this.edgeSizeProcessor.asObservable().subscribe(
-        (change) => this.edgeChange.next(change));
+        (change) => this.edgeChange.next(change)
+      );
 
       return this;
     }
@@ -79,8 +106,8 @@ export class LegendDataService {
 
   updateData(changedField: BoundField<number | string>) {
     const fieldName = changedField.id.slice(0, 4);
-    if (this.nodeSizeProcessor) {
-      this.nodeSizeProcessor.updateFields(Map({
+    if (this.nodeLegendProcessor) {
+      this.nodeLegendProcessor.updateFields(Map({
         [fieldName]: changedField
       }));
     }

@@ -24,7 +24,7 @@ export class ForceNetworkLegendComponent implements OnInit {
 
   fields: {[key: string]: BoundField<any>};
 
-  colorLegendTitle: string;
+  colorLegendEncoding: string;
 
   minColorValueLabel: string;
   midColorValueLabel: string;
@@ -36,7 +36,7 @@ export class ForceNetworkLegendComponent implements OnInit {
   gradient = '';
   nodes = [];
   edgeSizeRange = [1, 8];
-  edgeLegendTitle = 'Absolute Distance';
+  edgeLegendEncoding = 'Absolute Distance';
 
   constructor(private dataService: ForceNetworkDataService) {
     this.nodeStream = this.dataService.nodeStream;
@@ -66,14 +66,14 @@ export class ForceNetworkLegendComponent implements OnInit {
 
     this.fields = mapValues(combinedFields, (f: any) => f.getBoundField());
 
-    this.colorLegendTitle = this.dataService.colorLegendEncoding;
-    this.edgeLegendTitle = this.dataService.edgeLegendEncoding;
+    this.colorLegendEncoding = this.dataService.colorLegendEncoding;
+    this.edgeLegendEncoding = this.dataService.edgeLegendEncoding;
 
     this.minColorValueLabel = '';
     this.midColorValueLabel = '';
     this.maxColorValueLabel = '';
 
-    this.gradient = `linear-gradient(to top, ${this.dataService.nodeColorRange.join(', ')})`;
+    this.gradient = this.dataService.nodeColorRange.toString();
 
     this.nodeSizeRange = this.dataService.nodeSizeRange;
   }

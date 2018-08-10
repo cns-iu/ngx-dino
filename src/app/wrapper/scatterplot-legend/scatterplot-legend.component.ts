@@ -7,7 +7,9 @@ import { RawChangeSet, Datum, idSymbol } from '@ngx-dino/core';
 import { ScatterplotDataService } from '../shared/scatterplot/scatterplot-data.service';
 import {
   pointIdField,
-  sizeField
+  sizeField,
+  colorField,
+  colorCategoryField
 } from '../shared/scatterplot/scatterplot-fields';
 
 @Component({
@@ -23,6 +25,8 @@ export class ScatterplotLegendComponent implements OnInit {
 
   nodeIdField = pointIdField.getBoundField();
   nodeSizeField = sizeField.getBoundField();
+  nodeColorField = colorField.getBoundField();
+  colorCategoryField = colorCategoryField.getBoundField();
 
   nodeSizeRange = [8, 14];
   nodeShape = 'Node';

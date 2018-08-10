@@ -29,9 +29,12 @@ export class EdgeSizeLegendComponent implements OnInit, OnChanges {
   @Input() edgeIdField: BoundField<string>;
   @Input() edgeSizeField: BoundField<number>;
 
-  @Input() edgeLegendTitle: string;
+  @Input() title = 'Edge Size';
+  @Input() encoding = 'Encoding';
 
   @Input() edgeSizeRange: number[];
+
+  @Input() margin: string; // format - 'top right bottom left'
 
   edgeSizeScale: any;
 
@@ -92,6 +95,8 @@ export class EdgeSizeLegendComponent implements OnInit, OnChanges {
     if (!update) {
       this.dataService.fetchData(
         // TODO
+        undefined,
+        undefined,
         undefined,
         undefined,
         undefined,

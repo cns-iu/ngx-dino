@@ -30,9 +30,12 @@ export class NodeSizeLegendComponent implements OnInit, OnChanges {
   @Input() nodeSizeField: BoundField<string>;
   @Input() nodeIdField: BoundField<number | string>;
 
-  @Input() title: string;
+  @Input() title = 'Node Size';
+  @Input() encoding = 'Encoding';
 
   @Input()  nodeSizeRange = [5, 15];
+
+  @Input() margin: string; // format - 'top right bottom left'
 
   parentNativeElement: any;
   legendSizeScale: any;
@@ -93,11 +96,6 @@ export class NodeSizeLegendComponent implements OnInit, OnChanges {
         this.setTexts();
       }
 
-    if ('title' in changes) {
-      d3Selection.select(this.parentNativeElement)
-        .select('#title').transition().text(this.title);
-    }
-
     if ('nodeSizeRange' in changes) {
       this.calculateBoundsAndLabels(this.nodesData);
       this.setScales();
@@ -115,6 +113,8 @@ export class NodeSizeLegendComponent implements OnInit, OnChanges {
         this.dataStream,
         this.nodeIdField,
         this.nodeSizeField,
+        undefined,
+        undefined,
 
         // TODO
         undefined,
@@ -146,8 +146,6 @@ export class NodeSizeLegendComponent implements OnInit, OnChanges {
   }
 
   setTexts() {
-    d3Selection.select(this.parentNativeElement)
-      .select('#title').transition().text(this.title);
 
     d3Selection.select(this.parentNativeElement)
       .select('#maxG').select('text').transition().text(this.maxLabel);

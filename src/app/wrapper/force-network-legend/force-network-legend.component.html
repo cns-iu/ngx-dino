@@ -1,34 +1,39 @@
-<div class="gradient-legend">
-    <div class="gradient-title"><b>Node Color</b></div>
-    <div id="gradient-encoding">{{colorLegendTitle}}</div>
-    <div class="gradient-container">
-        <div class="gradient-bar" [style.background]="gradient"></div>
-        <div class="gradient-labels">
-            <div>{{maxColorValueLabel}}</div>
-            <div class="gradient-label-filler"></div>
-            <div>{{midColorValueLabel}}</div>
-            <div class="gradient-label-filler"></div>
-            <div>{{minColorValueLabel}}</div>
-        </div>
-    </div>
-</div>
+<dino-color-legend 
+    [dataStream]="nodeStream"
 
-<div class="node-size-legend">
-    <dino-node-size-legend
-        [dataStream]="nodeStream"
-        [nodeIdField]="fields.nodeIdField"
-        [nodeSizeField]="fields.nodeSizeField"
-        [title]="'Group #'"
-        [nodeSizeRange]="nodeSizeRange">
-    </dino-node-size-legend>
-</div>
+    [idField]="fields.nodeIdField"
+    [colorField]="fields.nodeColorField"
 
-<div class="edge-size-legend">
-    <dino-edge-size-legend
-        [dataStream]="edgeStream"
-        [edgeIdField]="fields.edgeIdField"
-        [edgeSizeField]="fields.edgeSizeField"
-        [edgeLegendTitle]="edgeLegendTitle"
-        [edgeSizeRange]="edgeSizeRange">
-    </dino-edge-size-legend>
-</div>
+    [encoding]="colorLegendEncoding"
+    [legendType]="'quantitative'"
+
+    [colorRange]="gradient"
+
+    [margin]="'0 0 10px 8px'"> 
+</dino-color-legend>
+
+<dino-node-size-legend
+    [dataStream]="nodeStream"
+
+    [nodeIdField]="fields.nodeIdField"
+    [nodeSizeField]="fields.nodeSizeField"
+
+    [encoding]="'Group #'"
+
+    [nodeSizeRange]="nodeSizeRange"
+    
+    [margin]="'0 0 10px 8px'">
+</dino-node-size-legend>
+
+<dino-edge-size-legend
+    [dataStream]="edgeStream"
+
+    [edgeIdField]="fields.edgeIdField"
+    [edgeSizeField]="fields.edgeSizeField"
+
+    [encoding]="edgeLegendEncoding"
+    
+    [edgeSizeRange]="edgeSizeRange"
+    
+    [margin]="'0 0 10px 8px'">
+</dino-edge-size-legend>

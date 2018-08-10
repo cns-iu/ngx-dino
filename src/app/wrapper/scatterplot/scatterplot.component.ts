@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { BoundField, RawChangeSet } from '@ngx-dino/core';
 
 import { Observable } from 'rxjs';
@@ -27,6 +27,7 @@ import { ScatterplotDataService } from '../shared/scatterplot/scatterplot-data.s
 export class ScatterplotComponent implements OnInit {
   @Input() height = 70 / 100 * window.innerHeight;
   @Input() width = 65 / 100 * window.innerWidth;
+  @ViewChild('scatterplot') scatterplot: any;
 
   data: Observable<RawChangeSet<any>>;
 
@@ -63,5 +64,9 @@ export class ScatterplotComponent implements OnInit {
     this.pulse = pulseField.getBoundField();
 
     this.tooltipText = tooltipTextField.getBoundField();
+  }
+
+  activate(): void {
+    this.scatterplot.resizeSelf();
   }
 }

@@ -4,7 +4,7 @@ import {
   OnChanges,
   OnInit,
   Input,
-  SimpleChanges,
+  SimpleChanges, SimpleChange,
   DoCheck,
   ViewChild, ViewEncapsulation
 } from '@angular/core';
@@ -191,11 +191,6 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
   }
 
   ngDoCheck() {
-    if (this.autoresize && this.scatterplotElement) {
-      const width = 85 / 100 * this.scatterplotElement.nativeElement.clientWidth; // FIXME - hack
-      const height = 35 / 100 * this.scatterplotElement.nativeElement.clientWidth; // FIXME - hack
-      this.resize(width, height);
-    }
   }
 
   private resize(width: number, height: number): void {
@@ -217,6 +212,20 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
       if (this.data.length > 0 && this.showAxisIndicators) {
         this.updateAxisTexts();
       }
+    }
+  }
+
+  doResize({width, height}: {width: SimpleChange, height: SimpleChange}): void {
+    if (this.autoresize) {
+      this.resize(width.currentValue, height.currentValue);
+    }
+  }
+
+  resizeSelf(): void {
+    if (this.scatterplotElement) {
+      const element = this.scatterplotElement.nativeElement;
+      const rect = element.getBoundingClientRect();
+      this.resize(rect.width, rect.height);
     }
   }
 

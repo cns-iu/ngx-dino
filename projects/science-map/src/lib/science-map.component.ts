@@ -1,6 +1,6 @@
 import {
   Component, OnInit, ElementRef, Input, Output, DoCheck,
-  EventEmitter, OnChanges, SimpleChanges, ViewChild
+  EventEmitter, OnChanges, SimpleChanges, ViewChild, SimpleChange
 } from '@angular/core';
 
 import {
@@ -72,7 +72,7 @@ export class ScienceMapComponent implements OnInit, OnChanges, DoCheck {
 
   // private zoom = d3Zoom.zoom().scaleExtent([1, 10]).on('zoom', this.zoomed);
 
-  constructor(element: ElementRef, private dataService: ScienceMapDataService) {
+  constructor(private element: ElementRef, private dataService: ScienceMapDataService) {
     this.parentNativeElement = element.nativeElement; // to get native parent element of this component
   }
 
@@ -111,12 +111,6 @@ export class ScienceMapComponent implements OnInit, OnChanges, DoCheck {
   }
 
   ngDoCheck() {
-    if (this.autoresize && this.scienceMapElement && this.svgContainer) {
-      const width = this.scienceMapElement.nativeElement.clientWidth;
-      const height = window.innerHeight - 120; // FIXME
-
-      this.resize(width, height);
-    }
   }
 
   resize(width: number, height: number): void {
@@ -134,6 +128,20 @@ export class ScienceMapComponent implements OnInit, OnChanges, DoCheck {
       this.createLabels('white', 3);
       this.createLabels('black', 1);
       this.createNodes();
+    }
+  }
+
+  doResize({width, height}: {width: SimpleChange, height: SimpleChange}): void {
+    if (this.autoresize) {
+      this.resize(width.currentValue, height.currentValue);
+    }
+  }
+
+  resizeSelf(): void {
+    if (this.scienceMapElement) {
+      const element = this.scienceMapElement.nativeElement;
+      const rect = element.getBoundingClientRect();
+      this.resize(rect.width, rect.height);
     }
   }
 

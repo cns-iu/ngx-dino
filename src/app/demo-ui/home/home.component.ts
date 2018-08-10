@@ -9,6 +9,7 @@ export class HomeComponent implements OnInit {
   @ViewChild('tabs') tabs: any;
   @ViewChild('scienceMap') scienceMap: any;
   @ViewChild('forceNetwork') forceNetwork: any;
+  @ViewChild('scatterplot') scatterplot: any;
   @ViewChild('geomap') geomap: any;
 
   openState = true;
@@ -21,6 +22,7 @@ export class HomeComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    this.activate(0);
     this.tabs.selectedIndexChange.subscribe((index) => ((this.tabIndex = index), this.activate(index)));
   }
 
@@ -38,6 +40,9 @@ export class HomeComponent implements OnInit {
 
       case 1:
         return this.forceNetwork;
+
+      case 2:
+        return this.scatterplot;
 
       case 3:
         return this.geomap;

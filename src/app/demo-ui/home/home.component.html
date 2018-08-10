@@ -6,62 +6,53 @@
 
 <mat-sidenav-container>
 
-  <mat-sidenav #sidenav
-    class="sidenav"
-    mode="side"
-    [(opened)]="openState">
+    <mat-sidenav #sidenav class="sidenav" mode="side" [(opened)]="openState">
 
-      <div class="sidenavLegend">
-        <p class="sidenavTitle">Data Simulator</p>
-        <hr>
-        <p class="sidenavTitle">Legend</p>
-        <hr>
-          <app-science-map-legend [hidden]="tabIndex !== 0">
-          </app-science-map-legend>
+        <div class="sidenavLegend">
+            <p class="sidenavTitle">Data Simulator</p>
+            <hr>
+            <p class="sidenavTitle">Legend</p>
+            <hr>
+            <app-science-map-legend [hidden]="tabIndex !== 0">
+            </app-science-map-legend>
 
-          <app-force-network-legend [hidden]="tabIndex !== 1">
-          </app-force-network-legend>
+            <app-force-network-legend [hidden]="tabIndex !== 1">
+            </app-force-network-legend>
 
-          <app-scatterplot-legend [hidden]="tabIndex !== 2">
-          </app-scatterplot-legend>
+            <app-scatterplot-legend [hidden]="tabIndex !== 2">
+            </app-scatterplot-legend>
 
-          <app-geomap-legend [hidden]="tabIndex !== 3">
-          </app-geomap-legend>
+            <app-geomap-legend [hidden]="tabIndex !== 3">
+            </app-geomap-legend>
 
-      </div>
-  </mat-sidenav>
+        </div>
+    </mat-sidenav>
 
-  <mat-sidenav-content>
-    <mat-tab-group #tabs >
-      <mat-tab label="Science Map">
-        <app-science-map #scienceMap
-          [width]="openState ? narrowWidth : wideWidth"
-          [height]="height">
-        </app-science-map>
-      </mat-tab>
+    <mat-sidenav-content>
+        <mat-tab-group #tabs>
+            <mat-tab label="Science Map">
+                <app-science-map #scienceMap [width]="openState ? narrowWidth : wideWidth" [height]="height">
+                </app-science-map>
+            </mat-tab>
 
-      <mat-tab label="Force Network">
-        <app-force-network #forceNetwork
-          [width]="openState ? narrowWidth : wideWidth"
-          [height]="height">
-        </app-force-network>
-      </mat-tab>
+            <mat-tab label="Force Network">
+                <app-force-network #forceNetwork [width]="openState ? narrowWidth : wideWidth" [height]="height">
+                </app-force-network>
+            </mat-tab>
 
-      <mat-tab label="Scatterplot">
-        <app-scatterplot>
-        </app-scatterplot>
-      </mat-tab>
+            <mat-tab label="Scatterplot">
+                <app-scatterplot #scatterplot>
+                </app-scatterplot>
+            </mat-tab>
 
-      <mat-tab label="Geomap">
-        <app-geomap #geomap
-          [width]="openState ? narrowWidth : wideWidth"
-          [height]="height">
-        </app-geomap>
-      </mat-tab>
-      <mat-tab label="Datatable">
-        <app-datatable></app-datatable>
-      </mat-tab>
-    </mat-tab-group>
-</mat-sidenav-content>
+            <mat-tab label="Geomap">
+                <app-geomap #geomap [width]="openState ? narrowWidth : wideWidth" [height]="height">
+                </app-geomap>
+            </mat-tab>
+            <mat-tab label="Datatable">
+                <app-datatable></app-datatable>
+            </mat-tab>
+        </mat-tab-group>
+    </mat-sidenav-content>
 
 </mat-sidenav-container>

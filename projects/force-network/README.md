@@ -13,15 +13,16 @@ npm i --save @ngx-dino/core @ngx-dino/force-network
 
 	import { NgModule } from '@angular/core';
 	import { CommonModule } from '@angular/common';
+
 	import { CoreModule } from '@ngx-dino/core';
-	import { ForceNetworkComponent } from './force-network.component';
+  import { ForceNetworkModule } from '@ngx-dino/force-network';
 	
 
 	@NgModule({
 
 	...
 
-	imports: [CommonModule, CoreModule, ...]
+	imports: [CommonModule, CoreModule, ForceNetworkModule, ...]
 
 	...
 

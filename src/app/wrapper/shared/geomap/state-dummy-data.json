@@ -175,16 +175,6 @@
     "color": "rgb(253, 204, 151)"
   },
   {
-    "id": -1,
-    "label": "Crete",
-    "color": "rgb(253, 210, 159)"
-  },
-  {
-    "id": -1,
-    "label": "Quebec",
-    "color": "rgb(253, 210, 159)"
-  },
-  {
     "id": 21,
     "label": "KY",
     "color": "rgb(253, 209, 157)"
@@ -202,11 +192,6 @@
   {
     "id": 30,
     "label": "MT",
-    "color": "rgb(253, 210, 159)"
-  },
-  {
-    "id": -1,
-    "label": "Guangxi",
     "color": "rgb(253, 210, 159)"
   },
   {

@@ -1,9 +1,42 @@
-<div class="node-size-legend">
-  <dino-node-size-legend 
-    [dataStream]="nodeStream"
-    [nodeIdField]="nodeIdField"
-    [nodeSizeField]="nodeSizeField"
-    [title]="'Size'"
-    [nodeSizeRange]="nodeSizeRange">
-  </dino-node-size-legend>
-</div>
+<dino-color-legend 
+  [dataStream]="nodeStream"
+
+  [idField]="nodeIdField"
+  [colorField]="nodeColorField"
+
+  [legendType]="'quantitative'"
+
+  [encoding]="'Size'"
+
+  [colorRange]="gradient"
+
+  [margin]="'0 0 10px 8px'"> 
+</dino-color-legend>
+
+<dino-color-legend 
+  [dataStream]="stateStream"
+
+  [idField]="stateIdField"
+  [colorField]="stateColorField"
+
+  [categoryField]="stateColorCategoryField"
+
+  [encoding]="'State'"
+  [title]="'State Color'"
+
+  [legendType]="'qualitative'"
+
+  [margin]="'0 0 10px 8px'"> 
+</dino-color-legend>
+
+<dino-node-size-legend 
+  [dataStream]="nodeStream"
+
+  [nodeIdField]="nodeIdField"
+  [nodeSizeField]="nodeSizeField"
+
+  [encoding]="'Size'"
+  [nodeSizeRange]="nodeSizeRange"
+
+  [margin]="'0 0 10px 8px'">
+</dino-node-size-legend>

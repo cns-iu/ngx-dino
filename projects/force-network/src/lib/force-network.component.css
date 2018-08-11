@@ -1,12 +1,16 @@
+.forceNetworkContainer {
+  height: calc(100% - 4px);
+}
+
 .tooltip {
   position: fixed;
-  text-align: left;		
-  width: auto;				
-  height: auto;					
-  padding: 5px;				
-  font: 12px open-sans;		
+  text-align: left;
+  width: auto;
+  height: auto;
+  padding: 5px;
+  font: 12px open-sans;
   color: white;
-  background: black;	
+  background: black;
   pointer-events: none;
   opacity: 0;
   z-index: 10;

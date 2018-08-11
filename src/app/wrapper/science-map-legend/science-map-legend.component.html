@@ -1,16 +1,22 @@
-<div class="color-legend">
-    <dino-color-legend
-        [shape]="nodeShape"
-        [colorEncodingTitle]="nodeColorEncoding"
-        [labelToColor]="nodeLabelToColor">
-    </dino-color-legend>
-</div>
+<dino-color-legend 
+    [colorMapping]="nodeLabelToColor"
 
-<div class="node-size-legend">
-    <dino-node-size-legend
-        [dataStream]="filteredSubdisciplines"
-        [nodeSizeField]="subdisciplineSize"
-        [nodeIdField]="subdisciplineId" 
-        [title]="nodeSizeEncoding">
-    </dino-node-size-legend>
-</div>
+    [encoding]="nodeColorEncoding"
+
+    [legendType]="'qualitative'"
+
+    [margin]="'0 0 10px 8px'"> 
+</dino-color-legend>
+
+
+
+<dino-node-size-legend
+    [dataStream]="filteredSubdisciplines"
+
+    [nodeSizeField]="subdisciplineSize"
+    [nodeIdField]="subdisciplineId" 
+
+    [encoding]="nodeSizeEncoding"
+
+    [margin]="'0 0 10px 8px'">
+</dino-node-size-legend>

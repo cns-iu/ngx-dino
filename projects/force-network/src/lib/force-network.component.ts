@@ -4,7 +4,8 @@ import {
   ElementRef,
   Input,
   OnChanges,
-  SimpleChanges
+  SimpleChanges,
+  SimpleChange
 } from '@angular/core';
 
 import { BoundField, RawChangeSet, idSymbol, Datum } from '@ngx-dino/core';
@@ -33,8 +34,9 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
   @Input() linkStream: Observable<RawChangeSet<any>>;
 
   @Input() margin = { top: 20, right: 15, bottom: 60, left: 60 };
-  @Input() width = window.innerWidth; // initializing width for map container
-  @Input() height = window.innerHeight; // initializing height for map container
+  @Input() width = 0;
+  @Input() height = 0;
+  @Input() autoresize = false;
 
   @Input() nodeSizeField: BoundField<string>;
   @Input() nodeColorField: BoundField<number>;
@@ -65,6 +67,9 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
 
   @Input() chargeStrength = -10;
   @Input() linkDistance = 105;
+
+  private elementWidth = 0;
+  private elementHeight = 0;
 
   private parentNativeElement: any;
   private svgContainer: d3Selection.Selection<d3Selection.BaseType, any, HTMLElement, undefined>;
@@ -97,6 +102,8 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    this.setScales();
+    this.initVisualization();
     this.dataService.nodes.subscribe((data) => {
       this.nodesData = this.nodesData.filter((e: Node) => !data.remove
         .some((obj: Datum<Node>) => obj[idSymbol] === e.id)).concat(data.insert.toArray());
@@ -136,14 +143,35 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
       this.updateStreamProcessor();
     }
 
-    if ('width' in changes) {// if width changes, redraw visualization
-      if (this.svgContainer) {
-        this.svgContainer.remove();
-      }
+    if (!this.autoresize && ('width' in changes || 'height' in changes)) {
+      this.resize(this.width, this.height);
+    }
+  }
 
-      this.setScales();
-      this.initVisualization();
-      this.drawPlots();
+  resize(width: number, height: number): void {
+    this.elementWidth = width;
+    this.elementHeight = height;
+
+    if (this.svgContainer) {
+      this.svgContainer.remove();
+    }
+
+    this.setScales();
+    this.initVisualization();
+    this.drawPlots();
+  }
+
+  onResize({width, height}: {width: SimpleChange, height: SimpleChange}): void {
+    if (this.autoresize) {
+      this.resize(width.currentValue, height.currentValue);
+    }
+  }
+
+  resizeSelf(): void {
+    if (this.parentNativeElement) {
+      const element = this.parentNativeElement;
+      const rect = element.getBoundingClientRect();
+      this.resize(rect.width, rect.height);
     }
   }
 
@@ -224,12 +252,8 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
 
     this.svgContainer = container.append('svg')
       .attr('preserveAspectRatio', 'xMidYMid slice')
-      .attr('viewBox', ' '
-        + this.minPositionX + ' '
-        + this.minPositionY + ' '
-        + (this.width) + ' '
-        + (this.height)
-      )
+      .attr('width', this.elementWidth)
+      .attr('height', this.elementHeight)
       .classed('svg-content-responsive', true)
       .attr('class', 'container');
 
@@ -237,9 +261,9 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
       .force('link', d3Force.forceLink().distance(this.linkDistance)
         .id(link => link[idSymbol]))
       .force('charge', d3Force.forceManyBody().strength(this.chargeStrength))
-      .force('center', d3Force.forceCenter(this.width / 2.2, this.height / 2))
-      .force('x', d3Force.forceX(this.width / 2.2).strength(.7))
-      .force('y', d3Force.forceY(this.height / 2).strength(.7))
+      .force('center', d3Force.forceCenter(this.elementWidth / 2.2, this.elementHeight / 2))
+      .force('x', d3Force.forceX(this.elementWidth / 2.2).strength(.7))
+      .force('y', d3Force.forceY(this.elementHeight / 2).strength(.7))
       .on('tick', () => this.ticked());
 
     this.simulation.velocityDecay(0.4);
@@ -302,8 +326,8 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
   }
 
   ticked() {
-    this.nodes.attr('cx', (d) => d.x = Math.max(this.radius, Math.min(this.width - this.radius, d.x)))
-      .attr('cy', (d) => d.y = Math.max(this.radius, Math.min(this.height - this.radius, d.y)));
+    this.nodes.attr('cx', (d) => d.x = Math.max(this.radius, Math.min(this.elementWidth - this.radius, d.x)))
+      .attr('cy', (d) => d.y = Math.max(this.radius, Math.min(this.elementHeight - this.radius, d.y)));
 
     this.svgContainer.selectAll('text').attr('x', (d: any) => d.x)
       .attr('y', (d: any) => d.y);

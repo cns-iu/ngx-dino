@@ -64,3 +64,12 @@ export const pulseField = simpleField<boolean>({
 
   operator: access('pulse', false)
 });
+
+export const colorCategoryField = simpleField<string>({
+  bfieldId: 'colorCategory',
+  label: 'Color Category',
+
+  operator: access('colorCategory', 'Unknown')
+});
+
+

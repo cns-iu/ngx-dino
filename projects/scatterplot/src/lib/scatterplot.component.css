@@ -15,7 +15,7 @@
 }
 
 .plotContainer {
-    height: 100%;
+    height: calc(100% - 4px);
 }
 
 .pulsing {

@@ -102,8 +102,10 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.setScales();
-    this.initVisualization();
+    if (this.nodeSizeField && this.linkSizeField && this.nodeColorField) {
+      this.setScales();
+      this.initVisualization();
+    }
     this.dataService.nodes.subscribe((data) => {
       this.nodesData = this.nodesData.filter((e: Node) => !data.remove
         .some((obj: Datum<Node>) => obj[idSymbol] === e.id)).concat(data.insert.toArray());

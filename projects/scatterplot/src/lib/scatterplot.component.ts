@@ -112,8 +112,10 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
   }
 
   ngOnInit() {
-    this.setScales([]);
-    this.initVisualization();
+    if (this.xField && this.yField) {
+      this.setScales([]);
+      this.initVisualization();
+    }
     this.dataService.points.subscribe((data) => {
       this.data = this.data.filter((e: Point) => !data.remove
         .some((obj: Datum<Point>) => obj[idSymbol] === e.id)).concat(data.insert.toArray() as any);

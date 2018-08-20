@@ -1,20 +1,13 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { CoordinateSpaceOptions } from './options';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'dino-network',
-  templateUrl: 'ntework.component.html',
+  templateUrl: 'network.component.html',
   styleUrls: ['network.component.css']
 })
-export class NetworkComponent implements OnChanges, OnInit {
-  @Input() coordinateSpaceOptions: CoordinateSpaceOptions;
-
+export class NetworkComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    // TODO
   }
 }

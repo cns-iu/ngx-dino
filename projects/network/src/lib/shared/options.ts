@@ -15,6 +15,6 @@ export interface FixedCoordinateSpace {
 
 export type CoordinateSpace = DynamicCoordinateSpace | FixedCoordinateSpace;
 export interface CoordinateSpaceOptions {
-  x: CoordinateSpace;
-  y: CoordinateSpace;
+  x?: CoordinateSpace;
+  y?: CoordinateSpace;
 }

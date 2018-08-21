@@ -95,6 +95,8 @@ export class EdgeSizeLegendComponent implements OnInit, OnChanges {
         undefined,
         undefined,
         undefined,
+        undefined,
+        undefined,
 
         this.dataStream,
         this.edgeIdField,

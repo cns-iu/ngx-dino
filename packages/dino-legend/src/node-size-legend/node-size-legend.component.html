@@ -1,37 +1,39 @@
-<div class="sizeLegend" mat-card-image>
-  <div id="sizeLegendTitle">Node Size</div>
-  <svg *ngIf="min !== max" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-    width="300px" height="180px" viewBox="0 0 300 180" preserveAspectRatio="xMidYMid meet">
+<div class="sizeLegend" [style.margin]="margin" mat-card-image>
+  <div class="title">{{title}}</div>
+  <svg *ngIf="min !== max" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" 
+    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" 
+    preserveAspectRatio="xMidYMid meet">
     <g>
-      <text id="title" transform="matrix(1 0 0 1 8 17)" fill="#222" font-size="15">Title</text>
-      <circle id="maxNode" fill="none" stroke="#222" stroke-width="2" stroke-miterlimit="10" cx="25" cy="46" r="64" />
-      <circle id="midNode" fill="none" stroke="#222" stroke-width="2" stroke-miterlimit="10" cx="25" cy="106" r="34" />
-      <circle id="minNode" fill="none" stroke="#222" stroke-width="2" stroke-miterlimit="10" cx="25" cy="166" r="4" />
-      <g id="maxG" transform="translate(25, 46)">
-        <text transform="matrix(1 0 0 1 108 -2)" text-anchor="end" fill="#222" font-size="13">3</text>
-        <line fill="none" stroke="#222" stroke-width="0.4" stroke-dasharray="11, 4" x2="110" />
+      <text class="encoding" transform="translate(0, 10)" fill="#222" font-size="15">{{encoding}}</text>
+
+      <g class="label" transform="translate(20, 40)">
+        <path [attr.d]="max" fill="transparent" stroke="#222" stroke-width="1"/>
+        <text text-anchor="start" fill="#222" font-size="13" transform="translate(20, 3)">{{maxLabel}}</text>
       </g>
-      <g id="midG" transform="translate(25, 106)">
-        <text transform="matrix(1 0 0 1 108 -2)" text-anchor="end" fill="#222" font-size="13">2</text>
-        <line fill="none" stroke="#222" stroke-width="0.4" stroke-dasharray="11, 4" x2="110" />
+
+      <g class="label" transform="translate(20, 80)">
+          <path [attr.d]="mid" fill="transparent" stroke="#222" stroke-width="1"/>
+          <text text-anchor="start" fill="#222" font-size="13" transform="translate(20, 3)">{{midLabel}}</text>
       </g>
-      <g id="minG" transform="translate(25, 166)">
-        <text transform="matrix(1 0 0 1 108 -2)" text-anchor="end" fill="#222" font-size="13">1</text>
-        <line fill="none" stroke="#222" stroke-width="0.4" stroke-dasharray="11, 4" x2="110" />
+
+      <g class="label" transform="translate(20, 120)">
+          <path [attr.d]="min" fill="transparent" stroke="#222" stroke-width="1"/>
+          <text text-anchor="start" fill="#222" font-size="13" transform="translate(20, 3)">{{minLabel}}</text>
       </g>
-      <text id="note" transform="matrix(1 0 0 1 20 193)" fill="#444445" font-style="italic" font-size="12"></text>
+
     </g>
   </svg>
+  
   <svg *ngIf="min === max" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-    width="300px" height="70px" viewBox="0 0 300 70" preserveAspectRatio="xMidYMid meet">
+    preserveAspectRatio="xMidYMid meet">
     <g>
-      <text id="title" transform="matrix(1 0 0 1 8 17)" fill="#222" font-size="15">Title</text>
-      <circle id="maxNode" fill="none" stroke="#222" stroke-width="2" stroke-miterlimit="10" cx="25" cy="46" r="64" />
-      <g id="maxG" transform="translate(25, 46)">
-        <text transform="matrix(1 0 0 1 108 -2)" text-anchor="end" fill="#222" font-size="13">3</text>
-        <line fill="none" stroke="#222" stroke-width="0.4" stroke-dasharray="11, 4" x2="110" />
+      <text class="encoding" transform="translate(0, 10)" fill="#222" font-size="15">{{encoding}}</text>
+
+      <g class="label" transform="translate(20, 40)">
+          <path [attr.d]="min" fill="transparent" stroke="#222" stroke-width="1"/>
+          <text text-anchor="start" fill="#222" font-size="13" transform="translate(20, 3)">{{minLabel}}</text>
       </g>
-      <text id="note" transform="matrix(1 0 0 1 20 193)" fill="#444445" font-style="italic" font-size="12"></text>
+      
     </g>
   </svg>
 </div>

@@ -33,21 +33,37 @@ export class LegendDataService {
   fetchData(
     nodeStream: Observable<RawChangeSet<any>>,
     nodeIdField: BoundField<number | string>,
-    nodeSizeField: BoundField<string>,
+    nodeSizeDomainField: BoundField<number | string>,
+    nodeSizeRangeField: BoundField<number | string>,
+    nodeShapeField: BoundField<number | string>,
 
     edgeStream: Observable<RawChangeSet<any>>,
     edgeIdField: BoundField<string>,
     edgeSizeField: BoundField<number>
   ): this {
-    if (nodeStream && nodeIdField && nodeSizeField) {
-      this.nodeSizeProcessor = this.processorService.createProcessor<Node & Datum<any>, any>(
-        nodeStream, 
-        nodeIdField,
-        {
-          id: nodeIdField,
-          size: nodeSizeField
-        }
-      );
+    if (nodeStream && nodeIdField) {
+      if (nodeSizeDomainField && nodeSizeRangeField && !nodeShapeField) {
+        this.nodeSizeProcessor = this.processorService.createProcessor<Node & Datum<any>, any>(
+          nodeStream, 
+          nodeIdField,
+          {
+            id: nodeIdField,
+            sizeInput: nodeSizeDomainField,
+            size: nodeSizeRangeField
+          }
+        );
+      } else if (nodeSizeDomainField && nodeSizeRangeField && nodeShapeField) {
+        this.nodeSizeProcessor = this.processorService.createProcessor<Node & Datum<any>, any>(
+          nodeStream, 
+          nodeIdField,
+          {
+            id: nodeIdField,
+            sizeInput: nodeSizeDomainField,
+            size: nodeSizeRangeField,
+            shape: nodeShapeField
+          }
+        );
+      }
 
       if (this.nodeStreamSubscription) {
         this.nodeStreamSubscription.unsubscribe();
@@ -81,7 +97,7 @@ export class LegendDataService {
   }
 
   updateData(changedField: BoundField<number | string>) {
-    const fieldName = changedField.id.slice(0,4);
+    const fieldName = changedField.id;
     if(this.nodeSizeProcessor) {
       this.nodeSizeProcessor.updateFields(Map({
         [fieldName]: changedField

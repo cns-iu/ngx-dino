@@ -6,9 +6,7 @@ import {
   symbolSquare, symbolStar, symbolTriangle, symbolWye
 } from 'd3-shape';
 import { Point, isPoint } from '../shared/utility';
-
-export type BuiltinSymbolTypes =
-  'circle' | 'cross' | 'diamond' | 'square' | 'star' | 'triangle' | 'wye';
+import { BuiltinSymbolTypes } from '../shared/options';
 
 const builtinLookup: {[P in BuiltinSymbolTypes]: SymbolType} = {
   'circle': symbolCircle, 'cross': symbolCross, 'diamond': symbolDiamond,
@@ -45,11 +43,7 @@ export class NodeComponent implements OnChanges {
 
   isValid(): boolean {
     const { position, size } = this;
-    return (
-      isPoint(this.position) &&
-      this.getSymbol() !== undefined &&
-      size > 0
-    );
+    return isPoint(this.position) && size > 0;
   }
 
   centerTranslate(): string {
@@ -59,6 +53,9 @@ export class NodeComponent implements OnChanges {
 
   private getSymbol(): SymbolType {
     const symbol = this.symbol;
-    return isString(symbol) ? builtinLookup[symbol] : symbol;
+    if (isString(symbol)) {
+      return builtinLookup[symbol] || builtinLookup['circle'];
+    }
+    return symbol;
   }
 }

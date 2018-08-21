@@ -53,6 +53,7 @@
         "@angular/platform-browser": "^6.1.0",
         "@angular/platform-browser-dynamic": "^6.1.0",
         "@angular/router": "^6.1.0",
+        "@types/d3-shape": "^1.2.4",
         "@types/lodash": "^4.14.115",
         "core-js": "^2.5.4",
         "d3-array": "^1.2.1",

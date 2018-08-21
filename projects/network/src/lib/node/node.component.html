@@ -1,3 +1,4 @@
-<p>
-  node works!
-</p>
+<svg:g *ngIf="isValid()" [attr.transform]="centerTranslate()">
+    <svg:path [attr.d]="shape">
+    </svg:path>
+</svg:g>

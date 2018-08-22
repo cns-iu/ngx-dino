@@ -1,33 +1,40 @@
-.st0
-  display: none
+.qualitative-color-legend-container
+	display: flex
+	flex-flow: row wrap
+	justify-content: space-between
+  padding: 30px
+	.legend-item
+		display: flex
+		padding-right: 10px
+		align-items: left
+		.rectangle
+			width: 14.5px
+			height: 14.5px
+			border: 0.2px solid #000000
 
-.st1
-  font-family: 'Open Sans', sans-serif
-  font-weight: 600
+		.category
+			padding: 2px
+			width: 49px
+			font-size: 14px
+			white-space: nowrap
 
-.st2
-  font-size: 22px
 
-.st3
-  font-family: 'Open Sans', sans-serif
+.encoding
+	font-size: 15px
+	transform: matrix(1, 0, 0, 1, 0, -6)
+	padding-top: 5px
 
-#colorLegendTitle 
-  margin-left: 2%
-  font-weight: 600
-  font-size: 16px
+.gradient-container
+	display: flex
+	.gradient-bar
+		width: 50px
+		height: 180px
 
-#colorLegendSubTitle
-  font-size: 15px 
-  transform: matrix(1, 0, 0, 1, 6, 3)
+	.gradient-labels
+		display: flex
+		flex-direction: column
+		justify-content: space-between
+		margin-left: 10px
 
-.legend-item-1 
-  width: 150px !important
-
-.legend-item-2
-  width: 650px !important
-
-.legend-item-label
-  text-align: left
-
-.legend-row
-  width: 510px
+	.gradient-label-filler
+		flex: 1 1s

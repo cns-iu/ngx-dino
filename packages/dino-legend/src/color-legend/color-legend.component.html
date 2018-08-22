@@ -1,21 +1,28 @@
-<div class="colorLegend" mat-card-image>
-    <div id="colorLegendTitle">{{shape}} Color</div>
-    <div id="colorLegendSubTitle">{{colorEncodingTitle}}</div>
-    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" 
-      xmlns:xlink="http://www.w3.org/1999/xlink" 
-      x="0px" y="0px" 
-      [attr.viewBox]="viewBox"
-      style="enable-background:new 0 0 1137 360;" xml:space="preserve">
-      <g id="Layer_2">
-        <text *ngFor="let encoding of colorEncodings" [attr.transform]="encoding.transform" class="st3 st2">{{encoding.label}}</text>
-        <rect *ngFor="let rect of rects" 
-          [attr.x]="rect.x" 
-          [attr.y]="rect.y" 
-          [attr.class]="rect.class" 
-          [attr.fill]="rect.color"
-          stroke="#494949"
-          width="25.5" 
-          height="25.5" />
-      </g>
-    </svg>
+<div [style.margin]="margin">
+    <div class="title"><b>{{title}}</b></div>
+    <div class="encoding">{{encoding}}</div>
+
+    <div class="qualitative-color-legend-container" *ngIf="legendType === 'qualitative'">
+      <div *ngFor="let k of colorMapping" class="legend-item">
+        <div class="rectangle" [style.background]="k.color"></div>
+        <div class="category">{{ k.label }}</div>
+      </div>
+    </div>
+
+    <div *ngIf="legendType === 'quantitative'">
+      <div class="gradient-legend">
+        <div class="gradient-container">
+            <div class="gradient-bar"
+              [style.background]="'linear-gradient(to top, ' + colorRange + ')'">
+            </div>
+            <div class="gradient-labels">
+                <div>{{maxLabel}}</div>
+                <div class="gradient-label-filler"></div>
+                <div>{{midLabel}}</div>
+                <div class="gradient-label-filler"></div>
+                <div>{{minLabel}}</div>
+            </div>
+        </div>
+      </div>
+    </div>
   </div>

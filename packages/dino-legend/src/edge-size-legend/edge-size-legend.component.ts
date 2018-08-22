@@ -14,7 +14,7 @@ import * as d3Selection from 'd3-selection';
 import * as d3Array from 'd3-array';
 import { scaleLinear } from 'd3-scale';
 
-import { LegendDataService } from '../shared/legend-data.service';
+import { LegendDataService } from '../shared/edge-size-legend/legend-data.service';
 
 @Component({
   selector: 'edge-size-legend',
@@ -91,13 +91,6 @@ export class EdgeSizeLegendComponent implements OnInit, OnChanges {
     }
     if (!update) {
       this.dataService.fetchData(
-        // TODO
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-
         this.dataStream,
         this.edgeIdField,
         this.edgeSizeField
@@ -105,8 +98,8 @@ export class EdgeSizeLegendComponent implements OnInit, OnChanges {
     }
   }
   updateEdgeLegendLabels(edges: any[]) {
-    this.maxEdge = Math.round(d3Array.max(edges, (d: any) => Math.abs(d.size)));
-    this.minEdge = Math.round(d3Array.min(edges, (d: any) => Math.abs(d.size)));
+    this.maxEdge = Math.round(d3Array.max(edges, (d: any) => Math.abs(d[this.edgeSizeField.id])));
+    this.minEdge = Math.round(d3Array.min(edges, (d: any) => Math.abs(d[this.edgeSizeField.id])));
     this.midEdge = Math.round((this.maxEdge + this.minEdge) / 2);
 
     this.maxEdgeLegendLabel = (!isNaN(this.maxEdge)) ? this.maxEdge.toString() : '';
@@ -116,7 +109,7 @@ export class EdgeSizeLegendComponent implements OnInit, OnChanges {
 
   updateEdgeLegendSizes(edges: any[]) {
     this.edgeSizeScale = scaleLinear()
-    .domain([0, d3Array.max(edges, (d: any) => Math.abs(d.size))])
+    .domain([0, d3Array.max(edges, (d: any) => Math.abs(d[this.edgeSizeField.id]))])
     .range(this.edgeSizeRange);
 
     d3Selection.select('#maxEdge').select('line').attr('stroke-width', this.edgeSizeScale(Math.abs(this.maxEdge)));

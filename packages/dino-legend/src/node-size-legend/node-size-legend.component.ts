@@ -14,7 +14,7 @@ import { Observable } from 'rxjs';
 
 import { BoundField, RawChangeSet, idSymbol, Datum } from '@ngx-dino/core';
 
-import { LegendDataService } from '../shared/legend-data.service';
+import { LegendDataService } from '../shared/node-size-legend/legend-data.service';
 
 @Component({
   selector: 'node-size-legend',
@@ -106,30 +106,28 @@ export class NodeSizeLegendComponent implements OnInit, OnChanges {
       this.dataService.fetchData(
         this.dataStream,
         this.nodeIdField,
+
         this.nodeSizeDomainField,
         this.nodeSizeRangeField,
-        this.nodeShapeField ? this.nodeShapeField : undefined,
-        // TODO
-        undefined,
-        undefined,
-        undefined
+
+        this.nodeShapeField ? this.nodeShapeField : undefined
       );
     }
   }
 
   calculateBoundsAndLabels(data: any) {
-    const sortedData = data.sort(this.comparator);
-    this.min = d3Shape.symbol().size(sortedData[0].size)
+    const sortedData = data.sort(this.comparator.bind(this));
+    this.min = d3Shape.symbol().size(sortedData[0][this.nodeSizeRangeField.id])
       .type(this.selectShape(sortedData[0]))();
     this.mid = d3Shape.symbol()
-      .size(sortedData[Math.round((sortedData.length - 1) / 2)].size)
+      .size(sortedData[Math.round((sortedData.length - 1) / 2)][this.nodeSizeRangeField.id])
       .type(this.selectShape(sortedData[Math.round((sortedData.length - 1) / 2)]))();
-    this.max = d3Shape.symbol().size(sortedData[sortedData.length - 1].size)
+    this.max = d3Shape.symbol().size(sortedData[sortedData.length - 1][this.nodeSizeRangeField.id])
       .type(this.selectShape(sortedData[sortedData.length - 1]))();
   
-    this.minLabel = typeof sortedData[0].sizeInput === 'object' ? 'None' :  sortedData[0].sizeInput;
-    this.midLabel = typeof sortedData[Math.round((sortedData.length - 1) / 2)].sizeInput === 'object' ? 'None' : sortedData[Math.round((sortedData.length - 1) / 2)].sizeInput;
-    this.maxLabel = typeof sortedData[sortedData.length - 1].sizeInput === 'object' ? 'None' : sortedData[sortedData.length - 1].sizeInput;
+    this.minLabel = typeof sortedData[0][this.nodeSizeDomainField.id] === 'object' ? 'None' :  sortedData[0][this.nodeSizeDomainField.id];
+    this.midLabel = typeof sortedData[Math.round((sortedData.length - 1) / 2)][this.nodeSizeDomainField.id] === 'object' ? 'None' : sortedData[Math.round((sortedData.length - 1) / 2)][this.nodeSizeDomainField.id];
+    this.maxLabel = typeof sortedData[sortedData.length - 1][this.nodeSizeDomainField.id] === 'object' ? 'None' : sortedData[sortedData.length - 1][this.nodeSizeDomainField.id];
   }
 
   selectShape(dataEntry: any) {
@@ -148,6 +146,6 @@ export class NodeSizeLegendComponent implements OnInit, OnChanges {
   }
 
   comparator(a: any, b: any) {
-    return a.size - b.size;
+    return a[this.nodeSizeRangeField.id] - b[this.nodeSizeRangeField.id];
   }
 }

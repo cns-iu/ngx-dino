@@ -21,12 +21,7 @@ export class LegendDataService {
   private nodesChange = new BehaviorSubject<ChangeSet<any>>(new ChangeSet<any>());
   public nodes: Observable<ChangeSet<any>> = this.nodesChange.asObservable();
 
-  public edgeSizeProcessor: DataProcessor<any, any>;
-  private edgeChange = new BehaviorSubject<ChangeSet<any>>(new ChangeSet<any>());
-  public edges: Observable<ChangeSet<any>> = this.edgeChange.asObservable();
-
   private nodeStreamSubscription: Subscription;
-  private edgeStreamSubscription: Subscription;
 
   constructor(private processorService: DataProcessorService) { }
 
@@ -35,11 +30,7 @@ export class LegendDataService {
     nodeIdField: BoundField<number | string>,
     nodeSizeDomainField: BoundField<number | string>,
     nodeSizeRangeField: BoundField<number | string>,
-    nodeShapeField: BoundField<number | string>,
-
-    edgeStream: Observable<RawChangeSet<any>>,
-    edgeIdField: BoundField<string>,
-    edgeSizeField: BoundField<number>
+    nodeShapeField: BoundField<number | string>
   ): this {
     if (nodeStream && nodeIdField) {
       if (nodeSizeDomainField && nodeSizeRangeField && !nodeShapeField) {
@@ -48,8 +39,8 @@ export class LegendDataService {
           nodeIdField,
           {
             id: nodeIdField,
-            sizeInput: nodeSizeDomainField,
-            size: nodeSizeRangeField
+            [nodeSizeDomainField.id]: nodeSizeDomainField,
+            [nodeSizeRangeField.id]: nodeSizeRangeField
           }
         );
       } else if (nodeSizeDomainField && nodeSizeRangeField && nodeShapeField) {
@@ -58,9 +49,9 @@ export class LegendDataService {
           nodeIdField,
           {
             id: nodeIdField,
-            sizeInput: nodeSizeDomainField,
-            size: nodeSizeRangeField,
-            shape: nodeShapeField
+            [nodeSizeDomainField.id]: nodeSizeDomainField,
+            [nodeSizeRangeField.id]: nodeSizeRangeField,
+            [nodeShapeField.id]: nodeShapeField
           }
         );
       }
@@ -74,27 +65,8 @@ export class LegendDataService {
 
       return this;
     }
-
-    if (edgeStream && edgeIdField && edgeSizeField) {
-      this.edgeSizeProcessor = this.processorService.createProcessor<Datum<any>, any>(
-        edgeStream, 
-        edgeIdField,
-        {
-          id: edgeIdField,
-          size: edgeSizeField
-        }
-      );
-
-      if (this.edgeStreamSubscription) {
-        this.edgeStreamSubscription.unsubscribe();
-      }
-
-      this.edgeStreamSubscription = this.edgeSizeProcessor.asObservable().subscribe(
-        (change) => this.edgeChange.next(change));
-
-      return this;
-    }
   }
+
 
   updateData(changedField: BoundField<number | string>) {
     const fieldName = changedField.id;
@@ -102,11 +74,6 @@ export class LegendDataService {
       this.nodeSizeProcessor.updateFields(Map({
         [fieldName]: changedField
       }));
-    }
-    if(this.edgeSizeProcessor) {
-      this.edgeSizeProcessor.updateFields(Map({
-        [fieldName]: changedField
-      })); 
     }
   }
 }

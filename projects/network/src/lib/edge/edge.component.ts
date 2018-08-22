@@ -2,15 +2,15 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { isFunction } from 'lodash';
 import { path } from 'd3-path';
 import { Point, isPoint } from '../shared/utility';
-import { BuiltinLinkTypes, LinkType } from '../shared/options';
+import { BuiltinEdgeTypes, EdgeType } from '../shared/options';
 
 @Component({
-  selector: 'dino-edge',
+  selector: '[dino-network-edge]', // tslint:disable-line:component-selector
   templateUrl: './edge.component.html',
   styleUrls: ['./edge.component.css']
 })
 export class EdgeComponent implements OnChanges {
-  @Input() link: BuiltinLinkTypes | LinkType;
+  @Input() edge: BuiltinEdgeTypes | EdgeType = 'line';
   @Input() source: Point;
   @Input() target: Point;
 
@@ -19,33 +19,32 @@ export class EdgeComponent implements OnChanges {
   constructor() { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if ('link' in changes || 'source' in changes || 'target' in changes) {
+    if ('edge' in changes || 'source' in changes || 'target' in changes) {
       if (this.isValid()) {
         this.updatePath();
       }
     }
-    // TODO
   }
 
   isValid(): boolean {
     const {source, target} = this;
     return (
       isPoint(source) && isPoint(target) &&
-      this.getLink() !== undefined
+      this.getEdge() !== undefined
     );
   }
 
-  private getLink(): LinkType {
-    const link = this.link;
-    if (isFunction(link['draw'])) {
-      return link as LinkType;
+  private getEdge(): EdgeType {
+    const edge = this.edge;
+    if (isFunction(edge['draw'])) {
+      return edge as EdgeType;
     }
     // FIXME
     // Assume `line` for now
     return {
       draw(context: CanvasPathMethods, source: Point, target: Point): void {
-        context.moveTo(...source);
-        context.lineTo(...target);
+        context.moveTo(source[0], source[1]);
+        context.lineTo(target[0], target[1]);
       }
     };
   }
@@ -54,7 +53,7 @@ export class EdgeComponent implements OnChanges {
     const {source, target} = this;
     const context = path();
 
-    this.getLink().draw(context as any, source, target);
+    this.getEdge().draw(context as any, source, target);
     this.path = context.toString();
   }
 }

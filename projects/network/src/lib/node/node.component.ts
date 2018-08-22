@@ -15,12 +15,12 @@ const builtinLookup: {[P in BuiltinSymbolTypes]: SymbolType} = {
 };
 
 @Component({
-  selector: 'dino-node',
+  selector: '[dino-network-node]', // tslint:disable-line:component-selector
   templateUrl: './node.component.html',
   styleUrls: ['./node.component.css']
 })
 export class NodeComponent implements OnChanges {
-  @Input() symbol: BuiltinSymbolTypes | SymbolType;
+  @Input() symbol: BuiltinSymbolTypes | SymbolType = 'circle';
   @Input() position: Point;
   @Input() size: number;
 

@@ -9,10 +9,10 @@ export interface DynamicCoordinateSpace {
 export type OverflowPolicy = 'ignore' | 'clamp';
 export interface FixedCoordinateSpace {
   type: 'fixed';
-  x?: number | Range<number>;
-  y?: number | Range<number>;
-  xOverflow?: OverflowPolicy | Range<OverflowPolicy>;
-  yOverflow?: OverflowPolicy | Range<OverflowPolicy>;
+  x?: Range;
+  y?: Range;
+  xOverflow?: OverflowPolicy | [OverflowPolicy, OverflowPolicy];
+  yOverflow?: OverflowPolicy | [OverflowPolicy, OverflowPolicy];
 }
 
 export type CoordinateSpace = DynamicCoordinateSpace | FixedCoordinateSpace;
@@ -28,7 +28,7 @@ export type BuiltinSymbolTypes =
 
 
 // Curves
-export type BuiltinLinkTypes = 'line';
-export interface LinkType {
+export type BuiltinEdgeTypes = 'line';
+export interface EdgeType {
   draw(context: CanvasPathMethods, source: Point, target: Point): void;
 }

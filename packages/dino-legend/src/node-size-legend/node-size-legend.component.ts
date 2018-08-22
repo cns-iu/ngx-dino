@@ -116,36 +116,27 @@ export class NodeSizeLegendComponent implements OnInit, OnChanges {
   }
 
   calculateBoundsAndLabels(data: any) {
-    const sortedData = data.sort(this.comparator.bind(this));
-    
-    if (sortedData[0][this.nodeSizeRangeField.id] > 0) {
-      this.min = d3Shape.symbol().size(sortedData[0][this.nodeSizeRangeField.id])
-        .type(this.selectShape(sortedData[0]))();
-    } else {
-      this.minLabel = '';
-      return;
-    }
+    // only with positive range values are considered
+    const filteredData = data.sort(this.comparator.bind(this))
+      .filter((d) => d[this.nodeSizeRangeField.id] > 0);
 
-    if (sortedData[Math.round((sortedData.length - 1) / 2)][this.nodeSizeRangeField.id] > 0) {
-      this.mid = d3Shape.symbol()
-        .size(sortedData[Math.round((sortedData.length - 1) / 2)][this.nodeSizeRangeField.id])
-        .type(this.selectShape(sortedData[Math.round((sortedData.length - 1) / 2)]))();
-    } else {
-      this.midLabel = '';
-      return;
-    }
+    const maxIndex = filteredData.length - 1;
+    const midIndex = Math.round((filteredData.length - 1) / 2);
+    const minIndex = 0;
 
-    if (sortedData[sortedData.length - 1][this.nodeSizeRangeField.id] > 0) {
-      this.max = d3Shape.symbol().size(sortedData[sortedData.length - 1][this.nodeSizeRangeField.id])
-        .type(this.selectShape(sortedData[sortedData.length - 1]))();
-    } else {
-      this.maxLabel = '';
-      return;
-    }
-    
-    this.minLabel = this.setValidLabel(sortedData[0][this.nodeSizeDomainField.id]);
-    this.midLabel = this.setValidLabel(sortedData[Math.round((sortedData.length - 1) / 2)][this.nodeSizeDomainField.id]);
-    this.maxLabel = this.setValidLabel(sortedData[sortedData.length - 1][this.nodeSizeDomainField.id]);
+    this.minLabel = this.setValidLabel(filteredData[minIndex][this.nodeSizeDomainField.id]);
+    this.midLabel = this.setValidLabel(filteredData[midIndex][this.nodeSizeDomainField.id]);
+    this.maxLabel = this.setValidLabel(filteredData[maxIndex][this.nodeSizeDomainField.id]);
+
+    this.min = d3Shape.symbol().size(filteredData[minIndex][this.nodeSizeRangeField.id])
+      .type(this.selectShape(filteredData[minIndex]))();
+
+    this.mid = d3Shape.symbol()
+      .size(filteredData[midIndex][this.nodeSizeRangeField.id])
+      .type(this.selectShape(filteredData[midIndex]))();
+
+    this.max = d3Shape.symbol().size(filteredData[maxIndex][this.nodeSizeRangeField.id])
+      .type(this.selectShape(filteredData[maxIndex]))();
   }
 
   selectShape(dataEntry: any) {
@@ -175,7 +166,7 @@ export class NodeSizeLegendComponent implements OnInit, OnChanges {
         if (isNaN(parseInt(value.toString()))) {
           label = 'None';
         } else {
-          label = Math.round(parseInt(value.toString())).toLocaleString();
+          label = value.toLocaleString();
         }
         return label;
       }

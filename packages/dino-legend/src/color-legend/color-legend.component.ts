@@ -128,19 +128,63 @@ export class ColorLegendComponent implements OnInit, OnChanges {
           const index = this.colorMapping.findIndex((m) => m.label === d[this.categoryField.id]);
           if (index === -1) {
             this.colorMapping.push({
-              'label': d[this.categoryField.id],
-              'color': d[this.colorField.id]
+              'label': this.setValidLabel(d[this.categoryField.id]),
+              'color': this.setValidColor(d[this.colorField.id])
             });
           }
         } else {
           this.colorMapping.push({
-            'label': d[this.categoryField.id],
-            'color': d[this.colorField.id]
+            'label': this.setValidLabel(d[this.categoryField.id]),
+            'color': this.setValidColor(d[this.colorField.id])
           });
         }
       }
     });
 
     this.colorMapping.sort(); // TODO
+  }
+
+  setValidLabel(value: string | number): string {
+    let label = '';
+    switch (typeof value) {
+      case 'object': {
+        label = 'None';
+        return label;
+      }
+
+      case 'number': {
+        if (isNaN(parseInt(value.toString()))) {
+          label = 'None';
+        } else {
+          label = Math.round(parseInt(value.toString())).toLocaleString();
+        }
+        return label;
+      }
+
+      case 'undefined': {
+        return 'None';
+      }
+
+      default: {
+        if (value.toString().length > 0) {
+          label = value.toString();
+        } else {
+          label = 'None';
+        }
+        return label;
+      }
+    }
+  }
+
+  setValidColor(color: string) {
+    switch (typeof color) {
+      case 'object' || 'number' || 'undefined': {
+        return 'none';
+      }
+
+      default: {
+        return color;
+      }
+    }
   }
 }

@@ -4,7 +4,7 @@
 
     <div class="qualitative-color-legend-container" *ngIf="legendType === 'qualitative'">
       <div *ngFor="let k of colorMapping" class="legend-item">
-        <div class="rectangle" [style.background]="k.color"></div>
+        <div *ngIf="k.color !== 'none'" class="rectangle" [style.background]="k.color"></div>
         <div class="category">{{ k.label }}</div>
       </div>
     </div>

@@ -38,9 +38,9 @@ export class NodeSizeLegendComponent implements OnInit, OnChanges {
   parentNativeElement: any;
   legendSizeScale: any;
 
-  max: string;
-  mid: string;
-  min: string;
+  max = '';
+  mid = '';
+  min = '';
 
   maxLabel: string;
   midLabel: string;
@@ -117,17 +117,35 @@ export class NodeSizeLegendComponent implements OnInit, OnChanges {
 
   calculateBoundsAndLabels(data: any) {
     const sortedData = data.sort(this.comparator.bind(this));
-    this.min = d3Shape.symbol().size(sortedData[0][this.nodeSizeRangeField.id])
-      .type(this.selectShape(sortedData[0]))();
-    this.mid = d3Shape.symbol()
-      .size(sortedData[Math.round((sortedData.length - 1) / 2)][this.nodeSizeRangeField.id])
-      .type(this.selectShape(sortedData[Math.round((sortedData.length - 1) / 2)]))();
-    this.max = d3Shape.symbol().size(sortedData[sortedData.length - 1][this.nodeSizeRangeField.id])
-      .type(this.selectShape(sortedData[sortedData.length - 1]))();
-  
-    this.minLabel = typeof sortedData[0][this.nodeSizeDomainField.id] === 'object' ? 'None' :  sortedData[0][this.nodeSizeDomainField.id];
-    this.midLabel = typeof sortedData[Math.round((sortedData.length - 1) / 2)][this.nodeSizeDomainField.id] === 'object' ? 'None' : sortedData[Math.round((sortedData.length - 1) / 2)][this.nodeSizeDomainField.id];
-    this.maxLabel = typeof sortedData[sortedData.length - 1][this.nodeSizeDomainField.id] === 'object' ? 'None' : sortedData[sortedData.length - 1][this.nodeSizeDomainField.id];
+    
+    if (sortedData[0][this.nodeSizeRangeField.id] > 0) {
+      this.min = d3Shape.symbol().size(sortedData[0][this.nodeSizeRangeField.id])
+        .type(this.selectShape(sortedData[0]))();
+    } else {
+      this.minLabel = '';
+      return;
+    }
+
+    if (sortedData[Math.round((sortedData.length - 1) / 2)][this.nodeSizeRangeField.id] > 0) {
+      this.mid = d3Shape.symbol()
+        .size(sortedData[Math.round((sortedData.length - 1) / 2)][this.nodeSizeRangeField.id])
+        .type(this.selectShape(sortedData[Math.round((sortedData.length - 1) / 2)]))();
+    } else {
+      this.midLabel = '';
+      return;
+    }
+
+    if (sortedData[sortedData.length - 1][this.nodeSizeRangeField.id] > 0) {
+      this.max = d3Shape.symbol().size(sortedData[sortedData.length - 1][this.nodeSizeRangeField.id])
+        .type(this.selectShape(sortedData[sortedData.length - 1]))();
+    } else {
+      this.maxLabel = '';
+      return;
+    }
+    
+    this.minLabel = this.setValidLabel(sortedData[0][this.nodeSizeDomainField.id]);
+    this.midLabel = this.setValidLabel(sortedData[Math.round((sortedData.length - 1) / 2)][this.nodeSizeDomainField.id]);
+    this.maxLabel = this.setValidLabel(sortedData[sortedData.length - 1][this.nodeSizeDomainField.id]);
   }
 
   selectShape(dataEntry: any) {
@@ -142,6 +160,38 @@ export class NodeSizeLegendComponent implements OnInit, OnChanges {
       case 'triangle-right': return d3Shape.symbolTriangle;
       case 'star': return d3Shape.symbolStar;
       default: return d3Shape.symbolCircle;
+    }
+  }
+
+  setValidLabel(value: string | number): string {
+    let label = '';
+    switch (typeof value) {
+      case 'object': {
+        label = 'None';
+        return label;
+      }
+
+      case 'number': {
+        if (isNaN(parseInt(value.toString()))) {
+          label = 'None';
+        } else {
+          label = Math.round(parseInt(value.toString())).toLocaleString();
+        }
+        return label;
+      }
+
+      case 'undefined': {
+        return 'None';
+      }
+
+      default: {
+        if (value.toString().length > 0) {
+          label = value.toString();
+        } else {
+          label = 'None';
+        }
+        return label;
+      }
     }
   }
 

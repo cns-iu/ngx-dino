@@ -22,6 +22,7 @@ export class DatatableComponent implements OnInit, OnChanges {
   @Input() dataStream: any[] | Observable<any[]> | Observable<RawChangeSet>;
   @Input() idField: BoundField<DatumId>;
   @Input() fields: BoundField<DataType>[];
+  @Input() sort: boolean | ((a: DatumId, b: DatumId) => number) = false;
   @Output() rowClick = new EventEmitter();
 
   dataSource: Observable<DataType[][]>;
@@ -36,10 +37,10 @@ export class DatatableComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     const props = ['dataStream', 'idField', 'fields'];
-    if (props.some((p) => (p in changes)) && props.every((p) => this[p])) {
+    if ((props.some((p) => (p in changes)) || 'sort' in changes) && props.every((p) => this[p])) {
       const stream = this.normalizeDataStream();
       this.dataSource = this.service.processData(
-        stream, this.idField, this.fields
+        stream, this.idField, this.fields, this.sort
       );
     }
   }

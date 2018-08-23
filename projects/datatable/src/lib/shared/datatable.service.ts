@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 
 import {
   DatumId, BoundField, RawChangeSet, DataProcessorService,
-  simpleField, combine
+  simpleField, combine, idSymbol
 } from '@ngx-dino/core';
 import { DataType } from './data-types';
 
@@ -18,7 +18,8 @@ export class DatatableService {
   processData(
     stream: Observable<RawChangeSet>,
     idField: BoundField<DatumId>,
-    fields: BoundField<DataType>[]
+    fields: BoundField<DataType>[],
+    sort: boolean | ((a: DatumId, b: DatumId) => number) = false
   ): Observable<DataType[][]> {
     const cfield = simpleField({
       label: 'Combined fields',
@@ -28,9 +29,13 @@ export class DatatableService {
       stream, idField, {data: cfield}
     );
     return processor.asObservable().pipe(map(() => {
-      return processor.processedCache.cache.items.valueSeq().map((datum) => {
-        return datum['data'];
-      }).toArray();
+      let values = processor.processedCache.cache.items.valueSeq();
+      if (sort === true) {
+        values = values.sort().valueSeq();
+      } else if (sort) {
+        values = values.sort((a, b) => sort(a[idSymbol], b[idSymbol])).valueSeq();
+      }
+      return values.map((datum) => datum['data']).toArray();
     }));
   }
 }

@@ -22,6 +22,8 @@ export class DatatableComponent implements OnInit {
     simpleField({label: 'F2', operator: access('v2')}).getBoundField()
   ];
 
+  sort = (a: number, b: number) => b - a;
+
 
   constructor() { }
 

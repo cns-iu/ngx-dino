@@ -43,7 +43,7 @@ export class NodeComponent implements OnChanges {
 
   isValid(): boolean {
     const { position, size } = this;
-    return isPoint(this.position) && size > 0;
+    return isPoint(position) && size > 0;
   }
 
   centerTranslate(): string {

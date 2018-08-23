@@ -8,6 +8,7 @@ import { ForceNetworkModule } from '@ngx-dino/force-network';
 import { GeomapModule } from '@ngx-dino/geomap';
 import { ScatterplotModule } from '@ngx-dino/scatterplot';
 import { DatatableModule } from '@ngx-dino/datatable';
+import { NetworkModule } from '@ngx-dino/network';
 
 import { LegendModule } from '@ngx-dino/legend';
 
@@ -22,6 +23,7 @@ import { ForceNetworkLegendComponent } from './force-network-legend/force-networ
 import { DatatableComponent } from './datatable/datatable.component';
 import { ScatterplotLegendComponent } from './scatterplot-legend/scatterplot-legend.component';
 import { GeomapLegendComponent } from './geomap-legend/geomap-legend.component';
+import { NetworkComponent } from './network/network.component';
 
 @NgModule({
   imports: [
@@ -32,6 +34,7 @@ import { GeomapLegendComponent } from './geomap-legend/geomap-legend.component';
     GeomapModule,
     ScatterplotModule,
     DatatableModule,
+    NetworkModule,
 
     LegendModule,
 
@@ -47,7 +50,8 @@ import { GeomapLegendComponent } from './geomap-legend/geomap-legend.component';
     ScienceMapLegendComponent,
     ForceNetworkLegendComponent,
     ScatterplotLegendComponent,
-    GeomapLegendComponent
+    GeomapLegendComponent,
+    NetworkComponent
   ],
   declarations: [
     ScienceMapComponent,
@@ -59,7 +63,8 @@ import { GeomapLegendComponent } from './geomap-legend/geomap-legend.component';
     ScienceMapLegendComponent,
     ForceNetworkLegendComponent,
     ScatterplotLegendComponent,
-    GeomapLegendComponent
+    GeomapLegendComponent,
+    NetworkComponent
   ],
   providers: [DataProcessorService]
 })

@@ -1,4 +1,6 @@
-<svg>
-    <svg:g dino-network-edge *ngFor="let edge of edges; trackBy: trackById" [source]="edge.source" [target]="edge.target" />
-    <svg:g dino-network-node *ngFor="let node of nodes; trackBy: trackById" [position]="node.position" [size]="node.size" />
-</svg>
+<div>
+    <svg>
+        <svg:g dino-network-edge *ngFor="let edge of edges; trackBy: trackById" [source]="edge.source" [target]="edge.target" />
+        <svg:g dino-network-node *ngFor="let node of nodes; trackBy: trackById" [position]="node.position" [size]="node.size" />
+    </svg>
+</div>

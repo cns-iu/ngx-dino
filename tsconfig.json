@@ -64,6 +64,12 @@
       ],
       "@ngx-dino/vega-util/*": [
         "dist/vega-util/*"
+      ],
+      "@ngx-dino/network": [
+        "dist/network"
+      ],
+      "@ngx-dino/network/*": [
+        "dist/network/*"
       ]
     }
   }

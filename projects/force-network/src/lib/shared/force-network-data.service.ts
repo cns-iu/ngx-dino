@@ -3,9 +3,11 @@ import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
 import {
   BoundField, CachedChangeStream, DataProcessor, Datum, ChangeSet,
-  DataProcessorService, RawChangeSet
+  DataProcessorService, RawChangeSet, simpleField, constant
 } from '@ngx-dino/core';
 import { Node, Link, Graph } from './network';
+
+const UNDEFINED: BoundField<any> = simpleField<any>({label: 'Fixed', operator: constant(undefined)}).getBoundField();
 
 @Injectable()
 export class ForceNetworkDataService {
@@ -31,6 +33,8 @@ export class ForceNetworkDataService {
     nodeSizeField: BoundField<string>,
     nodeColorField: BoundField<number>,
     nodeLabelField: BoundField<string>,
+    nodeFixedXField: BoundField<number>,
+    nodeFixedYField: BoundField<number>,
 
     linkIdField: BoundField<number | string>,
     linkSourceField: BoundField<number | string>,
@@ -51,6 +55,8 @@ export class ForceNetworkDataService {
         size: nodeSizeField,
         color: nodeColorField,
         label: nodeLabelField,
+        fx: nodeFixedXField || UNDEFINED,
+        fy: nodeFixedYField || UNDEFINED,
 
         tooltipText: tooltipTextField
       }

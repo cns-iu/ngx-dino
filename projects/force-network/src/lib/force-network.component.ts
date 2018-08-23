@@ -37,12 +37,15 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
   @Input() width = 0;
   @Input() height = 0;
   @Input() autoresize = false;
+  @Input() runSimulation = true;
 
   @Input() nodeSizeField: BoundField<string>;
   @Input() nodeColorField: BoundField<number>;
   @Input() nodeIdField: BoundField<string>;
   @Input() nodeLabelField: BoundField<string>;
   @Input() labelSizeField = 'total_amount'; // TODO Field
+  @Input() nodeFixedXField: BoundField<number>;
+  @Input() nodeFixedYField: BoundField<number>;
 
   @Input() linkIdField: BoundField<string>;
   @Input() linkSourceField: BoundField<string>;
@@ -148,6 +151,14 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
     if (!this.autoresize && ('width' in changes || 'height' in changes)) {
       this.resize(this.width, this.height);
     }
+
+    if ('runSimulation' in changes && this.simulation) {
+      if (this.runSimulation) {
+        this.simulation.start();
+      } else {
+        this.simulation.stop();
+      }
+    }
   }
 
   resize(width: number, height: number): void {
@@ -190,6 +201,8 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
         this.nodeSizeField,
         this.nodeColorField,
         this.nodeLabelField,
+        this.nodeFixedXField,
+        this.nodeFixedYField,
 
         this.linkIdField,
         this.linkSourceField,
@@ -338,7 +351,11 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
       .attr('y1', (d) => d.source.y)
       .attr('x2', (d) => d.target.x)
       .attr('y2', (d) => d.target.y);
+
+    if (!this.runSimulation) {
+      this.simulation.stop();
     }
+  }
 
   onMouseOver(targetID: any) {
     let tooltipText = '';

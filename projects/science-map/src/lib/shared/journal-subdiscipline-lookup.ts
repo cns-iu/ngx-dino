@@ -1,5 +1,5 @@
-import { chain, map, lookup } from '@ngx-dino/core';
+import { lookup, Operator } from '@ngx-dino/core';
 
 import * as journIdToSubdLookup from '../data/journIdToSubdLookup.data';
 
-export const journalIdSubdLookup = lookup(journIdToSubdLookup);
+export const journalIdSubdLookup: Operator<string, any> = lookup(journIdToSubdLookup);

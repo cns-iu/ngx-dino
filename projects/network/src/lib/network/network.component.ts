@@ -41,8 +41,11 @@ export class NetworkComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.nodeStream.subscribe((data) => (this.nodes = data.insert));
-    this.edgeStream.subscribe((data) => (this.edges = data.insert));
+    // FIXME temporary
+    if (this.nodeStream && this.edgeStream) {
+      this.nodeStream.subscribe((data) => (this.nodes = data.insert));
+      this.edgeStream.subscribe((data) => (this.edges = data.insert));
+    }
   }
 
   trackById(index: number, item: Datum): DatumId {

@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { CommonModule } from '@angular/common';
+import { CoreModule } from '@ngx-dino/core';
+import { EdgeComponent } from '../edge/edge.component';
 import { NetworkComponent } from './network.component';
+import { NodeComponent } from '../node/node.component';
 
 describe('NetworkComponent', () => {
   let component: NetworkComponent;
@@ -8,7 +11,8 @@ describe('NetworkComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NetworkComponent ]
+      imports: [CommonModule, CoreModule],
+      declarations: [ EdgeComponent, NetworkComponent, NodeComponent ]
     })
     .compileComponents();
   }));

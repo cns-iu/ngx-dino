@@ -9,4 +9,6 @@ export class Node extends Datum {
 export class Edge extends Datum {
   source: Point;
   target: Point;
+  stroke: string;
+  strokeWidth: string;
 }

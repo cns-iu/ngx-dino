@@ -3,5 +3,5 @@ export const dummyNodeData = Array(10).fill(0).map((zero, index) => {
 });
 
 export const dummyEdgeData = Array(5).fill(0).map((zero, index) => {
-  return {id: index, source: [10 * index, 20 * index], target: [30 * index, 40 * index]};
+  return {id: index, source: [10 * index, 20 * index], target: [30 * index, 40 * index], stoke: 'black', 'stroke-width': 5};
 });

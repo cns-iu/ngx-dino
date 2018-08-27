@@ -25,6 +25,8 @@ export class NetworkComponent implements OnInit {
   @Input() edgeIdField: BoundField<DatumId>;
   @Input() edgeSourceField: BoundField<Point>;
   @Input() edgeTargetField: BoundField<Point>;
+  @Input() edgeStrokeField: BoundField<string>;
+  @Input() edgeStrokeWidthField: BoundField<string>;
 
   @Input() coordinateSpace: CoordinateSpaceOptions;
 

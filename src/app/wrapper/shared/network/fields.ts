@@ -1,10 +1,16 @@
 import { BoundField, access, simpleField } from '@ngx-dino/core';
 
 export type FieldNames =
-  'nodePositionField' | 'nodeSizeField' |
-  'edgeSourceField' | 'edgeTargetField' ;
+  'nodeIdField' | 'nodePositionField' | 'nodeSizeField' |
+  'edgeIdField' | 'edgeSourceField' | 'edgeTargetField' ;
 export type Fields = {[P in FieldNames]?: BoundField<any>};
 
+
+export const nodeIdField = simpleField({
+  bfieldId: 'id',
+  label: 'Node Id',
+  operator: access('id')
+});
 
 export const nodePositionField = simpleField({
   bfieldId: 'position',
@@ -18,6 +24,12 @@ export const nodeSizeField = simpleField({
   operator: access('size')
 });
 
+
+export const edgeIdField = simpleField({
+  bfieldId: 'id',
+  label: 'Edge Id',
+  operator: access('id')
+});
 
 export const edgeSourceField = simpleField({
   bfieldId: 'source',

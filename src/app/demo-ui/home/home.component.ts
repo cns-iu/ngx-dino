@@ -11,6 +11,7 @@ export class HomeComponent implements OnInit {
   @ViewChild('forceNetwork') forceNetwork: any;
   @ViewChild('scatterplot') scatterplot: any;
   @ViewChild('geomap') geomap: any;
+  @ViewChild('network') network: any;
 
   openState = true;
   tabIndex = 0;
@@ -46,6 +47,9 @@ export class HomeComponent implements OnInit {
 
       case 3:
         return this.geomap;
+
+      case 5:
+        return this.network;
 
       default:
         return undefined;

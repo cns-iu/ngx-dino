@@ -1,6 +1,6 @@
-<div>
-    <svg>
-        <svg:g dino-network-edge *ngFor="let edge of edges; trackBy: trackById" [source]="edge.source" [target]="edge.target" />
+<div #mountPoint dinoResizable (resized)="onResize($event)">
+    <svg [attr.width]="svgWidth" [attr.height]="svgHeight">
+        <svg:g dino-network-edge *ngFor="let edge of edges; trackBy: trackById" [source]="edge.source" [target]="edge.target" [stroke]="edge.stroke" [strokeWidth]="edge.strokeWidth" />
         <svg:g dino-network-node *ngFor="let node of nodes; trackBy: trackById" [position]="node.position" [size]="node.size" />
     </svg>
 </div>

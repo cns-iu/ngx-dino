@@ -13,6 +13,8 @@ export class EdgeComponent implements OnChanges {
   @Input() edge: BuiltinEdgeTypes | EdgeType = 'line';
   @Input() source: Point;
   @Input() target: Point;
+  @Input() stroke: string;
+  @Input() strokeWidth: string;
 
   path: string;
 

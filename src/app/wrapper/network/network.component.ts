@@ -1,8 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Observable, of } from 'rxjs';
 import { mapValues } from 'lodash';
 import { RawChangeSet } from '@ngx-dino/core';
 import * as fields from '../shared/network/fields';
+import { dummyEdgeData, dummyNodeData } from '../shared/network/dummy-data';
 
 @Component({
   selector: 'app-network',
@@ -13,6 +14,8 @@ export class NetworkComponent implements OnInit {
   @Input() width: number;
   @Input() height: number;
 
+  @ViewChild('network') network: any;
+
   nodeStream: Observable<RawChangeSet>;
   edgeStream: Observable<RawChangeSet>;
 
@@ -20,8 +23,14 @@ export class NetworkComponent implements OnInit {
 
   constructor() {
     this.fields = mapValues(fields, (f) => f.getBoundField());
+    this.nodeStream = of(RawChangeSet.fromArray(dummyNodeData));
+    this.edgeStream = of(RawChangeSet.fromArray(dummyEdgeData));
   }
 
   ngOnInit() {
+  }
+
+  activate(): void {
+    this.network.resizeSelf();
   }
 }

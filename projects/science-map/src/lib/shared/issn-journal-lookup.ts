@@ -1,6 +1,6 @@
 import { chain, map, lookup, Operator } from '@ngx-dino/core';
 
-import * as issnToJournIdLookup from '../data/issnToJournIdLookup.data';
+import issnToJournIdLookup from '../data/issnToJournIdLookup.data';
 import { normalizeIssn } from './normalize-issn';
 
 export const issnRawLookup: Operator<string, any> = lookup<string, any>(<any>issnToJournIdLookup);

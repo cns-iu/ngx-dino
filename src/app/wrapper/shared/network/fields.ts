@@ -42,3 +42,15 @@ export const edgeTargetField = simpleField({
   label: 'Edge Target Position',
   operator: access('target')
 });
+
+export const edgeStrokeField = simpleField({
+  bfieldId: 'stroke',
+  label: 'Edge Stroke',
+  operator: access('stroke', 'black')
+});
+
+export const edgeStrokeWidthField = simpleField({
+  bfieldId: 'stroke-width',
+  label: 'Edge Stroke Width',
+  operator: access('strokeWidth', 5)
+});

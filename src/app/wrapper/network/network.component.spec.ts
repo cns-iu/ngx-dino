@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { SharedModule } from '../../shared';
+import { NetworkModule } from '@ngx-dino/network';
 import { NetworkComponent } from './network.component';
 
 describe('NetworkComponent', () => {
@@ -8,6 +9,7 @@ describe('NetworkComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [SharedModule, NetworkModule],
       declarations: [ NetworkComponent ]
     })
     .compileComponents();

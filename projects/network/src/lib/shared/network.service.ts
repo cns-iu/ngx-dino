@@ -7,6 +7,7 @@ import {
 } from '@ngx-dino/core';
 import { Edge, Node } from './types';
 import { Point } from './utility';
+import { BuiltinSymbolTypes } from './options';
 
 @Injectable({
   providedIn: 'root'
@@ -30,14 +31,16 @@ export class NetworkService {
     stream: Observable<RawChangeSet>,
     id: BoundField<DatumId>,
     position: BoundField<Point>,
-    size: BoundField<number>
+    size: BoundField<number>,
+    symbol: BoundField<BuiltinSymbolTypes>,
+    color: BoundField<string>
   ): this {
     if (this.nodeSubscription) {
       this.nodeSubscription.unsubscribe();
     }
 
     this.nodeProcessor = this.processorService.createProcessor<Node, any>(stream, id, {
-      position, size
+      position, size, symbol, color
     });
     this.nodeSubscription = this.nodeProcessor.asObservable().subscribe((c) => this.nodeChanges.next(c));
 
@@ -66,10 +69,12 @@ export class NetworkService {
 
   updateNodes(
     position?: BoundField<Point>,
-    size?: BoundField<number>
+    size?: BoundField<number>,
+    symbol?: BoundField<BuiltinSymbolTypes>,
+    color?: BoundField<string>
   ): this {
     const fields = Map<string, BoundField<any>>({
-      position, size
+      position, size, symbol, color
     }).filter((f) => !!f).toKeyedSeq();
     this.nodeProcessor.updateFields(fields);
     return this;

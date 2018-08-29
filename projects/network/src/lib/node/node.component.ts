@@ -23,6 +23,7 @@ export class NodeComponent implements OnChanges {
   @Input() symbol: BuiltinSymbolTypes | SymbolType = 'circle';
   @Input() position: Point;
   @Input() size: number;
+  @Input() color: string = 'black';
 
   shape: string;
   private symbolGenerator: Symbol<void, void>;

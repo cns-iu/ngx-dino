@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BoundField, ChangeSet, Datum, DatumId, RawChangeSet, idSymbol } from '@ngx-dino/core';
-import { CoordinateSpaceOptions } from '../shared/options';
+import { BuiltinSymbolTypes, CoordinateSpaceOptions } from '../shared/options';
 import { Edge, Node } from '../shared/types';
 import { Point } from '../shared/utility';
 import { NetworkService } from '../shared/network.service';
@@ -25,6 +25,8 @@ export class NetworkComponent implements OnInit, OnChanges {
   @Input() nodeIdField: BoundField<DatumId>;
   @Input() nodePositionField: BoundField<Point>;
   @Input() nodeSizeField: BoundField<number>;
+  @Input() nodeSymbolField: BoundField<BuiltinSymbolTypes>;
+  @Input() nodeColorField: BoundField<string>;
 
   @Input() edgeIdField: BoundField<DatumId>;
   @Input() edgeSourceField: BoundField<Point>;
@@ -53,11 +55,13 @@ export class NetworkComponent implements OnInit, OnChanges {
     this.detectStreamOrFieldChanges(changes, 'node', () => {
       this.service.fetchNodes(
         this.nodeStream, this.nodeIdField,
-        this.nodePositionField, this.nodeSizeField
+        this.nodePositionField, this.nodeSizeField,
+        this.nodeSymbolField, this.nodeColorField
       );
     }, () => {
       this.service.updateNodes(
-        this.nodePositionField, this.nodeSizeField
+        this.nodePositionField, this.nodeSizeField,
+        this.nodeSymbolField, this.nodeColorField
       );
     });
 

@@ -107,3 +107,10 @@ jobs:
         - npm run build:lib legend
       before_deploy:
         - cd dist/legend
+    - <<: *npm-publish
+      name: "Build and publish @ngx-dino/network"
+      script:
+        - npm run build:lib core
+        - npm run build:lib network
+      before_deploy:
+        - cd dist/network

@@ -478,7 +478,8 @@
                     "options": {
                         "main": "projects/network/src/test.ts",
                         "tsConfig": "projects/network/tsconfig.spec.json",
-                        "karmaConfig": "projects/network/karma.conf.js"
+                        "karmaConfig": "projects/network/karma.conf.js",
+                        "watch": false
                     }
                 },
                 "lint": {

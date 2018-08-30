@@ -1,4 +1,4 @@
-const { floor, random } = Math;
+const { floor, min, random } = Math;
 
 const width = 500;
 const height = 500;
@@ -23,10 +23,11 @@ function createRandomNode(index: number) {
 }
 
 function createRandomEdge(index: number) {
+  const length = min(index, numNodes);
   return {
     id: index,
-    source: dummyNodeData[randomIndex(index)].position,
-    target: dummyNodeData[randomIndex(index)].position,
+    source: dummyNodeData[randomIndex(length)].position,
+    target: dummyNodeData[randomIndex(length)].position,
     strokeWidth: edgeStrokeWidthRange.min + (edgeStrokeWidthRange.max - edgeStrokeWidthRange.min) * random()
   };
 }

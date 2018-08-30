@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { Observable, timer } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 import { mapValues } from 'lodash';
 import { RawChangeSet } from '@ngx-dino/core';
 import * as fields from '../shared/network/fields';
@@ -24,8 +24,8 @@ export class NetworkComponent implements OnInit {
 
   constructor() {
     this.fields = mapValues(fields, (f) => f.getBoundField());
-    this.nodeStream = of(RawChangeSet.fromArray(dummyNodeData)).pipe(delay(10));
-    this.edgeStream = of(RawChangeSet.fromArray(dummyEdgeData)).pipe(delay(10));
+    this.nodeStream = this.createDelayedStream(dummyNodeData);
+    this.edgeStream = this.createDelayedStream(dummyEdgeData, 1100);
   }
 
   ngOnInit() {
@@ -33,5 +33,13 @@ export class NetworkComponent implements OnInit {
 
   activate(): void {
     this.network.resizeSelf();
+  }
+
+  private createDelayedStream<T>(data: T[], delay = 0): Observable<RawChangeSet<T>> {
+    return timer(delay, 1000).pipe(
+      take(data.length),
+      map((index) => data[index]),
+      map((item) => RawChangeSet.fromArray([item]))
+    );
   }
 }

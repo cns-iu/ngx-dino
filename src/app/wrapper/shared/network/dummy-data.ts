@@ -1,7 +1,35 @@
-export const dummyNodeData = Array(10).fill(0).map((zero, index) => {
-  return {id: index, position: [40 * index, 50 * index], size: 2 * index + 10};
-});
+const { floor, random } = Math;
 
-export const dummyEdgeData = Array(5).fill(0).map((zero, index) => {
-  return {id: index, source: [10 * index, 20 * index], target: [30 * index, 40 * index]};
-});
+const width = 500;
+const height = 500;
+const numNodes = 50;
+const numEdges = numNodes - 1;
+const nodeSizeRange = { min: 60, max: 100 };
+const edgeStrokeWidthRange = { min: 1, max: 5 };
+const shapes = ['circle', 'cross', 'diamond', 'square', 'star', 'triangle', 'wye'];
+
+
+function randomIndex(length: number): number {
+  return floor(length * random());
+}
+
+function createRandomNode(index: number) {
+  return {
+    id: index,
+    position: [width * random(), height * random()],
+    size: nodeSizeRange.min + (nodeSizeRange.max - nodeSizeRange.min) * random(),
+    symbol: shapes[randomIndex(shapes.length)]
+  };
+}
+
+function createRandomEdge(index: number) {
+  return {
+    id: index,
+    source: dummyNodeData[randomIndex(index)].position,
+    target: dummyNodeData[randomIndex(index)].position,
+    strokeWidth: edgeStrokeWidthRange.min + (edgeStrokeWidthRange.max - edgeStrokeWidthRange.min) * random()
+  };
+}
+
+export const dummyNodeData = Array(numNodes).fill(0).map((zero, index) => createRandomNode(index));
+export const dummyEdgeData = Array(numEdges).fill(0).map((zero, index) => createRandomEdge(index));

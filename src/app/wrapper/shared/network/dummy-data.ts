@@ -22,6 +22,8 @@ function createRandomNode(index: number) {
   };
 }
 
+export const dummyNodeData = Array(numNodes).fill(0).map((zero, index) => createRandomNode(index));
+
 function createRandomEdge(index: number) {
   const length = min(index, numNodes);
   return {
@@ -32,5 +34,4 @@ function createRandomEdge(index: number) {
   };
 }
 
-export const dummyNodeData = Array(numNodes).fill(0).map((zero, index) => createRandomNode(index));
 export const dummyEdgeData = Array(numEdges).fill(0).map((zero, index) => createRandomEdge(index));

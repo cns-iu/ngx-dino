@@ -20,6 +20,9 @@ branches:
 
 script: skip
 
+notifications:
+    slack: blue-dino:$SLACK_TOKEN
+
 jobs:
   include:
     - stage: test

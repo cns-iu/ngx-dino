@@ -45,8 +45,8 @@ export class LoggerFactory {
     };
   }
 
-  createLogger(parent: Logger | undefined, config: LoggerConfig): Logger {
-    return new Logger(parent, config);
+  createLogger(parent: Logger, config: LoggerConfig): Logger {
+    return new Logger(parent, config); // tslint:disable-line:no-use-before-declare
   }
 }
 
@@ -60,7 +60,10 @@ export class Logger implements OnDestroy {
   readonly name: string;
   readonly parent?: Logger;
   readonly children: Logger[] = [];
+  private _parents: Logger[];
   private _level: LogLevel;
+
+  get parents(): Logger[] { return this._parents || (this._parents = this.getAllParents()); }
   get level(): LogLevel { return this._level; }
 
   static withConfig(config: LoggerConfig): Provider {
@@ -80,9 +83,9 @@ export class Logger implements OnDestroy {
     };
   }
 
-  constructor(parent: Logger | undefined, config: LoggerConfig) {
+  constructor(parent: Logger, config: LoggerConfig) {
     this.name = config.name;
-    this.parent = parent;
+    this.parent = parent || undefined;
     this._level = defaultTo(config.level, LogLevel.Error);
 
     if (parent) {
@@ -101,12 +104,13 @@ export class Logger implements OnDestroy {
 
   setLevel(level: LogLevel, propagate = true): void {
     this._level = level;
+    this.doSetLevel(level, propagate);
     if (propagate) {
       this.children.forEach((child) => child.setLevel(level, true));
     }
   }
 
-  isLevelEnabled(level: LogLevel): boolean { return level >= this.level; }
+  isLevelEnabled(level: LogLevel): boolean { return level >= this.level && level !== LogLevel.Off; }
   isTraceEnabled(): boolean { return this.isLevelEnabled(LogLevel.Trace); }
   isDebugEnabled(): boolean { return this.isLevelEnabled(LogLevel.Debug); }
   isInfoEnabled(): boolean { return this.isLevelEnabled(LogLevel.Info); }
@@ -128,7 +132,24 @@ export class Logger implements OnDestroy {
   error(msg: MessageType, error: ErrorType): void { this.log(LogLevel.Error, msg, error); }
   fatal(msg: MessageType, error: ErrorType): void { this.log(LogLevel.Fatal, msg, error); }
 
+  // Methods that can be overridden in derived loggers
   protected doLog(level: LogLevel, msg: () => LogData, error?: () => Error): void {
     // Default does nothing
+  }
+
+  protected doSetLevel(level: LogLevel, propagate: boolean): void {
+    // Default does nothing
+  }
+
+
+  private getAllParents(): Logger[] {
+    const parents: Logger[] = [];
+    let current = this.parent;
+    while (current) {
+      parents.push(current);
+      current = current.parent;
+    }
+
+    return parents;
   }
 }

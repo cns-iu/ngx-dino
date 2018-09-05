@@ -4,8 +4,8 @@ import {
   LoggerType, LogLevel as ImplLogLevel
 } from 'typescript-logging';
 import { LogLevel } from '../../log-levels';
-import { Logger, LoggerFactory } from '../../logging';
-import { TypescriptLogger, TypescriptLoggerFactory } from './logging';
+import { Logger, LoggerFactory } from '../../base';
+import { TypescriptLogger, TypescriptLoggerFactory } from './impl';
 
 describe('logging', () => {
 

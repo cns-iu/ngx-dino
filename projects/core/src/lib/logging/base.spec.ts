@@ -1,7 +1,7 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { ErrorType, MessageType } from './types';
 import { LogLevel } from './log-levels';
-import { Logger, LoggerConfig, LoggerFactory } from './logging';
+import { Logger, LoggerConfig, LoggerFactory } from './base';
 
 describe('logging', () => {
 

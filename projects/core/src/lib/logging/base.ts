@@ -1,4 +1,4 @@
-import { Injectable, InjectionToken, OnDestroy, Optional, Provider, Self, SkipSelf, Type } from '@angular/core';
+import { Inject, Injectable, InjectionToken, OnDestroy, Optional, Provider, Self, SkipSelf, Type } from '@angular/core';
 import { defaultTo, isFunction, isString } from 'lodash';
 import { ErrorType, LogData, MessageType } from './types';
 import { LogLevel } from './log-levels';
@@ -25,7 +25,7 @@ namespace Utility {
 
 
 // Logger Configuration
-export const LoggerConfig = new InjectionToken('Logger Configuration');
+export const LoggerConfig = new InjectionToken<LoggerConfig>('Logger Configuration');
 export interface LoggerConfig {
   name: string;
   level?: LogLevel;
@@ -52,6 +52,7 @@ export class LoggerFactory {
 
 
 // Logger Base Class
+// @dynamic
 @Injectable({
   providedIn: 'root',
   useFactory: () => new Logger(undefined, { name: 'root' })
@@ -76,14 +77,14 @@ export class Logger implements OnDestroy {
   static create(): Provider {
     return {
       provide: Logger,
-      useFactory: (factory: LoggerFactory, parent: Logger | undefined, config: LoggerConfig) => {
+      useFactory(factory: LoggerFactory, parent: Logger | undefined, config: LoggerConfig): Logger {
         return factory.createLogger(parent, config);
       },
       deps: [LoggerFactory, [new Optional(), new SkipSelf(), Logger], [new Self(), LoggerConfig]]
     };
   }
 
-  constructor(parent: Logger, config: LoggerConfig) {
+  constructor(parent: Logger, @Inject('this does not exist') config: LoggerConfig) {
     this.name = config.name;
     this.parent = parent || undefined;
     this._level = defaultTo(config.level, LogLevel.Error);

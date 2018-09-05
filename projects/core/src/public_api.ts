@@ -10,4 +10,3 @@ export * from './lib/operators';
 export * from './lib/fields';
 export * from './lib/processing';
 export * from './lib/logging';
-export * from './lib/logging/loggers/typescript/logging';

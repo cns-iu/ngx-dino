@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { invoke } from 'lodash';
 import {
   Category, CategoryConfiguration, CategoryLogFormat, CategoryLogger, CategoryServiceFactory,
@@ -6,7 +6,7 @@ import {
 } from 'typescript-logging';
 import { LogData } from '../../types';
 import { LogLevel, LogLevel_Ext } from '../../log-levels';
-import { Logger, LoggerConfig, LoggerFactory } from '../../logging';
+import { Logger, LoggerConfig, LoggerFactory } from '../../base';
 
 namespace Utility {
   export function createIntermediateCategories(logger: TypescriptLogger): Category {
@@ -43,7 +43,7 @@ export class TypescriptLoggerFactory extends LoggerFactory {
 export class TypescriptLogger extends Logger {
   readonly category: Category;
 
-  constructor(parent: Logger, config: LoggerConfig) {
+  constructor(parent: Logger, @Inject('this does not exist') config: LoggerConfig) {
     super(parent, config);
     this.category = new Category(config.name, Utility.createIntermediateCategories(this));
   }

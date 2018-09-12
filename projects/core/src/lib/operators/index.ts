@@ -1,5 +1,6 @@
 export { Flags, State, BaseOperator, BaseCache } from './base';
 export { Operator } from './operator';
+export { Operand } from './operand';
 
 export { access } from './methods/extracting/access';
 export { identity } from './methods/extracting/identity';

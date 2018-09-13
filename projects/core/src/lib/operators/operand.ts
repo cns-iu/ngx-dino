@@ -20,7 +20,7 @@ export function Operand<T = any>(operator: Operator<any, T>, cached = true) {
             });
             return result;
           }
-        }
+        };
       }
 
       Object.defineProperty(target, key, {

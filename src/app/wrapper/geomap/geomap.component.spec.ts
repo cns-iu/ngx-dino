@@ -1,6 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SharedModule } from '../../shared';
-import { GeomapModule } from '@ngx-dino/geomap';
+import { createStubComponent } from '../../../testing/utility';
 import { GeomapComponent } from './geomap.component';
 
 describe('GeomapComponent', () => {
@@ -9,8 +8,17 @@ describe('GeomapComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule, GeomapModule],
-      declarations: [ GeomapComponent ]
+      declarations: [
+        createStubComponent('dino-geomap', {
+          inputs: [
+            'autoresize', 'width', 'height', 'stateDataStream', 'pointDataStream',
+            'pointIdField', 'pointLatLongField', 'pointTitleField', 'pointSizeField',
+            'pointColorField', 'strokeColorField', 'pointShapeField', 'pointPulseField',
+            'stateField', 'stateColorField', 'stateDefaultColor', 'stateDefaultStrokeColor'
+          ]
+        }),
+        GeomapComponent
+      ]
     })
     .compileComponents();
   }));

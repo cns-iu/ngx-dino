@@ -1,6 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SharedModule } from '../../shared';
-import { ScienceMapModule } from '@ngx-dino/science-map';
+import { createStubComponent } from '../../../testing/utility';
 import { ScienceMapComponent } from './science-map.component';
 
 describe('ScienceMapComponent', () => {
@@ -9,8 +8,19 @@ describe('ScienceMapComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule, ScienceMapModule],
-      declarations: [ ScienceMapComponent ]
+      declarations: [
+        createStubComponent('dino-science-map', {
+          inputs: [
+            'subdisciplineSizeField', 'subdisciplineIdField', 'tooltipTextField',
+            'dataStream', 'height', 'width', 'margin', 'minPositionX',
+            'minPositionY', 'autoresize', 'nodeSizeRange', 'enableTooltip'
+          ],
+          outputs: [
+            'nodeClicked'
+          ]
+        }),
+        ScienceMapComponent
+      ]
     })
     .compileComponents();
   }));

@@ -1,6 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SharedModule } from '../../shared';
-import { NetworkModule } from '@ngx-dino/network';
+import { createStubComponent } from '../../../testing/utility';
 import { NetworkComponent } from './network.component';
 
 describe('NetworkComponent', () => {
@@ -9,8 +8,17 @@ describe('NetworkComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule, NetworkModule],
-      declarations: [ NetworkComponent ]
+      declarations: [
+        createStubComponent('dino-network', {
+          inputs: [
+            'autoresize', 'width', 'height', 'nodeStream', 'edgeStream',
+            'nodeIdField', 'nodePositionField', 'nodeSizeField', 'nodeSymbolField',
+            'nodeColorField', 'edgeIdField', 'edgeSourceField', 'edgeTargetField',
+            'edgeStrokeField', 'edgeStrokeWidthField'
+          ]
+        }),
+        NetworkComponent
+      ]
     })
     .compileComponents();
   }));

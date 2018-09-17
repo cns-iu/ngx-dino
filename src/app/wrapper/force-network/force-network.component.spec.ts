@@ -1,6 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SharedModule } from '../../shared';
-import { ForceNetworkModule } from '@ngx-dino/force-network';
+import { createStubComponent } from '../../../testing/utility';
 import { ForceNetworkComponent } from './force-network.component';
 
 describe('ForceNetworkComponent', () => {
@@ -9,8 +8,18 @@ describe('ForceNetworkComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule, ForceNetworkModule],
-      declarations: [ ForceNetworkComponent ]
+      declarations: [
+        createStubComponent('dino-force-network', {
+          inputs: [
+            'height', 'width', 'margin', 'autoresize',
+            'nodeSizeField', 'nodeIdField', 'nodeColorField', 'nodeLabelField',
+            'linkIdField', 'linkSourceField', 'linkTargetField', 'linkSizeField',
+            'nodeColorRange', 'nodeSizeRange', 'enableTooltip', 'tooltipTextField',
+            'chargeStrength', 'nodeStream', 'linkStream'
+          ]
+        }),
+        ForceNetworkComponent
+      ]
     })
     .compileComponents();
   }));

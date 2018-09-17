@@ -1,6 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SharedModule } from '../../shared';
-import { ScatterplotModule } from '@ngx-dino/scatterplot';
+import { createStubComponent } from '../../../testing/utility';
 import { ScatterplotComponent } from './scatterplot.component';
 
 describe('ScatterplotComponent', () => {
@@ -9,8 +8,16 @@ describe('ScatterplotComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule, ScatterplotModule],
-      declarations: [ ScatterplotComponent ]
+      declarations: [
+        createStubComponent('dino-scatterplot', {
+          inputs: [
+            'dataStream', 'pointIdField', 'xField', 'yField', 'sizeField', 'colorField',
+            'strokeColorField', 'shapeField', 'pulseField', 'enableTooltip', 'tooltipTextField',
+            'width', 'height', 'autoresize', 'gridlines', 'showAxisLabels', 'showAxisIndicators'
+          ]
+        }),
+        ScatterplotComponent
+      ]
     })
     .compileComponents();
   }));

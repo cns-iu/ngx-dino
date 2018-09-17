@@ -131,17 +131,9 @@ export class ScienceMapComponent implements OnInit, OnChanges, DoCheck {
     }
   }
 
-  doResize({width, height}: {width: SimpleChange, height: SimpleChange}): void {
+  doResize({width, height}: {width: number, height: number}): void {
     if (this.autoresize) {
-      this.resize(width.currentValue, height.currentValue);
-    }
-  }
-
-  resizeSelf(): void {
-    if (this.scienceMapElement) {
-      const element = this.scienceMapElement.nativeElement;
-      const rect = element.getBoundingClientRect();
-      this.resize(rect.width, rect.height);
+      this.resize(width, height);
     }
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { BoundField, RawChangeSet } from '@ngx-dino/core';
 
 import {
@@ -19,8 +19,6 @@ import { Observable } from 'rxjs';
 export class ScienceMapComponent implements OnInit {
   @Input() height = window.innerHeight;
   @Input() width = window.innerWidth - 30;
-
-  @ViewChild('scienceMap') scienceMap: any;
 
   filteredSubdisciplines: Observable<RawChangeSet<any>>;
 
@@ -50,9 +48,5 @@ export class ScienceMapComponent implements OnInit {
 
   log(event: any) {
     console.log('output event from science-map on target - ', event);
-  }
-
-  activate(): void {
-    this.scienceMap.resizeSelf();
   }
 }

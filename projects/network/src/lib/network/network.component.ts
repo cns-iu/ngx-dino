@@ -83,20 +83,12 @@ export class NetworkComponent implements OnInit, OnChanges {
     return item[idSymbol];
   }
 
-  resizeSelf(): void {
-    if (this.mountPoint) {
-      const element = this.mountPoint.nativeElement;
-      const {width, height} = element.getBoundingClientRect();
-      this.doResize(width, height);
-    }
-  }
-
-  onResize({width, height}: {width: SimpleChange, height: SimpleChange}): void {
+  onResize({width, height}: {width: number, height: number}): void {
     if (this.autoresize) {
-      const wDiff = width.currentValue - width.previousValue;
-      const hDiff = height.currentValue - height.previousValue;
-      const newW = 0 < wDiff && wDiff < 10 ? width.previousValue : width.currentValue;
-      const newH = 0 < hDiff && hDiff < 10 ? height.previousValue : height.currentValue;
+      const wDiff = width - this.svgWidth;
+      const hDiff = height - this.svgHeight;
+      const newW = 0 < wDiff && wDiff < 25 ? this.svgWidth : width;
+      const newH = 0 < hDiff && hDiff < 25 ? this.svgHeight : height;
       this.doResize(newW, newH);
     }
   }

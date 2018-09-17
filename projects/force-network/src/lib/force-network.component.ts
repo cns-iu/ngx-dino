@@ -174,17 +174,9 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
     this.drawPlots();
   }
 
-  onResize({width, height}: {width: SimpleChange, height: SimpleChange}): void {
+  onResize({width, height}: {width: number, height: number}): void {
     if (this.autoresize) {
-      this.resize(width.currentValue, height.currentValue);
-    }
-  }
-
-  resizeSelf(): void {
-    if (this.parentNativeElement) {
-      const element = this.parentNativeElement;
-      const rect = element.getBoundingClientRect();
-      this.resize(rect.width, rect.height);
+      this.resize(width, height);
     }
   }
 

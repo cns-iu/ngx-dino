@@ -109,20 +109,12 @@ export class GeomapComponent implements OnInit, AfterViewInit, OnChanges, DoChec
     this.finalizeView();
   }
 
-  resize({width, height}: {width: SimpleChange, height: SimpleChange}): void {
+  resize({width, height}: {width: number, height: number}): void {
     if (this.autoresize) {
       this.updateSignals({
-        width: this.makeExtentCalc(width.currentValue, this.widthDiffThreshold),
-        height: this.makeExtentCalc(height.currentValue, this.heightDiffThreshold)
+        width: this.makeExtentCalc(width, this.widthDiffThreshold),
+        height: this.makeExtentCalc(height, this.heightDiffThreshold)
       });
-    }
-  }
-
-  resizeSelf(): void {
-    if (this.mountPoint) {
-      const element = this.mountPoint.nativeElement;
-      const {width, height} = element.getBoundingClientRect();
-      this.updateSignals({width, height});
     }
   }
 

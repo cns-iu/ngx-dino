@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Observable, timer } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { mapValues } from 'lodash';
@@ -15,8 +15,6 @@ export class NetworkComponent implements OnInit {
   @Input() width: number;
   @Input() height: number;
 
-  @ViewChild('network') network: any;
-
   nodeStream: Observable<RawChangeSet>;
   edgeStream: Observable<RawChangeSet>;
 
@@ -29,10 +27,6 @@ export class NetworkComponent implements OnInit {
   }
 
   ngOnInit() {
-  }
-
-  activate(): void {
-    this.network.resizeSelf();
   }
 
   private createDelayedStream<T>(data: T[], delay = 0): Observable<RawChangeSet<T>> {

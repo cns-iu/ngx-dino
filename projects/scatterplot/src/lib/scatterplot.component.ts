@@ -221,17 +221,9 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
     }
   }
 
-  doResize({width, height}: {width: SimpleChange, height: SimpleChange}): void {
+  doResize({width, height}: {width: number, height: number}): void {
     if (this.autoresize) {
-      this.resize(width.currentValue, height.currentValue);
-    }
-  }
-
-  resizeSelf(): void {
-    if (this.scatterplotElement) {
-      const element = this.scatterplotElement.nativeElement;
-      const rect = element.getBoundingClientRect();
-      this.resize(rect.width, rect.height);
+      this.resize(width, height);
     }
   }
 

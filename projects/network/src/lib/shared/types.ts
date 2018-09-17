@@ -4,6 +4,8 @@ import { Point } from './utility';
 export class Node extends Datum {
   position: Point;
   size: number;
+  symbol: string;
+  color: string;
 }
 
 export class Edge extends Datum {

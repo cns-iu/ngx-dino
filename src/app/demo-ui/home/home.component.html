@@ -9,7 +9,7 @@
         .github-corner:hover .octo-arm {
             animation: octocat-wave 560ms ease-in-out
         }
-
+        
         @keyframes octocat-wave {
             0%,
             100% {
@@ -24,7 +24,7 @@
                 transform: rotate(10deg)
             }
         }
-
+        
         @media (max-width:500px) {
             .github-corner:hover .octo-arm {
                 animation: none
@@ -60,22 +60,22 @@
     <mat-sidenav-content>
         <mat-tab-group #tabs>
             <mat-tab label="Science Map">
-                <app-science-map #scienceMap [width]="openState ? narrowWidth : wideWidth" [height]="height">
+                <app-science-map [width]="openState ? narrowWidth : wideWidth" [height]="height">
                 </app-science-map>
             </mat-tab>
 
             <mat-tab label="Force Network">
-                <app-force-network #forceNetwork [width]="openState ? narrowWidth : wideWidth" [height]="height">
+                <app-force-network [width]="openState ? narrowWidth : wideWidth" [height]="height">
                 </app-force-network>
             </mat-tab>
 
             <mat-tab label="Scatterplot">
-                <app-scatterplot #scatterplot>
+                <app-scatterplot>
                 </app-scatterplot>
             </mat-tab>
 
             <mat-tab label="Geomap">
-                <app-geomap #geomap [width]="openState ? narrowWidth : wideWidth" [height]="height">
+                <app-geomap [width]="openState ? narrowWidth : wideWidth" [height]="height">
                 </app-geomap>
             </mat-tab>
 
@@ -84,7 +84,7 @@
             </mat-tab>
 
             <mat-tab label="Network">
-                <app-network #network [width]="openState ? narrowWidth : wideWidth" [height]="height"></app-network>
+                <app-network [width]="openState ? narrowWidth : wideWidth" [height]="height"></app-network>
             </mat-tab>
         </mat-tab-group>
     </mat-sidenav-content>

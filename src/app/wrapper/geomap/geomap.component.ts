@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -20,8 +20,6 @@ import pointData from '../shared/geomap/point-dummy-data';
 export class GeomapComponent implements OnInit {
   @Input() height: number;
   @Input() width: number;
-
-  @ViewChild('geomap') geomap: any;
 
   stateDataStream: Observable<RawChangeSet>;
   stateField: BoundField<string> = stateField.getBoundField();
@@ -54,9 +52,5 @@ export class GeomapComponent implements OnInit {
   }
 
   ngOnInit() {
-  }
-
-  activate(): void {
-    this.geomap.resizeSelf();
   }
 }

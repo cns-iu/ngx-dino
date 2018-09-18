@@ -9,13 +9,13 @@ let constructor: AutoResizeResetEventConstructor;
 let prototype: any;
 
 // Old style class due to the way typescript inheritance is transpiled.
-function AutoResizeResetEventConstructor(options: EventInit = {}): AutoResizeResetEvent {
+function AutoResizeResetEventConstructorFunction(options: EventInit = {}): AutoResizeResetEvent {
   const ev = new Event(eventName, Object.assign({ bubbles: true }, options));
   Object.setPrototypeOf(ev, prototype);
   return ev;
 }
 
-constructor = AutoResizeResetEventConstructor as any;
+constructor = AutoResizeResetEventConstructorFunction as any;
 (constructor as any).eventName = eventName;
 
 prototype = constructor.prototype = Object.create(Event.prototype);

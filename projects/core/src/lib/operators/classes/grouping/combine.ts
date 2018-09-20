@@ -91,7 +91,7 @@ interface InfoState {
 function normalizeEvaluator({state, value}: EvalArgs<InfoState>): EvalResult {
   if (value instanceof BaseOperator) {
     // Potential for eager evaluation here!
-    state.flags.and(value.flags);
+    state.flags = state.flags.and(value.flags);
     return {result: unwrap(value)};
   }
   return {};

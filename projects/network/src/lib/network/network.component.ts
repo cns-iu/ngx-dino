@@ -185,6 +185,16 @@ export class NetworkComponent implements OnInit, OnChanges {
     const dynamic: CoordinateSpace = { type: 'dynamic' };
     const { x: xspace = dynamic, y: yspace = dynamic } = this.coordinateSpace || { };
 
+    // Reset values
+    this.nodes.forEach((node) => {
+      node.cposition = [-Infinity, -Infinity];
+    });
+
+    this.edges.forEach((edge) => {
+      edge.csource = [-Infinity, -Infinity];
+      edge.ctarget = [-Infinity, -Infinity];
+    });
+
     // Apply fixed space before dynamic!
     if (xspace.type === 'fixed') {
       this.calculateFixedLayout('x');

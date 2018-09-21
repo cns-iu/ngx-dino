@@ -4,6 +4,7 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { clamp, conforms, filter, get, inRange, isFinite, maxBy, minBy, partition } from 'lodash';
+import { scaleLinear } from 'd3-scale';
 import { BoundField, ChangeSet, Datum, DatumId, RawChangeSet, idSymbol } from '@ngx-dino/core';
 import { BuiltinSymbolTypes, CoordinateSpace, CoordinateSpaceOptions, FixedCoordinateSpace } from '../shared/options';
 import { Edge, Node } from '../shared/types';
@@ -27,7 +28,8 @@ export class NetworkComponent implements OnInit, OnChanges {
   @Input() nodePositionField: BoundField<Point>;
   @Input() nodeSizeField: BoundField<number>;
   @Input() nodeSymbolField: BoundField<BuiltinSymbolTypes>;
-  @Input() nodeColorField: BoundField<string>;
+  @Input() nodeColorField: BoundField<number>;
+  @Input() nodeColorScaleRange: string[];
 
   @Input() edgeIdField: BoundField<DatumId>;
   @Input() edgeSourceField: BoundField<Point>;
@@ -65,6 +67,7 @@ export class NetworkComponent implements OnInit, OnChanges {
     this.service.nodes.subscribe((set) => {
       this.nodes = filter(this.applyChangeSet(set, this.nodes), nodeConform) as any;
       this.calculateLayout();
+      this.setColors();
     });
 
     this.service.edges.subscribe((set) => {
@@ -104,6 +107,10 @@ export class NetworkComponent implements OnInit, OnChanges {
 
     if (!this.autoresize && ('width' in changes || 'height' in changes)) {
       this.doResize(this.width, this.height);
+    }
+
+    if ('coordinateSpace' in changes) {
+      this.calculateLayout();
     }
   }
 
@@ -287,5 +294,21 @@ export class NetworkComponent implements OnInit, OnChanges {
     this.edges.forEach(normalizer('target', 'ctarget'));
     // this.nodes.forEach(scaler('size'));
     // this.edges.forEach(scaler('strokeWidth'));
+  }
+
+  private setColors(): void {
+    const min = minBy(this.nodes, 'color');
+    const max = maxBy(this.nodes, 'color');
+    if (!min || !max || !this.nodeColorScaleRange || this.nodeColorScaleRange.length < 2) {
+      return;
+    }
+
+    const scale = scaleLinear<string>().domain([
+      min.color, max.color
+    ]).range(this.nodeColorScaleRange);
+
+    this.nodes.forEach((node) => {
+      node.ccolor = scale(node.color);
+    });
   }
 }

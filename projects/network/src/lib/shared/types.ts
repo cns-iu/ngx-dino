@@ -5,11 +5,12 @@ export class Node extends Datum {
   position: Point;
   size: number;
   symbol: string;
-  color: string;
+  color: number;
 
   // Calculated
   cposition: Point;
   csize: Point;
+  ccolor: string;
 }
 
 export class Edge extends Datum {

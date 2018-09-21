@@ -39,7 +39,7 @@ export class NetworkService {
     position: BoundField<Point>,
     size: BoundField<number>,
     symbol: BoundField<BuiltinSymbolTypes>,
-    color: BoundField<string>
+    color: BoundField<number>
   ): this {
     if (this.nodeSubscription) {
       this.nodeSubscription.unsubscribe();
@@ -79,7 +79,7 @@ export class NetworkService {
     position?: BoundField<Point>,
     size?: BoundField<number>,
     symbol?: BoundField<BuiltinSymbolTypes>,
-    color?: BoundField<string>
+    color?: BoundField<number>
   ): this {
     const fields = Map<string, BoundField<any>>({
       position, size, symbol, color

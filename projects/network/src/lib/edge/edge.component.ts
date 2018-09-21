@@ -14,7 +14,7 @@ export class EdgeComponent implements OnChanges {
   @Input() source: Point;
   @Input() target: Point;
   @Input() stroke: string;
-  @Input() strokeWidth: string;
+  @Input() strokeWidth: number;
 
   path: string;
 

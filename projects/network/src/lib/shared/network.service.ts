@@ -2,12 +2,18 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { Map } from 'immutable';
 import {
-  BoundField, ChangeSet, DataProcessor,
-  DataProcessorService, DatumId, RawChangeSet
+  BoundField, ChangeSet, DataProcessor, DataProcessorService, DatumId, RawChangeSet,
+  constant, map, simpleField
 } from '@ngx-dino/core';
 import { Edge, Node } from './types';
 import { Point } from './utility';
 import { BuiltinSymbolTypes } from './options';
+
+const cposition = simpleField({ label: '', operator: map(() => Array(2)) }).getBoundField();
+const csize = simpleField({ label: '', operator: constant(0) }).getBoundField();
+
+const csource = simpleField({ label: '', operator: map(() => Array(2)) }).getBoundField();
+const ctarget = simpleField({ label: '', operator: map(() => Array(2)) }).getBoundField();
 
 @Injectable({
   providedIn: 'root'
@@ -40,7 +46,8 @@ export class NetworkService {
     }
 
     this.nodeProcessor = this.processorService.createProcessor<Node, any>(stream, id, {
-      position, size, symbol, color
+      position, size, symbol, color,
+      cposition, csize
     });
     this.nodeSubscription = this.nodeProcessor.asObservable().subscribe((c) => this.nodeChanges.next(c));
 
@@ -53,14 +60,15 @@ export class NetworkService {
     source: BoundField<Point>,
     target: BoundField<Point>,
     stroke: BoundField<string>,
-    strokeWidth: BoundField<string>
+    strokeWidth: BoundField<number>
   ): this {
     if (this.edgeSubscription) {
       this.edgeSubscription.unsubscribe();
     }
 
     this.edgeProcessor = this.processorService.createProcessor<Edge, any>(stream, id, {
-      source, target, stroke, strokeWidth
+      source, target, stroke, strokeWidth,
+      csource, ctarget
     });
     this.edgeSubscription = this.edgeProcessor.asObservable().subscribe((c) => this.edgeChanges.next(c));
 
@@ -84,7 +92,7 @@ export class NetworkService {
     source: BoundField<Point>,
     target: BoundField<Point>,
     stroke: BoundField<string>,
-    strokeWidth: BoundField<string>
+    strokeWidth: BoundField<number>
   ): this {
     const fields = Map<string, BoundField<any>>({
       source, target, stroke, strokeWidth

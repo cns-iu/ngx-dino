@@ -6,11 +6,19 @@ export class Node extends Datum {
   size: number;
   symbol: string;
   color: string;
+
+  // Calculated
+  cposition: Point;
+  csize: Point;
 }
 
 export class Edge extends Datum {
   source: Point;
   target: Point;
   stroke: string;
-  strokeWidth: string;
+  strokeWidth: number;
+
+  // Calculated
+  csource: Point;
+  ctarget: Point;
 }

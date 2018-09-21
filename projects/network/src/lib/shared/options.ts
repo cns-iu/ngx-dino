@@ -1,4 +1,3 @@
-import { CanvasPath_D3Shape } from 'd3-shape';
 import { Point, Range } from './utility';
 
 // Coordinate space

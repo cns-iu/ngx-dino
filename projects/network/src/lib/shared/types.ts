@@ -6,6 +6,8 @@ export class Node extends Datum {
   size: number;
   symbol: string;
   color: string;
+  stroke: string;
+  strokeWidth: number;
 
   // Calculated
   cposition: Point;

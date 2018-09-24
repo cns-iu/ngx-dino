@@ -1,4 +1,4 @@
 <svg:g *ngIf="isValid()" [attr.transform]="centerTranslate()">
-    <svg:path [attr.d]="shape" [attr.fill]="color">
+    <svg:path [attr.d]="shape" [attr.fill]="color" [attr.stroke]="stroke" [attr.stroke-width]="strokeWidth">
     </svg:path>
 </svg:g>

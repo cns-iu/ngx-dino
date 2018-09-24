@@ -24,6 +24,8 @@ export class NodeComponent implements OnChanges {
   @Input() position: Point;
   @Input() size: number;
   @Input() color = 'black';
+  @Input() stroke = 'black';
+  @Input() strokeWidth = 0;
 
   shape: string;
   private symbolGenerator: Symbol<void, void>;

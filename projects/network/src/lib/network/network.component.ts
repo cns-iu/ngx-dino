@@ -69,17 +69,12 @@ export class NetworkComponent implements OnInit, OnChanges {
       const nodes = this.nodes.concat(this.excludedNodes);
       const filtered = filter(this.applyChangeSet(set, nodes), nodeConform) as any;
       this.layout(filtered);
-      // this.excludedNodes = [];
-
-      // this.calculateLayout();
     });
 
     this.service.edges.subscribe((set) => {
       const edges = this.edges.concat(this.excludedEdges);
       const filtered = filter(this.applyChangeSet(set, edges), edgeConform) as any;
       this.layout(undefined, filtered);
-      // this.excludedEdges = [];
-      // this.calculateLayout();
     });
   }
 
@@ -90,12 +85,14 @@ export class NetworkComponent implements OnInit, OnChanges {
       this.service.fetchNodes(
         this.nodeStream, this.nodeIdField,
         this.nodePositionField, this.nodeSizeField,
-        this.nodeSymbolField, this.nodeColorField
+        this.nodeSymbolField, this.nodeColorField,
+        this.nodeStrokeField, this.nodeStrokeWidthField
       );
     }, () => {
       this.service.updateNodes(
         this.nodePositionField, this.nodeSizeField,
-        this.nodeSymbolField, this.nodeColorField
+        this.nodeSymbolField, this.nodeColorField,
+        this.nodeStrokeField, this.nodeStrokeWidthField
       );
     });
 

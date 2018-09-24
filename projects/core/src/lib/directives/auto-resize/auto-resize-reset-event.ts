@@ -6,7 +6,7 @@ export interface AutoResizeResetEventConstructor {
 
 const BaseEvent = typeof Event !== 'undefined' ? Event : <any>class Event {
   constructor(readonly name: string, readonly options?: any) { }
-}
+};
 
 const eventName = 'auto-resize-reset';
 let constructor: AutoResizeResetEventConstructor;

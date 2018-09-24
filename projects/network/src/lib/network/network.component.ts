@@ -4,12 +4,12 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { clamp, conforms, filter, get, inRange, isFinite, maxBy, minBy, partition } from 'lodash';
-import { scaleLinear } from 'd3-scale';
 import { BoundField, ChangeSet, Datum, DatumId, RawChangeSet, idSymbol } from '@ngx-dino/core';
 import { BuiltinSymbolTypes, CoordinateSpace, CoordinateSpaceOptions, FixedCoordinateSpace } from '../shared/options';
 import { Edge, Node } from '../shared/types';
 import { Point, normalizeRange } from '../shared/utility';
 import { NetworkService } from '../shared/network.service';
+import { LayoutService } from '../shared/layout.service';
 
 @Component({
   selector: 'dino-network',
@@ -28,8 +28,9 @@ export class NetworkComponent implements OnInit, OnChanges {
   @Input() nodePositionField: BoundField<Point>;
   @Input() nodeSizeField: BoundField<number>;
   @Input() nodeSymbolField: BoundField<BuiltinSymbolTypes>;
-  @Input() nodeColorField: BoundField<number>;
-  @Input() nodeColorScaleRange: string[];
+  @Input() nodeColorField: BoundField<string>;
+  @Input() nodeStrokeField: BoundField<string>;
+  @Input() nodeStrokeWidthField: BoundField<number>;
 
   @Input() edgeIdField: BoundField<DatumId>;
   @Input() edgeSourceField: BoundField<Point>;
@@ -47,10 +48,10 @@ export class NetworkComponent implements OnInit, OnChanges {
   nodes: Node[] = [];
   edges: Edge[] = [];
 
-  private ingoredNodes: Node[] = [];
-  private ignoredEdges: Edge[] = [];
+  private excludedNodes: Node[] = [];
+  private excludedEdges: Edge[] = [];
 
-  constructor(private service: NetworkService) {
+  constructor(private service: NetworkService, private layoutService: LayoutService) {
     const pointConform = conforms({
       [0]: isFinite,
       [1]: isFinite
@@ -65,14 +66,20 @@ export class NetworkComponent implements OnInit, OnChanges {
     });
 
     this.service.nodes.subscribe((set) => {
-      this.nodes = filter(this.applyChangeSet(set, this.nodes), nodeConform) as any;
-      this.calculateLayout();
-      this.setColors();
+      const nodes = this.nodes.concat(this.excludedNodes);
+      const filtered = filter(this.applyChangeSet(set, nodes), nodeConform) as any;
+      this.layout(filtered);
+      // this.excludedNodes = [];
+
+      // this.calculateLayout();
     });
 
     this.service.edges.subscribe((set) => {
-      this.edges = filter(this.applyChangeSet(set, this.edges), edgeConform) as any;
-      this.calculateLayout();
+      const edges = this.edges.concat(this.excludedEdges);
+      const filtered = filter(this.applyChangeSet(set, edges), edgeConform) as any;
+      this.layout(undefined, filtered);
+      // this.excludedEdges = [];
+      // this.calculateLayout();
     });
   }
 
@@ -110,7 +117,7 @@ export class NetworkComponent implements OnInit, OnChanges {
     }
 
     if ('coordinateSpace' in changes) {
-      this.calculateLayout();
+      this.layout();
     }
   }
 
@@ -133,14 +140,14 @@ export class NetworkComponent implements OnInit, OnChanges {
     this.svgHeight = height;
 
     if (width === 0 || height === 0) {
-      this.ingoredNodes = this.nodes.concat(this.ingoredNodes);
-      this.ignoredEdges = this.edges.concat(this.ignoredEdges);
+      this.excludedNodes = this.nodes.concat(this.excludedNodes);
+      this.excludedEdges = this.edges.concat(this.excludedEdges);
       this.nodes = [];
       this.edges = [];
       return;
     }
 
-    this.calculateLayout();
+    this.layout();
   }
 
   private detectStreamOrFieldChanges(
@@ -183,132 +190,13 @@ export class NetworkComponent implements OnInit, OnChanges {
     return filtered.concat(set.insert.toArray() as T[]);
   }
 
-  private calculateLayout(): void {
-    this.nodes = this.nodes.concat(this.ingoredNodes);
-    this.edges = this.edges.concat(this.ignoredEdges);
-    this.ingoredNodes = [];
-    this.ignoredEdges = [];
-
-    const dynamic: CoordinateSpace = { type: 'dynamic' };
-    const { x: xspace = dynamic, y: yspace = dynamic } = this.coordinateSpace || { };
-
-    // Reset values
-    this.nodes.forEach((node) => {
-      node.cposition = [-Infinity, -Infinity];
-    });
-
-    this.edges.forEach((edge) => {
-      edge.csource = [-Infinity, -Infinity];
-      edge.ctarget = [-Infinity, -Infinity];
-    });
-
-    // Apply fixed space before dynamic!
-    if (xspace.type === 'fixed') {
-      this.calculateFixedLayout('x');
-    }
-    if (yspace.type === 'fixed') {
-      this.calculateFixedLayout('y');
-    }
-    if (xspace.type === 'dynamic') {
-      this.calculateDynamicLayout('x');
-    }
-    if (yspace.type === 'dynamic') {
-      this.calculateDynamicLayout('y');
-    }
-  }
-
-  private calculateDynamicLayout(axis: 'x' | 'y'): void {
-    const index = axis === 'x' ? 0 : 1;
-    const boundary = axis === 'x' ? this.svgWidth : this.svgHeight;
-
-    const rangeOf = <T>(items: T[], prop: keyof T): [number, number] => {
-      const key = `${prop}[${index}]`;
-      const minItem = minBy(items, key);
-      const maxItem = maxBy(items, key);
-      return [get(minItem, key, Infinity), get(maxItem, key, -Infinity)];
-    };
-
-    const nodeRange = rangeOf(this.nodes, 'position');
-    const edgeRange1 = rangeOf(this.edges, 'source');
-    const edgeRange2 = rangeOf(this.edges, 'target');
-    const ranges = [nodeRange, edgeRange1, edgeRange2];
-    const min = minBy(ranges, 0)[0];
-    const max = maxBy(ranges, 1)[1];
-    const range = max - min;
-
-    if (!isFinite(range)) {
-      return;
-    }
-
-    const normalizer = <T>(source: keyof T, target: keyof T): ((item: T) => void) => {
-      return (item) => (item[target][index] = boundary * (item[source][index] - min) / range);
-    };
-    const scaler = <T>(prop: keyof T): ((item: T) => void) => {
-      return (item) => ((item[prop] as any) *= boundary / range);
-    };
-
-    this.nodes.forEach(normalizer('position', 'cposition'));
-    this.edges.forEach(normalizer('source', 'csource'));
-    this.edges.forEach(normalizer('target', 'ctarget'));
-    // this.nodes.forEach(scaler('size'));
-    // this.edges.forEach(scaler('strokeWidth'));
-  }
-
-  private calculateFixedLayout(axis: 'x' | 'y'): void {
-    const space = this.coordinateSpace[axis] as FixedCoordinateSpace;
-    const index = axis === 'x' ? 0 : 1;
-    const boundary = axis === 'x' ? this.svgWidth : this.svgHeight;
-    const { min, max } = normalizeRange(space[axis]) || { min: 0, max: boundary };
-    const range = max - min;
-    const overflow = space[axis + 'Overflow'];
-
-    if (!isFinite(range)) {
-      return;
-    }
-
-    if (overflow === 'ignore') {
-      const partitioner = <T>(prop: keyof T): ((item: T) => boolean) => {
-        return (item) => inRange(item[prop][index], min, max);
-      };
-      let ignoredNodes, ignoredEdges1, ignoredEdges2;
-      [this.nodes, ignoredNodes] = partition(this.nodes, partitioner('position'));
-      [this.edges, ignoredEdges1] = partition(this.edges, partitioner('source'));
-      [this.edges, ignoredEdges2] = partition(this.edges, partitioner('target'));
-
-      this.ingoredNodes = this.ingoredNodes.concat(ignoredNodes);
-      this.ignoredEdges = this.ignoredEdges.concat(ignoredEdges1, ignoredEdges2);
-    }
-
-    const normalizer = <T>(source: keyof T, target: keyof T): ((item: T) => void) => {
-      return (item) => {
-        const value = clamp(item[source][index], min, max);
-        item[target][index] = boundary * (value - min) / range;
-      };
-    };
-    const scaler = <T>(prop: keyof T): ((item: T) => void) => {
-      return (item) => ((item[prop] as any) *= boundary / range);
-    };
-
-    this.nodes.forEach(normalizer('position', 'cposition'));
-    this.edges.forEach(normalizer('source', 'csource'));
-    this.edges.forEach(normalizer('target', 'ctarget'));
-    // this.nodes.forEach(scaler('size'));
-    // this.edges.forEach(scaler('strokeWidth'));
-  }
-
-  private setColors(): void {
-    const min = minBy(this.nodes, 'color');
-    const max = maxBy(this.nodes, 'color');
-    if (!min || !max || !this.nodeColorScaleRange || this.nodeColorScaleRange.length < 2) {
-      return;
-    }
-
-    const scale = scaleLinear<string>().domain([
-      min.color, max.color
-    ]).range(this.nodeColorScaleRange);
-
-    this.nodes.forEach((node) => {
-      node.ccolor = scale(node.color);
-    });
+  private layout(nodes: Node[] = this.nodes, edges: Edge[] = this.edges): void {
+    ({
+      nodes: this.nodes, edges: this.edges,
+      excludedNodes: this.excludedNodes, excludedEdges: this.excludedEdges
+    } = this.layoutService.layout(nodes, edges, {
+      width: this.svgWidth, height: this.svgHeight,
+      coordinateSpace: this.coordinateSpace
+    }));
   }
 }

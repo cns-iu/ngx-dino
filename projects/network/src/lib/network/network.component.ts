@@ -47,9 +47,10 @@ export class NetworkComponent implements OnInit, OnChanges {
 
   nodes: Node[] = [];
   edges: Edge[] = [];
-
   private excludedNodes: Node[] = [];
   private excludedEdges: Edge[] = [];
+  private get allNodes(): Node[] { return this.nodes.concat(this.excludedNodes); }
+  private get allEdges(): Edge[] { return this.edges.concat(this.excludedEdges); }
 
   constructor(private service: NetworkService, private layoutService: LayoutService) {
     const pointConform = conforms({
@@ -66,14 +67,13 @@ export class NetworkComponent implements OnInit, OnChanges {
     });
 
     this.service.nodes.subscribe((set) => {
-      const nodes = this.nodes.concat(this.excludedNodes);
-      const filtered = filter(this.applyChangeSet(set, nodes), nodeConform) as any;
+      const filtered = filter(this.applyChangeSet(set, this.allNodes), nodeConform) as any;
       this.layout(filtered);
     });
 
     this.service.edges.subscribe((set) => {
       const edges = this.edges.concat(this.excludedEdges);
-      const filtered = filter(this.applyChangeSet(set, edges), edgeConform) as any;
+      const filtered = filter(this.applyChangeSet(set, this.allEdges), edgeConform) as any;
       this.layout(undefined, filtered);
     });
   }
@@ -141,8 +141,8 @@ export class NetworkComponent implements OnInit, OnChanges {
     this.svgHeight = height;
 
     if (width === 0 || height === 0) {
-      this.excludedNodes = this.nodes.concat(this.excludedNodes);
-      this.excludedEdges = this.edges.concat(this.excludedEdges);
+      this.excludedNodes = this.allNodes;
+      this.excludedEdges = this.allEdges;
       this.nodes = [];
       this.edges = [];
       return;
@@ -191,7 +191,7 @@ export class NetworkComponent implements OnInit, OnChanges {
     return filtered.concat(set.insert.toArray() as T[]);
   }
 
-  private layout(nodes: Node[] = this.nodes, edges: Edge[] = this.edges): void {
+  private layout(nodes: Node[] = this.allNodes, edges: Edge[] = this.allEdges): void {
     ({
       nodes: this.nodes, edges: this.edges,
       excludedNodes: this.excludedNodes, excludedEdges: this.excludedEdges

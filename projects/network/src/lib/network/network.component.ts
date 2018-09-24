@@ -82,6 +82,8 @@ export class NetworkComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.detectStreamOrFieldChanges(changes, 'node', () => {
+      this.nodes = [];
+      this.excludedNodes = [];
       this.service.fetchNodes(
         this.nodeStream, this.nodeIdField,
         this.nodePositionField, this.nodeSizeField,
@@ -97,6 +99,8 @@ export class NetworkComponent implements OnInit, OnChanges {
     });
 
     this.detectStreamOrFieldChanges(changes, 'edge', () => {
+      this.edges = [];
+      this.excludedEdges = [];
       this.service.fetchEdges(
         this.edgeStream, this.edgeIdField,
         this.edgeSourceField, this.edgeTargetField,

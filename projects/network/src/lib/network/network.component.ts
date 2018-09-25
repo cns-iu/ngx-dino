@@ -3,11 +3,12 @@ import {
   SimpleChanges, ViewChild
 } from '@angular/core';
 import { Observable } from 'rxjs';
-import { clamp, conforms, filter, get, inRange, isFinite, maxBy, minBy, partition } from 'lodash';
+import { Set } from 'immutable';
+import { conforms, filter, isFinite } from 'lodash';
 import { BoundField, ChangeSet, Datum, DatumId, RawChangeSet, idSymbol } from '@ngx-dino/core';
-import { BuiltinSymbolTypes, CoordinateSpace, CoordinateSpaceOptions, FixedCoordinateSpace } from '../shared/options';
+import { BuiltinSymbolTypes, CoordinateSpaceOptions } from '../shared/options';
 import { Edge, Node } from '../shared/types';
-import { Point, normalizeRange } from '../shared/utility';
+import { Point } from '../shared/utility';
 import { NetworkService } from '../shared/network.service';
 import { LayoutService } from '../shared/layout.service';
 
@@ -179,18 +180,12 @@ export class NetworkComponent implements OnInit, OnChanges {
   }
 
   private applyChangeSet<T extends Datum>(set: ChangeSet<any>, data: T[]): T[] {
-    const filtered = data.filter((item) => {
-      const id = item[idSymbol];
-      if (set.remove.find((value) => value[idSymbol] === id)) {
-        return false;
-      } else if (set.replace.find((value) => value[idSymbol] === id)) {
-        return false;
-      } else {
-        return true;
-      }
-    });
+    const removeIds = set.remove.map(rem => rem[idSymbol]);
+    const replaceIds = set.replace.map(rep => rep[idSymbol]);
+    const filteredIds = Set<DatumId>().merge(removeIds, replaceIds);
+    const filtered = data.filter(item => !filteredIds.has(item[idSymbol]));
 
-    return filtered.concat(set.insert.toArray() as T[]);
+    return filtered.concat(set.insert.toArray() as T[], set.replace.toArray() as T[]);
   }
 
   private layout(nodes: Node[] = this.allNodes, edges: Edge[] = this.allEdges): void {

@@ -31,6 +31,7 @@ export class NetworkComponent implements OnInit, OnChanges {
   @Input() nodeColorField: BoundField<string>;
   @Input() nodeStrokeField: BoundField<string>;
   @Input() nodeStrokeWidthField: BoundField<number>;
+  @Input() nodeTooltipField: BoundField<string>;
 
   @Input() edgeIdField: BoundField<DatumId>;
   @Input() edgeSourceField: BoundField<Point>;
@@ -72,7 +73,6 @@ export class NetworkComponent implements OnInit, OnChanges {
     });
 
     this.service.edges.subscribe((set) => {
-      const edges = this.edges.concat(this.excludedEdges);
       const filtered = filter(this.applyChangeSet(set, this.allEdges), edgeConform) as any;
       this.layout(undefined, filtered);
     });
@@ -88,13 +88,15 @@ export class NetworkComponent implements OnInit, OnChanges {
         this.nodeStream, this.nodeIdField,
         this.nodePositionField, this.nodeSizeField,
         this.nodeSymbolField, this.nodeColorField,
-        this.nodeStrokeField, this.nodeStrokeWidthField
+        this.nodeStrokeField, this.nodeStrokeWidthField,
+        this.nodeTooltipField
       );
     }, () => {
       this.service.updateNodes(
         this.nodePositionField, this.nodeSizeField,
         this.nodeSymbolField, this.nodeColorField,
-        this.nodeStrokeField, this.nodeStrokeWidthField
+        this.nodeStrokeField, this.nodeStrokeWidthField,
+        this.nodeTooltipField
       );
     });
 

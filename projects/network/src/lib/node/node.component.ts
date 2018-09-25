@@ -26,6 +26,7 @@ export class NodeComponent implements OnChanges {
   @Input() color = 'black';
   @Input() stroke = 'black';
   @Input() strokeWidth = 0;
+  @Input() tooltip: string = '';
 
   shape: string;
   private symbolGenerator: Symbol<void, void>;

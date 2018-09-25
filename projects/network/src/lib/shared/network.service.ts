@@ -41,14 +41,15 @@ export class NetworkService {
     symbol: BoundField<BuiltinSymbolTypes>,
     color: BoundField<string>,
     stroke: BoundField<string>,
-    strokeWidth: BoundField<number>
+    strokeWidth: BoundField<number>,
+    tooltip: BoundField<string>
   ): this {
     if (this.nodeSubscription) {
       this.nodeSubscription.unsubscribe();
     }
 
     this.nodeProcessor = this.processorService.createProcessor<Node, any>(stream, id, {
-      position, size, symbol, color, stroke, strokeWidth,
+      position, size, symbol, color, stroke, strokeWidth, tooltip,
       cposition, csize
     });
     this.nodeSubscription = this.nodeProcessor.asObservable().subscribe((c) => this.nodeChanges.next(c));
@@ -83,10 +84,11 @@ export class NetworkService {
     symbol?: BoundField<BuiltinSymbolTypes>,
     color?: BoundField<string>,
     stroke?: BoundField<string>,
-    strokeWidth?: BoundField<number>
+    strokeWidth?: BoundField<number>,
+    tooltip?: BoundField<string>
   ): this {
     const fields = Map<string, BoundField<any>>({
-      position, size, symbol, color, stroke, strokeWidth
+      position, size, symbol, color, stroke, strokeWidth, tooltip
     }).filter((f) => !!f).toKeyedSeq();
     this.nodeProcessor.updateFields(fields);
     return this;

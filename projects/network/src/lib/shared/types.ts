@@ -8,11 +8,11 @@ export class Node extends Datum {
   color: string;
   stroke: string;
   strokeWidth: number;
+  tooltip: string;
 
   // Calculated
   cposition: Point;
   csize: number;
-  ccolor: string;
 }
 
 export class Edge extends Datum {

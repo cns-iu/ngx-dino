@@ -123,7 +123,7 @@ export class LayoutService {
     }
 
     // Reset computed properties
-    resetProperties(nodes, { cposition: createPoint, csize: 0, ccolor: 'black' });
+    resetProperties(nodes, { cposition: createPoint, csize: 0 });
     resetProperties(edges, { csource: createPoint, ctarget: createPoint });
 
     // Destructure and normalize arguments

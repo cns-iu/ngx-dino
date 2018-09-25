@@ -1,6 +1,7 @@
-<div #mountPoint (dinoAutoResize)="onResize($event)">
+<div class="container" (dinoAutoResize)="onResize($event)">
+    <div #tooltipElement class="tooltip"></div>
     <svg [attr.width]="svgWidth" [attr.height]="svgHeight">
         <svg:g dino-network-edge *ngFor="let edge of edges; trackBy: trackById" [source]="edge.csource" [target]="edge.ctarget" [stroke]="edge.stroke" [strokeWidth]="edge.strokeWidth" />
-        <svg:g dino-network-node *ngFor="let node of nodes; trackBy: trackById" [position]="node.cposition" [size]="node.size" [symbol]="node.symbol" [color]="node.color" [stroke]="node.stroke" [strokeWidth]="node.strokeWidth" [tooltip]="node.tooltip" />
+        <svg:g dino-network-node *ngFor="let node of nodes; trackBy: trackById" [position]="node.cposition" [size]="node.size" [symbol]="node.symbol" [color]="node.color" [stroke]="node.stroke" [strokeWidth]="node.strokeWidth" [tooltip]="node.tooltip" [tooltipElement]="tooltipElement" />
     </svg>
 </div>

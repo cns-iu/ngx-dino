@@ -1,5 +1,5 @@
 import {
-  Component, ElementRef, Input, OnChanges, OnInit,
+  Component, Input, OnChanges, OnInit,
   SimpleChanges, ViewChild
 } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -42,7 +42,7 @@ export class NetworkComponent implements OnInit, OnChanges {
 
   @Input() coordinateSpace: CoordinateSpaceOptions;
 
-  @ViewChild('mountPoint') mountPoint: ElementRef;
+  @ViewChild('tooltipElement') tooltipElement: HTMLDivElement;
 
   svgWidth: number;
   svgHeight: number;

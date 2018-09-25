@@ -26,7 +26,8 @@ export class NodeComponent implements OnChanges {
   @Input() color = 'black';
   @Input() stroke = 'black';
   @Input() strokeWidth = 0;
-  @Input() tooltip: string = '';
+  @Input() tooltip = '';
+  @Input() tooltipElement: HTMLDivElement;
 
   shape: string;
   private symbolGenerator: Symbol<void, void>;
@@ -53,6 +54,28 @@ export class NodeComponent implements OnChanges {
   centerTranslate(): string {
     const [x, y] = this.position;
     return `translate(${x},${y})`;
+  }
+
+  showTooltip(event: any): void {
+    const el = this.tooltipElement;
+    const { x, y } = event;
+    if (!el || !this.tooltip) {
+      return;
+    }
+
+    el.textContent = this.tooltip;
+    el.style.left = `${x - 40}px`;
+    el.style.top = `${y - 40}px`;
+    el.style.visibility = 'visible';
+  }
+
+  hideTooltip(): void {
+    const el = this.tooltipElement;
+    if (!el) {
+      return;
+    }
+
+    el.style.visibility = 'hidden';
   }
 
   private getSymbol(): SymbolType {

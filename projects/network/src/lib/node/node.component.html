@@ -1,4 +1,5 @@
 <svg:g *ngIf="isValid()" [attr.transform]="centerTranslate()">
-    <svg:path [attr.d]="shape" [attr.fill]="color" [attr.stroke]="stroke" [attr.stroke-width]="strokeWidth">
+    <svg:path [attr.d]="shape" [attr.fill]="color" [attr.stroke]="stroke" [attr.stroke-width]="strokeWidth"
+        (mouseover)="showTooltip($event)" (mouseout)="hideTooltip()">
     </svg:path>
 </svg:g>

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { clamp, constant, inRange, isFunction, maxBy, partition } from 'lodash';
+import { clamp, constant, get, inRange, isFunction, maxBy, partition } from 'lodash';
 import {
   CoordinateSpace, CoordinateSpaceOptions,
   DynamicCoordinateSpace, FixedCoordinateSpace
@@ -69,7 +69,7 @@ function resetProperties<T>(array: T[], props: { [P in keyof T]?: T[P] | (() => 
 function normalizeViewSpace(
   nodes: Node[], width: number, height: number
 ): [NormalizedSpace, NormalizedSpace] {
-  const maxSize = maxBy(nodes, 'size').size;
+  const maxSize = get(maxBy(nodes, 'size'), 'size', 0);
   const maxRadius = Math.sqrt(maxSize) / 2;
   return [
     { offset: maxRadius, range: width - 2 * maxRadius },
@@ -118,7 +118,7 @@ export class LayoutService {
   constructor() { }
 
   layout(nodes: Node[], edges: Edge[], options: LayoutOptions): LayoutResult {
-    if (nodes.length === 0) {
+    if (nodes.length === 0 && edges.length === 0) {
       return { nodes, edges, excludedNodes: [], excludedEdges: [] };
     }
 

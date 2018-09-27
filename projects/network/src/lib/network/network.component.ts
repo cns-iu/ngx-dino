@@ -33,6 +33,8 @@ export class NetworkComponent implements OnInit, OnChanges {
   @Input() nodeStrokeField: BoundField<string>;
   @Input() nodeStrokeWidthField: BoundField<number>;
   @Input() nodeTooltipField: BoundField<string>;
+  @Input() nodeLabelField: BoundField<string>;
+  @Input() nodeLabelPositionField: BoundField<string>;
 
   @Input() edgeIdField: BoundField<DatumId>;
   @Input() edgeSourceField: BoundField<Point>;
@@ -90,14 +92,16 @@ export class NetworkComponent implements OnInit, OnChanges {
         this.nodePositionField, this.nodeSizeField,
         this.nodeSymbolField, this.nodeColorField,
         this.nodeStrokeField, this.nodeStrokeWidthField,
-        this.nodeTooltipField
+        this.nodeTooltipField, this.nodeLabelField,
+        this.nodeLabelPositionField
       );
     }, () => {
       this.service.updateNodes(
         this.nodePositionField, this.nodeSizeField,
         this.nodeSymbolField, this.nodeColorField,
         this.nodeStrokeField, this.nodeStrokeWidthField,
-        this.nodeTooltipField
+        this.nodeTooltipField, this.nodeLabelField,
+        this.nodeLabelPositionField
       );
     });
 

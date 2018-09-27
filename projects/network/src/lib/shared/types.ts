@@ -9,6 +9,8 @@ export class Node extends Datum {
   stroke: string;
   strokeWidth: number;
   tooltip: string;
+  label: string;
+  labelPosition: string;
 
   // Calculated
   cposition: Point;

@@ -1,3 +1,9 @@
+.encoding {
+  font-size: 15px;
+  transform: matrix(1, 0, 0, 1, 0, -6);
+  padding-top: 5px
+}
+
 .qualitative-color-legend-container{
   display: flex;
   flex-flow: row wrap;
@@ -21,12 +27,6 @@
   width: 125px;
   font-size: 14px;
   white-space: nowrap;
-}
-
-.encoding {
-  font-size: 15px;
-  transform: matrix(1, 0, 0, 1, 0, -6);
-  padding-top: 5px
 }
 
 .gradient-container{

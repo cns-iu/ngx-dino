@@ -1,5 +1,7 @@
 <div [style.margin]="margin">
-    <div class="gradient-title"><b>{{title}}</b></div>
+    <div class="title"><b>{{title}}</b></div>
+    <div class="encoding">{{encoding}}</div>
+
     <div class="edgeLegend">
         <svg 
         version="1.1" 
@@ -7,26 +9,25 @@
         xmlns="http://www.w3.org/2000/svg" 
         xmlns:xlink="http://www.w3.org/1999/xlink" 
         x="0px" y="0px"  
-        width="300px" height="180px" 
-        viewBox="0 0 300 180"
+        width="300px" height="120px" 
+        viewBox="0 0 300 120"
         preserveAspectRatio="xMidYMid meet">
         
-        <text class="encoding" transform="matrix(1 0 0 1 0 10)" font-size="15px">{{encoding}}</text>
-            <g transform="translate(10,-10)">
+            <g transform="translate(10, 0)">
                 <g id="maxEdge">
-                    <text transform="matrix(1 0 0 1 90 60)" text-anchor="start" font-size="13">{{maxEdgeLegendLabel}}</text>
-                    <line x1="0" y1="54" x2="80" y2="54" stroke="#000000" opacity= "1"/>
+                    <text transform="matrix(1 0 0 1 90 20)" text-anchor="start" font-size="13">{{maxEdgeLegendLabel}}</text>
+                    <line x1="0" y1="14" x2="80" y2="14" stroke="#000000" opacity= "1"/>
                 </g>
                 <g id="midEdge">
-                    <text transform="matrix(1 0 0 1 90 106)" text-anchor="start" font-size="13">{{midEdgeLegendLabel}}</text>
-                    <line x1="0" y1="103" x2="80" y2="103"  stroke="#000000" opacity= "1"/>
+                    <text transform="matrix(1 0 0 1 90 66)" text-anchor="start" font-size="13">{{midEdgeLegendLabel}}</text>
+                    <line x1="0" y1="63" x2="80" y2="63"  stroke="#000000" opacity= "1"/>
                 </g>
                 <g id="minEdge">
-                    <text transform="matrix(1 0 0 1 90 156)" text-anchor="start" font-size="13">{{minEdgeLegendLabel}}</text>
-                    <line x1="0" y1="153" x2="80" y2="153"  stroke="#000000" opacity= "1"/>
+                    <text transform="matrix(1 0 0 1 90 116)" text-anchor="start" font-size="13">{{minEdgeLegendLabel}}</text>
+                    <line x1="0" y1="113" x2="80" y2="113"  stroke="#000000" opacity= "1"/>
                 </g>
             </g>
-        <text id="note" transform="matrix(1 0 0 1 20 193)" fill="#444445" font-style="italic" font-size="12"></text>
+        <text id="note" transform="matrix(1 0 0 1 20 153)" fill="#444445" font-style="italic" font-size="12"></text>
         </svg>
     </div>
 </div>

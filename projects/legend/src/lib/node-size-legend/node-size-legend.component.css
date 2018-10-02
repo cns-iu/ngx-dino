@@ -1,8 +1,5 @@
-.title {
-  font-weight: 600;
-  font-size: 16px;
-}
-
 .encoding {
-  padding-top: 5px;
+  font-size: 15px;
+  transform: matrix(1, 0, 0, 1, 0, -6);
+  padding-top: 5px
 }

@@ -1,19 +1,20 @@
 <div class="sizeLegend" [style.margin]="margin" mat-card-image>
-  <div class="title">{{title}}</div>
+  <div class="title"><b>{{title}}</b></div>
+  <div class="encoding">{{encoding}}</div>
+
   <svg *ngIf="min !== max" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-    width="300px" height="180px" viewBox="0 0 300 180" preserveAspectRatio="xMidYMid meet">
+    width="300px" height="150px" viewBox="0 0 300 150" preserveAspectRatio="xMidYMid meet">
     <g>
-      <text class="encoding" transform="matrix(1 0 0 1 0 10)" fill="#222" font-size="15">{{encoding}}</text>
-      <circle id="maxNode" fill="none" stroke="#222" stroke-width="1" stroke-miterlimit="10" cx="25" cy="46" r="64" />
-      <circle id="midNode" fill="none" stroke="#222" stroke-width="1" stroke-miterlimit="10" cx="25" cy="106" r="34" />
-      <circle id="minNode" fill="none" stroke="#222" stroke-width="1" stroke-miterlimit="10" cx="25" cy="166" r="4" />
-      <g id="maxG" transform="translate(25, 46)">
+      <circle id="maxNode" fill="none" stroke="#222" stroke-width="1" stroke-miterlimit="10" cx="30" cy="16" r="64" />
+      <circle id="midNode" fill="none" stroke="#222" stroke-width="1" stroke-miterlimit="10" cx="30" cy="76" r="34" />
+      <circle id="minNode" fill="none" stroke="#222" stroke-width="1" stroke-miterlimit="10" cx="30" cy="136" r="4" />
+      <g id="maxG" transform="translate(30, 16)">
         <text transform="matrix(1 0 0 1 40 5)" text-anchor="end" fill="#222" font-size="13"></text>
       </g>
-      <g id="midG" transform="translate(25, 106)">
+      <g id="midG" transform="translate(30, 76)">
         <text transform="matrix(1 0 0 1 40 5)" text-anchor="end" fill="#222" font-size="13"></text>
       </g>
-      <g id="minG" transform="translate(25, 166)">
+      <g id="minG" transform="translate(30, 136)">
         <text transform="matrix(1 0 0 1 40 5)" text-anchor="end" fill="#222" font-size="13"></text>
       </g>
       <text id="note" transform="matrix(1 0 0 1 20 193)" fill="#444445" font-style="italic" font-size="12"></text>
@@ -22,7 +23,6 @@
   <svg *ngIf="min === max" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
     width="300px" height="70px" viewBox="0 0 300 70" preserveAspectRatio="xMidYMid meet">
     <g>
-      <text class="encoding" transform="matrix(1 0 0 1 0 10)" fill="#222" font-size="15">{{encoding}}</text>
       <circle id="maxNode" fill="none" stroke="#222" stroke-width="1" stroke-miterlimit="10" cx="25" cy="46" r="64" />
       <g id="maxG" transform="translate(25, 46)">
         <text transform="matrix(1 0 0 1 40 5)" text-anchor="end" fill="#222" font-size="13"></text>

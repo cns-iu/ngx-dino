@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { isFunction } from 'lodash';
 import { path } from 'd3-path';
 import { Point, isPoint } from '../shared/utility';
@@ -7,7 +7,8 @@ import { BuiltinEdgeTypes, EdgeType } from '../shared/options';
 @Component({
   selector: '[dino-network-edge]', // tslint:disable-line:component-selector
   templateUrl: './edge.component.html',
-  styleUrls: ['./edge.component.css']
+  styleUrls: ['./edge.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EdgeComponent implements OnChanges {
   @Input() edge: BuiltinEdgeTypes | EdgeType = 'line';

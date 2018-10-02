@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { isString } from 'lodash';
 import {
   Symbol, SymbolType, symbol as symbolConstructor,
@@ -29,7 +29,8 @@ const baselineLookup: { [P in LabelPosition]: LabelBaseline } = {
 @Component({
   selector: '[dino-network-node]', // tslint:disable-line:component-selector
   templateUrl: './node.component.html',
-  styleUrls: ['./node.component.css']
+  styleUrls: ['./node.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NodeComponent implements OnChanges {
   @Input() symbol: BuiltinSymbolTypes | SymbolType = 'circle';

@@ -133,7 +133,11 @@ export class ScienceMapComponent implements OnInit, OnChanges, DoCheck {
 
   doResize({width, height}: {width: number, height: number}): void {
     if (this.autoresize) {
-      this.resize(width, height);
+      const wDiff = width - this.elementWidth;
+      const hDiff = height - this.elementHeight;
+      const newW = 0 < wDiff && wDiff < 25 ? this.elementWidth : width;
+      const newH = 0 < hDiff && hDiff < 25 ? this.elementHeight : height;
+      this.resize(newW, newH);
     }
   }
 
@@ -157,11 +161,11 @@ export class ScienceMapComponent implements OnInit, OnChanges, DoCheck {
   setScales() {
     this.translateXScale = scaleLinear()
       .domain(d3Array.extent(this.dataService.underlyingScimapData.nodes, (d: any) => <number>d.x))
-      .range([0, this.elementWidth]);
+      .range([this.margin.left, this.elementWidth - this.margin.right]);
 
     this.translateYScale = scaleLinear()
       .domain(d3Array.extent(this.dataService.underlyingScimapData.nodes, (d: any) => <number>d.y))
-      .range([this.elementHeight, 0]);
+      .range([this.elementHeight - this.margin.top, this.margin.bottom]);
 
     const nodeSizeScale = scaleLog()
       .domain(d3Array.extent(this.data, (d: any) => Math.max(1, parseInt(d.size, 10))))

@@ -84,7 +84,7 @@ export class NetworkComponent implements OnInit, OnChanges {
     });
 
     this.debouncedLayout = debounce(() => {
-      const [nodes, edges] = this.debouncedLayoutArgs;
+      const [nodes = this.allNodes, edges = this.allEdges] = this.debouncedLayoutArgs;
       this.debouncedLayoutArgs = [undefined, undefined];
       ({
         nodes: this.nodes, edges: this.edges,

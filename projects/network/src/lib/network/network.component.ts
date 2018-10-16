@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Set } from 'immutable';
-import { conforms, filter, isFinite } from 'lodash';
+import { conforms, debounce, filter, isFinite } from 'lodash';
 import { BoundField, ChangeSet, Datum, DatumId, RawChangeSet, idSymbol } from '@ngx-dino/core';
 import { BuiltinSymbolTypes, CoordinateSpaceOptions } from '../shared/options';
 import { Edge, Node } from '../shared/types';
@@ -56,6 +56,9 @@ export class NetworkComponent implements OnInit, OnChanges {
   private get allNodes(): Node[] { return this.nodes.concat(this.excludedNodes); }
   private get allEdges(): Edge[] { return this.edges.concat(this.excludedEdges); }
 
+  private debouncedLayout: () => void;
+  private debouncedLayoutArgs: [Node[], Edge[]] = [undefined, undefined];
+
   constructor(private service: NetworkService, private layoutService: LayoutService) {
     const pointConform = conforms({
       [0]: isFinite,
@@ -79,6 +82,18 @@ export class NetworkComponent implements OnInit, OnChanges {
       const filtered = filter(this.applyChangeSet(set, this.allEdges), edgeConform) as any;
       this.layout(undefined, filtered);
     });
+
+    this.debouncedLayout = debounce(() => {
+      const [nodes, edges] = this.debouncedLayoutArgs;
+      this.debouncedLayoutArgs = [undefined, undefined];
+      ({
+        nodes: this.nodes, edges: this.edges,
+        excludedNodes: this.excludedNodes, excludedEdges: this.excludedEdges
+      } = this.layoutService.layout(nodes, edges, {
+        width: this.svgWidth, height: this.svgHeight,
+        coordinateSpace: this.coordinateSpace
+      }));
+    }, 16);
   }
 
   ngOnInit() { }
@@ -192,13 +207,9 @@ export class NetworkComponent implements OnInit, OnChanges {
     return filtered.concat(set.insert.toArray() as T[], set.replace.toArray() as T[]);
   }
 
-  private layout(nodes: Node[] = this.allNodes, edges: Edge[] = this.allEdges): void {
-    ({
-      nodes: this.nodes, edges: this.edges,
-      excludedNodes: this.excludedNodes, excludedEdges: this.excludedEdges
-    } = this.layoutService.layout(nodes, edges, {
-      width: this.svgWidth, height: this.svgHeight,
-      coordinateSpace: this.coordinateSpace
-    }));
+  private layout(nodes?: Node[], edges?: Edge[]): void {
+    this.debouncedLayoutArgs[0] = nodes || this.debouncedLayoutArgs[0];
+    this.debouncedLayoutArgs[1] = edges || this.debouncedLayoutArgs[1];
+    this.debouncedLayout();
   }
 }

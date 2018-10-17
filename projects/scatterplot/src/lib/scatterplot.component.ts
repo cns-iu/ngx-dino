@@ -303,6 +303,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
       .attr('markerHeight', 10)
       .attr('orient', 'auto')
       .append('path')
+      .attr('transform', 'rotate(-90, 5, 5)')
       .attr('d', 'M 0 0 L 5 10 L 10 0 z');
 
     // text label for the x-axis

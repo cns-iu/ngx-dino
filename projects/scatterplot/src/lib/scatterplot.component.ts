@@ -232,7 +232,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
     changedField?: BoundField<number | string>,
     label?: string
     ) {
-    if (this.xField && this.yField && this.dataService.pointProcessor) {
+    if (this.xField && this.yField && this.dataService.pointProcessor && changedField) {
       if (label) {
         this.dataService.updateData(changedField, label);
       } else {

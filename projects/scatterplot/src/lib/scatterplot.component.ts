@@ -554,7 +554,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
       case 'number':
         this.xScale = scaleLinear();
         this.xAxis = d3Axis.axisBottom(this.xScale).tickSizeOuter(0);
-        this.xScale.domain([0, d3Array.max(data, (d) => Number(d.x))])
+        this.xScale.domain([d3Array.min(data, (d) => Number(d.x)), d3Array.max(data, (d) => Number(d.x))])
           .range([0, this.elementWidth]);
         break;
 
@@ -571,7 +571,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
       case 'number':
         this.yScale = scaleLinear();
         this.yAxis = d3Axis.axisLeft(this.yScale).tickSizeOuter(0);
-        this.yScale.domain([0, d3Array.max(data, (d) => Number(d.y))])
+        this.yScale.domain([d3Array.min(data, (d) => Number(d.y)), d3Array.max(data, (d) => Number(d.y))])
           .range([this.elementHeight, 0]);
         break;
 

@@ -64,3 +64,24 @@ export const tooltipTextField = simpleField<number>({
 
   operator: access('group')
 });
+
+export const nodeTransparencyField = simpleField<number>({
+  bfieldId: 'nodeTransparency',
+  label: 'Node Transparency',
+
+  operator: access('group')
+});
+
+export const linkTransparencyField = simpleField<number>({
+  bfieldId: 'linkTransparency',
+  label: 'Link Transparency',
+
+  operator: access('group')
+});
+
+export const strokeTransparencyField = simpleField<number>({
+  bfieldId: 'strokeTransparency',
+  label: 'Stroke Transparency',
+
+  operator: access('group')
+});

@@ -43,7 +43,7 @@ export class ForceNetworkComponent implements OnInit {
     const combinedFields = assign({}, fields, pick(this.dataService, [
       'nodeIdField', 'nodeSizeField', 'nodeColorField', 'nodeLabelField',
       'edgeIdfield', 'edgeSourceField', 'edgeTargetField', 'edgeSizeField',
-      'tooltipTextField'
+      'tooltipTextField', 'nodeTransparencyField', 'linkTransparencyField', 'strokeTransparencyField'
     ]));
 
     this.fields = mapValues(combinedFields, (f: any) => f.getBoundField());

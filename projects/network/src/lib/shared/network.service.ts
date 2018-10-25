@@ -65,14 +65,15 @@ export class NetworkService {
     source: BoundField<Point>,
     target: BoundField<Point>,
     stroke: BoundField<string>,
-    strokeWidth: BoundField<number>
+    strokeWidth: BoundField<number>,
+    edgeTransparency: BoundField<string | number>
   ): this {
     if (this.edgeSubscription) {
       this.edgeSubscription.unsubscribe();
     }
 
     this.edgeProcessor = this.processorService.createProcessor<Edge, any>(stream, id, {
-      source, target, stroke, strokeWidth,
+      source, target, stroke, strokeWidth, edgeTransparency,
       csource, ctarget
     });
     this.edgeSubscription = this.edgeProcessor.asObservable().subscribe((c) => this.edgeChanges.next(c));
@@ -102,10 +103,11 @@ export class NetworkService {
     source: BoundField<Point>,
     target: BoundField<Point>,
     stroke: BoundField<string>,
-    strokeWidth: BoundField<number>
+    strokeWidth: BoundField<number>,
+    edgeTransparency: BoundField<string|number>
   ): this {
     const fields = Map<string, BoundField<any>>({
-      source, target, stroke, strokeWidth
+      source, target, stroke, strokeWidth, edgeTransparency
     }).filter((f) => !!f).toKeyedSeq();
     this.edgeProcessor.updateFields(fields);
     return this;

@@ -41,6 +41,7 @@ export class NetworkComponent implements OnInit, OnChanges {
   @Input() edgeTargetField: BoundField<Point>;
   @Input() edgeStrokeField: BoundField<string>;
   @Input() edgeStrokeWidthField: BoundField<number>;
+  @Input() edgeTransparencyField: BoundField<number>;
 
   @Input() coordinateSpace: CoordinateSpaceOptions;
 
@@ -126,12 +127,14 @@ export class NetworkComponent implements OnInit, OnChanges {
       this.service.fetchEdges(
         this.edgeStream, this.edgeIdField,
         this.edgeSourceField, this.edgeTargetField,
-        this.edgeStrokeField, this.edgeStrokeWidthField
+        this.edgeStrokeField, this.edgeStrokeWidthField,
+        this.edgeTransparencyField
       );
     }, () => {
       this.service.updateEdges(
         this.edgeSourceField, this.edgeTargetField,
-        this.edgeStrokeField, this.edgeStrokeWidthField
+        this.edgeStrokeField, this.edgeStrokeWidthField,
+        this.edgeTransparencyField
       );
     });
 

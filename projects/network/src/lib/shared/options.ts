@@ -29,5 +29,5 @@ export type BuiltinSymbolTypes =
 // Curves
 export type BuiltinEdgeTypes = 'line';
 export interface EdgeType {
-  draw(context: CanvasPathMethods, source: Point, target: Point): void;
+  draw(context: CanvasRenderingContext2D, source: Point, target: Point): void;
 }

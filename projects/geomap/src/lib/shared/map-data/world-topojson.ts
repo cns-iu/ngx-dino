@@ -1,9 +1,8 @@
-import { GeometryObject, Topology } from 'topojson-specification';
+import { GeometryCollection, Topology } from 'topojson-specification';
 
-// FIXME: Further improve typings
 export type WorldTopology = Topology<{
-  countries: GeometryObject;
-  land: GeometryObject;
+  countries: GeometryCollection;
+  land: GeometryCollection;
 }>;
 
 export const worldTopoJson: WorldTopology = {

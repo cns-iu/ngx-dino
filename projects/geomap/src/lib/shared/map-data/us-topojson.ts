@@ -1,10 +1,9 @@
-import { GeometryObject, Topology } from 'topojson-specification';
+import { GeometryCollection, Topology } from 'topojson-specification';
 
-// FIXME: Further improve typings
 export type USTopology = Topology<{
-  counties: GeometryObject;
-  states: GeometryObject;
-  nation: GeometryObject;
+  counties: GeometryCollection;
+  states: GeometryCollection;
+  nation: GeometryCollection;
 }>;
 
 export const usTopoJson: USTopology = {

@@ -1,7 +1,7 @@
 import { Observable, OperatorFunction } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { once } from 'lodash';
-import { MultiSelector, Selector, normalizeMultiSelector, normalizeSelector } from './common';
+import { MultiSelector, Selector, normalizeMultiSelector, normalizeSelector } from './meta-common';
 import { CompactCountyMetaData, CompactStateMetaData, rawUSMetaData } from './us-raw-meta-data';
 
 export interface CountyMetaData {

@@ -1,7 +1,7 @@
 import { Observable, OperatorFunction } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { once } from 'lodash';
-import { MultiSelector, normalizeMultiSelector, normalizeSelector } from './meta-common';
+import { MetaSelector, MultiMetaSelector } from './meta-common';
 import { CompactCountryMetaData, rawWorldMetaData } from './world-raw-meta-data';
 
 export interface CountryMetaData {
@@ -19,17 +19,17 @@ class CountryMetaDataImpl implements CountryMetaData {
 const getCountryMetaDataMap: () => Record<string, CountryMetaDataImpl> = once(() => {
   const dataMap: Record<string, CountryMetaDataImpl> = {};
   rawWorldMetaData.map(data => new CountryMetaDataImpl(data)).forEach(country => {
-    dataMap[normalizeSelector(country.id)] = country;
-    dataMap[normalizeSelector(country.name)] = country;
+    dataMap[MetaSelector.normalize(country.id)] = country;
+    dataMap[MetaSelector.normalize(country.name)] = country;
   });
   return dataMap;
 });
 
-export function lookupCountryMetaData(): OperatorFunction<MultiSelector, CountryMetaData[]> {
+export function lookupCountryMetaData(): OperatorFunction<MultiMetaSelector, CountryMetaData[]> {
   const dataMap = getCountryMetaDataMap();
-  return (source: Observable<MultiSelector>): Observable<CountryMetaData[]> => {
+  return (source: Observable<MultiMetaSelector>): Observable<CountryMetaData[]> => {
     return source.pipe(
-      map(normalizeMultiSelector),
+      map(MultiMetaSelector.normalize),
       map(selectors => selectors.map(selector => dataMap[selector]))
     );
   };

@@ -1,7 +1,7 @@
 import { Observable, OperatorFunction } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { once } from 'lodash';
-import { MultiSelector, Selector, normalizeMultiSelector, normalizeSelector } from './meta-common';
+import { MetaSelector, MultiMetaSelector } from './meta-common';
 import { CompactCountyMetaData, CompactStateMetaData, rawUSMetaData } from './us-raw-meta-data';
 
 export interface CountyMetaData {
@@ -30,8 +30,8 @@ class StateMetaDataImpl implements StateMetaData {
 
   constructor(private readonly compactData: CompactStateMetaData) {
     compactData[3].map(data => new CountyMetaDataImpl(data)).forEach(county => {
-      this.countyMap[normalizeSelector(county.id)] = county;
-      this.countyMap[normalizeSelector(county.name)] = county;
+      this.countyMap[MetaSelector.normalize(county.id)] = county;
+      this.countyMap[MetaSelector.normalize(county.name)] = county;
     });
   }
 }
@@ -39,28 +39,28 @@ class StateMetaDataImpl implements StateMetaData {
 const getStateMetaDataMap: () => Record<string, StateMetaDataImpl> = once(() => {
   const dataMap: Record<string, StateMetaDataImpl> = {};
   rawUSMetaData.map(data => new StateMetaDataImpl(data)).forEach(state => {
-    dataMap[normalizeSelector(state.id)] = state;
-    dataMap[normalizeSelector(state.code)] = state;
-    dataMap[normalizeSelector(state.name)] = state;
+    dataMap[MetaSelector.normalize(state.id)] = state;
+    dataMap[MetaSelector.normalize(state.code)] = state;
+    dataMap[MetaSelector.normalize(state.name)] = state;
   });
   return dataMap;
 });
 
-export function lookupStateMetaData(): OperatorFunction<MultiSelector, StateMetaData[]> {
+export function lookupStateMetaData(): OperatorFunction<MultiMetaSelector, StateMetaData[]> {
   const dataMap = getStateMetaDataMap();
-  return (source: Observable<MultiSelector>): Observable<StateMetaData[]> => {
+  return (source: Observable<MultiMetaSelector>): Observable<StateMetaData[]> => {
     return source.pipe(
-      map(normalizeMultiSelector),
+      map(MultiMetaSelector.normalize),
       map(selectors => selectors.map(selector => dataMap[selector]))
     );
   };
 }
 
-export function lookupCountyMetaData(stateSelector: Selector): OperatorFunction<MultiSelector, CountyMetaData[]> {
-  const state = getStateMetaDataMap()[normalizeSelector(stateSelector)];
-  return (source: Observable<MultiSelector>): Observable<CountyMetaData[]> => {
+export function lookupCountyMetaData(stateSelector: MetaSelector): OperatorFunction<MultiMetaSelector, CountyMetaData[]> {
+  const state = getStateMetaDataMap()[MetaSelector.normalize(stateSelector)];
+  return (source: Observable<MultiMetaSelector>): Observable<CountyMetaData[]> => {
     return source.pipe(
-      map(normalizeMultiSelector),
+      map(MultiMetaSelector.normalize),
       map(selectors => selectors.map(selector => state.countyMap[selector]))
     );
   };

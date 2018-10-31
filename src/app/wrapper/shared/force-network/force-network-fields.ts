@@ -69,19 +69,19 @@ export const nodeTransparencyField = simpleField<number>({
   bfieldId: 'nodeTransparency',
   label: 'Node Transparency',
 
-  operator: access('group')
+  operator: access('nodeTransparency')
 });
 
 export const linkTransparencyField = simpleField<number>({
-  bfieldId: 'linkTransparency',
+  bfieldId: 'transparency',
   label: 'Link Transparency',
 
-  operator: access('group')
+  operator: access('transparency')
 });
 
 export const strokeTransparencyField = simpleField<number>({
   bfieldId: 'strokeTransparency',
   label: 'Stroke Transparency',
 
-  operator: access('group')
+  operator: access('strokeTransparency')
 });

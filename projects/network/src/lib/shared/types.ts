@@ -11,6 +11,7 @@ export class Node extends Datum {
   tooltip: string;
   label: string;
   labelPosition: string;
+  transparency: number;
 
   // Calculated
   cposition: Point;
@@ -22,6 +23,7 @@ export class Edge extends Datum {
   target: Point;
   stroke: string;
   strokeWidth: number;
+  transparency: number;
 
   // Calculated
   csource: Point;

@@ -48,9 +48,6 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
   @Input() pulseField: BoundField<boolean>;
 
   @Input() nodeTransparencyField: BoundField<number>;
-  @Input() nodeTransparencyRange = [0, 1];
-
-  @Input() strokeTransparencyRange = [0, 1];
   @Input() strokeTransparencyField: BoundField<number>;
 
 
@@ -96,8 +93,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
   xScale: any; // d3Axis.AxisScale<any> couldn't figure out domain and range definition
   yScale: any; // d3Axis.AxisScale<any>
 
-  nodeTransparencyScale: any;
-  strokeTransparencyScale: any;
+  transparencyScale: any;
   // x & y labels are field labels  - not drawnq over the axes
   xAxisLabel = ''; // defaults
   yAxisLabel = ''; // defaults
@@ -462,14 +458,14 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
       .attr('stroke-width', 1)
       .attr('transform', (d) => this.shapeTransform(d))
       .attr('fill', (d) => d.color)
-      .attr('opacity', (d) => this.nodeTransparencyScale(d.nodeTransparency))
-      .attr('stroke-opacity', (d) => this.nodeTransparencyScale(d.strokeTransparency));
+      .attr('opacity', (d) => this.transparencyScale(d.nodeTransparency))
+      .attr('stroke-opacity', (d) => this.transparencyScale(d.strokeTransparency));
 
     plots.enter().append('path')
       .data(data)
       .attr('class', 'plots')
-      .attr('opacity', (d) => this.nodeTransparencyScale(d.nodeTransparency))
-      .attr('stroke-opacity', (d) => this.nodeTransparencyScale(d.strokeTransparency))
+      .attr('opacity', (d) => this.transparencyScale(d.nodeTransparency))
+      .attr('stroke-opacity', (d) => this.transparencyScale(d.strokeTransparency))
       .attr('id', (d) => d[idSymbol])
       .attr('d', d3Shape.symbol()
         .size((d) => d.size as number)
@@ -565,7 +561,6 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
 
   /**** This function sets scales on x and y axes based on fields selected *****/
   setScales(data: Point[]) {
-    console.log(data);
     switch (this.xField.dataType) {
       default:
       case 'number':
@@ -600,25 +595,9 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
         break;
     }
 
-    this.nodeTransparencyScale = scaleLinear()
-    .domain([
-      d3Array.min(data,
-        (d) => Number(d.nodeTransparency) === undefined ? 1 : Number(d.nodeTransparency)),
-      d3Array.max(data,
-        (d) => Number(d.nodeTransparency) === undefined ? 1 : Number(d.nodeTransparency))
-      ])
-    .range(this.nodeTransparencyRange.reverse());
-
-    this.strokeTransparencyScale = scaleLinear()
-    .domain([
-      d3Array.min(data,
-        (d) => Number(d.strokeTransparency) === undefined ? 1 : Number(d.strokeTransparency)),
-      d3Array.max(data,
-        (d) => Number(d.strokeTransparency) === undefined ? 1 : Number(d.strokeTransparency))
-      ])
-    .range(this.strokeTransparencyRange.reverse());
-
-
+    this.transparencyScale = scaleLinear()
+    .domain([0, 1])
+    .range([1, 0]);
   }
 
   onMouseOver(targetId: any) {

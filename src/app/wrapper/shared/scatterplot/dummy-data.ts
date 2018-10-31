@@ -8,7 +8,9 @@ export default [
     'size': 116.66666666666666,
     'stroke': '#000',
     'colorCategory': '51-60',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.67,
+    'strokeTransparency': 0.33
   },
   {
     'id': 'Thu Aug 09 2018 22:21:14 GMT-0400 (Eastern Daylight Time):2',
@@ -19,7 +21,9 @@ export default [
     'size': 233.33333333333331,
     'stroke': '#2c2c2c',
     'colorCategory': '31-40',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.89,
+    'strokeTransparency': 0.28
   },
   {
     'id': 'Thu Aug 09 2018 22:22:14 GMT-0400 (Eastern Daylight Time):1',
@@ -30,7 +34,9 @@ export default [
     'size': 233.33333333333331,
     'stroke': '#2c2c2c',
     'colorCategory': '31-40',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.41,
+    'strokeTransparency': 0.53
   },
   {
     'id': 'Thu Aug 09 2018 22:22:14 GMT-0400 (Eastern Daylight Time):2',
@@ -41,7 +47,9 @@ export default [
     'size': 50,
     'stroke': '#727272',
     'colorCategory': '10-12',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.08,
+    'strokeTransparency': 0.49
   },
   {
     'id': 'Thu Aug 09 2018 22:23:14 GMT-0400 (Eastern Daylight Time):1',
@@ -52,7 +60,9 @@ export default [
     'size': 50,
     'stroke': '#141414',
     'colorCategory': '41-50',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.08,
+    'strokeTransparency': 0.44
   },
   {
     'id': 'Thu Aug 09 2018 22:24:14 GMT-0400 (Eastern Daylight Time):1',
@@ -63,7 +73,9 @@ export default [
     'size': 250,
     'stroke': '#5b5b5b',
     'colorCategory': '13-18',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.74,
+    'strokeTransparency': 0.92
   },
   {
     'id': 'Thu Aug 09 2018 22:25:14 GMT-0400 (Eastern Daylight Time):1',
@@ -74,7 +86,9 @@ export default [
     'size': 50,
     'stroke': '#ffffff',
     'colorCategory': '71+',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.55,
+    'strokeTransparency': 0.73
   },
   {
     'id': 'Thu Aug 09 2018 22:26:14 GMT-0400 (Eastern Daylight Time):1',
@@ -85,7 +99,9 @@ export default [
     'size': 66.66666666666666,
     'stroke': '#141414',
     'colorCategory': '41-50',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.43,
+    'strokeTransparency': 0.45
   },
   {
     'id': 'Thu Aug 09 2018 22:27:14 GMT-0400 (Eastern Daylight Time):1',
@@ -96,7 +112,9 @@ export default [
     'size': 166.66666666666669,
     'stroke': '#000',
     'colorCategory': '51-60',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.16,
+    'strokeTransparency': 0.21
   },
   {
     'id': 'Thu Aug 09 2018 22:28:14 GMT-0400 (Eastern Daylight Time):1',
@@ -107,7 +125,9 @@ export default [
     'size': 83.33333333333333,
     'stroke': '#ffffff',
     'colorCategory': null,
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.25,
+    'strokeTransparency': 0.58
   },
   {
     'id': 'Thu Aug 09 2018 22:28:14 GMT-0400 (Eastern Daylight Time):2',
@@ -118,7 +138,9 @@ export default [
     'size': 200,
     'stroke': '#2c2c2c',
     'colorCategory': '31-40',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.76,
+    'strokeTransparency': 0.19
   },
   {
     'id': 'Thu Aug 09 2018 22:29:14 GMT-0400 (Eastern Daylight Time):1',
@@ -129,7 +151,9 @@ export default [
     'size': 250,
     'stroke': '#434343',
     'colorCategory': '19-30',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.26,
+    'strokeTransparency': 0.03
   },
   {
     'id': 'Thu Aug 09 2018 22:30:14 GMT-0400 (Eastern Daylight Time):1',
@@ -140,7 +164,9 @@ export default [
     'size': 166.66666666666669,
     'stroke': '#000',
     'colorCategory': '61-70',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.81,
+    'strokeTransparency': 0.19
   },
   {
     'id': 'Thu Aug 09 2018 22:31:14 GMT-0400 (Eastern Daylight Time):1',
@@ -151,7 +177,9 @@ export default [
     'size': 216.66666666666669,
     'stroke': '#ffffff',
     'colorCategory': '71+',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.95,
+    'strokeTransparency': 0.28
   },
   {
     'id': 'Thu Aug 09 2018 22:31:14 GMT-0400 (Eastern Daylight Time):2',
@@ -162,7 +190,9 @@ export default [
     'size': 83.33333333333333,
     'stroke': '#000',
     'colorCategory': '61-70',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.41,
+    'strokeTransparency': 0
   },
   {
     'id': 'Thu Aug 09 2018 22:32:14 GMT-0400 (Eastern Daylight Time):1',
@@ -173,7 +203,9 @@ export default [
     'size': 50,
     'stroke': '#5b5b5b',
     'colorCategory': '13-18',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.04,
+    'strokeTransparency': 0.15
   },
   {
     'id': 'Thu Aug 09 2018 22:33:14 GMT-0400 (Eastern Daylight Time):1',
@@ -184,7 +216,9 @@ export default [
     'size': 83.33333333333333,
     'stroke': '#2c2c2c',
     'colorCategory': '31-40',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.32,
+    'strokeTransparency': 0.72
   },
   {
     'id': 'Thu Aug 09 2018 22:33:14 GMT-0400 (Eastern Daylight Time):2',
@@ -195,7 +229,9 @@ export default [
     'size': 200,
     'stroke': '#5b5b5b',
     'colorCategory': '13-18',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.71,
+    'strokeTransparency': 0.11
   },
   {
     'id': 'Thu Aug 09 2018 22:34:14 GMT-0400 (Eastern Daylight Time):1',
@@ -206,7 +242,9 @@ export default [
     'size': 50,
     'stroke': '#8a8a8a',
     'colorCategory': '07-09',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.1,
+    'strokeTransparency': 0.62
   },
   {
     'id': 'Thu Aug 09 2018 22:34:14 GMT-0400 (Eastern Daylight Time):2',
@@ -217,7 +255,9 @@ export default [
     'size': 233.33333333333331,
     'stroke': '#434343',
     'colorCategory': '19-30',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.69,
+    'strokeTransparency': 0.89
   },
   {
     'id': 'Thu Aug 09 2018 22:35:14 GMT-0400 (Eastern Daylight Time):1',
@@ -228,7 +268,9 @@ export default [
     'size': 216.66666666666669,
     'stroke': '#434343',
     'colorCategory': '19-30',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.45,
+    'strokeTransparency': 0.34
   },
   {
     'id': 'Thu Aug 09 2018 22:36:14 GMT-0400 (Eastern Daylight Time):1',
@@ -239,7 +281,9 @@ export default [
     'size': 216.66666666666669,
     'stroke': '#ffffff',
     'colorCategory': null,
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.15,
+    'strokeTransparency': 0.56
   },
   {
     'id': 'Thu Aug 09 2018 22:37:14 GMT-0400 (Eastern Daylight Time):1',
@@ -250,7 +294,9 @@ export default [
     'size': 250,
     'stroke': '#000',
     'colorCategory': '51-60',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.66,
+    'strokeTransparency': 0.64
   },
   {
     'id': 'Thu Aug 09 2018 22:38:14 GMT-0400 (Eastern Daylight Time):1',
@@ -261,7 +307,9 @@ export default [
     'size': 150,
     'stroke': '#2c2c2c',
     'colorCategory': '31-40',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.79,
+    'strokeTransparency': 0.2
   },
   {
     'id': 'Thu Aug 09 2018 22:38:14 GMT-0400 (Eastern Daylight Time):2',
@@ -272,7 +320,9 @@ export default [
     'size': 50,
     'stroke': '#000',
     'colorCategory': '51-60',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.59,
+    'strokeTransparency': 0.85
   },
   {
     'id': 'Thu Aug 09 2018 22:39:14 GMT-0400 (Eastern Daylight Time):1',
@@ -283,7 +333,9 @@ export default [
     'size': 83.33333333333333,
     'stroke': '#000',
     'colorCategory': '61-70',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.43,
+    'strokeTransparency': 0.43
   },
   {
     'id': 'Thu Aug 09 2018 22:40:14 GMT-0400 (Eastern Daylight Time):1',
@@ -294,7 +346,9 @@ export default [
     'size': 83.33333333333333,
     'stroke': '#000',
     'colorCategory': '61-70',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.83,
+    'strokeTransparency': 0.71
   },
   {
     'id': 'Thu Aug 09 2018 22:41:14 GMT-0400 (Eastern Daylight Time):1',
@@ -305,7 +359,9 @@ export default [
     'size': 200,
     'stroke': '#ffffff',
     'colorCategory': '71+',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.11,
+    'strokeTransparency': 0.06
   },
   {
     'id': 'Thu Aug 09 2018 22:42:14 GMT-0400 (Eastern Daylight Time):1',
@@ -316,7 +372,9 @@ export default [
     'size': 133.33333333333334,
     'stroke': '#000',
     'colorCategory': '61-70',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.36,
+    'strokeTransparency': 0.83
   },
   {
     'id': 'Thu Aug 09 2018 22:42:14 GMT-0400 (Eastern Daylight Time):2',
@@ -327,7 +385,9 @@ export default [
     'size': 216.66666666666669,
     'stroke': '#727272',
     'colorCategory': '10-12',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.72,
+    'strokeTransparency': 0.94
   },
   {
     'id': 'Thu Aug 09 2018 22:43:14 GMT-0400 (Eastern Daylight Time):1',
@@ -338,7 +398,9 @@ export default [
     'size': 200,
     'stroke': '#2c2c2c',
     'colorCategory': '31-40',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.6,
+    'strokeTransparency': 0.72
   },
   {
     'id': 'Thu Aug 09 2018 22:43:14 GMT-0400 (Eastern Daylight Time):2',
@@ -349,7 +411,9 @@ export default [
     'size': 66.66666666666666,
     'stroke': '#5b5b5b',
     'colorCategory': '13-18',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.76,
+    'strokeTransparency': 0.06
   },
   {
     'id': 'Thu Aug 09 2018 22:44:14 GMT-0400 (Eastern Daylight Time):1',
@@ -360,7 +424,9 @@ export default [
     'size': 216.66666666666669,
     'stroke': '#000',
     'colorCategory': '51-60',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.08,
+    'strokeTransparency': 0.3
   },
   {
     'id': 'Thu Aug 09 2018 22:44:14 GMT-0400 (Eastern Daylight Time):2',
@@ -371,7 +437,9 @@ export default [
     'size': 216.66666666666669,
     'stroke': '#2c2c2c',
     'colorCategory': '31-40',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.94,
+    'strokeTransparency': 0.99
   },
   {
     'id': 'Thu Aug 09 2018 22:45:14 GMT-0400 (Eastern Daylight Time):1',
@@ -382,7 +450,9 @@ export default [
     'size': 233.33333333333331,
     'stroke': '#ffffff',
     'colorCategory': '71+',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.69,
+    'strokeTransparency': 0.81
   },
   {
     'id': 'Thu Aug 09 2018 22:45:14 GMT-0400 (Eastern Daylight Time):2',
@@ -393,7 +463,9 @@ export default [
     'size': 166.66666666666669,
     'stroke': '#2c2c2c',
     'colorCategory': '31-40',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.07,
+    'strokeTransparency': 0.97
   },
   {
     'id': 'Thu Aug 09 2018 22:46:14 GMT-0400 (Eastern Daylight Time):1',
@@ -404,7 +476,9 @@ export default [
     'size': 233.33333333333331,
     'stroke': '#ffffff',
     'colorCategory': '71+',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.41,
+    'strokeTransparency': 0.01
   },
   {
     'id': 'Thu Aug 09 2018 22:46:14 GMT-0400 (Eastern Daylight Time):2',
@@ -415,7 +489,9 @@ export default [
     'size': 83.33333333333333,
     'stroke': '#000',
     'colorCategory': '51-60',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.49,
+    'strokeTransparency': 0.67
   },
   {
     'id': 'Thu Aug 09 2018 22:47:14 GMT-0400 (Eastern Daylight Time):1',
@@ -426,7 +502,9 @@ export default [
     'size': 50,
     'stroke': '#141414',
     'colorCategory': '41-50',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.69,
+    'strokeTransparency': 0.87
   },
   {
     'id': 'Thu Aug 09 2018 22:48:14 GMT-0400 (Eastern Daylight Time):1',
@@ -437,7 +515,9 @@ export default [
     'size': 116.66666666666666,
     'stroke': '#000',
     'colorCategory': '51-60',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 1,
+    'strokeTransparency': 0.6
   },
   {
     'id': 'Thu Aug 09 2018 22:48:14 GMT-0400 (Eastern Daylight Time):2',
@@ -448,7 +528,9 @@ export default [
     'size': 50,
     'stroke': '#141414',
     'colorCategory': '41-50',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.52,
+    'strokeTransparency': 0.92
   },
   {
     'id': 'Thu Aug 09 2018 22:49:14 GMT-0400 (Eastern Daylight Time):1',
@@ -459,7 +541,9 @@ export default [
     'size': 233.33333333333331,
     'stroke': '#ffffff',
     'colorCategory': null,
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.61,
+    'strokeTransparency': 0.23
   },
   {
     'id': 'Thu Aug 09 2018 22:16:17 GMT-0400 (Eastern Daylight Time):1',
@@ -470,7 +554,9 @@ export default [
     'size': 150,
     'stroke': '#000',
     'colorCategory': '61-70',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.14,
+    'strokeTransparency': 0.92
   },
   {
     'id': 'Thu Aug 09 2018 22:16:21 GMT-0400 (Eastern Daylight Time):1',
@@ -481,7 +567,9 @@ export default [
     'size': 100,
     'stroke': '#ffffff',
     'colorCategory': null,
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.41,
+    'strokeTransparency': 0.14
   },
   {
     'id': 'Thu Aug 09 2018 22:16:23 GMT-0400 (Eastern Daylight Time):1',
@@ -492,7 +580,9 @@ export default [
     'size': 66.66666666666666,
     'stroke': '#000',
     'colorCategory': '51-60',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.69,
+    'strokeTransparency': 0.36
   },
   {
     'id': 'Thu Aug 09 2018 22:16:23 GMT-0400 (Eastern Daylight Time):2',
@@ -503,7 +593,9 @@ export default [
     'size': 50,
     'stroke': '#2c2c2c',
     'colorCategory': '31-40',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.45,
+    'strokeTransparency': 0.38
   },
   {
     'id': 'Thu Aug 09 2018 22:16:27 GMT-0400 (Eastern Daylight Time):1',
@@ -514,7 +606,9 @@ export default [
     'size': 250,
     'stroke': '#2c2c2c',
     'colorCategory': '31-40',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.02,
+    'strokeTransparency': 0.86
   },
   {
     'id': 'Thu Aug 09 2018 22:16:32 GMT-0400 (Eastern Daylight Time):1',
@@ -525,7 +619,9 @@ export default [
     'size': 250,
     'stroke': '#141414',
     'colorCategory': '41-50',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.19,
+    'strokeTransparency': 0.24
   },
   {
     'id': 'Thu Aug 09 2018 22:16:35 GMT-0400 (Eastern Daylight Time):1',
@@ -536,7 +632,9 @@ export default [
     'size': 250,
     'stroke': '#8a8a8a',
     'colorCategory': '07-09',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.82,
+    'strokeTransparency': 0.08
   },
   {
     'id': 'Thu Aug 09 2018 22:16:35 GMT-0400 (Eastern Daylight Time):2',
@@ -547,6 +645,8 @@ export default [
     'size': 250,
     'stroke': '#2c2c2c',
     'colorCategory': '31-40',
-    'pulse': false
+    'pulse': false,
+    'nodeTransparency': 0.11,
+    'strokeTransparency': 0.06
   }
 ];

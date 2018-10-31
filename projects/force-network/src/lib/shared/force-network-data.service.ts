@@ -61,7 +61,6 @@ export class ForceNetworkDataService {
 
         tooltipText: tooltipTextField,
         nodeTransparency: nodeTransparencyField,
-        linkTransparency: linkTransparencyField,
         strokeTransparency: strokeTransparencyField
       }
     );
@@ -73,7 +72,8 @@ export class ForceNetworkDataService {
         id: linkIdField,
         source: linkSourceField,
         target: linkTargetField,
-        size: linkSizeField
+        size: linkSizeField,
+        linkTransparency: linkTransparencyField
       }
     );
 

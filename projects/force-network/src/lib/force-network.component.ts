@@ -62,13 +62,9 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
   @Input() labelSizeRange = [16, 22];
   @Input() nodeColorRange: string[];
   @Input() nodeTransparencyField: BoundField<number>;
-  @Input() nodeTransparencyRange = [0, 1];
-
-  @Input() strokeTransparencyRange = [0, 1];
 
   @Input() linkSizeRange = [1, 8];
   @Input() linkColorRange = ['#FFFFFF', '#3182BD'];
-  @Input() linkTransparencyRange = [0, 1];
 
   @Input() minPositionX = 0;
   @Input() minPositionY = -20;
@@ -95,11 +91,7 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
   private nodeColorScale: any; // TODO typings
   private linkColorScale: any; // TODO typings
 
-  private linkTransparencyScale: any; // TODO typings
-  private nodeTransparencyScale: any; // TODO typings
-  private strokeTransparencyScale: any; // TODO typings
-
-
+  private transparencyScale: any; // TODO typings
 
   private radius = 15; // default radius
 
@@ -255,33 +247,10 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
       ])
     .range(this.linkColorRange);
 
-    this.linkTransparencyScale = scaleLinear()
-      .domain([
-        d3Array.min(this.linksData,
-          (d) => Number(d.linkTransparencyField) === undefined ? 1 : Number(d.linkTransparencyField)),
-        d3Array.max(this.linksData,
-          (d) => Number(d.linkTransparencyField) === undefined ? 1 : Number(d.linkTransparencyField))
-        ])
-      .range(this.linkTransparencyRange.reverse());
-
-    this.strokeTransparencyScale = scaleLinear()
-    .domain([
-      d3Array.min(this.nodesData,
-        (d) => Number(d.strokeTransparency) === undefined ? 1 : Number(d.strokeTransparency)),
-      d3Array.max(this.nodesData,
-        (d) => Number(d.strokeTransparency) === undefined ? 1 : Number(d.strokeTransparency))
-      ])
-    .range(this.strokeTransparencyRange.reverse());
-
-      this.nodeTransparencyScale = scaleLinear()
-      .domain([
-        d3Array.min(this.nodesData,
-          (d) => Number(d.nodeTransparency) === undefined ? 1 : Number(d.nodeTransparency)),
-        d3Array.max(this.nodesData,
-          (d) => Number(d.nodeTransparency) === undefined ? 1 : Number(d.nodeTransparency))
-        ])
-      .range(this.nodeTransparencyRange.reverse());
-  }
+    this.transparencyScale = scaleLinear()
+      .domain([0, 1])
+      .range([1, 0]);
+    }
 
   initVisualization() {
     const container = d3Selection.select(this.parentNativeElement)
@@ -317,15 +286,15 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
     this.nodes = this.nodes.data(this.nodesData, (d) => d[idSymbol]);
     this.nodes.transition().attr('r', (d) => this.nodeSizeScale(d.size))
       .attr('fill', (d) => this.nodeColorScale(d.color))
-      .attr('opacity', (d) => this.nodeTransparencyScale(d.nodeTransparency))
-      .attr('stroke-opacity', (d) => this.strokeTransparencyScale(d.strokeTransparency));
+      .attr('opacity', (d) => this.transparencyScale(d.nodeTransparency))
+      .attr('stroke-opacity', (d) => this.transparencyScale(d.strokeTransparency));
 
     this.nodes.exit().remove();
     this.nodes = this.nodes.enter().append('circle')
       .attr('fill', (d) => this.nodeColorScale(d.color))
-      .attr('opacity', (d) => this.nodeTransparencyScale(d.nodeTransparency))
+      .attr('opacity', (d) => this.transparencyScale(d.nodeTransparency))
       .attr('r', (d) => this.nodeSizeScale(d.size)).merge(this.nodes)
-      .attr('stroke-opacity', (d) => this.strokeTransparencyScale(d.strokeTransparency))
+      .attr('stroke-opacity', (d) => this.transparencyScale(d.strokeTransparency))
       .call(d3Drag.drag()
       .on('start', this.dragstarted.bind(this))
       .on('drag', this.dragged.bind(this))
@@ -336,19 +305,18 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
 
     this.links = this.links.data(this.linksData, (d) => d.id);
 
-    this.links.transition().attr('stroke-width', (d) => this.linkSizeScale(d.size))
+    this.links.transition()
+      .attr('stroke-width', (d) => this.linkSizeScale(d.size))
       .attr('stroke', (d) => this.linkColorScale(
         d[this.linkColorField]) === undefined ? 'black' : this.linkColorScale(d[this.linkColorField]))
-      .attr('opacity', (d) => isNaN(this.linkTransparencyScale(d.linkTransparency)) ? 1 : this.linkTransparencyScale(d.linkTransparency));
-
+      .attr('opacity', (d) => isNaN(this.transparencyScale(d.linkTransparency)) ? 1 : this.transparencyScale(d.linkTransparency));
     this.links.exit().remove();
     this.links = this.links.enter().append('line').merge(this.links)
       .attr('stroke-width', (d) => isNaN(this.linkSizeScale(d.size)) ? 1 : this.linkSizeScale(d.size))
       .attr('stroke', (d) => this.linkColorScale(
         d[this.linkColorField]) === undefined ? 'black' : this.linkColorScale(d[this.linkColorField]))
-      .attr('opacity', (d) => isNaN(this.linkTransparencyScale(d.linkTransparencyField)) ?
-                                  1 :
-                                  this.linkTransparencyScale(d.linkTransparencyField));
+      .attr('opacity', (d) => isNaN(this.transparencyScale(d.linkTransparency)) ?
+        1 : this.transparencyScale(d.linkTransparency));
 
 
     this.labels = this.svgContainer.selectAll('text').data(this.nodesData, (d) => d[idSymbol]);

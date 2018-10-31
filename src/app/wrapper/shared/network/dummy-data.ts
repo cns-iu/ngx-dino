@@ -6,6 +6,7 @@ const numNodes = 50;
 const numEdges = numNodes - 1;
 const nodeSizeRange = { min: 60, max: 100 };
 const edgeStrokeWidthRange = { min: 1, max: 5 };
+const nodeStrokeWidthRange = { min: 1, max: 5 };
 const shapes = ['circle', 'cross', 'diamond', 'square', 'star', 'triangle', 'wye'];
 
 
@@ -18,7 +19,14 @@ function createRandomNode(index: number) {
     id: index,
     position: [width * random(), height * random()],
     size: nodeSizeRange.min + (nodeSizeRange.max - nodeSizeRange.min) * random(),
-    symbol: shapes[randomIndex(shapes.length)]
+    symbol: shapes[randomIndex(shapes.length)],
+    nodeStroke: 'red',
+    nodeStrokeWidth: nodeStrokeWidthRange.min + (nodeStrokeWidthRange.max - nodeStrokeWidthRange.min) * random(),
+    nodeTooltip: 'Something',
+    nodeLabel: 'Node Label',
+    nodeLabelPosition: 'Temp data',
+    nodeTransparency: random(),
+    strokeTransparency: random()
   };
 }
 
@@ -30,7 +38,8 @@ function createRandomEdge(index: number) {
     id: index,
     source: dummyNodeData[randomIndex(length)].position,
     target: dummyNodeData[randomIndex(length)].position,
-    strokeWidth: edgeStrokeWidthRange.min + (edgeStrokeWidthRange.max - edgeStrokeWidthRange.min) * random()
+    strokeWidth: edgeStrokeWidthRange.min + (edgeStrokeWidthRange.max - edgeStrokeWidthRange.min) * random(),
+    transparency: random()
   };
 }
 

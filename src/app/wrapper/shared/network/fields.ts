@@ -2,7 +2,7 @@ import { BoundField, access, simpleField } from '@ngx-dino/core';
 
 export type FieldNames =
   'nodeIdField' | 'nodePositionField' | 'nodeSizeField' | 'nodeSymbolField' | 'nodeColorField' | 'nodeStrokeField' |
-  'nodeStrokeWidthField' | 'nodeTooltipField' | |'nodeLabelField' | 'nodeLabelPositionField' | 'edgeIdField' | 'edgeSourceField' |
+  'nodeStrokeWidthField' | 'nodeTooltipField' | 'nodeLabelField' | 'nodeLabelPositionField' | 'edgeIdField' | 'edgeSourceField' |
   'edgeTargetField' | 'edgeStrokeField' | 'edgeStrokeWidthField' | 'edgeTransparencyField' | 'nodeTransparencyField' |
   'strokeTransparencyField';
 export type Fields = {[P in FieldNames]?: BoundField<any>};

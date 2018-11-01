@@ -1,6 +1,16 @@
 # Changelog
 
-Changelog for the @ngx-dino.
+Changelog for @ngx-dino.
+
+## 0.9.0 - 2018-10-25
+
+### Added in 0.9.0
+
+- Updated to Angular 7
+
+### Known Issues in 0.9.0
+
+- Documentation is not yet complete enough for external users to effectively use the code
 
 ## 0.6.0 - 2018-08-10
 

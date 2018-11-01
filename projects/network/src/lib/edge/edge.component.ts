@@ -47,7 +47,7 @@ export class EdgeComponent implements OnChanges {
     // FIXME
     // Assume `line` for now
     return {
-      draw(context: CanvasPathMethods, source: Point, target: Point): void {
+      draw(context: CanvasRenderingContext2D, source: Point, target: Point): void {
         context.moveTo(source[0], source[1]);
         context.lineTo(target[0], target[1]);
       }

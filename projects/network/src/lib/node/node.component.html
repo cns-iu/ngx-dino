@@ -2,6 +2,6 @@
     <svg:text *ngIf="hasLabel()" [attr.dx]="labelDx" [attr.dy]="labelDy" [style.text-anchor]="labelAnchor" [style.alignment-baseline]="labelBaseline">
         {{ label }}
     </svg:text>
-    <svg:path [attr.d]="shape" [attr.fill]="color" [attr.stroke]="stroke" [attr.stroke-width]="strokeWidth" (mouseover)="showTooltip($event)" (mouseout)="hideTooltip()">
+    <svg:path [attr.d]="shape" [attr.fill]="color" [attr.stroke]="stroke" [attr.stroke-opacity]="strokeTransparency" [attr.opacity]="transparency" [attr.stroke-width]="strokeWidth" (mouseover)="showTooltip($event)" (mouseout)="hideTooltip()">
     </svg:path>
 </svg:g>

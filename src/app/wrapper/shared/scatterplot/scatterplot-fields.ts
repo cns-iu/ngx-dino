@@ -72,11 +72,11 @@ export const colorCategoryField = simpleField<string>({
   operator: access('colorCategory', 'Unknown')
 });
 
-export const nodeTransparencyField = simpleField<number>({
-  bfieldId: 'nodeTransparency',
+export const transparencyField = simpleField<number>({
+  bfieldId: 'transparency',
   label: 'Node Transparency',
 
-  operator: access('nodeTransparency')
+  operator: access('transparency')
 });
 
 export const strokeTransparencyField = simpleField<number>({

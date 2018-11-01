@@ -13,8 +13,9 @@ describe('NetworkComponent', () => {
           inputs: [
             'autoresize', 'width', 'height', 'nodeStream', 'edgeStream',
             'nodeIdField', 'nodePositionField', 'nodeSizeField', 'nodeSymbolField',
-            'nodeColorField', 'edgeIdField', 'edgeSourceField', 'edgeTargetField',
-            'edgeStrokeField', 'edgeStrokeWidthField'
+            'nodeColorField', 'nodeStrokeField', 'nodeStrokeWidthField', 'nodeLabelPositionField', 'nodeLabelField',
+            'nodeTooltipField', 'edgeIdField', 'edgeSourceField', 'edgeTargetField',
+            'edgeStrokeField', 'edgeStrokeWidthField', 'edgeTransparencyField', 'nodeTransparencyField', 'strokeTransparencyField'
           ]
         }),
         NetworkComponent

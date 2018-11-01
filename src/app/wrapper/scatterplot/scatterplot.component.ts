@@ -15,7 +15,7 @@ import {
   strokeField,
   tooltipTextField,
   pulseField,
-  nodeTransparencyField,
+  transparencyField,
   strokeTransparencyField,
 } from '../shared/scatterplot/scatterplot-fields';
 import { ScatterplotDataService } from '../shared/scatterplot/scatterplot-data.service';
@@ -47,7 +47,7 @@ export class ScatterplotComponent implements OnInit {
   tooltipText: BoundField<number | string>;
   enableTooltip = true;
 
-  nodeTransparency: BoundField<number>;
+  transparency: BoundField<number>;
   strokeTransparency: BoundField<number>;
 
   constructor(private dataService: ScatterplotDataService) {
@@ -69,7 +69,7 @@ export class ScatterplotComponent implements OnInit {
 
     this.tooltipText = tooltipTextField.getBoundField();
 
-    this.nodeTransparency = nodeTransparencyField.getBoundField();
+    this.transparency = transparencyField.getBoundField();
     this.strokeTransparency = strokeTransparencyField.getBoundField();
   }
 }

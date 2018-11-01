@@ -47,7 +47,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
   @Input() sizeField: BoundField<number | string>;
   @Input() pulseField: BoundField<boolean>;
 
-  @Input() nodeTransparencyField: BoundField<number>;
+  @Input() transparencyField: BoundField<number>;
   @Input() strokeTransparencyField: BoundField<number>;
 
 
@@ -255,7 +255,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
         this.colorField, this.shapeField,
         this.sizeField, this.strokeColorField,
 
-        this.nodeTransparencyField,
+        this.transparencyField,
         this.strokeTransparencyField,
         this.pulseField,
 
@@ -458,13 +458,13 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
       .attr('stroke-width', 1)
       .attr('transform', (d) => this.shapeTransform(d))
       .attr('fill', (d) => d.color)
-      .attr('opacity', (d) => this.transparencyScale(d.nodeTransparency))
+      .attr('opacity', (d) => this.transparencyScale(d.transparency))
       .attr('stroke-opacity', (d) => this.transparencyScale(d.strokeTransparency));
 
     plots.enter().append('path')
       .data(data)
       .attr('class', 'plots')
-      .attr('opacity', (d) => this.transparencyScale(d.nodeTransparency))
+      .attr('opacity', (d) => this.transparencyScale(d.transparency))
       .attr('stroke-opacity', (d) => this.transparencyScale(d.strokeTransparency))
       .attr('id', (d) => d[idSymbol])
       .attr('d', d3Shape.symbol()

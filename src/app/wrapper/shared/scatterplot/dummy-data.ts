@@ -9,7 +9,7 @@ export default [
     'stroke': '#000',
     'colorCategory': '51-60',
     'pulse': false,
-    'nodeTransparency': 0.67,
+    'transparency': 0.67,
     'strokeTransparency': 0.33
   },
   {
@@ -22,7 +22,7 @@ export default [
     'stroke': '#2c2c2c',
     'colorCategory': '31-40',
     'pulse': false,
-    'nodeTransparency': 0.89,
+    'transparency': 0.89,
     'strokeTransparency': 0.28
   },
   {
@@ -35,7 +35,7 @@ export default [
     'stroke': '#2c2c2c',
     'colorCategory': '31-40',
     'pulse': false,
-    'nodeTransparency': 0.41,
+    'transparency': 0.41,
     'strokeTransparency': 0.53
   },
   {
@@ -48,7 +48,7 @@ export default [
     'stroke': '#727272',
     'colorCategory': '10-12',
     'pulse': false,
-    'nodeTransparency': 0.08,
+    'transparency': 0.08,
     'strokeTransparency': 0.49
   },
   {
@@ -61,7 +61,7 @@ export default [
     'stroke': '#141414',
     'colorCategory': '41-50',
     'pulse': false,
-    'nodeTransparency': 0.08,
+    'transparency': 0.08,
     'strokeTransparency': 0.44
   },
   {
@@ -74,7 +74,7 @@ export default [
     'stroke': '#5b5b5b',
     'colorCategory': '13-18',
     'pulse': false,
-    'nodeTransparency': 0.74,
+    'transparency': 0.74,
     'strokeTransparency': 0.92
   },
   {
@@ -87,7 +87,7 @@ export default [
     'stroke': '#ffffff',
     'colorCategory': '71+',
     'pulse': false,
-    'nodeTransparency': 0.55,
+    'transparency': 0.55,
     'strokeTransparency': 0.73
   },
   {
@@ -100,7 +100,7 @@ export default [
     'stroke': '#141414',
     'colorCategory': '41-50',
     'pulse': false,
-    'nodeTransparency': 0.43,
+    'transparency': 0.43,
     'strokeTransparency': 0.45
   },
   {
@@ -113,7 +113,7 @@ export default [
     'stroke': '#000',
     'colorCategory': '51-60',
     'pulse': false,
-    'nodeTransparency': 0.16,
+    'transparency': 0.16,
     'strokeTransparency': 0.21
   },
   {
@@ -126,7 +126,7 @@ export default [
     'stroke': '#ffffff',
     'colorCategory': null,
     'pulse': false,
-    'nodeTransparency': 0.25,
+    'transparency': 0.25,
     'strokeTransparency': 0.58
   },
   {
@@ -139,7 +139,7 @@ export default [
     'stroke': '#2c2c2c',
     'colorCategory': '31-40',
     'pulse': false,
-    'nodeTransparency': 0.76,
+    'transparency': 0.76,
     'strokeTransparency': 0.19
   },
   {
@@ -152,7 +152,7 @@ export default [
     'stroke': '#434343',
     'colorCategory': '19-30',
     'pulse': false,
-    'nodeTransparency': 0.26,
+    'transparency': 0.26,
     'strokeTransparency': 0.03
   },
   {
@@ -165,7 +165,7 @@ export default [
     'stroke': '#000',
     'colorCategory': '61-70',
     'pulse': false,
-    'nodeTransparency': 0.81,
+    'transparency': 0.81,
     'strokeTransparency': 0.19
   },
   {
@@ -178,7 +178,7 @@ export default [
     'stroke': '#ffffff',
     'colorCategory': '71+',
     'pulse': false,
-    'nodeTransparency': 0.95,
+    'transparency': 0.95,
     'strokeTransparency': 0.28
   },
   {
@@ -191,7 +191,7 @@ export default [
     'stroke': '#000',
     'colorCategory': '61-70',
     'pulse': false,
-    'nodeTransparency': 0.41,
+    'transparency': 0.41,
     'strokeTransparency': 0
   },
   {
@@ -204,7 +204,7 @@ export default [
     'stroke': '#5b5b5b',
     'colorCategory': '13-18',
     'pulse': false,
-    'nodeTransparency': 0.04,
+    'transparency': 0.04,
     'strokeTransparency': 0.15
   },
   {
@@ -217,7 +217,7 @@ export default [
     'stroke': '#2c2c2c',
     'colorCategory': '31-40',
     'pulse': false,
-    'nodeTransparency': 0.32,
+    'transparency': 0.32,
     'strokeTransparency': 0.72
   },
   {
@@ -230,7 +230,7 @@ export default [
     'stroke': '#5b5b5b',
     'colorCategory': '13-18',
     'pulse': false,
-    'nodeTransparency': 0.71,
+    'transparency': 0.71,
     'strokeTransparency': 0.11
   },
   {
@@ -243,7 +243,7 @@ export default [
     'stroke': '#8a8a8a',
     'colorCategory': '07-09',
     'pulse': false,
-    'nodeTransparency': 0.1,
+    'transparency': 0.1,
     'strokeTransparency': 0.62
   },
   {
@@ -256,7 +256,7 @@ export default [
     'stroke': '#434343',
     'colorCategory': '19-30',
     'pulse': false,
-    'nodeTransparency': 0.69,
+    'transparency': 0.69,
     'strokeTransparency': 0.89
   },
   {
@@ -269,7 +269,7 @@ export default [
     'stroke': '#434343',
     'colorCategory': '19-30',
     'pulse': false,
-    'nodeTransparency': 0.45,
+    'transparency': 0.45,
     'strokeTransparency': 0.34
   },
   {
@@ -282,7 +282,7 @@ export default [
     'stroke': '#ffffff',
     'colorCategory': null,
     'pulse': false,
-    'nodeTransparency': 0.15,
+    'transparency': 0.15,
     'strokeTransparency': 0.56
   },
   {
@@ -295,7 +295,7 @@ export default [
     'stroke': '#000',
     'colorCategory': '51-60',
     'pulse': false,
-    'nodeTransparency': 0.66,
+    'transparency': 0.66,
     'strokeTransparency': 0.64
   },
   {
@@ -308,7 +308,7 @@ export default [
     'stroke': '#2c2c2c',
     'colorCategory': '31-40',
     'pulse': false,
-    'nodeTransparency': 0.79,
+    'transparency': 0.79,
     'strokeTransparency': 0.2
   },
   {
@@ -321,7 +321,7 @@ export default [
     'stroke': '#000',
     'colorCategory': '51-60',
     'pulse': false,
-    'nodeTransparency': 0.59,
+    'transparency': 0.59,
     'strokeTransparency': 0.85
   },
   {
@@ -334,7 +334,7 @@ export default [
     'stroke': '#000',
     'colorCategory': '61-70',
     'pulse': false,
-    'nodeTransparency': 0.43,
+    'transparency': 0.43,
     'strokeTransparency': 0.43
   },
   {
@@ -347,7 +347,7 @@ export default [
     'stroke': '#000',
     'colorCategory': '61-70',
     'pulse': false,
-    'nodeTransparency': 0.83,
+    'transparency': 0.83,
     'strokeTransparency': 0.71
   },
   {
@@ -360,7 +360,7 @@ export default [
     'stroke': '#ffffff',
     'colorCategory': '71+',
     'pulse': false,
-    'nodeTransparency': 0.11,
+    'transparency': 0.11,
     'strokeTransparency': 0.06
   },
   {
@@ -373,7 +373,7 @@ export default [
     'stroke': '#000',
     'colorCategory': '61-70',
     'pulse': false,
-    'nodeTransparency': 0.36,
+    'transparency': 0.36,
     'strokeTransparency': 0.83
   },
   {
@@ -386,7 +386,7 @@ export default [
     'stroke': '#727272',
     'colorCategory': '10-12',
     'pulse': false,
-    'nodeTransparency': 0.72,
+    'transparency': 0.72,
     'strokeTransparency': 0.94
   },
   {
@@ -399,7 +399,7 @@ export default [
     'stroke': '#2c2c2c',
     'colorCategory': '31-40',
     'pulse': false,
-    'nodeTransparency': 0.6,
+    'transparency': 0.6,
     'strokeTransparency': 0.72
   },
   {
@@ -412,7 +412,7 @@ export default [
     'stroke': '#5b5b5b',
     'colorCategory': '13-18',
     'pulse': false,
-    'nodeTransparency': 0.76,
+    'transparency': 0.76,
     'strokeTransparency': 0.06
   },
   {
@@ -425,7 +425,7 @@ export default [
     'stroke': '#000',
     'colorCategory': '51-60',
     'pulse': false,
-    'nodeTransparency': 0.08,
+    'transparency': 0.08,
     'strokeTransparency': 0.3
   },
   {
@@ -438,7 +438,7 @@ export default [
     'stroke': '#2c2c2c',
     'colorCategory': '31-40',
     'pulse': false,
-    'nodeTransparency': 0.94,
+    'transparency': 0.94,
     'strokeTransparency': 0.99
   },
   {
@@ -451,7 +451,7 @@ export default [
     'stroke': '#ffffff',
     'colorCategory': '71+',
     'pulse': false,
-    'nodeTransparency': 0.69,
+    'transparency': 0.69,
     'strokeTransparency': 0.81
   },
   {
@@ -464,7 +464,7 @@ export default [
     'stroke': '#2c2c2c',
     'colorCategory': '31-40',
     'pulse': false,
-    'nodeTransparency': 0.07,
+    'transparency': 0.07,
     'strokeTransparency': 0.97
   },
   {
@@ -477,7 +477,7 @@ export default [
     'stroke': '#ffffff',
     'colorCategory': '71+',
     'pulse': false,
-    'nodeTransparency': 0.41,
+    'transparency': 0.41,
     'strokeTransparency': 0.01
   },
   {
@@ -490,7 +490,7 @@ export default [
     'stroke': '#000',
     'colorCategory': '51-60',
     'pulse': false,
-    'nodeTransparency': 0.49,
+    'transparency': 0.49,
     'strokeTransparency': 0.67
   },
   {
@@ -503,7 +503,7 @@ export default [
     'stroke': '#141414',
     'colorCategory': '41-50',
     'pulse': false,
-    'nodeTransparency': 0.69,
+    'transparency': 0.69,
     'strokeTransparency': 0.87
   },
   {
@@ -516,7 +516,7 @@ export default [
     'stroke': '#000',
     'colorCategory': '51-60',
     'pulse': false,
-    'nodeTransparency': 1,
+    'transparency': 1,
     'strokeTransparency': 0.6
   },
   {
@@ -529,7 +529,7 @@ export default [
     'stroke': '#141414',
     'colorCategory': '41-50',
     'pulse': false,
-    'nodeTransparency': 0.52,
+    'transparency': 0.52,
     'strokeTransparency': 0.92
   },
   {
@@ -542,7 +542,7 @@ export default [
     'stroke': '#ffffff',
     'colorCategory': null,
     'pulse': false,
-    'nodeTransparency': 0.61,
+    'transparency': 0.61,
     'strokeTransparency': 0.23
   },
   {
@@ -555,7 +555,7 @@ export default [
     'stroke': '#000',
     'colorCategory': '61-70',
     'pulse': false,
-    'nodeTransparency': 0.14,
+    'transparency': 0.14,
     'strokeTransparency': 0.92
   },
   {
@@ -568,7 +568,7 @@ export default [
     'stroke': '#ffffff',
     'colorCategory': null,
     'pulse': false,
-    'nodeTransparency': 0.41,
+    'transparency': 0.41,
     'strokeTransparency': 0.14
   },
   {
@@ -581,7 +581,7 @@ export default [
     'stroke': '#000',
     'colorCategory': '51-60',
     'pulse': false,
-    'nodeTransparency': 0.69,
+    'transparency': 0.69,
     'strokeTransparency': 0.36
   },
   {
@@ -594,7 +594,7 @@ export default [
     'stroke': '#2c2c2c',
     'colorCategory': '31-40',
     'pulse': false,
-    'nodeTransparency': 0.45,
+    'transparency': 0.45,
     'strokeTransparency': 0.38
   },
   {
@@ -607,7 +607,7 @@ export default [
     'stroke': '#2c2c2c',
     'colorCategory': '31-40',
     'pulse': false,
-    'nodeTransparency': 0.02,
+    'transparency': 0.02,
     'strokeTransparency': 0.86
   },
   {
@@ -620,7 +620,7 @@ export default [
     'stroke': '#141414',
     'colorCategory': '41-50',
     'pulse': false,
-    'nodeTransparency': 0.19,
+    'transparency': 0.19,
     'strokeTransparency': 0.24
   },
   {
@@ -633,7 +633,7 @@ export default [
     'stroke': '#8a8a8a',
     'colorCategory': '07-09',
     'pulse': false,
-    'nodeTransparency': 0.82,
+    'transparency': 0.82,
     'strokeTransparency': 0.08
   },
   {
@@ -646,7 +646,7 @@ export default [
     'stroke': '#2c2c2c',
     'colorCategory': '31-40',
     'pulse': false,
-    'nodeTransparency': 0.11,
+    'transparency': 0.11,
     'strokeTransparency': 0.06
   }
 ];

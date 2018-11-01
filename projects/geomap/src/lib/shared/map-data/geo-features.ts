@@ -1,22 +1,24 @@
 import { FeatureCollection } from 'geojson';
-import { Many, ary, conformsTo, get, isArray, isNumber, isString, lowerCase, matches } from 'lodash';
+import { Many, ary, conformsTo, get, isArray, isNumber, isString, matches } from 'lodash';
 import { Observable, OperatorFunction, from, of, EMPTY } from 'rxjs';
-import { concatAll, concatMap, filter, map, reduce } from 'rxjs/operators';
+import { concatAll, concatMap, filter, map, reduce, share } from 'rxjs/operators';
 import { feature } from 'topojson-client';
 import { GeometryCollection, Topology } from 'topojson-specification';
 
-import { lookupCountyMetaData, lookupStateMetaData } from './us-meta-data';
+import { FeatureSelector, MultiFeatureSelector } from './common';
+import { lookupCountyMetaData, lookupStateMetaData } from '../meta-data/us-meta-data';
 import { usTopoJson } from './us-topojson';
 import { worldTopoJson } from './world-topojson';
-import { lookupCountryMetaData } from './world-meta-data';
+import { lookupCountryMetaData } from '../meta-data/world-meta-data';
 
-export type FeatureSelector = (number | string)[];
-export type MultiFeatureSelector = FeatureSelector | FeatureSelector[];
 
+// Short/abbreviated country names.
+// FIXME: Move to meta data files.
 const countryShortNames: { [name: string]: number } = {
   'us': 840, 'usa': 840
 };
 
+// Lookup the numerical id for an identifier using the provided meta data lookup operator.
 function getMetaIdObservable(
   source: number | string | Observable<number | string>,
   op: () => OperatorFunction<string, { id: number }[]>
@@ -124,29 +126,13 @@ function mergeFeatures(...collections: FeatureCollection[]): FeatureCollection {
   };
 }
 
-function normalizaFeatureSelector(selector: FeatureSelector): string[] {
-  return selector.map(lowerCase);
-}
-
-function normalizeMultiFeatureSelector(selectors: MultiFeatureSelector): string[][] {
-  if (selectors.length > 0) {
-    if (isArray(selectors[0])) {
-      return (selectors as FeatureSelector[]).map(normalizaFeatureSelector);
-    } else {
-      return [normalizaFeatureSelector(selectors as FeatureSelector)];
-    }
-  }
-  return [];
-}
-
 export function lookupFeatures(): OperatorFunction<MultiFeatureSelector, FeatureCollection> {
-  return (source: Observable<MultiFeatureSelector>): Observable<FeatureCollection> => {
-    return source.pipe(
-      map(normalizeMultiFeatureSelector),
-      concatMap(selectors => from(selectors.map(selectFeatures)).pipe(
-        concatAll(),
-        reduce(ary(mergeFeatures, 2), { features: [] })
-      ))
-    );
-  };
+  return (source) => source.pipe(
+    map(MultiFeatureSelector.normalize),
+    concatMap(selectors => from(selectors.map(selectFeatures)).pipe(
+      concatAll(),
+      reduce<FeatureCollection>(ary(mergeFeatures, 2), { type: 'FeatureCollection', features: [] })
+    )),
+    share()
+  );
 }

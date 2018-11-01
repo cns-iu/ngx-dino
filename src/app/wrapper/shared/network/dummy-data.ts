@@ -22,7 +22,7 @@ function createRandomNode(index: number) {
     symbol: shapes[randomIndex(shapes.length)],
     nodeStroke: 'red',
     nodeStrokeWidth: nodeStrokeWidthRange.min + (nodeStrokeWidthRange.max - nodeStrokeWidthRange.min) * random(),
-    nodeTooltip: 'Something',
+    nodeTooltip: 'Tool tip',
     nodeLabel: 'Node Label',
     nodeLabelPosition: 'Temp data',
     nodeTransparency: random(),

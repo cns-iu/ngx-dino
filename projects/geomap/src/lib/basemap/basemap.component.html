@@ -1,0 +1,5 @@
+<svg:svg *ngIf="basemap" class="basemap" [attr.viewBox]="viewBox">
+    <svg:path *ngFor="let feature of basemap.features; let index = index" [attr.d]="feature.properties.path" [style.fill]="index % 2 === 0 ? 'blue' : 'pink'">
+        <!-- TODO -->
+    </svg:path>
+</svg:svg>

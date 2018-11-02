@@ -6,7 +6,7 @@ import { isArray, isNaN, isNumber } from 'lodash';
  * [0] -> Must be the string 'world'.
  * [1] -> Can be 'land', 'countries', or a specific country identifier i.e. 'Sweden', 'United States' <-> 'USA' <-> 840.
  * [2] -> If [1] === 'USA', can be 'states' or a specific state identifier i.e. 'Indiana' <-> 18.
- * [3] -> If [1] === 'USA' and [2] !== 'states', can be 'counties' or a specific county identifier i.e. 'Monroe' <-> 18105.
+ * [3] -> If [1] === 'USA', can be 'counties' or [2] !== 'states', a specific county identifier i.e. 'Monroe' <-> 18105.
  */
 export type FeatureSelector = (number | string)[];
 export namespace FeatureSelector {

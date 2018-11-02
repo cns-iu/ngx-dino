@@ -5,7 +5,7 @@ import { concatAll, concatMap, filter, map, reduce, share } from 'rxjs/operators
 import { feature } from 'topojson-client';
 import { GeometryCollection, Topology } from 'topojson-specification';
 
-import { FeatureSelector, MultiFeatureSelector } from './common';
+import { MultiFeatureSelector } from './common';
 import { lookupCountyMetaData, lookupStateMetaData } from '../meta-data/us-meta-data';
 import { usTopoJson } from './us-topojson';
 import { worldTopoJson } from './world-topojson';
@@ -71,7 +71,15 @@ function selectFeatures(selector: string[]): Observable<FeatureCollection> {
       if (country === 'land' || country === 'countries') {
         return createFeatureObservable(worldTopoJson, country);
       } else {
-        return createFeatureObservable(worldTopoJson, 'countries', countryIdObservable);
+        return countryIdObservable.pipe(
+          map(id => {
+            if (id === 840) { // More granular map for USA
+              return createFeatureObservable(usTopoJson, 'nation');
+            }
+            return createFeatureObservable(worldTopoJson, 'countries', of(id));
+          }),
+          concatAll()
+        );
       }
 
     default:

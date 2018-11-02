@@ -38,11 +38,13 @@ export class NodeComponent implements OnChanges {
   @Input() size: number;
   @Input() color = 'black';
   @Input() stroke = 'black';
+  @Input() transparency;
   @Input() strokeWidth = 0;
   @Input() tooltip = '';
   @Input() tooltipElement: HTMLDivElement;
   @Input() label = '';
   @Input() labelPosition: LabelPosition = 'top';
+  @Input() strokeTransparency;
 
   shape: string;
   private symbolGenerator: Symbol<void, void>;

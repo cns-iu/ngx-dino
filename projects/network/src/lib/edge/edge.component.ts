@@ -15,7 +15,9 @@ export class EdgeComponent implements OnChanges {
   @Input() source: Point;
   @Input() target: Point;
   @Input() stroke: string;
+  @Input() transparency: number;
   @Input() strokeWidth: number;
+  @Input() strokeTransparency: number;
 
   path: string;
 
@@ -45,7 +47,7 @@ export class EdgeComponent implements OnChanges {
     // FIXME
     // Assume `line` for now
     return {
-      draw(context: CanvasPathMethods, source: Point, target: Point): void {
+      draw(context: CanvasRenderingContext2D, source: Point, target: Point): void {
         context.moveTo(source[0], source[1]);
         context.lineTo(target[0], target[1]);
       }

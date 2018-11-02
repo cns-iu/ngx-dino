@@ -52,18 +52,19 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
   @Input() linkTargetField: BoundField<string>;
   @Input() linkSizeField: BoundField<number>;
   @Input() linkColorField: string; // TODO Field
-  @Input() linkOpacityField: string; // TODO Field
+  @Input() linkTransparencyField: BoundField<number>; // TODO Field
 
+  @Input() strokeTransparencyField: BoundField<number>;
   @Input() tooltipTextField: BoundField<number | string>;
   @Input() enableTooltip = false;
 
   @Input() nodeSizeRange = [5, 15];
   @Input() labelSizeRange = [16, 22];
   @Input() nodeColorRange: string[];
+  @Input() nodeTransparencyField: BoundField<number>;
 
   @Input() linkSizeRange = [1, 8];
   @Input() linkColorRange = ['#FFFFFF', '#3182BD'];
-  @Input() linkOpacityRange = [.5, 1];
 
   @Input() minPositionX = 0;
   @Input() minPositionY = -20;
@@ -90,7 +91,7 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
   private nodeColorScale: any; // TODO typings
   private linkColorScale: any; // TODO typings
 
-  private linkOpacityScale: any; // TODO typings
+  private transparencyScale: any; // TODO typings
 
   private radius = 15; // default radius
 
@@ -201,7 +202,10 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
         this.linkTargetField,
         this.linkSizeField,
 
-        this.tooltipTextField
+        this.tooltipTextField,
+        this.nodeTransparencyField,
+        this.linkTransparencyField,
+        this.strokeTransparencyField
       );
     }
   }
@@ -243,15 +247,10 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
       ])
     .range(this.linkColorRange);
 
-    this.linkOpacityScale = scaleLinear()
-      .domain([
-        d3Array.min(this.linksData,
-          (d) => Number(d[this.linkOpacityField]) === undefined ? 1 : Number(d[this.linkOpacityField])),
-        d3Array.max(this.linksData,
-          (d) => Number(d[this.linkOpacityField]) === undefined ? 1 : Number(d[this.linkOpacityField]))
-        ])
-      .range(this.linkOpacityRange);
-  }
+    this.transparencyScale = scaleLinear()
+      .domain([0, 1])
+      .range([1, 0]);
+    }
 
   initVisualization() {
     const container = d3Selection.select(this.parentNativeElement)
@@ -286,11 +285,16 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
   drawPlots() {
     this.nodes = this.nodes.data(this.nodesData, (d) => d[idSymbol]);
     this.nodes.transition().attr('r', (d) => this.nodeSizeScale(d.size))
-      .attr('fill', (d) => this.nodeColorScale(d.color));
+      .attr('fill', (d) => this.nodeColorScale(d.color))
+      .attr('opacity', (d) => this.transparencyScale(d.nodeTransparency))
+      .attr('stroke-opacity', (d) => this.transparencyScale(d.strokeTransparency));
+
     this.nodes.exit().remove();
     this.nodes = this.nodes.enter().append('circle')
       .attr('fill', (d) => this.nodeColorScale(d.color))
+      .attr('opacity', (d) => this.transparencyScale(d.nodeTransparency))
       .attr('r', (d) => this.nodeSizeScale(d.size)).merge(this.nodes)
+      .attr('stroke-opacity', (d) => this.transparencyScale(d.strokeTransparency))
       .call(d3Drag.drag()
       .on('start', this.dragstarted.bind(this))
       .on('drag', this.dragged.bind(this))
@@ -300,16 +304,19 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
     this.nodes.on('mouseout', (d) => this.onMouseOut(d[idSymbol]));
 
     this.links = this.links.data(this.linksData, (d) => d.id);
-    this.links.transition().attr('stroke-width', (d) => this.linkSizeScale(d.size))
+
+    this.links.transition()
+      .attr('stroke-width', (d) => this.linkSizeScale(d.size))
       .attr('stroke', (d) => this.linkColorScale(
         d[this.linkColorField]) === undefined ? 'black' : this.linkColorScale(d[this.linkColorField]))
-      .attr('opacity', (d) => isNaN(this.linkOpacityScale(d[this.linkOpacityField])) ? 1 : this.linkOpacityScale(d[this.linkOpacityField]));
+      .attr('opacity', (d) => isNaN(this.transparencyScale(d.linkTransparency)) ? 1 : this.transparencyScale(d.linkTransparency));
     this.links.exit().remove();
     this.links = this.links.enter().append('line').merge(this.links)
       .attr('stroke-width', (d) => isNaN(this.linkSizeScale(d.size)) ? 1 : this.linkSizeScale(d.size))
       .attr('stroke', (d) => this.linkColorScale(
         d[this.linkColorField]) === undefined ? 'black' : this.linkColorScale(d[this.linkColorField]))
-      .attr('opacity', (d) => isNaN(this.linkOpacityScale(d[this.linkOpacityField])) ? 1 : this.linkOpacityScale(d[this.linkOpacityField]));
+      .attr('opacity', (d) => isNaN(this.transparencyScale(d.linkTransparency)) ?
+        1 : this.transparencyScale(d.linkTransparency));
 
 
     this.labels = this.svgContainer.selectAll('text').data(this.nodesData, (d) => d[idSymbol]);

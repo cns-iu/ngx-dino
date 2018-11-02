@@ -13,7 +13,8 @@ describe('ScatterplotComponent', () => {
           inputs: [
             'dataStream', 'pointIdField', 'xField', 'yField', 'sizeField', 'colorField',
             'strokeColorField', 'shapeField', 'pulseField', 'enableTooltip', 'tooltipTextField',
-            'width', 'height', 'autoresize', 'gridlines', 'showAxisLabels', 'showAxisIndicators'
+            'width', 'height', 'autoresize', 'gridlines', 'showAxisLabels', 'showAxisIndicators',
+            'transparencyField', 'strokeTransparencyField'
           ]
         }),
         ScatterplotComponent

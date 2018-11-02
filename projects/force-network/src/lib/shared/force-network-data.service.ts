@@ -42,9 +42,10 @@ export class ForceNetworkDataService {
     linkSizeField: BoundField<number>,
 
     tooltipTextField: BoundField<number | string>,
-
+    nodeTransparencyField?: BoundField<number>,
+    linkTransparencyField?: BoundField<number>,
+    strokeTransparencyField?: BoundField<number>,
     linkColorField?: BoundField<string>,
-    linkOpacityField?: BoundField<string>,
     labelSizeField?: BoundField<string>
   ): this {
     this.nodeProcessor = this.processorService.createProcessor<Node & Datum<any>, any>(
@@ -58,7 +59,9 @@ export class ForceNetworkDataService {
         fx: nodeFixedXField || UNDEFINED,
         fy: nodeFixedYField || UNDEFINED,
 
-        tooltipText: tooltipTextField
+        tooltipText: tooltipTextField,
+        nodeTransparency: nodeTransparencyField,
+        strokeTransparency: strokeTransparencyField
       }
     );
 
@@ -69,7 +72,8 @@ export class ForceNetworkDataService {
         id: linkIdField,
         source: linkSourceField,
         target: linkTargetField,
-        size: linkSizeField
+        size: linkSizeField,
+        linkTransparency: linkTransparencyField
       }
     );
 

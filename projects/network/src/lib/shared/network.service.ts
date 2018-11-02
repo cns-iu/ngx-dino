@@ -44,14 +44,16 @@ export class NetworkService {
     strokeWidth: BoundField<number>,
     tooltip: BoundField<string>,
     label: BoundField<string>,
-    labelPosition: BoundField<string>
+    labelPosition: BoundField<string>,
+    transparency: BoundField<number>,
+    strokeTransparency: BoundField<number>
   ): this {
     if (this.nodeSubscription) {
       this.nodeSubscription.unsubscribe();
     }
 
     this.nodeProcessor = this.processorService.createProcessor<Node, any>(stream, id, {
-      position, size, symbol, color, stroke, strokeWidth, tooltip, label, labelPosition,
+      position, size, symbol, color, stroke, strokeWidth, tooltip, label, labelPosition, transparency, strokeTransparency,
       cposition, csize
     });
     this.nodeSubscription = this.nodeProcessor.asObservable().subscribe((c) => this.nodeChanges.next(c));
@@ -65,14 +67,15 @@ export class NetworkService {
     source: BoundField<Point>,
     target: BoundField<Point>,
     stroke: BoundField<string>,
-    strokeWidth: BoundField<number>
+    strokeWidth: BoundField<number>,
+    transparency: BoundField<number>
   ): this {
     if (this.edgeSubscription) {
       this.edgeSubscription.unsubscribe();
     }
 
     this.edgeProcessor = this.processorService.createProcessor<Edge, any>(stream, id, {
-      source, target, stroke, strokeWidth,
+      source, target, stroke, strokeWidth, transparency,
       csource, ctarget
     });
     this.edgeSubscription = this.edgeProcessor.asObservable().subscribe((c) => this.edgeChanges.next(c));
@@ -89,10 +92,12 @@ export class NetworkService {
     strokeWidth?: BoundField<number>,
     tooltip?: BoundField<string>,
     label?: BoundField<string>,
-    labelPosition?: BoundField<string>
+    labelPosition?: BoundField<string>,
+    transparency?: BoundField<number>,
+    strokeTransparency?: BoundField<number>
   ): this {
     const fields = Map<string, BoundField<any>>({
-      position, size, symbol, color, stroke, strokeWidth, tooltip, label, labelPosition
+      position, size, symbol, color, stroke, strokeWidth, tooltip, label, labelPosition, transparency, strokeTransparency
     }).filter((f) => !!f).toKeyedSeq();
     this.nodeProcessor.updateFields(fields);
     return this;
@@ -102,10 +107,11 @@ export class NetworkService {
     source: BoundField<Point>,
     target: BoundField<Point>,
     stroke: BoundField<string>,
-    strokeWidth: BoundField<number>
+    strokeWidth: BoundField<number>,
+    transparency: BoundField<number>
   ): this {
     const fields = Map<string, BoundField<any>>({
-      source, target, stroke, strokeWidth
+      source, target, stroke, strokeWidth, transparency
     }).filter((f) => !!f).toKeyedSeq();
     this.edgeProcessor.updateFields(fields);
     return this;

@@ -1,119 +1,136 @@
 language: node_js
-
 node_js:
-  - "10"
-
+- '10'
 sudo: required
-
 addons:
   chrome: stable
-
 cache:
   directories:
-    - "node_modules"
-
+  - node_modules
 branches:
   only:
-    - master
-    - develop
-    - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
-
+  - master
+  - develop
+  - "/^v\\d+\\.\\d+(\\.\\d+)?(-\\S*)?$/"
 script: skip
-
-notifications:
-    slack: blue-dino:$SLACK_TOKEN
-
 jobs:
   include:
-    - stage: test
-      name: "Run Tests"
-      script:
-        - npm run lint
-        - npm run build:libs-release
-        - npm test
-    - stage: deploy
-      name: "Deploy demo to GitHub Pages"
-      if: branch = master
-      script: npm run build:release
-      deploy:
-        provider: pages
-        skip-cleanup: true
-        github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
-        keep-history: false
-        local-dir: dist/dino-demo
-        on:
-          branch: master
-    - &npm-publish
-      stage: deploy
-      name: "Build and publish @ngx-dino/core"
-      if: tag IS present
-      script: npm run build:lib core
-      before_deploy:
-        - cd dist/core
-      after_deploy:
-        - cd ../../
-      deploy: &npm
-        provider: npm
-        skip-cleanup: true
-        email: $NPM_EMAIL
-        api_key: $NPM_TOKEN
-        on:
-          tags: true
-          repo: cns-iu/ngx-dino
-    - <<: *npm-publish
-      name: "Build and publish @ngx-dino/vega-util"
-      script:
-        - npm run build:lib core
-        - npm run build:lib vega-util
-      before_deploy:
-        - cd dist/vega-util
-    - <<: *npm-publish
-      name: "Build and publish @ngx-dino/datatable"
-      script:
-        - npm run build:lib core
-        - npm run build:lib datatable
-      before_deploy:
-        - cd dist/datatable
-    - <<: *npm-publish
-      name: "Build and publish @ngx-dino/force-network"
-      script:
-        - npm run build:lib core
-        - npm run build:lib force-network
-      before_deploy:
-        - cd dist/force-network
-    - <<: *npm-publish
-      name: "Build and publish @ngx-dino/geomap"
-      script:
-        - npm run build:lib core
-        - npm run build:lib vega-util
-        - npm run build:lib geomap
-      before_deploy:
-        - cd dist/geomap
-    - <<: *npm-publish
-      name: "Build and publish @ngx-dino/scatterplot"
-      script:
-        - npm run build:lib core
-        - npm run build:lib scatterplot
-      before_deploy:
-        - cd dist/scatterplot
-    - <<: *npm-publish
-      name: "Build and publish @ngx-dino/science-map"
-      script:
-        - npm run build:lib core
-        - npm run build:lib science-map
-      before_deploy:
-        - cd dist/science-map
-    - <<: *npm-publish
-      name: "Build and publish @ngx-dino/legend"
-      script:
-        - npm run build:lib core
-        - npm run build:lib legend
-      before_deploy:
-        - cd dist/legend
-    - <<: *npm-publish
-      name: "Build and publish @ngx-dino/network"
-      script:
-        - npm run build:lib core
-        - npm run build:lib network
-      before_deploy:
-        - cd dist/network
+  - stage: test
+    name: Run Tests
+    script:
+    - npm run lint
+    - npm run build:libs-release
+    - npm test
+  - stage: deploy
+    name: Deploy demo to GitHub Pages
+    if: branch = master
+    script: npm run build:release
+    deploy:
+      provider: pages
+      skip-cleanup: true
+      github-token: "$GITHUB_TOKEN"
+      keep-history: false
+      local-dir: dist/dino-demo
+      on:
+        branch: master
+  - stage: deploy
+    name: Build and publish @ngx-dino/core
+    if: tag IS present
+    script: npm run build:lib core
+    before_deploy:
+    - cd dist/core
+    after_deploy: &1
+    - cd ../../
+    deploy: &2
+      provider: npm
+      skip-cleanup: true
+      email: "$NPM_EMAIL"
+      api_key: "$NPM_TOKEN"
+      on:
+        tags: true
+        repo: cns-iu/ngx-dino
+  - stage: deploy
+    name: Build and publish @ngx-dino/vega-util
+    if: tag IS present
+    script:
+    - npm run build:lib core
+    - npm run build:lib vega-util
+    before_deploy:
+    - cd dist/vega-util
+    after_deploy: *1
+    deploy: *2
+  - stage: deploy
+    name: Build and publish @ngx-dino/datatable
+    if: tag IS present
+    script:
+    - npm run build:lib core
+    - npm run build:lib datatable
+    before_deploy:
+    - cd dist/datatable
+    after_deploy: *1
+    deploy: *2
+  - stage: deploy
+    name: Build and publish @ngx-dino/force-network
+    if: tag IS present
+    script:
+    - npm run build:lib core
+    - npm run build:lib force-network
+    before_deploy:
+    - cd dist/force-network
+    after_deploy: *1
+    deploy: *2
+  - stage: deploy
+    name: Build and publish @ngx-dino/geomap
+    if: tag IS present
+    script:
+    - npm run build:lib core
+    - npm run build:lib vega-util
+    - npm run build:lib geomap
+    before_deploy:
+    - cd dist/geomap
+    after_deploy: *1
+    deploy: *2
+  - stage: deploy
+    name: Build and publish @ngx-dino/scatterplot
+    if: tag IS present
+    script:
+    - npm run build:lib core
+    - npm run build:lib scatterplot
+    before_deploy:
+    - cd dist/scatterplot
+    after_deploy: *1
+    deploy: *2
+  - stage: deploy
+    name: Build and publish @ngx-dino/science-map
+    if: tag IS present
+    script:
+    - npm run build:lib core
+    - npm run build:lib science-map
+    before_deploy:
+    - cd dist/science-map
+    after_deploy: *1
+    deploy: *2
+  - stage: deploy
+    name: Build and publish @ngx-dino/legend
+    if: tag IS present
+    script:
+    - npm run build:lib core
+    - npm run build:lib legend
+    before_deploy:
+    - cd dist/legend
+    after_deploy: *1
+    deploy: *2
+  - stage: deploy
+    name: Build and publish @ngx-dino/network
+    if: tag IS present
+    script:
+    - npm run build:lib core
+    - npm run build:lib network
+    before_deploy:
+    - cd dist/network
+    after_deploy: *1
+    deploy: *2
+
+notifications:
+  slack:
+    secure: hfSvOu0VB/JCy5gCmUSbNs4pA5izB8TB4F9XJssgc3HtQnDQ1nwF1bMCzM4OZBw6QnYd7pEO4THRfxvN/p1rgVBQPLN5oodBrMUE415+0xHZ6R0dHKjquL7V/3jEhJvixU0G7beb64OMwt9Oa4cKYa72sGaLdvofwLHI5NmOxtgesArl+f+ubY6uFTmskNSgFQHQATvqtLBSTEK39XwP4lJQAC7bl/iSp5+MUz6fWsbslOZXiXgjLZMToiCD/uBJzxDi1KgZHHgvYYyWqvEv9LuLJpGtBvwBdYLcRzIOsO0D8zAeemoKvQcSwYRJoxe9KfmbFMZKCqF3EEa4cnSckDcelMb0lbWjRoDMLHtaUAbJX+yzHP8jYaZLcRRNouqi7iZV3hRWEMghTUt/VXtVyBZ9u5ofhaoolJvTKrFp9YHY5L7591LLUWJ/Xiwo13U+jgrRHkdfhgsyDRHeEpGwYdonVuvKdbRaVmINWTAwrwerZCbj02cmq6/3AFdSSDVaBvN10OChxqo0j7b+xWDmmwH00xLQvdOKnzK0kvkJrSwJ6lL+WmXlmUYOEpd9xqXzNIFP7O8dq7pRR6DRi1uImIM2QWX1i5MgywBUQuEaWb0oxnbneMaur+FjNqR6yJjCc2FFUavPGTxwLfwaipsztO4jkI/SVIwVYa3vhDl1m1I=

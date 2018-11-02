@@ -37,7 +37,8 @@ export class ScatterplotDataService {
     shapeField: BoundField<number | string>,
     sizeField: BoundField<number | string>,
     strokeColorField: BoundField<number | string>,
-
+    transparencyField: BoundField<number>,
+    strokeTransparencyField: BoundField<number>,
     pulseField: BoundField<boolean>,
 
     tooltipTextField?: BoundField<number | string>
@@ -54,6 +55,8 @@ export class ScatterplotDataService {
       shape: shapeField,
       size: sizeField,
       stroke: strokeColorField,
+      transparency: transparencyField,
+      strokeTransparency: strokeTransparencyField,
       pulse: pulseField
     };
     if (tooltipTextField !== undefined) {

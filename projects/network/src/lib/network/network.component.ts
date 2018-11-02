@@ -35,12 +35,15 @@ export class NetworkComponent implements OnInit, OnChanges {
   @Input() nodeTooltipField: BoundField<string>;
   @Input() nodeLabelField: BoundField<string>;
   @Input() nodeLabelPositionField: BoundField<string>;
+  @Input() nodeTransparencyField: BoundField<number>;
+  @Input() strokeTransparencyField: BoundField<number>;
 
   @Input() edgeIdField: BoundField<DatumId>;
   @Input() edgeSourceField: BoundField<Point>;
   @Input() edgeTargetField: BoundField<Point>;
   @Input() edgeStrokeField: BoundField<string>;
   @Input() edgeStrokeWidthField: BoundField<number>;
+  @Input() edgeTransparencyField: BoundField<number>;
 
   @Input() coordinateSpace: CoordinateSpaceOptions;
 
@@ -108,7 +111,8 @@ export class NetworkComponent implements OnInit, OnChanges {
         this.nodeSymbolField, this.nodeColorField,
         this.nodeStrokeField, this.nodeStrokeWidthField,
         this.nodeTooltipField, this.nodeLabelField,
-        this.nodeLabelPositionField
+        this.nodeLabelPositionField, this.nodeTransparencyField,
+        this.strokeTransparencyField
       );
     }, () => {
       this.service.updateNodes(
@@ -116,7 +120,8 @@ export class NetworkComponent implements OnInit, OnChanges {
         this.nodeSymbolField, this.nodeColorField,
         this.nodeStrokeField, this.nodeStrokeWidthField,
         this.nodeTooltipField, this.nodeLabelField,
-        this.nodeLabelPositionField
+        this.nodeLabelPositionField, this.nodeTransparencyField,
+        this.strokeTransparencyField
       );
     });
 
@@ -126,12 +131,14 @@ export class NetworkComponent implements OnInit, OnChanges {
       this.service.fetchEdges(
         this.edgeStream, this.edgeIdField,
         this.edgeSourceField, this.edgeTargetField,
-        this.edgeStrokeField, this.edgeStrokeWidthField
+        this.edgeStrokeField, this.edgeStrokeWidthField,
+        this.edgeTransparencyField
       );
     }, () => {
       this.service.updateEdges(
         this.edgeSourceField, this.edgeTargetField,
-        this.edgeStrokeField, this.edgeStrokeWidthField
+        this.edgeStrokeField, this.edgeStrokeWidthField,
+        this.edgeTransparencyField
       );
     });
 

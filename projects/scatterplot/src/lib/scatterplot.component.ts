@@ -47,6 +47,10 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
   @Input() sizeField: BoundField<number | string>;
   @Input() pulseField: BoundField<boolean>;
 
+  @Input() transparencyField: BoundField<number>;
+  @Input() strokeTransparencyField: BoundField<number>;
+
+
   @Input() tooltipTextField: BoundField<number | string>;
   @Input() enableTooltip = false;
 
@@ -89,6 +93,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
   xScale: any; // d3Axis.AxisScale<any> couldn't figure out domain and range definition
   yScale: any; // d3Axis.AxisScale<any>
 
+  transparencyScale: any;
   // x & y labels are field labels  - not drawnq over the axes
   xAxisLabel = ''; // defaults
   yAxisLabel = ''; // defaults
@@ -250,7 +255,10 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
         this.colorField, this.shapeField,
         this.sizeField, this.strokeColorField,
 
+        this.transparencyField,
+        this.strokeTransparencyField,
         this.pulseField,
+
 
         (this.enableTooltip) ? this.tooltipTextField : undefined
       );
@@ -449,11 +457,15 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
       .attr('stroke', (d) => d.color === '#ffffff' ? '#000000' : d.stroke)
       .attr('stroke-width', 1)
       .attr('transform', (d) => this.shapeTransform(d))
-      .attr('fill', (d) => d.color);
+      .attr('fill', (d) => d.color)
+      .attr('opacity', (d) => this.transparencyScale(d.transparency))
+      .attr('stroke-opacity', (d) => this.transparencyScale(d.strokeTransparency));
 
     plots.enter().append('path')
       .data(data)
       .attr('class', 'plots')
+      .attr('opacity', (d) => this.transparencyScale(d.transparency))
+      .attr('stroke-opacity', (d) => this.transparencyScale(d.strokeTransparency))
       .attr('id', (d) => d[idSymbol])
       .attr('d', d3Shape.symbol()
         .size((d) => d.size as number)
@@ -582,6 +594,10 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
           .range([this.elementHeight, 0]);
         break;
     }
+
+    this.transparencyScale = scaleLinear()
+    .domain([0, 1])
+    .range([1, 0]);
   }
 
   onMouseOver(targetId: any) {

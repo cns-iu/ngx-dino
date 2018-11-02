@@ -14,7 +14,8 @@ describe('ForceNetworkComponent', () => {
             'height', 'width', 'margin', 'autoresize',
             'nodeSizeField', 'nodeIdField', 'nodeColorField', 'nodeLabelField',
             'linkIdField', 'linkSourceField', 'linkTargetField', 'linkSizeField',
-            'nodeColorRange', 'nodeSizeRange', 'enableTooltip', 'tooltipTextField',
+            'nodeColorRange', 'nodeSizeRange', 'enableTooltip', 'tooltipTextField', 'nodeTransparencyField',
+            'linkTransparencyField', 'strokeTransparencyField',
             'chargeStrength', 'nodeStream', 'linkStream'
           ]
         }),

@@ -1,4 +1,4 @@
 <svg:svg *ngIf="basemap" class="basemap" [attr.viewBox]="viewBox">
-    <svg:path *ngFor="let feature of basemap.features; let index = index" [attr.d]="feature.properties.path" [style.fill]="feature.properties.fill || defaultFill">
+    <svg:path *ngFor="let feature of basemap.features; let index = index" [attr.d]="feature.properties.path" [style.fill]="feature.properties.fill">
     </svg:path>
 </svg:svg>

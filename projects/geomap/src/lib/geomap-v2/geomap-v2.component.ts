@@ -2,9 +2,10 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 import { GeoProjection } from 'd3-geo';
 import { geoEckert4 } from 'd3-geo-projection';
 import { FeatureCollection } from 'geojson';
-import { Observable, Subject, of } from 'rxjs';
-import { concatMap, map, share, switchAll } from 'rxjs/operators';
+import { Subject, of } from 'rxjs';
+import { concatMap, map } from 'rxjs/operators';
 
+import { BoundField } from '@ngx-dino/core';
 import { FeatureSelector } from '../shared/map-data/common';
 import { lookupFeatures } from '../shared/map-data/geo-features';
 import { lookupCountryMetaData } from '../shared/meta-data/world-meta-data';
@@ -15,16 +16,17 @@ import { lookupCountryMetaData } from '../shared/meta-data/world-meta-data';
   styleUrls: ['./geomap-v2.component.css']
 })
 export class GeomapV2Component implements OnInit, OnChanges {
-  @Input() basemapFeatureSelector: Observable<FeatureSelector>;
+  @Input() set basemapFeatureSelector(selector: FeatureSelector) { this._basemapFeatureSelector.next(selector); }
+  @Input() basemapProjection: GeoProjection;
+  @Input() basemapFillField: BoundField<string>;
 
   basemap: FeatureCollection;
   projection: GeoProjection;
 
-  private _basemapFeatureSelector = new Subject<Observable<FeatureSelector>>();
+  private _basemapFeatureSelector = new Subject<FeatureSelector>();
 
   constructor() {
-    const sharedBasemapFeatureSelector = this._basemapFeatureSelector.pipe(switchAll(), share());
-    const projectionSelector = sharedBasemapFeatureSelector.pipe(
+    const projectionSelector = this._basemapFeatureSelector.pipe(
       map(selector => selector[1]),
       map(country => country === 'countries' ? undefined : country),
       concatMap(country => country ? of(country).pipe(lookupCountryMetaData()) : of<undefined>(undefined)),
@@ -36,19 +38,15 @@ export class GeomapV2Component implements OnInit, OnChanges {
         return geoEckert4();
       })
     );
-    const basemapSelector = sharedBasemapFeatureSelector.pipe(lookupFeatures());
+    const basemapSelector = this._basemapFeatureSelector.pipe(lookupFeatures());
 
     projectionSelector.subscribe(projection => this.projection = projection);
     basemapSelector.subscribe(features => this.basemap = features);
 
-    console.log(this, Subject);
+    console.log(this);
   }
 
   ngOnInit(): void { }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if ('basemapFeatureSelector' in changes) {
-      this._basemapFeatureSelector.next(this.basemapFeatureSelector);
-    }
-  }
+  ngOnChanges(changes: SimpleChanges): void { }
 }

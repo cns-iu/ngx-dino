@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { GeoProjection, geoMercator } from 'd3-geo';
+import { GeoProjection } from 'd3-geo';
+import { geoEckert4 } from 'd3-geo-projection';
 import { FeatureCollection } from 'geojson';
 import { Observable, Subject, of } from 'rxjs';
 import { concatMap, map, share, switchAll } from 'rxjs/operators';
@@ -32,7 +33,7 @@ export class GeomapV2Component implements OnInit, OnChanges {
         if (meta && meta.id === 840) { // USA
           return null; // Identity projection
         }
-        return geoMercator(); // FIXME: Check with Katy on which projection to use.
+        return geoEckert4();
       })
     );
     const basemapSelector = sharedBasemapFeatureSelector.pipe(lookupFeatures());

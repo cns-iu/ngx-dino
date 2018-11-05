@@ -8,6 +8,6 @@ import { NodeComponent } from './node/node.component';
 @NgModule({
   imports: [CommonModule, CoreModule],
   declarations: [EdgeComponent, NetworkComponent, NodeComponent],
-  exports: [NetworkComponent]
+  exports: [EdgeComponent, NetworkComponent, NodeComponent]
 })
 export class NetworkModule { }

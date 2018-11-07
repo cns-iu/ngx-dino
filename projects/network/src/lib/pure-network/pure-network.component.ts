@@ -11,9 +11,10 @@ import { Edge, Node } from '../shared/types';
 import { Point } from '../shared/utility';
 
 @Component({
-  selector: 'dino-pure-network',
+  selector: 'dino-pure-network, [dino-pure-network]',
   templateUrl: './pure-network.component.html',
-  styleUrls: ['./pure-network.component.css']
+  styleUrls: ['./pure-network.component.css'],
+  providers: [NetworkService]
 })
 export class PureNetworkComponent implements OnInit, OnChanges {
   // Size

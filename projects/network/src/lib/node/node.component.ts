@@ -50,28 +50,10 @@ export class NodeComponent implements OnChanges {
   shape: string;
   private symbolGenerator: Symbol<void, void>;
 
-  get labelAnchor(): LabelAnchor {
-    return anchorLookup[this.labelPosition];
-  }
-  get labelBaseline(): LabelBaseline {
-    return baselineLookup[this.labelPosition];
-  }
-  get labelDx(): number {
-    if (this.labelPosition === 'top' || this.labelPosition === 'bottom') {
-      return 0;
-    }
-
-    const offset = Math.sqrt(this.size) / 2 + 3;
-    return this.labelPosition === 'right' ? offset : -offset;
-  }
-  get labelDy(): number {
-    if (this.labelPosition === 'left' || this.labelPosition === 'right') {
-      return 0;
-    }
-
-    const offset = Math.sqrt(this.size) / 2 + 3;
-    return this.labelPosition === 'bottom' ? offset : -offset;
-  }
+  get labelAnchor(): LabelAnchor { return anchorLookup[this.labelPosition]; }
+  get labelBaseline(): LabelBaseline { return baselineLookup[this.labelPosition]; }
+  get labelDx(): number { return this.getLabelOffset(['top', 'bottom'], ['right']); }
+  get labelDy(): number { return this.getLabelOffset(['left', 'right'], ['bottom']); }
 
   constructor() {
     const generator = this.symbolGenerator = symbolConstructor();
@@ -141,6 +123,18 @@ export class NodeComponent implements OnChanges {
       return builtinLookup[symbol] || builtinLookup['circle'];
     }
     return symbol;
+  }
+
+  private getLabelOffset(
+    zeroes: LabelPosition[], negatives: LabelPosition[]
+  ): number {
+    const position = this.labelPosition;
+    if (zeroes.indexOf(position) >= 0) {
+      return 0;
+    }
+
+    const offset = Math.sqrt(this.size) / 2 + 3;
+    return negatives.indexOf(position) === -1 ? offset : -offset;
   }
 
   private setDefaultValue<K extends keyof NodeComponent>(

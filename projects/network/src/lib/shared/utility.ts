@@ -1,5 +1,5 @@
 import { SimpleChanges } from '@angular/core';
-import { conforms, conformsTo, isArrayLike, isFinite, isNil, isNumber } from 'lodash';
+import { conforms, conformsTo, isArrayLike, isNil, isNumber } from 'lodash';
 
 export type Point = [number, number];
 export type Range = number | [number, number] | { min: number, max: number };
@@ -8,10 +8,6 @@ export type Range = number | [number, number] | { min: number, max: number };
 export const isPoint = conforms({
   [0]: isNumber, [1]: isNumber
 }) as (obj: any) => obj is Point;
-
-export const isFinitePoint = conforms({
-  [0]: isFinite, [1]: isFinite
-});
 
 export function isRange(obj: any): obj is Range {
   if (isNumber(obj)) {

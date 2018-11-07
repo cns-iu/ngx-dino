@@ -1,8 +1,9 @@
-import { Component, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
-import { isFunction } from 'lodash';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { path } from 'd3-path';
-import { Point, isPoint } from '../shared/utility';
+import { isFunction, isNil } from 'lodash';
+
 import { BuiltinEdgeTypes, EdgeType } from '../shared/options';
+import { Point, isPoint, setDefaultValue } from '../shared/utility';
 
 @Component({
   selector: '[dino-network-edge]', // tslint:disable-line:component-selector
@@ -11,7 +12,7 @@ import { BuiltinEdgeTypes, EdgeType } from '../shared/options';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EdgeComponent implements OnChanges {
-  @Input() edge: BuiltinEdgeTypes | EdgeType = 'line';
+  @Input() edge: BuiltinEdgeTypes | EdgeType;
   @Input() source: Point;
   @Input() target: Point;
   @Input() stroke: string;
@@ -24,6 +25,13 @@ export class EdgeComponent implements OnChanges {
   constructor() { }
 
   ngOnChanges(changes: SimpleChanges): void {
+    // Set (reset) default values
+    setDefaultValue(this, changes, 'edge', 'line');
+    setDefaultValue(this, changes, 'stroke', 'black');
+    setDefaultValue(this, changes, 'transparency', 1);
+    setDefaultValue(this, changes, 'strokeWidth', 0);
+    setDefaultValue(this, changes, 'strokeTransparency', 1);
+
     if ('edge' in changes || 'source' in changes || 'target' in changes) {
       if (this.isValid()) {
         this.updatePath();
@@ -33,10 +41,7 @@ export class EdgeComponent implements OnChanges {
 
   isValid(): boolean {
     const {source, target} = this;
-    return (
-      isPoint(source) && isPoint(target) &&
-      this.getEdge() !== undefined
-    );
+    return isPoint(source) && isPoint(target);
   }
 
   private getEdge(): EdgeType {

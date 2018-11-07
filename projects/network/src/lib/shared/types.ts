@@ -2,9 +2,9 @@ import { Datum } from '@ngx-dino/core';
 import { Point } from './utility';
 
 export class Node extends Datum {
+  symbol: string;
   position: Point;
   size: number;
-  symbol: string;
   color: string;
   transparency: number;
   stroke: string;

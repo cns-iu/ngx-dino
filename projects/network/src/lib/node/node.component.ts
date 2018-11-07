@@ -1,13 +1,13 @@
-import { Component, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import {
   Symbol, SymbolType, symbol as symbolConstructor,
   symbolCircle, symbolCross, symbolDiamond,
   symbolSquare, symbolStar, symbolTriangle, symbolWye
 } from 'd3-shape';
-import { isNil, isString } from 'lodash';
+import { isString } from 'lodash';
 
 import { BuiltinSymbolTypes } from '../shared/options';
-import { Point, isPoint } from '../shared/utility';
+import { Point, isPoint, setDefaultValue } from '../shared/utility';
 
 export type LabelPosition = 'left' | 'right' | 'top' | 'bottom' | 'center';
 type LabelAnchor = 'start' | 'middle' | 'end';
@@ -63,15 +63,15 @@ export class NodeComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     // Set (reset) default values
-    this.setDefaultValue(changes, 'symbol', 'circle');
-    this.setDefaultValue(changes, 'color', 'black');
-    this.setDefaultValue(changes, 'transparency', 1);
-    this.setDefaultValue(changes, 'stroke', 'black');
-    this.setDefaultValue(changes, 'strokeWidth', 0);
-    this.setDefaultValue(changes, 'strokeTransparency', 1);
-    this.setDefaultValue(changes, 'tooltip', '');
-    this.setDefaultValue(changes, 'label', '');
-    this.setDefaultValue(changes, 'labelPosition', 'top');
+    setDefaultValue(this, changes, 'symbol', 'circle');
+    setDefaultValue(this, changes, 'color', 'black');
+    setDefaultValue(this, changes, 'transparency', 1);
+    setDefaultValue(this, changes, 'stroke', 'black');
+    setDefaultValue(this, changes, 'strokeWidth', 0);
+    setDefaultValue(this, changes, 'strokeTransparency', 1);
+    setDefaultValue(this, changes, 'tooltip', '');
+    setDefaultValue(this, changes, 'label', '');
+    setDefaultValue(this, changes, 'labelPosition', 'top');
 
     if ('symbol' in changes || 'size' in changes) {
       if (this.isValid()) {
@@ -135,13 +135,5 @@ export class NodeComponent implements OnChanges {
 
     const offset = Math.sqrt(this.size) / 2 + 3;
     return negatives.indexOf(position) === -1 ? offset : -offset;
-  }
-
-  private setDefaultValue<K extends keyof NodeComponent>(
-    changes: SimpleChanges, prop: K, defaultValue: NodeComponent[K]
-  ): void {
-    if (prop in changes && isNil(this[prop])) {
-      this[prop] = defaultValue;
-    }
   }
 }

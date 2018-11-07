@@ -1,12 +1,13 @@
 import { Component, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
-import { isString } from 'lodash';
 import {
   Symbol, SymbolType, symbol as symbolConstructor,
   symbolCircle, symbolCross, symbolDiamond,
   symbolSquare, symbolStar, symbolTriangle, symbolWye
 } from 'd3-shape';
-import { Point, isPoint } from '../shared/utility';
+import { isNil, isString } from 'lodash';
+
 import { BuiltinSymbolTypes } from '../shared/options';
+import { Point, isPoint } from '../shared/utility';
 
 export type LabelPosition = 'left' | 'right' | 'top' | 'bottom' | 'center';
 type LabelAnchor = 'start' | 'middle' | 'end';
@@ -33,18 +34,18 @@ const baselineLookup: { [P in LabelPosition]: LabelBaseline } = {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NodeComponent implements OnChanges {
-  @Input() symbol: BuiltinSymbolTypes | SymbolType = 'circle';
+  @Input() symbol: BuiltinSymbolTypes | SymbolType;
   @Input() position: Point;
   @Input() size: number;
-  @Input() color = 'black';
-  @Input() stroke = 'black';
-  @Input() transparency;
-  @Input() strokeWidth = 0;
-  @Input() tooltip = '';
+  @Input() color: string;
+  @Input() transparency: number;
+  @Input() stroke: string;
+  @Input() strokeWidth: number;
+  @Input() strokeTransparency: number;
+  @Input() tooltip: string;
   @Input() tooltipElement: HTMLDivElement;
-  @Input() label = '';
-  @Input() labelPosition: LabelPosition = 'top';
-  @Input() strokeTransparency;
+  @Input() label: string;
+  @Input() labelPosition: LabelPosition;
 
   shape: string;
   private symbolGenerator: Symbol<void, void>;
@@ -79,6 +80,17 @@ export class NodeComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    // Set (reset) default values
+    this.setDefaultValue(changes, 'symbol', 'circle');
+    this.setDefaultValue(changes, 'color', 'black');
+    this.setDefaultValue(changes, 'transparency', 1);
+    this.setDefaultValue(changes, 'stroke', 'black');
+    this.setDefaultValue(changes, 'strokeWidth', 0);
+    this.setDefaultValue(changes, 'strokeTransparency', 1);
+    this.setDefaultValue(changes, 'tooltip', '');
+    this.setDefaultValue(changes, 'label', '');
+    this.setDefaultValue(changes, 'labelPosition', 'top');
+
     if ('symbol' in changes || 'size' in changes) {
       if (this.isValid()) {
         this.shape = this.symbolGenerator();
@@ -129,5 +141,13 @@ export class NodeComponent implements OnChanges {
       return builtinLookup[symbol] || builtinLookup['circle'];
     }
     return symbol;
+  }
+
+  private setDefaultValue<K extends keyof NodeComponent>(
+    changes: SimpleChanges, prop: K, defaultValue: NodeComponent[K]
+  ): void {
+    if (prop in changes && isNil(this[prop])) {
+      this[prop] = defaultValue;
+    }
   }
 }

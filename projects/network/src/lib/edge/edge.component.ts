@@ -12,13 +12,13 @@ import { Point, isPoint, setDefaultValue } from '../shared/utility';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EdgeComponent implements OnChanges {
-  @Input() edge: BuiltinEdgeTypes | EdgeType;
+  @Input() edge: BuiltinEdgeTypes | EdgeType = 'line';
   @Input() source: Point;
   @Input() target: Point;
-  @Input() stroke: string;
-  @Input() transparency: number;
-  @Input() strokeWidth: number;
-  @Input() strokeTransparency: number;
+  @Input() stroke = 'black';
+  @Input() transparency = 1;
+  @Input() strokeWidth = 0;
+  @Input() strokeTransparency = 1;
 
   path: string;
 
@@ -46,7 +46,7 @@ export class EdgeComponent implements OnChanges {
 
   private getEdge(): EdgeType {
     const edge = this.edge;
-    if (isFunction(edge['draw'])) {
+    if (edge && isFunction(edge['draw'])) {
       return edge as EdgeType;
     }
     // FIXME

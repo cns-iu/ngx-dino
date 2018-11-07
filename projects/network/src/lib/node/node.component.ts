@@ -34,18 +34,18 @@ const baselineLookup: { [P in LabelPosition]: LabelBaseline } = {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NodeComponent implements OnChanges {
-  @Input() symbol: BuiltinSymbolTypes | SymbolType;
+  @Input() symbol: BuiltinSymbolTypes | SymbolType = 'circle';
   @Input() position: Point;
   @Input() size: number;
-  @Input() color: string;
-  @Input() transparency: number;
-  @Input() stroke: string;
-  @Input() strokeWidth: number;
-  @Input() strokeTransparency: number;
-  @Input() tooltip: string;
+  @Input() color = 'black';
+  @Input() transparency = 1;
+  @Input() stroke = 'black';
+  @Input() strokeWidth = 0;
+  @Input() strokeTransparency = 1;
+  @Input() tooltip = '';
   @Input() tooltipElement: HTMLDivElement;
-  @Input() label: string;
-  @Input() labelPosition: LabelPosition;
+  @Input() label = '';
+  @Input() labelPosition: LabelPosition = 'top';
 
   shape: string;
   private symbolGenerator: Symbol<void, void>;

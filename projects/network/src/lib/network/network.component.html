@@ -1,12 +1,7 @@
 <div class="container" (dinoAutoResize)="onResize($event)">
     <div #tooltipElement class="tooltip"></div>
-    <svg [attr.width]="svgWidth" [attr.height]="svgHeight">
-        <svg:g dino-network-edge *ngFor="let edge of edges; trackBy: trackById" [source]="edge.csource" [target]="edge.ctarget" [stroke]="edge.stroke" [strokeWidth]="edge.strokeWidth" [transparency]="edge.transparency" />
-        <ng-container *ngFor="let node of nodes; trackBy: trackById">
-            <svg:g dino-network-node *ngIf="!node.labelPosition" [position]="node.cposition" [size]="node.size" [symbol]="node.symbol" [color]="node.color" [stroke]="node.stroke" [strokeTransparency]="node.strokeTransparency" [strokeWidth]="node.strokeWidth" [transparency]="node.transparencey" [tooltip]="node.tooltip" [tooltipElement]="tooltipElement" [label]="node.label" [labelPosition]="node.labelPosition" />
-        </ng-container>
-        <ng-container *ngFor="let node of nodes; trackBy: trackById">
-            <svg:g dino-network-node *ngIf="node.labelPosition" [position]="node.cposition" [size]="node.size" [symbol]="node.symbol" [color]="node.color" [stroke]="node.stroke" [strokeTransparency]="node.strokeTransparency" [strokeWidth]="node.strokeWidth" [transparency]="node.transparency" [tooltip]="node.tooltip" [tooltipElement]="tooltipElement" [label]="node.label" [labelPosition]="node.labelPosition" />
-        </ng-container>
-    </svg>
+    <dino-pure-network autoresize=[autoresize] [width]="width" [height]="height" [nodeStream]="nodeStream" [edgeStream]="edgeStream" [nodeIdField]="nodeIdField" [nodePositionField]="nodePositionField" [nodeSizeField]="nodeSizeField" [nodeSymbolField]="nodeSymbolField"
+        [nodeColorField]="nodeColorField" [nodeStrokeField]="nodeStrokeField" [nodeStrokeWidthField]="nodeStrokeWidthField" [nodeTooltipField]="nodeTooltipField" [nodeLabelField]="nodeLabelField" [nodeLabelPositionField]="nodeLabelPositionField" [nodeTransparencyField]="nodeTransparencyField"
+        [strokeTransparencyField]="strokeTransparencyField" [edgeIdField]="edgeIdField" [edgeSourceField]="edgeSourceField" [edgeTargetField]="edgeTargetField" [edgeStrokeField]="edgeStrokeField" [edgeStrokeWidthField]="edgeStrokeWidthField" [edgeTransparencyField]="edgeTransparencyField"
+        [coordinateSpace]="coordinateSpace" [tooltipElement]="tooltipElement" [resize]="resize"></dino-pure-network>
 </div>

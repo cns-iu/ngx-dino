@@ -24,7 +24,7 @@ function createRandomNode(index: number) {
     nodeStrokeWidth: nodeStrokeWidthRange.min + (nodeStrokeWidthRange.max - nodeStrokeWidthRange.min) * random(),
     nodeTooltip: 'Tool tip',
     nodeLabel: 'Node Label',
-    nodeLabelPosition: 'Temp data',
+    nodeLabelPosition: 'left',
     nodeTransparency: random(),
     strokeTransparency: random()
   };

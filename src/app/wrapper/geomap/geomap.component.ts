@@ -1,15 +1,14 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Component, Input } from '@angular/core';
+import { geoAlbersUsa } from 'd3-geo';
+import { geoEckert4 } from 'd3-geo-projection';
+import { Observable, interval, EMPTY } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 
-import { BoundField, RawChangeSet } from '@ngx-dino/core';
-import {
-  stateField, stateColorField,
-  pointIdField, pointLatLongField, pointSizeField, pointColorField,
-  pointShapeField, pointStrokeColorField, pointTitleField, pulseField
-} from '../shared/geomap/geomap-fields';
+import { BoundField, DatumId, RawChangeSet } from '@ngx-dino/core';
+import { BuiltinSymbolTypes, Point } from '@ngx-dino/network';
+import * as fields from '../shared/geomap/geomap-fields';
+import nodeData from '../shared/geomap/point-dummy-data';
 import stateData from '../shared/geomap/state-dummy-data';
-import pointData from '../shared/geomap/point-dummy-data';
 
 
 @Component({
@@ -17,40 +16,47 @@ import pointData from '../shared/geomap/point-dummy-data';
   templateUrl: './geomap.component.html',
   styleUrls: ['./geomap.component.sass']
 })
-export class GeomapComponent implements OnInit {
+export class GeomapComponent {
   @Input() height: number;
   @Input() width: number;
 
-  stateDataStream: Observable<RawChangeSet>;
-  stateField: BoundField<string> = stateField.getBoundField();
-  stateColorField: BoundField<string> = stateColorField.getBoundField();
+  // Basemap
+  basemapSelector = ['world', 'countries'];
+  basemapProjection = geoEckert4();
+  basemapDefaultColor = 'lightgray';
+  // TODO other basemap fields
 
-  pointDataStream: Observable<RawChangeSet>;
-  pointIdField: BoundField<string> = pointIdField.getBoundField();
-  pointLatLongField: BoundField<[number, number]> = pointLatLongField.getBoundField();
-  pointSizeField: BoundField<number> = pointSizeField.getBoundField();
-  pointColorField: BoundField<string> = pointColorField.getBoundField();
-  pointShapeField: BoundField<string> = pointShapeField.getBoundField();
-  strokeColorField: BoundField<string> = pointStrokeColorField.getBoundField();
-  pointTitleField: BoundField<string> = pointTitleField.getBoundField();
-  pointPulseField: BoundField<boolean> = pulseField.getBoundField();
+  // Nodes
+  nodeStream: Observable<RawChangeSet> = interval(1000).pipe(
+    take(nodeData.length),
+    map(index => nodeData[index]),
+    map(item => [item]),
+    map(RawChangeSet.fromArray)
+  );
+  nodeIdField: BoundField<DatumId> = fields.nodeIdField.getBoundField();
+  nodePositionField: BoundField<Point> = fields.nodePositionField.getBoundField();
+  nodeSizeField: BoundField<number> = fields.nodeSizeField.getBoundField();
+  nodeSymbolField: BoundField<BuiltinSymbolTypes> = fields.nodeSymbolField.getBoundField();
+  nodeColorField: BoundField<string> = fields.nodeColorField.getBoundField();
+  nodeStrokeColorField: BoundField<string> = fields.nodeStrokeColorField.getBoundField();
+  nodeStrokeWidthField: BoundField<number> = fields.nodeStrokeWidthField.getBoundField();
+  nodeTooltipField: BoundField<string> = fields.nodeTooltipField.getBoundField();
+  nodeLabelField: BoundField<string> = fields.nodeLabelField.getBoundField();
+  nodeLabelPositionField: BoundField<string> = fields.nodeLabelPositionField.getBoundField();
+  nodeTransparencyField: BoundField<number> = fields.nodeTransparencyField.getBoundField();
+  nodeStrokeTransparencyField: BoundField<number> = fields.nodeStrokeTransparencyField.getBoundField();
+
+  // Edges
+  edgeStream: Observable<RawChangeSet> = EMPTY;
+  edgeIdField: BoundField<DatumId>;
+  edgeSourceField: BoundField<Point>;
+  edgeTargetField: BoundField<Point>;
+  edgeStrokeColorField: BoundField<string>;
+  edgeStrokeWidthField: BoundField<number>;
+  edgeTransparencyField: BoundField<number>;
 
   constructor() {
-    this.stateDataStream = new Observable((subscriber) => {
-      (stateData as any[]).forEach((data, i) => {
-        setTimeout(() => subscriber.next([data]), 1000 * i);
-      });
-      setTimeout(() => subscriber.complete(), 1000 * stateData.length);
-    }).pipe(map(RawChangeSet.fromArray));
-
-    this.pointDataStream = new Observable((subscriber) => {
-      (pointData as any[]).forEach((data, i) => {
-        setTimeout(() => subscriber.next([data]), 1000 * i);
-      });
-      setTimeout(() => subscriber.complete(), 1000 * pointData.length);
-    }).pipe(map(RawChangeSet.fromArray));
-  }
-
-  ngOnInit() {
+    console.log('albers', geoAlbersUsa);
+    console.log('eckert', geoEckert4);
   }
 }

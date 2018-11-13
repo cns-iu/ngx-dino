@@ -1,5 +1,14 @@
-<div class="container">
-    <svg:svg class="geomap" width="100%" height="100%">
-        <svg:g dino-basemap class="basemap" [basemap]="basemap" [projection]="projection" [fillField]="basemapFillField"></svg:g>
+<div class="container" (dinoAutoResize)="onResize($event)">
+    <div #tooltipElement class="tooltip"></div>
+    <svg:svg class="geomap" [style.width]="_width" [style.height]="_height">
+        <svg:g dino-basemap class="basemap" [basemap]="basemap" [projection]="basemapProjection" [colorField]="basemapColorField" [transparencyField]="basemapTransparencyField" [strokeColorField]="basemapStrokeColorField" [strokeWidthField]="basemapStrokeWidthField"
+            [strokeDashArrayField]="basemapStrokeDashArrayField" [strokeTransparencyField]="basemapStrokeTransparencyField" [defaultColor]="basemapDefaultColor" [defaultTransparency]="basemapDefaultTransparency" [defaultStrokeColor]="basemapDefaultStrokeColor"
+            [defaultStrokeWidth]="basemapDefaultStrokeWidth" [defaultStrokeDashArray]="basemapDefaultStrokeDashArray" [defaultStrokeTransparency]="basemapDefaultStrokeTransparency" (boundsChanged)="onBoundsChange($event)">
+        </svg:g>
+        <svg:g dino-pure-network class="network" [style.transform]="networkTransform" [autoresize]="false" [width]="networkWidth" [height]="networkHeight" [nodeStream]="nodeStream" [nodeIdField]="nodeIdField" [nodePositionField]="nodeProjectedPositionField" [nodeSizeField]="nodeSizeField" [nodeSymbolField]="nodeSymbolField"
+            [nodeColorField]="nodeColorField" [nodeStrokeField]="nodeStrokeColorField" [nodeStrokeWidthField]="nodeStrokeWidthField" [nodeTooltipField]="nodeTooltipField" [nodeLabelField]="nodeLabelField" [nodeLabelPositionField]="nodeLabelPositionField"
+            [nodeTransparencyField]="nodeTransparencyField" [strokeTransparencyField]="nodeStrokeTransparencyField" [edgeStream]="edgeStream" [edgeIdField]="edgeIdField" [edgeSourceField]="edgeProjectedSourceField" [edgeTargetField]="edgeProjectedTargetField"
+            [edgeStrokeField]="edgeStrokeColorField" [edgeStrokeWidthField]="edgeStrokeWidthField" [edgeTransparencyField]="edgeTransparencyField" [tooltipElement]="tooltipElement" [coordinateSpace]="coordinateSpace" [adjustMargins]="false">
+        </svg:g>
     </svg:svg>
 </div>

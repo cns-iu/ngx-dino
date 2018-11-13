@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Set } from 'immutable';
 import { conforms, debounce, filter, isFinite } from 'lodash';
 import { Observable, Subscription } from 'rxjs';
@@ -51,6 +51,7 @@ export class PureNetworkComponent implements OnInit, OnChanges {
 
   // Other inputs
   @Input() coordinateSpace: CoordinateSpaceOptions;
+  @Input() adjustMargins = true;
   @Input() tooltipElement: HTMLDivElement;
   @Input() resize: Observable<{ width: number, height: number }>;
 
@@ -100,7 +101,7 @@ export class PureNetworkComponent implements OnInit, OnChanges {
         excludedNodes: this.excludedNodes, excludedEdges: this.excludedEdges
       } = this.layoutService.layout(nodes, edges, {
         width: this.svgWidth, height: this.svgHeight,
-        coordinateSpace: this.coordinateSpace
+        coordinateSpace: this.coordinateSpace, adjustMargins: this.adjustMargins
       }));
     }, 16);
   }
@@ -171,11 +172,11 @@ export class PureNetworkComponent implements OnInit, OnChanges {
 
   onResize({width, height}: {width: number, height: number}): void {
     if (this.autoresize) {
-      const wDiff = width - this.svgWidth;
-      const hDiff = height - this.svgHeight;
-      const newW = 0 < wDiff && wDiff < 25 ? this.svgWidth : width;
-      const newH = 0 < hDiff && hDiff < 25 ? this.svgHeight : height;
-      this.doResize(newW, newH);
+      // const wDiff = width - this.svgWidth;
+      // const hDiff = height - this.svgHeight;
+      // const newW = 0 < wDiff && wDiff < 25 ? this.svgWidth : width;
+      // const newH = 0 < hDiff && hDiff < 25 ? this.svgHeight : height;
+      this.doResize(width, height);
     }
   }
 

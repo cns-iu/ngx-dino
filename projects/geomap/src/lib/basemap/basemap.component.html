@@ -1,4 +1,11 @@
 <svg:svg *ngIf="basemap" class="basemap" [attr.viewBox]="viewBox">
-    <svg:path *ngFor="let feature of basemap.features; let index = index" [attr.d]="feature.properties.path" [style.fill]="feature.properties.fill">
+    <svg:path *ngFor="let feature of basemap.features"
+        [attr.d]="feature.properties.path"
+        [style.fill]="feature.properties.color"
+        [style.opacity]="feature.properties.transparency"
+        [style.stroke]="feature.properties.strokeColor"
+        [style.stroke-width]="feature.properties.strokeWidth"
+        [style.stroke-dasharray]="feature.properties.strokeDashArray"
+        [style.stroke-opacity]="feature.properties.strokeTransparency">
     </svg:path>
 </svg:svg>

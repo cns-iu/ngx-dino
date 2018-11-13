@@ -9,7 +9,7 @@ import { GeomapV2Component } from './geomap-v2/geomap-v2.component';
 
 @NgModule({
   imports: [CommonModule, CoreModule, NetworkModule],
-  exports: [GeomapComponent, GeomapV2Component],
-  declarations: [GeomapComponent, BasemapComponent, GeomapV2Component]
+  declarations: [BasemapComponent, GeomapComponent, GeomapV2Component],
+  exports: [GeomapComponent, GeomapV2Component]
 })
 export class GeomapModule { }

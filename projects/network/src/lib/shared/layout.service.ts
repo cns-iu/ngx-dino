@@ -1,16 +1,14 @@
 import { Injectable } from '@angular/core';
 import { clamp, constant, get, inRange, isFunction, maxBy, partition } from 'lodash';
-import {
-  CoordinateSpace, CoordinateSpaceOptions,
-  DynamicCoordinateSpace, FixedCoordinateSpace
-} from './options';
+import { CoordinateSpace, CoordinateSpaceOptions, DynamicCoordinateSpace } from './options';
 import { Edge, Node } from './types';
-import { normalizeRange, Point } from './utility';
+import { normalizeRange } from './utility';
 
 export interface LayoutOptions {
   width: number;
   height: number;
   coordinateSpace?: CoordinateSpaceOptions;
+  adjustMargins?: boolean;
 }
 
 export interface LayoutResult {
@@ -67,14 +65,21 @@ function resetProperties<T>(array: T[], props: { [P in keyof T]?: T[P] | (() => 
 }
 
 function normalizeViewSpace(
-  nodes: Node[], width: number, height: number
+  nodes: Node[], width: number, height: number, adjustMargins: boolean
 ): [NormalizedSpace, NormalizedSpace] {
-  const maxSize = get(maxBy(nodes, 'size'), 'size', 0);
-  const maxRadius = Math.sqrt(maxSize) / 2;
-  return [
-    { offset: maxRadius, range: width - 2 * maxRadius },
-    { offset: maxRadius, range: height - 2 * maxRadius }
-  ];
+  if (adjustMargins) {
+    const maxSize = get(maxBy(nodes, 'size'), 'size', 0);
+    const maxRadius = Math.sqrt(maxSize) / 2;
+    return [
+      { offset: maxRadius, range: width - 2 * maxRadius },
+      { offset: maxRadius, range: height - 2 * maxRadius }
+    ];
+  } else {
+    return [
+      { offset: 0, range: width },
+      { offset: 0, range: height}
+    ];
+  }
 }
 
 function rangeOf(values: number[]): [number, number] {
@@ -129,7 +134,7 @@ export class LayoutService {
     // Destructure and normalize arguments
     const dynamicSpace: DynamicCoordinateSpace = { type: 'dynamic' };
     const {
-      width, height,
+      width, height, adjustMargins = true,
       coordinateSpace: { x: xSpace = dynamicSpace, y: ySpace = dynamicSpace } = {}
     } = options;
 
@@ -148,7 +153,7 @@ export class LayoutService {
     });
 
     // Calculate space ranges
-    const [xViewSpace, yViewSpace] = normalizeViewSpace(nodes, width, height);
+    const [xViewSpace, yViewSpace] = normalizeViewSpace(nodes, width, height, adjustMargins);
     const xRange = spaceRange(includedNodes, includedEdges, xSpace, 'x', width);
     const yRange = spaceRange(includedNodes, includedEdges, ySpace, 'y', height);
 

@@ -1,4 +1,4 @@
-<svg [attr.width]="_width" [attr.height]="_height">
+<svg [attr.width]="svgWidth" [attr.height]="svgHeight">
   <!-- Edges -->
   <svg:g dino-network-edge *ngFor="let edge of edges; trackBy: trackById" [source]="edge.csource" [target]="edge.ctarget" [stroke]="edge.stroke" [strokeWidth]="edge.strokeWidth" [transparency]="edge.transparency" />
 

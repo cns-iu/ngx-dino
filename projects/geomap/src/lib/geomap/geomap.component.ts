@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { GeoProjection } from 'd3-geo';
 import { FeatureCollection } from 'geojson';
 import { upperFirst } from 'lodash';
@@ -14,11 +14,11 @@ import { FeatureSelector } from '../shared/map-data/common';
 import { lookupFeatures } from '../shared/map-data/geo-features';
 
 @Component({
-  selector: 'dino-geomap-v2',
-  templateUrl: './geomap-v2.component.html',
-  styleUrls: ['./geomap-v2.component.css']
+  selector: 'dino-geomap',
+  templateUrl: './geomap.component.html',
+  styleUrls: ['./geomap.component.css']
 })
-export class GeomapV2Component implements OnInit, OnChanges {
+export class GeomapComponent implements OnChanges {
   // Size
   @Input() autoresize = true;
   @Input() width: number | string;
@@ -89,12 +89,7 @@ export class GeomapV2Component implements OnInit, OnChanges {
     this._basemapFeatureSelector.pipe(lookupFeatures()).subscribe(
       features => this.basemap = features
     );
-
-    // Testing only. Remove when done!
-    console.log(this);
   }
-
-  ngOnInit(): void { }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.checkAndUpdateProjectedField(changes, 'node', 'position');

@@ -85,6 +85,7 @@ jobs:
     script:
     - npm run build:lib core
     - npm run build:lib vega-util
+    - npm run build:lib network
     - npm run build:lib geomap
     before_deploy:
     - cd dist/geomap

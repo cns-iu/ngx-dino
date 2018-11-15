@@ -7,7 +7,7 @@
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](LICENSE)
 [![View Demo](https://img.shields.io/badge/demo-online-brightgreen.svg)](https://cns-iu.github.io/ngx-dino)
 
-@ngx-dino is a visualization framework and library for Angular 6+
+@ngx-dino is a visualization framework and library for Angular 7+
 
 For information on how to develop / contribute to @ngx-dino, see [DEVELOPMENT.md](DEVELOPMENT.md)
 

@@ -1,5 +1,66 @@
-import { simpleField, access } from '@ngx-dino/core';
+import { DatumId, simpleField, access, constant } from '@ngx-dino/core';
 
+export const nodeIdField = simpleField<DatumId>({
+  label: 'Node Id',
+  operator: access('id')
+});
+
+export const nodePositionField = simpleField<[number, number]>({
+  label: 'Node Latitude/Longitude',
+  operator: access('lat_long')
+});
+
+export const nodeSizeField = simpleField<number>({
+  label: 'Node Size',
+  operator: access('size')
+});
+
+export const nodeSymbolField = simpleField<any>({
+  label: 'Node Symbol',
+  operator: access('shape')
+});
+
+export const nodeColorField = simpleField<string>({
+  label: 'Node Color',
+  operator: access('size')
+});
+
+export const nodeStrokeColorField = simpleField<string>({
+  label: 'Node Stroke Color',
+  operator: access('stroke')
+});
+
+export const nodeStrokeWidthField = simpleField<undefined>({
+  label: 'Node Stroke Width',
+  operator: constant(undefined)
+});
+
+export const nodeTooltipField = simpleField<undefined>({
+  label: 'Node Tooltip',
+  operator: constant(undefined)
+});
+
+export const nodeLabelField = simpleField<string>({
+  label: 'Node Label',
+  operator: access('title')
+});
+
+export const nodeLabelPositionField = simpleField<undefined>({
+  label: 'Node Label Position',
+  operator: constant(undefined)
+});
+
+export const nodeTransparencyField = simpleField<undefined>({
+  label: 'Node Transparency',
+  operator: constant(undefined)
+});
+
+export const nodeStrokeTransparencyField = simpleField<undefined>({
+  label: 'Node Stroke Transparency',
+  operator: constant(undefined)
+});
+
+// Old
 export const stateField = simpleField<any>({
   label: 'State Id',
   operator: access('label')

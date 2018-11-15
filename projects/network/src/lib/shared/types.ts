@@ -2,16 +2,17 @@ import { Datum } from '@ngx-dino/core';
 import { Point } from './utility';
 
 export class Node extends Datum {
+  symbol: string;
   position: Point;
   size: number;
-  symbol: string;
   color: string;
+  transparency: number;
   stroke: string;
   strokeWidth: number;
+  strokeTransparency: number;
   tooltip: string;
   label: string;
   labelPosition: string;
-  transparency: number;
 
   // Calculated
   cposition: Point;
@@ -21,9 +22,9 @@ export class Node extends Datum {
 export class Edge extends Datum {
   source: Point;
   target: Point;
+  transparency: number;
   stroke: string;
   strokeWidth: number;
-  transparency: number;
 
   // Calculated
   csource: Point;

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GeomapComponent } from './geomap.component';
+import { PureNetworkComponent } from './pure-network.component';
 
-describe('GeomapComponent', () => {
-  let component: GeomapComponent;
-  let fixture: ComponentFixture<GeomapComponent>;
+describe('PureNetworkComponent', () => {
+  let component: PureNetworkComponent;
+  let fixture: ComponentFixture<PureNetworkComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GeomapComponent ]
+      declarations: [ PureNetworkComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GeomapComponent);
+    fixture = TestBed.createComponent(PureNetworkComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

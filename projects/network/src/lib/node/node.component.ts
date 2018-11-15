@@ -1,12 +1,13 @@
-import { Component, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
-import { isString } from 'lodash';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import {
   Symbol, SymbolType, symbol as symbolConstructor,
   symbolCircle, symbolCross, symbolDiamond,
   symbolSquare, symbolStar, symbolTriangle, symbolWye
 } from 'd3-shape';
-import { Point, isPoint } from '../shared/utility';
+import { isString } from 'lodash';
+
 import { BuiltinSymbolTypes } from '../shared/options';
+import { Point, isPoint, setDefaultValue } from '../shared/utility';
 
 export type LabelPosition = 'left' | 'right' | 'top' | 'bottom' | 'center';
 type LabelAnchor = 'start' | 'middle' | 'end';
@@ -37,40 +38,22 @@ export class NodeComponent implements OnChanges {
   @Input() position: Point;
   @Input() size: number;
   @Input() color = 'black';
+  @Input() transparency = 1;
   @Input() stroke = 'black';
-  @Input() transparency;
   @Input() strokeWidth = 0;
+  @Input() strokeTransparency = 1;
   @Input() tooltip = '';
   @Input() tooltipElement: HTMLDivElement;
   @Input() label = '';
   @Input() labelPosition: LabelPosition = 'top';
-  @Input() strokeTransparency;
 
   shape: string;
   private symbolGenerator: Symbol<void, void>;
 
-  get labelAnchor(): LabelAnchor {
-    return anchorLookup[this.labelPosition];
-  }
-  get labelBaseline(): LabelBaseline {
-    return baselineLookup[this.labelPosition];
-  }
-  get labelDx(): number {
-    if (this.labelPosition === 'top' || this.labelPosition === 'bottom') {
-      return 0;
-    }
-
-    const offset = Math.sqrt(this.size) / 2 + 3;
-    return this.labelPosition === 'right' ? offset : -offset;
-  }
-  get labelDy(): number {
-    if (this.labelPosition === 'left' || this.labelPosition === 'right') {
-      return 0;
-    }
-
-    const offset = Math.sqrt(this.size) / 2 + 3;
-    return this.labelPosition === 'bottom' ? offset : -offset;
-  }
+  get labelAnchor(): LabelAnchor { return anchorLookup[this.labelPosition]; }
+  get labelBaseline(): LabelBaseline { return baselineLookup[this.labelPosition]; }
+  get labelDx(): number { return this.getLabelOffset(['top', 'bottom'], ['right']); }
+  get labelDy(): number { return this.getLabelOffset(['left', 'right'], ['bottom']); }
 
   constructor() {
     const generator = this.symbolGenerator = symbolConstructor();
@@ -79,6 +62,17 @@ export class NodeComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    // Set (reset) default values
+    setDefaultValue(this, changes, 'symbol', 'circle');
+    setDefaultValue(this, changes, 'color', 'black');
+    setDefaultValue(this, changes, 'transparency', 1);
+    setDefaultValue(this, changes, 'stroke', 'black');
+    setDefaultValue(this, changes, 'strokeWidth', 0);
+    setDefaultValue(this, changes, 'strokeTransparency', 1);
+    setDefaultValue(this, changes, 'tooltip', '');
+    setDefaultValue(this, changes, 'label', '');
+    setDefaultValue(this, changes, 'labelPosition', 'top');
+
     if ('symbol' in changes || 'size' in changes) {
       if (this.isValid()) {
         this.shape = this.symbolGenerator();
@@ -129,5 +123,17 @@ export class NodeComponent implements OnChanges {
       return builtinLookup[symbol] || builtinLookup['circle'];
     }
     return symbol;
+  }
+
+  private getLabelOffset(
+    zeroes: LabelPosition[], negatives: LabelPosition[]
+  ): number {
+    const position = this.labelPosition;
+    if (zeroes.indexOf(position) >= 0) {
+      return 0;
+    }
+
+    const offset = Math.sqrt(this.size) / 2 + 3;
+    return negatives.indexOf(position) === -1 ? offset : -offset;
   }
 }

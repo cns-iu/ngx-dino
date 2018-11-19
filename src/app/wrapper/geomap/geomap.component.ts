@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { geoAlbersUsa } from 'd3-geo';
 import { geoEckert4 } from 'd3-geo-projection';
 import { Observable, interval, EMPTY } from 'rxjs';
 import { map, take } from 'rxjs/operators';
@@ -8,7 +7,6 @@ import { BoundField, DatumId, RawChangeSet } from '@ngx-dino/core';
 import { BuiltinSymbolTypes, Point } from '@ngx-dino/network';
 import * as fields from '../shared/geomap/geomap-fields';
 import nodeData from '../shared/geomap/point-dummy-data';
-import stateData from '../shared/geomap/state-dummy-data';
 
 
 @Component({
@@ -54,9 +52,4 @@ export class GeomapComponent {
   edgeStrokeColorField: BoundField<string>;
   edgeStrokeWidthField: BoundField<number>;
   edgeTransparencyField: BoundField<number>;
-
-  constructor() {
-    console.log('albers', geoAlbersUsa);
-    console.log('eckert', geoEckert4);
-  }
 }

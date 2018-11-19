@@ -11,10 +11,16 @@ describe('GeomapComponent', () => {
       declarations: [
         createStubComponent('dino-geomap', {
           inputs: [
-            'autoresize', 'width', 'height', 'stateDataStream', 'pointDataStream',
-            'pointIdField', 'pointLatLongField', 'pointTitleField', 'pointSizeField',
-            'pointColorField', 'strokeColorField', 'pointShapeField', 'pointPulseField',
-            'stateField', 'stateColorField', 'stateDefaultColor', 'stateDefaultStrokeColor'
+            'autoresize', 'width', 'height',
+            'basemapFeatureSelector', 'basemapProjection', 'basemapColorField', 'basemapTransparencyField',
+            'basemapStrokeColorField', 'basemapStrokeWidthField', 'basemapStrokeDashArrayField', 'basemapStrokeTransparencyField',
+            'basemapDefaultColor', 'basemapDefaultTransparency', 'basemapDefaultStrokeColor', 'basemapDefaultStrokeWidth',
+            'basemapDefaultStrokeDashArray', 'basemapDefaultStrokeTransparency',
+            'nodeStream', 'nodeIdField', 'nodePositionField', 'nodeSizeField', 'nodeSymbolField', 'nodeColorField',
+            'nodeStrokeColorField', 'nodeStrokeWidthField', 'nodeTooltipField', 'nodeLabelField', 'nodeLabelPositionField',
+            'nodeTransparencyField', 'nodeStrokeTransparencyField',
+            'edgeStream', 'edgeIdField', 'edgeSourceField', 'edgeTargetField', 'edgeStrokeColorField',
+            'edgeStrokeWidthField', 'edgeTransparencyField',
           ]
         }),
         GeomapComponent

@@ -1,6 +1,6 @@
 {
     "name": "@ngx-dino/geomap",
-    "version": "0.10.1",
+    "version": "0.10.2",
     "description": "Visualization framework and library for Angular 7+",
     "homepage": "https://github.com/cns-iu/ngx-dino",
     "bugs": "https://github.com/cns-iu/ngx-dino/issues",
@@ -26,7 +26,16 @@
         "@angular/common": "^7.0.0",
         "@angular/core": "^7.0.0",
         "@ngx-dino/core": ">=0.9.0 <1.0.0",
+<<<<<<< HEAD
         "@ngx-dino/vega-util": ">=0.9.0 <1.0.0",
         "@ngx-dino/network": ">=0.11.0 <1.0.0"
+=======
+        "@ngx-dino/network": ">=0.11.0 <1.0.0",
+        "d3-geo": "^1.11.1",
+        "d3-geo-projection": "^2.4.1",
+        "lodash": "^4.17.10",
+        "rxjs": "^6.3.3",
+        "topojson-client": "^3.0.0"
+>>>>>>> 840c354876a5feb13ec4d393bb10e371f33e931f
     }
 }

@@ -112,6 +112,7 @@ export class PureNetworkComponent implements OnInit, OnChanges {
     this.detectStreamOrFieldChanges(changes, 'node', () => {
       this.nodes = [];
       this.excludedNodes = [];
+      this.debouncedLayoutArgs[0] = undefined;
       this.service.fetchNodes(
         this.nodeStream, this.nodeIdField,
         this.nodePositionField, this.nodeSizeField,
@@ -122,6 +123,9 @@ export class PureNetworkComponent implements OnInit, OnChanges {
         this.strokeTransparencyField
       );
     }, () => {
+      this.nodes = [];
+      this.excludedNodes = [];
+      this.debouncedLayoutArgs[0] = undefined;
       this.service.updateNodes(
         this.nodePositionField, this.nodeSizeField,
         this.nodeSymbolField, this.nodeColorField,
@@ -135,6 +139,7 @@ export class PureNetworkComponent implements OnInit, OnChanges {
     this.detectStreamOrFieldChanges(changes, 'edge', () => {
       this.edges = [];
       this.excludedEdges = [];
+      this.debouncedLayoutArgs[1] = undefined;
       this.service.fetchEdges(
         this.edgeStream, this.edgeIdField,
         this.edgeSourceField, this.edgeTargetField,
@@ -142,6 +147,9 @@ export class PureNetworkComponent implements OnInit, OnChanges {
         this.edgeTransparencyField
       );
     }, () => {
+      this.edges = [];
+      this.excludedEdges = [];
+      this.debouncedLayoutArgs[1] = undefined;
       this.service.updateEdges(
         this.edgeSourceField, this.edgeTargetField,
         this.edgeStrokeField, this.edgeStrokeWidthField,

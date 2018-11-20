@@ -60,6 +60,11 @@ export const nodeStrokeTransparencyField = simpleField<undefined>({
   operator: constant(undefined)
 });
 
+export const nodePulseField = simpleField<undefined>({
+  label: 'Node Pulse',
+  operator: constant(undefined)
+});
+
 // Old
 export const stateField = simpleField<any>({
   label: 'State Id',

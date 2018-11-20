@@ -62,6 +62,7 @@ export class GeomapComponent implements OnChanges {
   @Input() nodeLabelPositionField: BoundField<string>;
   @Input() nodeTransparencyField: BoundField<number>;
   @Input() nodeStrokeTransparencyField: BoundField<number>;
+  @Input() nodePulseField: BoundField<boolean>;
   nodeProjectedPositionField: BoundField<Point>;
 
   // Edges

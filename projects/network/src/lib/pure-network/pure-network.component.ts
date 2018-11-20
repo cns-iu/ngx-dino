@@ -39,6 +39,7 @@ export class PureNetworkComponent implements OnInit, OnChanges {
   @Input() nodeLabelPositionField: BoundField<string>;
   @Input() nodeTransparencyField: BoundField<number>;
   @Input() strokeTransparencyField: BoundField<number>;
+  @Input() nodePulseField: BoundField<boolean>;
 
   // Edges
   @Input() edgeStream: Observable<RawChangeSet>;
@@ -120,7 +121,7 @@ export class PureNetworkComponent implements OnInit, OnChanges {
         this.nodeStrokeField, this.nodeStrokeWidthField,
         this.nodeTooltipField, this.nodeLabelField,
         this.nodeLabelPositionField, this.nodeTransparencyField,
-        this.strokeTransparencyField
+        this.strokeTransparencyField, this.nodePulseField
       );
     }, () => {
       this.nodes = [];
@@ -132,7 +133,7 @@ export class PureNetworkComponent implements OnInit, OnChanges {
         this.nodeStrokeField, this.nodeStrokeWidthField,
         this.nodeTooltipField, this.nodeLabelField,
         this.nodeLabelPositionField, this.nodeTransparencyField,
-        this.strokeTransparencyField
+        this.strokeTransparencyField, this.nodePulseField
       );
     });
 

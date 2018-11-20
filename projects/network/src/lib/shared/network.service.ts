@@ -46,14 +46,16 @@ export class NetworkService {
     label: BoundField<string>,
     labelPosition: BoundField<string>,
     transparency: BoundField<number>,
-    strokeTransparency: BoundField<number>
+    strokeTransparency: BoundField<number>,
+    pulse: BoundField<boolean>
   ): this {
     if (this.nodeSubscription) {
       this.nodeSubscription.unsubscribe();
     }
 
     this.nodeProcessor = this.processorService.createProcessor<Node, any>(stream, id, {
-      position, size, symbol, color, stroke, strokeWidth, tooltip, label, labelPosition, transparency, strokeTransparency,
+      position, size, symbol, color, stroke, strokeWidth, tooltip,
+      label, labelPosition, transparency, strokeTransparency, pulse,
       cposition, csize
     });
     this.nodeSubscription = this.nodeProcessor.asObservable().subscribe((c) => this.nodeChanges.next(c));
@@ -94,10 +96,12 @@ export class NetworkService {
     label?: BoundField<string>,
     labelPosition?: BoundField<string>,
     transparency?: BoundField<number>,
-    strokeTransparency?: BoundField<number>
+    strokeTransparency?: BoundField<number>,
+    pulse?: BoundField<boolean>
   ): this {
     const fields = Map<string, BoundField<any>>({
-      position, size, symbol, color, stroke, strokeWidth, tooltip, label, labelPosition, transparency, strokeTransparency
+      position, size, symbol, color, stroke, strokeWidth, tooltip,
+      label, labelPosition, transparency, strokeTransparency, pulse
     }).filter((f) => !!f).toKeyedSeq();
     this.nodeProcessor.updateFields(fields);
     return this;

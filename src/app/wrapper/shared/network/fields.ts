@@ -1,10 +1,10 @@
-import { BoundField, access, simpleField } from '@ngx-dino/core';
+import { BoundField, access, constant, simpleField } from '@ngx-dino/core';
 
 export type FieldNames =
   'nodeIdField' | 'nodePositionField' | 'nodeSizeField' | 'nodeSymbolField' | 'nodeColorField' | 'nodeStrokeField' |
   'nodeStrokeWidthField' | 'nodeTooltipField' | 'nodeLabelField' | 'nodeLabelPositionField' | 'edgeIdField' | 'edgeSourceField' |
   'edgeTargetField' | 'edgeStrokeField' | 'edgeStrokeWidthField' | 'edgeTransparencyField' | 'nodeTransparencyField' |
-  'strokeTransparencyField';
+  'strokeTransparencyField' | 'nodePulseField';
 export type Fields = {[P in FieldNames]?: BoundField<any>};
 
 
@@ -65,6 +65,11 @@ export const nodeLabelPositionField = simpleField({
   bfieldId: 'label-position',
   label: 'Node Label Position',
   operator: access('nodeLabelPosition')
+});
+
+export const nodePulseField = simpleField({
+  label: 'Node Label Position',
+  operator: constant(undefined)
 });
 
 

@@ -43,6 +43,7 @@ export class GeomapComponent {
   nodeLabelPositionField: BoundField<string> = fields.nodeLabelPositionField.getBoundField();
   nodeTransparencyField: BoundField<number> = fields.nodeTransparencyField.getBoundField();
   nodeStrokeTransparencyField: BoundField<number> = fields.nodeStrokeTransparencyField.getBoundField();
+  nodePulseField: BoundField<boolean> = fields.nodePulseField.getBoundField();
 
   // Edges
   edgeStream: Observable<RawChangeSet> = EMPTY;

@@ -30,6 +30,7 @@ export class NetworkComponent {
   @Input() nodeLabelPositionField: BoundField<string>;
   @Input() nodeTransparencyField: BoundField<number>;
   @Input() strokeTransparencyField: BoundField<number>;
+  @Input() nodePulseField: BoundField<boolean>;
 
   // Edges
   @Input() edgeStream: Observable<RawChangeSet>;

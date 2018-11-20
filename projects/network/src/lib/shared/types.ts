@@ -13,6 +13,7 @@ export class Node extends Datum {
   tooltip: string;
   label: string;
   labelPosition: string;
+  pulse: boolean;
 
   // Calculated
   cposition: Point;

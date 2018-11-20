@@ -46,6 +46,7 @@ export class NodeComponent implements OnChanges {
   @Input() tooltipElement: HTMLDivElement;
   @Input() label = '';
   @Input() labelPosition: LabelPosition = 'top';
+  @Input() pulse = false;
 
   shape: string;
   private symbolGenerator: Symbol<void, void>;
@@ -72,6 +73,7 @@ export class NodeComponent implements OnChanges {
     setDefaultValue(this, changes, 'tooltip', '');
     setDefaultValue(this, changes, 'label', '');
     setDefaultValue(this, changes, 'labelPosition', 'top');
+    setDefaultValue(this, changes, 'pulse', false);
 
     if ('symbol' in changes || 'size' in changes) {
       if (this.isValid()) {

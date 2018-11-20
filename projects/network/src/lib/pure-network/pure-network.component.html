@@ -4,9 +4,9 @@
 
   <!-- Nodes -->
   <ng-container *ngFor="let node of nodes; trackBy: trackById">
-      <svg:g dino-network-node *ngIf="!node.labelPosition" [position]="node.cposition" [size]="node.size" [symbol]="node.symbol" [color]="node.color" [stroke]="node.stroke" [strokeTransparency]="node.strokeTransparency" [strokeWidth]="node.strokeWidth" [transparency]="node.transparency" [tooltip]="node.tooltip" [tooltipElement]="tooltipElement" [label]="node.label" [labelPosition]="node.labelPosition" />
+      <svg:g dino-network-node *ngIf="!node.labelPosition" [position]="node.cposition" [size]="node.size" [symbol]="node.symbol" [color]="node.color" [stroke]="node.stroke" [strokeTransparency]="node.strokeTransparency" [strokeWidth]="node.strokeWidth" [transparency]="node.transparency" [tooltip]="node.tooltip" [tooltipElement]="tooltipElement" [label]="node.label" [labelPosition]="node.labelPosition" [pulse]="node.pulse" />
   </ng-container>
   <ng-container *ngFor="let node of nodes; trackBy: trackById">
-      <svg:g dino-network-node *ngIf="node.labelPosition" [position]="node.cposition" [size]="node.size" [symbol]="node.symbol" [color]="node.color" [stroke]="node.stroke" [strokeTransparency]="node.strokeTransparency" [strokeWidth]="node.strokeWidth" [transparency]="node.transparency" [tooltip]="node.tooltip" [tooltipElement]="tooltipElement" [label]="node.label" [labelPosition]="node.labelPosition" />
+      <svg:g dino-network-node *ngIf="node.labelPosition" [position]="node.cposition" [size]="node.size" [symbol]="node.symbol" [color]="node.color" [stroke]="node.stroke" [strokeTransparency]="node.strokeTransparency" [strokeWidth]="node.strokeWidth" [transparency]="node.transparency" [tooltip]="node.tooltip" [tooltipElement]="tooltipElement" [label]="node.label" [labelPosition]="node.labelPosition" [pulse]="node.pulse" />
   </ng-container>
 </svg>

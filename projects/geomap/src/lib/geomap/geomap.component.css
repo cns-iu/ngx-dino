@@ -3,6 +3,10 @@
     height: calc(100% - 4px);
 }
 
+.zoomSelector {
+    height: 5%;
+}
+
 .tooltip {
     position: fixed;
     text-align: left;

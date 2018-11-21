@@ -27,6 +27,7 @@ module.exports = function (config) {
     autoWatch: true,
     browsers: ['ChromeHeadless'],
     singleRun: false,
+    browserNoActivityTimeout: 120000,
     customLaunchers: {
       ChromeHeadless: {
         base: 'Chrome',

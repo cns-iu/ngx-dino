@@ -1,2 +1,2 @@
-<svg:path *ngIf="isValid()" [attr.d]="path" [style.stroke-opacity]="transparency" [style.stroke]="stroke" [style.stroke-width]="strokeWidth">
+<svg:path *ngIf="isValid()" [attr.d]="path" [style.stroke-opacity]="1 - transparency" [style.stroke]="stroke" [style.stroke-width]="strokeWidth">
 </svg:path>

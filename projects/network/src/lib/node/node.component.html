@@ -3,6 +3,6 @@
         {{ label }}
     </svg:text>
     <svg:path *ngIf="pulse" class="pulsing" [attr.d]="shape"></svg:path>
-    <svg:path [attr.d]="shape" [style.fill]="color" [style.stroke]="stroke" [style.stroke-opacity]="strokeTransparency" [style.opacity]="transparency" [style.stroke-width]="strokeWidth" (mouseover)="showTooltip($event)" (mouseout)="hideTooltip()">
+    <svg:path [attr.d]="shape" [style.fill]="color" [style.stroke]="stroke" [style.stroke-opacity]="1 - strokeTransparency" [style.opacity]="1- transparency" [style.stroke-width]="strokeWidth" (mouseover)="showTooltip($event)" (mouseout)="hideTooltip()">
     </svg:path>
 </svg:g>

@@ -38,10 +38,10 @@ export class NodeComponent implements OnChanges {
   @Input() position: Point;
   @Input() size: number;
   @Input() color = 'black';
-  @Input() transparency = 1;
+  @Input() transparency = 0;
   @Input() stroke = 'black';
   @Input() strokeWidth = 0;
-  @Input() strokeTransparency = 1;
+  @Input() strokeTransparency = 0;
   @Input() tooltip = '';
   @Input() tooltipElement: HTMLDivElement;
   @Input() label = '';
@@ -66,10 +66,10 @@ export class NodeComponent implements OnChanges {
     // Set (reset) default values
     setDefaultValue(this, changes, 'symbol', 'circle');
     setDefaultValue(this, changes, 'color', 'black');
-    setDefaultValue(this, changes, 'transparency', 1);
+    setDefaultValue(this, changes, 'transparency', 0);
     setDefaultValue(this, changes, 'stroke', 'black');
     setDefaultValue(this, changes, 'strokeWidth', 0);
-    setDefaultValue(this, changes, 'strokeTransparency', 1);
+    setDefaultValue(this, changes, 'strokeTransparency', 0);
     setDefaultValue(this, changes, 'tooltip', '');
     setDefaultValue(this, changes, 'label', '');
     setDefaultValue(this, changes, 'labelPosition', 'top');

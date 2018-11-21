@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { path } from 'd3-path';
-import { isFunction, isNil } from 'lodash';
+import { isFunction } from 'lodash';
 
 import { BuiltinEdgeTypes, EdgeType } from '../shared/options';
 import { Point, isPoint, setDefaultValue } from '../shared/utility';
@@ -16,9 +16,9 @@ export class EdgeComponent implements OnChanges {
   @Input() source: Point;
   @Input() target: Point;
   @Input() stroke = 'black';
-  @Input() transparency = 1;
+  @Input() transparency = 0;
   @Input() strokeWidth = 0;
-  @Input() strokeTransparency = 1;
+  @Input() strokeTransparency = 0;
 
   path: string;
 
@@ -28,9 +28,9 @@ export class EdgeComponent implements OnChanges {
     // Set (reset) default values
     setDefaultValue(this, changes, 'edge', 'line');
     setDefaultValue(this, changes, 'stroke', 'black');
-    setDefaultValue(this, changes, 'transparency', 1);
+    setDefaultValue(this, changes, 'transparency', 0);
     setDefaultValue(this, changes, 'strokeWidth', 0);
-    setDefaultValue(this, changes, 'strokeTransparency', 1);
+    setDefaultValue(this, changes, 'strokeTransparency', 0);
 
     if ('edge' in changes || 'source' in changes || 'target' in changes) {
       if (this.isValid()) {

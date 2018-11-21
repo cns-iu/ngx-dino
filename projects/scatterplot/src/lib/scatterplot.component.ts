@@ -458,13 +458,13 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
       .attr('stroke-width', 1)
       .attr('transform', (d) => this.shapeTransform(d))
       .attr('fill', (d) => d.color)
-      .attr('opacity', (d) => this.transparencyScale(d.transparency))
+      .attr('fill-opacity', (d) => this.transparencyScale(d.transparency))
       .attr('stroke-opacity', (d) => this.transparencyScale(d.strokeTransparency));
 
     plots.enter().append('path')
       .data(data)
       .attr('class', 'plots')
-      .attr('opacity', (d) => this.transparencyScale(d.transparency))
+      .attr('fill-opacity', (d) => this.transparencyScale(d.transparency))
       .attr('stroke-opacity', (d) => this.transparencyScale(d.strokeTransparency))
       .attr('id', (d) => d[idSymbol])
       .attr('d', d3Shape.symbol()

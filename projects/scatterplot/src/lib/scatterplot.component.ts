@@ -612,10 +612,6 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
         }
       });
 
-    selection.transition().attr('d', d3Shape.symbol()
-    .size((d) => 2 * d.size as number)
-    .type((d) => this.selectShape(d)));
-
     if (this.enableTooltip) {
       this.tooltipDiv.transition().style('opacity', .7)
       .style('visibility', 'visible');

@@ -279,8 +279,6 @@ export class ScienceMapComponent implements OnInit, OnChanges, DoCheck {
         }
       });
 
-    selection.transition().attr('r', (d: any) => 2 * this.nodeSizeScale(d.size || 2 * this.defaultNodeSize));
-
     this.tooltipDiv.transition().style('opacity', .7)
         .style('visibility', 'visible');
 

@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Set } from 'immutable';
-import { conforms, debounce, filter, isFinite } from 'lodash';
+import { conforms, debounce, filter } from 'lodash';
 import { Observable, Subscription } from 'rxjs';
 
 import { BoundField, ChangeSet, Datum, DatumId, RawChangeSet, idSymbol } from '@ngx-dino/core';

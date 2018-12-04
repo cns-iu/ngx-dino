@@ -18,7 +18,7 @@ describe('GeomapComponent', () => {
             'basemapDefaultStrokeDashArray', 'basemapDefaultStrokeTransparency',
             'nodeStream', 'nodeIdField', 'nodePositionField', 'nodeSizeField', 'nodeSymbolField', 'nodeColorField',
             'nodeStrokeColorField', 'nodeStrokeWidthField', 'nodeTooltipField', 'nodeLabelField', 'nodeLabelPositionField',
-            'nodeTransparencyField', 'nodeStrokeTransparencyField',
+            'nodeTransparencyField', 'nodePulseField', 'nodeStrokeTransparencyField',
             'edgeStream', 'edgeIdField', 'edgeSourceField', 'edgeTargetField', 'edgeStrokeColorField',
             'edgeStrokeWidthField', 'edgeTransparencyField',
           ]

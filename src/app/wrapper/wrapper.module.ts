@@ -9,6 +9,7 @@ import { GeomapModule } from '@ngx-dino/geomap';
 import { ScatterplotModule } from '@ngx-dino/scatterplot';
 import { DatatableModule } from '@ngx-dino/datatable';
 import { NetworkModule } from '@ngx-dino/network';
+import { TemporalBargraphModule } from '@ngx-dino/temporal-bargraph';
 
 import { LegendModule } from '@ngx-dino/legend';
 
@@ -24,6 +25,7 @@ import { DatatableComponent } from './datatable/datatable.component';
 import { ScatterplotLegendComponent } from './scatterplot-legend/scatterplot-legend.component';
 import { GeomapLegendComponent } from './geomap-legend/geomap-legend.component';
 import { NetworkComponent } from './network/network.component';
+import { TemporalBargraphComponent } from './temporal-bargraph/temporal-bargraph.component';
 
 @NgModule({
   imports: [
@@ -35,6 +37,7 @@ import { NetworkComponent } from './network/network.component';
     ScatterplotModule,
     DatatableModule,
     NetworkModule,
+    TemporalBargraphModule,
 
     LegendModule,
 
@@ -51,7 +54,8 @@ import { NetworkComponent } from './network/network.component';
     ForceNetworkLegendComponent,
     ScatterplotLegendComponent,
     GeomapLegendComponent,
-    NetworkComponent
+    NetworkComponent,
+    TemporalBargraphComponent
   ],
   declarations: [
     ScienceMapComponent,
@@ -64,7 +68,8 @@ import { NetworkComponent } from './network/network.component';
     ForceNetworkLegendComponent,
     ScatterplotLegendComponent,
     GeomapLegendComponent,
-    NetworkComponent
+    NetworkComponent,
+    TemporalBargraphComponent
   ],
   providers: [DataProcessorService]
 })

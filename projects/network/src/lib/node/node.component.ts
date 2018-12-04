@@ -53,8 +53,8 @@ export class NodeComponent implements OnChanges {
 
   get labelAnchor(): LabelAnchor { return anchorLookup[this.labelPosition]; }
   get labelBaseline(): LabelBaseline { return baselineLookup[this.labelPosition]; }
-  get labelDx(): number { return this.getLabelOffset(['top', 'bottom'], ['right']); }
-  get labelDy(): number { return this.getLabelOffset(['left', 'right'], ['bottom']); }
+  get labelDx(): number { return this.getLabelOffset(['top', 'bottom'], ['left']); }
+  get labelDy(): number { return this.getLabelOffset(['left', 'right'], ['top']); }
 
   constructor() {
     const generator = this.symbolGenerator = symbolConstructor();

@@ -26,7 +26,7 @@
         "ng": "ng",
         "start": "ng serve",
         "build": "ng build",
-        "test": "ng test",
+        "test": "for p in dino-demo core vega-util datatable force-network network geomap scatterplot science-map legend; do echo Testing $p; ng test $p; done",
         "lint": "ng lint",
         "e2e": "ng e2e",
         "version-patch": "npm version --no-git-tag-version patch && cd projects/core && for p in core vega-util datatable force-network network geomap scatterplot science-map legend; do cd ../$p && npm version --no-git-tag-version patch; done;",

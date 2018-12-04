@@ -58,8 +58,9 @@ export class NodeComponent implements OnChanges {
 
   constructor() {
     const generator = this.symbolGenerator = symbolConstructor();
-    generator.type(() => this.getSymbol());
-    generator.size(() => this.size);
+    generator.type(() => ({
+      draw: (context): void => this.getSymbol().draw(context, this.size)
+    }));
   }
 
   ngOnChanges(changes: SimpleChanges): void {

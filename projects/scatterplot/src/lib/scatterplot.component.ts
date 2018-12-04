@@ -470,11 +470,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
       .attr('d', d3Shape.symbol()
         .size((d) => d.size as number)
         .type((d) => this.selectShape(d)))
-      .attr('transform', (d) => this.shapeTransform(d))
-      .attr('fill', 'red')
-      .attr('stroke', (d) => d.color === '#ffffff' ? '#000000' : d.stroke)
-      .attr('stroke-width', 1)
-      .transition().duration(1000).attr('fill', (d) => d.color);
+      .attr('transform', (d) => this.shapeTransform(d));
 
     this.svgContainer.selectAll('.plots')
       .on('mouseover', (d) => this.onMouseOver(d[idSymbol]));

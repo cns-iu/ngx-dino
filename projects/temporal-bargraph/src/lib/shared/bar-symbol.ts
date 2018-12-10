@@ -18,13 +18,16 @@ export function NumberWithDims(value: number, width: number, height: number): Nu
 export const barSymbol: SymbolType = {
   draw(context: CanvasPath, size: NumberWithDims): void {
     const { width = 0, height = 0 } = size;
+    const { data: { cxScale = 1, cyScale = 1 } = {} } = context as any;
     if (width && height) {
+      // const swidth = cxScale * width;
+      // const sheight = cyScale * height;
       context.rect(-width / 2, -height / 2, width, height);
     }
   }
 };
 
-export const barSymbolField: Field<SymbolType> = simpleField<SymbolType>({
+export const barSymbolField: Field<SymbolType> = simpleField({
   label: 'Bar Symbol',
   operator: constantOp(barSymbol)
 });

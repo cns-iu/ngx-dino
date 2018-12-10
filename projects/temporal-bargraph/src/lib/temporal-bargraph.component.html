@@ -1,9 +1,10 @@
 <div class="container" (dinoAutoResize)="onResize($event)">
     <div #tooltipElement class="tooltip"></div>
-    <svg:svg class="geomap" [style.width]="_width" [style.height]="_height">
+    <svg:svg class="temporal-bargraph" [style.width]="_width" [style.height]="_height">
         <svg:g dino-pure-network class="network" [autoresize]="false" [width]="networkWidth" [height]="networkHeight" [nodeStream]="barStream" [nodeIdField]="barIdField" [nodePositionField]="barPositionField" [nodeSizeField]="barSizeField" [nodeSymbolField]="barSymbolField"
             [nodeColorField]="barColorField" [nodeStrokeField]="barStrokeColorField" [nodeStrokeWidthField]="barStrokeWidthField" [nodeTooltipField]="barTooltipField" [nodeLabelField]="barLabelField" [nodeLabelPositionField]="barLabelPositionField" [nodeTransparencyField]="barTransparencyField"
-            [strokeTransparencyField]="barStrokeTransparencyField" [nodePulseField]="barPulseField" [edgeStream]="emptyStream" [tooltipElement]="tooltipElement" [coordinateSpace]="coordinateSpace" [adjustMargins]="false">
+            [strokeTransparencyField]="barStrokeTransparencyField" [nodePulseField]="barPulseField" [edgeStream]="gridStream" [edgeIdField]="gridIdField" [edgeSourceField]="gridSourceField" [edgeTargetField]="gridTargetField" [edgeStrokeField]="gridStrokeColorField"
+            [edgeStrokeWidthField]="gridStrokeWidthField" [edgeTransparencyField]="gridTransparencyField" [tooltipElement]="tooltipElement" [coordinateSpace]="coordinateSpace" [adjustMargins]="true">
         </svg:g>
     </svg:svg>
 </div>

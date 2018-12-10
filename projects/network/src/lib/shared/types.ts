@@ -18,6 +18,8 @@ export class Node extends Datum {
   // Calculated
   cposition: Point;
   csize: number;
+  cxScale: number;
+  cyScale: number;
 }
 
 export class Edge extends Datum {

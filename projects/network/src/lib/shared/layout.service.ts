@@ -128,7 +128,7 @@ export class LayoutService {
     }
 
     // Reset computed properties
-    resetProperties(nodes, { cposition: createPoint, csize: 0 });
+    resetProperties(nodes, { cposition: createPoint, csize: 0, cxScale: 1, cyScale: 1 });
     resetProperties(edges, { csource: createPoint, ctarget: createPoint });
 
     // Destructure and normalize arguments
@@ -156,6 +156,8 @@ export class LayoutService {
     const [xViewSpace, yViewSpace] = normalizeViewSpace(nodes, width, height, adjustMargins);
     const xRange = spaceRange(includedNodes, includedEdges, xSpace, 'x', width);
     const yRange = spaceRange(includedNodes, includedEdges, ySpace, 'y', height);
+    const xScale = xViewSpace.range / (xRange[1] - xRange[0]);
+    const yScale = yViewSpace.range / (yRange[1] - yRange[0]);
 
     // Normalize and set coordinates
     const xNorm = createCoordinateNormalizer(xRange, xViewSpace);
@@ -164,6 +166,8 @@ export class LayoutService {
     includedNodes.forEach(node => {
       const [x, y] = node.position;
       node.cposition = [xNorm(x), yNorm(y)];
+      node.cxScale = xScale;
+      node.cyScale = yScale;
     });
 
     includedEdges.forEach(edge => {

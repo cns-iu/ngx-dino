@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Path, path } from 'd3-path';
 import {
-  Symbol, SymbolType, symbol as symbolConstructor,
-  symbolCircle, symbolCross, symbolDiamond,
+  SymbolType, symbolCircle, symbolCross, symbolDiamond,
   symbolSquare, symbolStar, symbolTriangle, symbolWye
 } from 'd3-shape';
 import { isString } from 'lodash';
@@ -34,6 +34,7 @@ const baselineLookup: { [P in LabelPosition]: LabelBaseline } = {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NodeComponent implements OnChanges {
+  @Input() data: any;
   @Input() symbol: BuiltinSymbolTypes | SymbolType = 'circle';
   @Input() position: Point;
   @Input() size: number;
@@ -49,19 +50,10 @@ export class NodeComponent implements OnChanges {
   @Input() pulse = false;
 
   shape: string;
-  private symbolGenerator: Symbol<void, void>;
-
   get labelAnchor(): LabelAnchor { return anchorLookup[this.labelPosition]; }
   get labelBaseline(): LabelBaseline { return baselineLookup[this.labelPosition]; }
   get labelDx(): number { return this.getLabelOffset(['top', 'bottom'], ['left']); }
   get labelDy(): number { return this.getLabelOffset(['left', 'right'], ['top']); }
-
-  constructor() {
-    const generator = this.symbolGenerator = symbolConstructor();
-    generator.type(() => ({
-      draw: (context): void => this.getSymbol().draw(context, this.size)
-    }));
-  }
 
   ngOnChanges(changes: SimpleChanges): void {
     // Set (reset) default values
@@ -78,7 +70,7 @@ export class NodeComponent implements OnChanges {
 
     if ('symbol' in changes || 'size' in changes) {
       if (this.isValid()) {
-        this.shape = this.symbolGenerator();
+        this.shape = this.generateSymbol();
       }
     }
   }
@@ -126,6 +118,14 @@ export class NodeComponent implements OnChanges {
       return builtinLookup[symbol] || builtinLookup['circle'];
     }
     return symbol;
+  }
+
+  private generateSymbol(): string {
+    const symbol = this.getSymbol();
+    const context = path() as Path & { data: any };
+    context.data = this.data;
+    symbol.draw(context as any, this.size);
+    return context.toString();
   }
 
   private getLabelOffset(

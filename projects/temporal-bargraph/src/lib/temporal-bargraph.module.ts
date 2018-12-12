@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 import { CoreModule } from '@ngx-dino/core';
-import { NetworkModule } from '@ngx-dino/network';
-import { TemporalBargraphComponent } from './temporal-bargraph.component';
+import { TemporalBargraphComponent } from './temporal-bargraph/temporal-bargraph.component';
+import { TickMarksComponent } from './tick-marks/tick-marks.component';
 
 @NgModule({
-  imports: [CoreModule, NetworkModule],
-  declarations: [TemporalBargraphComponent],
+  imports: [CommonModule, CoreModule],
+  declarations: [TemporalBargraphComponent, TickMarksComponent],
   exports: [TemporalBargraphComponent]
 })
 export class TemporalBargraphModule { }

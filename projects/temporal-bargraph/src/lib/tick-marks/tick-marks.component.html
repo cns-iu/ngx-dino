@@ -1,0 +1,8 @@
+<svg:svg class="tick-marks-container" width="100%" height="100%">
+    <svg:line *ngFor="let offset of tickLines" class="tick-line" [attr.x1]="offset" [attr.x2]="offset" y1="0%" y2="100%">
+    </svg:line>
+
+    <svg:text *ngFor="let tick of tickLabels; trackBy: trackByLabel" class="tick-label" [attr.x]="tick.offset" y="100%">
+        {{ tick.label }}
+    </svg:text>
+</svg:svg>

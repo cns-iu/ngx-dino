@@ -1,0 +1,7 @@
+.tick-label {
+    text-anchor: middle;
+}
+
+.tick-line {
+    stroke: #e0e0e0;
+}

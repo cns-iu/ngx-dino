@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { get, times } from 'lodash';
 
 export interface Tick {
   label: string;
@@ -12,15 +13,15 @@ export interface Tick {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TickMarksComponent implements OnChanges {
-  @Input() ticks: string[];
-  tickLabels: Tick[] = [];
+  @Input() tickLabels: string[];
+  ticks: Tick[] = [];
   tickLines: string[] = [];
 
   constructor() { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if ('ticks' in changes) {
-      this.updateTickLabels();
+    if ('tickLabels' in changes) {
+      this.updateTicks();
       this.updateTickLines();
     }
   }
@@ -29,29 +30,18 @@ export class TickMarksComponent implements OnChanges {
     return tick.label;
   }
 
-  private updateTickLabels(): void {
-    const { ticks } = this;
-    const length = ticks && ticks.length;
-    if (!length) {
-      this.tickLabels = [];
-      return;
-    }
-
-    this.tickLabels = ticks.map((label, index) => ({
-      label, offset: this.getTickLabelOffset(index, length)
+  private updateTicks(): void {
+    const { tickLabels } = this;
+    const length = get(tickLabels, 'length', 0);
+    this.ticks = times(length, index => ({
+      label: tickLabels[index], offset: this.getTickLabelOffset(index, length)
     }));
   }
 
   private updateTickLines(): void {
-    const { ticks } = this;
-    const length = ticks && ticks.length;
-    if (!length) {
-      this.tickLines = [];
-      return;
-    }
-
-    this.tickLines = ticks.map((_unused, index) => this.getTickLineOffset(index, length));
-    this.tickLines.push(this.getTickLineOffset(length, length));
+    const { tickLabels } = this;
+    const length = get(tickLabels, 'length', 0);
+    this.tickLines = length > 0 ? times(length + 1, index => this.getTickLineOffset(index, length)) : [];
   }
 
   // Assumes length > 0

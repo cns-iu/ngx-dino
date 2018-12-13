@@ -1,7 +1,12 @@
-.tick-label {
+tick-marks-visualization {
+    width: 100%;
+    height: 100%;
+}
+
+.tick-marks-label {
     text-anchor: middle;
 }
 
-.tick-line {
+.tick-marks-line {
     stroke: #e0e0e0;
 }

@@ -27,22 +27,32 @@ class BarImpl implements Bar {
 export class Layout {
   get bars(): Bar[] { return this._bars; }
   get tickLabels(): string[] { return this._tickLabels; }
+  get height(): number { return this._height; }
 
   private _bars: BarImpl[] = [];
   private _tickLabels: string[] = [];
   private domain: any[] = [];
-  private height = 0;
+  private _height = 0;
   private weightTotal = 0;
+  private barSpacing = 0;
 
   private pending: BarImpl[] = [];
-  private readonly recalculate = throttle(this._recalculate, 0, { leading: false });
+  private readonly recalculate = throttle(this._recalculate, 10, { leading: false });
 
   setHeight(height: number): this {
     if (height > this.weightTotal) {
       this.recalculate();
     }
 
-    this.height = height;
+    this._height = height;
+    return this;
+  }
+
+  setBarSpacing(spacing = 0): this {
+    if (this.barSpacing !== spacing) {
+      this.barSpacing = spacing;
+      this.recalculate();
+    }
     return this;
   }
 
@@ -92,8 +102,12 @@ export class Layout {
     const length = domain.length;
 
     forEach(bars, bar => {
-      const startIndex = domain.indexOf(bar.rawStart);
-      const endIndex = domain.indexOf(bar.rawEnd);
+      let startIndex = domain.indexOf(bar.rawStart);
+      let endIndex = domain.indexOf(bar.rawEnd);
+      if (endIndex < startIndex) {
+        [startIndex, endIndex] = [endIndex, startIndex];
+      }
+
       bar.start = startIndex / length;
       bar.end = (endIndex + 1) / length;
     });
@@ -101,12 +115,15 @@ export class Layout {
 
   private calculateWeights(): void {
     const bars = this._bars;
-    const total = this.weightTotal = sumBy(bars, 'rawWeight');
+    const barSpacing = this.barSpacing;
+    const extra = barSpacing * (bars.length - 1);
+    const total = this.weightTotal = sumBy(bars, 'rawWeight') + extra;
     const max = Math.max(total, .95 * this.height);
+    const adjust = barSpacing / max;
 
-    reduce(bars, (currentOffset, bar) => {
+    reduce(bars, (currentOffset, bar, index) => {
       const weight = bar.weight = bar.rawWeight / max;
-      const offset = bar.offset = currentOffset - weight;
+      const offset = bar.offset = currentOffset - weight - (index === 0 ? 0 : adjust);
       return offset;
     }, .95);
   }

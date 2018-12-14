@@ -17,8 +17,6 @@ export class TickMarksComponent implements OnChanges {
   ticks: Tick[] = [];
   tickLines: string[] = [];
 
-  constructor() { }
-
   ngOnChanges(changes: SimpleChanges): void {
     if ('tickLabels' in changes) {
       this.updateTicks();

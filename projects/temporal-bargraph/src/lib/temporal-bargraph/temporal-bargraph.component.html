@@ -1,11 +1,8 @@
 <div class="temporal-bargraph-container">
-    <div class="temporal-bargraph-wrapper">
+    <div class="temporal-bargraph-wrapper" (dinoAutoResize)="onResize($event.width, $event.height)">
         <svg:svg class="temporal-bargraph-visualization">
-            <svg:g dino-tick-marks [ticks]="ticks"></svg:g>
-            <svg:g>
-                <!-- TODO for each bar -->
-                <!--  -->
-            </svg:g>
+            <svg:g dino-tick-marks class="temporal-bargraph-ticks" [tickLabels]="layout.tickLabels"></svg:g>
+            <svg:g dino-bar-group class="temporal-bargraph-bars" [bars]="layout.bars"></svg:g>
         </svg:svg>
     </div>
 </div>

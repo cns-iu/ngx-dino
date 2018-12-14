@@ -1,0 +1,4 @@
+<svg:svg *ngIf="bars" class="bar-group-visualization">
+    <svg:g *ngFor="let bar of bars; trackBy: trackByBarOrder" dino-bar class="bar-group-bar" [data]="bar">
+    </svg:g>
+</svg:svg>

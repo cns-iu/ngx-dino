@@ -35,7 +35,7 @@ export const defaultStrokeWidthField = simpleField({
 export const defaultStrokeTransparencyField = simpleField({
   label: 'Default Stroke Transparency',
   operator: constantOp(0)
-});
+}).getBoundField();
 
 
 export const defaultLabelField = simpleField({

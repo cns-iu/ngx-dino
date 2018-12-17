@@ -1,14 +1,14 @@
 export default [
   {
     id: 0,
-    position: [0, 100],
-    width: 30,
-    height: 15
+    start: 1,
+    end: 3,
+    weight: 20
   },
   {
     id: 1,
-    position: [25, 17],
-    width: 15,
-    height: 20
+    start: 2,
+    end: 4,
+    weight: 30
   }
 ];

@@ -1,0 +1,8 @@
+<svg:g *ngIf="data" class=bar-visualization>
+    <svg:rect class="bar-rect" [ngStyle]="style" [attr.x]="x" [attr.y]="y" [attr.width]="width" [attr.height]="height" (mouseover)="showTooltip($event)" (mouseout)="hideTooltip()">
+    </svg:rect>
+
+    <svg:text *ngIf="label" class="bar-label" [ngClass]="labelClasses" [attr.x]="labelX" [attr.y]="labelY">
+        {{ label }}
+    </svg:text>
+</svg:g>

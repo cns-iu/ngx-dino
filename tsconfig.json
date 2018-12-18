@@ -71,6 +71,12 @@
       ],
       "@ngx-dino/network/*": [
         "dist/network/*"
+      ],
+      "@ngx-dino/temporal-bargraph": [
+        "dist/temporal-bargraph"
+      ],
+      "@ngx-dino/temporal-bargraph/*": [
+        "dist/temporal-bargraph/*"
       ]
     }
   }

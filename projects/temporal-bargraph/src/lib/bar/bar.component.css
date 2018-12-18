@@ -1,0 +1,23 @@
+.bar-label-top {
+    text-anchor: middle;
+}
+
+.bar-label-bottom {
+    dominant-baseline: hanging;
+    text-anchor: middle;
+}
+
+.bar-label-left {
+    dominant-baseline: middle;
+    text-anchor: end;
+}
+
+.bar-label-right {
+    dominant-baseline: middle;
+    text-anchor: start;
+}
+
+.bar-label-center {
+    dominant-baseline: middle;
+    text-anchor: middle;
+}

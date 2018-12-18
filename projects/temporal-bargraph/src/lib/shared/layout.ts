@@ -1,4 +1,7 @@
-import { differenceWith, forEach, map, reduce, sortBy, sumBy, throttle, uniq, unzip } from 'lodash';
+import {
+  differenceWith, forEach, map, reduce,
+  sortBy, sumBy, throttle, uniq, unzip
+} from 'lodash';
 
 import { DatumId, idSymbol } from '@ngx-dino/core';
 import { extractStyles } from './style';
@@ -90,11 +93,9 @@ export class Layout {
     const bars = this._bars;
     const starts = map(bars, 'rawStart');
     const ends = map(bars, 'rawEnd');
-    const initialDomain = uniq(starts.concat(ends));
+    const domain = uniq(starts.concat(ends));
 
-    // TODO interpolate domain
-    this.domain = initialDomain; // Temporary
-
+    this.domain = sortBy(domain); // FIXME: Custom sorting
     this._tickLabels = map(this.domain, d => d.toString());
   }
 

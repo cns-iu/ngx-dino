@@ -19,6 +19,8 @@ class BarImpl implements Bar {
   get label(): string { return this.item.label; }
   get labelPosition(): LabelPosition { return this.item.labelPosition; }
 
+  get tooltip(): string { return this.item.tooltip; }
+
   constructor(readonly item: BarItem) {
     this.style = extractStyles(item);
   }

@@ -47,3 +47,8 @@ export const defaultLabelPositionField = simpleField({
   label: 'Default Label Position',
   operator: constantOp('center')
 }).getBoundField();
+
+export const defaultTooltipField = simpleField({
+  label: 'Default Tooltip',
+  operator: constantOp('')
+}).getBoundField();

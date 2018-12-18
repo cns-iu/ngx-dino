@@ -24,6 +24,7 @@ function enableLabelPositionClass(position: LabelPosition = 'center'): object {
 })
 export class BarComponent {
   @Input() data: Bar;
+  @Input() tooltipElement: HTMLDivElement;
 
   get x(): string { return formatPercentage(this.data.start); }
   get y(): string { return formatPercentage(this.data.offset); }
@@ -52,5 +53,27 @@ export class BarComponent {
       case 'bottom': return offset + weight;
       default: return offset + weight / 2;
     }
+  }
+
+  showTooltip(event: any): void {
+    const el = this.tooltipElement;
+    const { x, y } = event;
+    if (!el || !this.data.tooltip) {
+      return;
+    }
+
+    el.textContent = this.data.tooltip;
+    el.style.left = `${x}px`;
+    el.style.top = `${y - 40}px`;
+    el.style.visibility = 'visible';
+  }
+
+  hideTooltip(): void {
+    const el = this.tooltipElement;
+    if (!el) {
+      return;
+    }
+
+    el.style.visibility = 'hidden';
   }
 }

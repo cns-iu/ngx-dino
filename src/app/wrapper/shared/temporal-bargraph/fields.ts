@@ -20,3 +20,18 @@ export const barWeightField = simpleField({
   label: 'Bar Weight',
   operator: access('weight')
 });
+
+export const barLabelField = simpleField({
+  label: 'Bar Label',
+  operator: access('label')
+});
+
+export const barLabelPositionField = simpleField({
+  label: 'Bar Label Position',
+  operator: constant('left')
+});
+
+export const barTooltipField = simpleField({
+  label: 'Bar Tooltip',
+  operator: access('tooltip')
+});

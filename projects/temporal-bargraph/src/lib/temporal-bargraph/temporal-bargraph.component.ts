@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild } from '@angular/core';
 import { Map } from 'immutable';
 import { some } from 'lodash';
 import { Observable, Subscription } from 'rxjs';
@@ -29,15 +29,17 @@ export class TemporalBargraphComponent implements OnChanges, OnDestroy {
   @Input() barStrokeTransparencyField: BoundField<number>;
   @Input() barLabelField: BoundField<string>;
   @Input() barLabelPositionField: BoundField<LabelPosition>;
+  @Input() barTooltipField: BoundField<string>;
 
   @Input() barSpacing: number;
 
+  @ViewChild('tooltipElement') tooltipElement: HTMLDivElement;
   layout = new Layout();
 
   private barProcessor: DataProcessor<any, any>;
   private barSubscription: Subscription;
 
-  constructor(private processorService: DataProcessorService) { console.log(this); }
+  constructor(private processorService: DataProcessorService) { }
 
   ngOnChanges(changes: SimpleChanges): void {
     if ('barStream' in changes || 'barIdField' in changes) {
@@ -63,7 +65,8 @@ export class TemporalBargraphComponent implements OnChanges, OnDestroy {
       defaultColorField, defaultTransparencyField,
       defaultStrokeColorField, defaultStrokeWidthField,
       defaultStrokeTransparencyField,
-      defaultLabelField, defaultLabelPositionField
+      defaultLabelField, defaultLabelPositionField,
+      defaultTooltipField
     } = defaultFields;
     const {
       barStartField, barEndField,
@@ -71,7 +74,8 @@ export class TemporalBargraphComponent implements OnChanges, OnDestroy {
       barColorField = defaultColorField, barTransparencyField = defaultTransparencyField,
       barStrokeColorField = defaultStrokeColorField, barStrokeWidthField = defaultStrokeWidthField,
       barStrokeTransparencyField = defaultStrokeTransparencyField,
-      barLabelField = defaultLabelField, barLabelPositionField = defaultLabelPositionField
+      barLabelField = defaultLabelField, barLabelPositionField = defaultLabelPositionField,
+      barTooltipField = defaultTooltipField
     } = this;
 
     if (!barStartField || !barEndField) {
@@ -91,7 +95,9 @@ export class TemporalBargraphComponent implements OnChanges, OnDestroy {
       strokeTransparency: barStrokeTransparencyField,
 
       label: barLabelField,
-      labelPosition: barLabelPositionField
+      labelPosition: barLabelPositionField,
+
+      tooltip: barTooltipField
     };
   }
 

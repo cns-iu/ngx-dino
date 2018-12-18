@@ -9,6 +9,8 @@ export interface Bar {
 
   label: string;
   labelPosition: LabelPosition;
+
+  tooltip: string;
 }
 
 export interface BarItem {
@@ -28,4 +30,7 @@ export interface BarItem {
   // Label
   label: string;
   labelPosition: LabelPosition;
+
+  // Tooltip
+  tooltip: string;
 }

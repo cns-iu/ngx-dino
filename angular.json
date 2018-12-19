@@ -509,6 +509,11 @@
           "options": {
             "tsConfig": "projects/temporal-bargraph/tsconfig.lib.json",
             "project": "projects/temporal-bargraph/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "project": "projects/network/ng-package.prod.json"
+            }
           }
         },
         "test": {

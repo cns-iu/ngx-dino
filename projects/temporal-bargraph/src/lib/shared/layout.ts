@@ -1,10 +1,12 @@
 import {
-  differenceWith, forEach, map, reduce,
-  sortBy, sumBy, throttle, uniq, unzip
+  concat, differenceWith, forEach, identity, map, reduce,
+  sortBy, sortedUniq, sumBy, toString, throttle, unzip
 } from 'lodash';
 
 import { DatumId, idSymbol } from '@ngx-dino/core';
+import { interpolateNumericDomain } from './domain';
 import { extractStyles } from './style';
+import { Type, sniffType, coerceToType } from './type-sniffing';
 import { Bar, BarItem, LabelPosition } from './types';
 
 class BarImpl implements Bar {
@@ -38,14 +40,14 @@ export class Layout {
   private _tickLabels: string[] = [];
   private domain: any[] = [];
   private _height = 0;
-  private weightTotal = 0;
+  private weightTotalWithSpacing = 0;
   private barSpacing = 0;
 
   private pending: BarImpl[] = [];
   private readonly recalculate = throttle(this._recalculate, 10, { leading: false });
 
   setHeight(height: number): this {
-    if (height > this.weightTotal) {
+    if (height > this.weightTotalWithSpacing) {
       this.recalculate();
     }
 
@@ -89,14 +91,19 @@ export class Layout {
     this.calculateWeights();
   }
 
+  // FIXME: Custom sorting
   private calculateLabels(): void {
     const bars = this._bars;
-    const starts = map(bars, 'rawStart');
-    const ends = map(bars, 'rawEnd');
-    const domain = uniq(starts.concat(ends));
+    const domainValues = concat(map(bars, 'rawStart'), map(bars, 'rawEnd'));
+    const domainType = sniffType(domainValues);
+    const coercedDomain = coerceToType(domainValues, domainType);
+    const sortedDomain = sortedUniq(sortBy(coercedDomain));
+    const interpolateFun = domainType === Type.Integer || domainType === Type.Number ?
+      interpolateNumericDomain : identity;
+    const domain = interpolateFun(sortedDomain);
 
-    this.domain = sortBy(domain); // FIXME: Custom sorting
-    this._tickLabels = map(this.domain, d => d.toString());
+    this.domain = domain;
+    this._tickLabels = map(domain, toString);
   }
 
   private calculatePositions(): void {
@@ -117,17 +124,18 @@ export class Layout {
   }
 
   private calculateWeights(): void {
-    const bars = this._bars;
-    const barSpacing = this.barSpacing;
-    const extra = barSpacing * (bars.length - 1);
-    const total = this.weightTotal = sumBy(bars, 'rawWeight') + extra;
-    const max = Math.max(total, .95 * this.height);
-    const adjust = barSpacing / max;
+    const { _bars: bars, barSpacing: spacing, height } = this;
+    const weightTotal = sumBy(bars, 'rawWeight');
+    const totalSpacing = spacing * (bars.length - 1);
+    const weightTotalWithSpacing = this.weightTotalWithSpacing = weightTotal + totalSpacing;
+    const max = Math.max(weightTotalWithSpacing, height);
+    const spacingAdjust = spacing / max;
 
     reduce(bars, (currentOffset, bar, index) => {
+      const adjust = index === 0 ? 0 : spacingAdjust;
       const weight = bar.weight = bar.rawWeight / max;
-      const offset = bar.offset = currentOffset - weight - (index === 0 ? 0 : adjust);
+      const offset = bar.offset = currentOffset - weight - adjust;
       return offset;
-    }, .95);
+    }, 1);
   }
 }

@@ -6,7 +6,7 @@ import {
 import { DatumId, idSymbol } from '@ngx-dino/core';
 import { interpolateNumericDomain } from './domain';
 import { extractStyles } from './style';
-import { Type, sniffType, coerceToType } from './type-sniffing';
+import { Type, coerceToType, getCoerceFunction, sniffType } from './type-sniffing';
 import { Bar, BarItem, LabelPosition } from './types';
 
 class BarImpl implements Bar {
@@ -39,6 +39,7 @@ export class Layout {
   private _bars: BarImpl[] = [];
   private _tickLabels: string[] = [];
   private domain: any[] = [];
+  private domainType: Type;
   private _height = 0;
   private weightTotalWithSpacing = 0;
   private barSpacing = 0;
@@ -103,17 +104,18 @@ export class Layout {
     const domain = interpolateFun(sortedDomain);
 
     this.domain = domain;
+    this.domainType = domainType;
     this._tickLabels = map(domain, toString);
   }
 
   private calculatePositions(): void {
-    const bars = this._bars;
-    const domain = this.domain;
+    const { _bars: bars, domain, domainType } = this;
     const length = domain.length;
+    const coerceFun = getCoerceFunction(domainType);
 
     forEach(bars, bar => {
-      let startIndex = domain.indexOf(bar.rawStart);
-      let endIndex = domain.indexOf(bar.rawEnd);
+      let startIndex = domain.indexOf(coerceFun(bar.rawStart));
+      let endIndex = domain.indexOf(coerceFun(bar.rawEnd));
       if (endIndex < startIndex) {
         [startIndex, endIndex] = [endIndex, startIndex];
       }

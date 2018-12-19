@@ -1,6 +1,6 @@
 import {
-  isInteger, isNumber, isString, map, reduce,
-  toInteger, toNumber, toString
+  identity, isInteger, isNumber, isString, map,
+  reduce, toInteger, toNumber, toString
 } from 'lodash';
 
 export enum Type {
@@ -66,25 +66,26 @@ export function sniffType(values: any[]): Type {
   return reduce(values, accumulator, testInteger).type;
 }
 
+export function getCoerceFunction(type: Type.Integer | Type.Number): (value: any) => number;
+export function getCoerceFunction(type: Type.String): (value: any) => string;
+export function getCoerceFunction(type: Type): (value: any) => any;
+export function getCoerceFunction(type: Type): (value: any) => any {
+  switch (type) {
+    case Type.Integer:
+      return toInteger;
+    case Type.Number:
+      return toNumber;
+    case Type.String:
+      return toString;
+    default:
+      return identity;
+  }
+}
+
 export function coerceToType(values: any[], type: Type.Integer | Type.Number): number[];
 export function coerceToType(values: any[], type: Type.String): string[];
 export function coerceToType(values: any[], type: Type): any[];
 export function coerceToType(values: any[], type: Type): any[] {
-  let coerceFun: Function;
-  switch (type) {
-    case Type.Integer:
-      coerceFun = toInteger;
-      break;
-    case Type.Number:
-      coerceFun = toNumber;
-      break;
-    case Type.String:
-      coerceFun = toString;
-      break;
-    default:
-      coerceFun = undefined;
-      break;
-  }
-
-  return coerceFun ? map(values, coerceFun) : values;
+  const coerceFun = getCoerceFunction(type);
+  return coerceFun !== identity ? map(values, coerceFun) : values;
 }

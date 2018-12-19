@@ -509,10 +509,11 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
   }
 
   setGridlineProperties() {
-    this.svgContainer.selectAll('.tick line')
-    .attr('stroke', this.gridlinesColor)
-    .attr('stroke-opacity', this.gridlinesOpacity);
+    /* Reversed the order to fix an issue where
+     * random grid line would get axis stroke
+     */
 
+     // color axes first
     this.svgContainer.select('.xAxis > g:first-of-type').select('line')
     .attr('stroke', 'black')
     .attr('stroke-opacity', 1);
@@ -520,7 +521,12 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
     this.svgContainer.select('.yAxis > g:first-of-type').select('line')
     .attr('stroke', 'black')
     .attr('stroke-opacity', 1);
-  }
+
+    // color gridlines after coloring axes
+    this.svgContainer.selectAll('.tick line')
+    .attr('stroke', this.gridlinesColor)
+    .attr('stroke-opacity', this.gridlinesOpacity);
+}
 
   /**** This function draws the shape encoded on the data ****/
   selectShape(d) {

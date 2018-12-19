@@ -10,6 +10,10 @@
     height: 100%;
 }
 
+.temporal-bargraph-bars {
+    transform: scale(1, 0.95);
+}
+
 .temporal-bargraph-tooltip {
     position: fixed;
     text-align: left;

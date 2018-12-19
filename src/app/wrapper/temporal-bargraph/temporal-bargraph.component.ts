@@ -23,7 +23,7 @@ export class TemporalBargraphComponent implements OnInit {
     map(RawChangeSet.fromArray)
   );
   fields: any = { };
-  gridSpacing = 20;
+  spacing = 20;
 
   constructor() {
     this.fields = mapValues(fields, (f) => f.getBoundField());

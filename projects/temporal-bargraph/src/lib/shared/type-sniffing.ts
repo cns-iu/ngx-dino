@@ -10,6 +10,10 @@ export enum Type {
   Any
 }
 
+// Test regexes
+const integerRegex = /^(?:[+-]?0|[1-9]\d*|0[1-7]+|0b[01]+|0o[0-7]+|0x[0-9a-f]+)$/i;
+const numberRegex = /^(?:[+-]?([1-9]\d*)?(\.)?(\d*)?(e[+-]?\d+)?)$/i;
+
 // Type testing
 interface TypeTester {
   (value: any): boolean;
@@ -28,12 +32,19 @@ testString.type = Type.String;
 testString.downgraded = testAny;
 
 // Number type test
-function testNumber(value: any): boolean { return isNumber(value); }
+function testNumber(value: any): boolean {
+  if (isNumber(value) || integerRegex.test(value)) {
+    return true;
+  }
+
+  const match = numberRegex.exec(value);
+  return Boolean(match && (match[1] || match[3]) && (match[2] || match[4]));
+}
 testNumber.type = Type.Number;
 testNumber.downgraded = testString;
 
 // Integer type test
-function testInteger(value: any): boolean { return isInteger(value); }
+function testInteger(value: any): boolean { return isInteger(value) || integerRegex.test(value); }
 testInteger.type = Type.Integer;
 testInteger.downgraded = testNumber;
 

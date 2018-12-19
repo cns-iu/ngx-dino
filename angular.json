@@ -512,7 +512,7 @@
           },
           "configurations": {
             "production": {
-              "project": "projects/network/ng-package.prod.json"
+              "project": "projects/temporal-bargraph/ng-package.prod.json"
             }
           }
         },

@@ -25,8 +25,8 @@
     "peerDependencies": {
         "@angular/common": "^7.0.0",
         "@angular/core": "^7.0.0",
-        "@ngx-dino/core": ">=0.9.0 <1.0.0",
-        "@ngx-dino/network": ">=0.12.5 <1.0.0",
+        "@ngx-dino/core": ">=0.9.1 <1.0.0",
+        "@ngx-dino/network": ">=0.13.1 <1.0.0",
         "@types/d3-geo": "^1.10.3",
         "d3-geo": "^1.11.1",
         "d3-geo-projection": "^2.4.1",

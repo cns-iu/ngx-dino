@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { GeoProjection } from 'd3-geo';
 import { FeatureCollection } from 'geojson';
-import { clamp, get, isString, upperFirst } from 'lodash';
+import { clamp, isString, upperFirst } from 'lodash';
 import { Observable, Subject } from 'rxjs';
 
 import {
@@ -170,14 +170,21 @@ export class GeomapComponent implements OnInit, OnChanges {
   }
 
   private updateBasemap(): void {
-    const length = get(this.basemapZoomLevels, 'length', 0);
-    const index = this.basemapSelectedZoomLevel = clamp(this.basemapSelectedZoomLevel || 0, 0, length);
+    let { basemapZoomLevels, basemapSelectedZoomLevel } = this;
 
-    this.basemapZoomLevels = length > 0 ? this.basemapZoomLevels : defaultZoomLevels;
-    const zoom = this.basemapZoomLevels[index];
+    if (!basemapZoomLevels || basemapZoomLevels.length === 0) {
+      basemapZoomLevels = this.basemapZoomLevels = defaultZoomLevels;
+    }
+    if (!basemapSelectedZoomLevel) {
+      basemapSelectedZoomLevel = 0;
+    }
 
-    this.basemapFeatureSelector.next(zoom.selector);
-    this.basemapProjection = isString(zoom.projection) ? lookupProjection(zoom.projection) : zoom.projection;
+    const length = basemapZoomLevels.length;
+    const index = this.basemapSelectedZoomLevel = clamp(basemapSelectedZoomLevel, 0, length - 1);
+    const { selector, projection } = basemapZoomLevels[index];
+
+    this.basemapFeatureSelector.next(selector);
+    this.basemapProjection = isString(projection) ? lookupProjection(projection) : projection;
   }
 
   private checkAndUpdateProjectedField(

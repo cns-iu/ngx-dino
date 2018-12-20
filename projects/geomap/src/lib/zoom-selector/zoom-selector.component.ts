@@ -22,4 +22,9 @@ export class ZoomSelectorComponent {
   isChecked(index: number): boolean {
     return index === this.selected;
   }
+
+  shouldShow(): boolean {
+    const { zoomLevels } = this;
+    return zoomLevels && zoomLevels.length > 1;
+  }
 }

@@ -1,4 +1,4 @@
-<mat-radio-group (change)="_selectZoomLevel.next($event.value)">
+<mat-radio-group *ngIf="shouldShow()" (change)="_selectZoomLevel.next($event.value)">
     <mat-radio-button *ngFor="let zoom of zoomLevels; let index = index" [value]="index" [checked]="isChecked(index)">
         {{ zoom.label }}
     </mat-radio-button>

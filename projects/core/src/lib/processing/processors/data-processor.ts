@@ -12,6 +12,7 @@ import { DatumProcessor } from './datum-processor';
 
 export interface DataProcessorConfig {
   strictMode?: boolean;
+  keepAlive?: boolean;
   create?: <R, T extends Datum<R>>(id: DatumId, rawData: R) => T;
 }
 
@@ -37,13 +38,14 @@ export class DataProcessor<R, T extends Datum<R>> {
     this.datumProcessor = new DatumProcessor(extracted, computed);
     this.config = defaults({}, config, {
       strictMode: false,
+      keepAlive: false,
       create: defaultCreate
     });
 
     const boundProcessChanges = bind(this.processChanges, this);
     const processedStream = rawCache.asObservable().pipe(
       map(boundProcessChanges),
-      tap({complete: () => this.emitStream.complete()})
+      tap({complete: () => !this.config.keepAlive && this.emitStream.complete()})
     );
     this.processedCache = new CachedChangeStream(merge(
       processedStream, this.emitStream

@@ -57,7 +57,7 @@ export class NetworkService {
       position, size, symbol, color, stroke, strokeWidth, tooltip,
       label, labelPosition, transparency, strokeTransparency, pulse,
       cposition, csize
-    });
+    }, {}, { keepAlive: true });
     this.nodeSubscription = this.nodeProcessor.asObservable().subscribe((c) => this.nodeChanges.next(c));
 
     return this;
@@ -79,7 +79,7 @@ export class NetworkService {
     this.edgeProcessor = this.processorService.createProcessor<Edge, any>(stream, id, {
       source, target, stroke, strokeWidth, transparency,
       csource, ctarget
-    });
+    }, {}, { keepAlive: true });
     this.edgeSubscription = this.edgeProcessor.asObservable().subscribe((c) => this.edgeChanges.next(c));
 
     return this;

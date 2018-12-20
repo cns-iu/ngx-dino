@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { geoEckert4 } from 'd3-geo-projection';
 import { Observable, interval, EMPTY } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
@@ -19,8 +18,10 @@ export class GeomapComponent {
   @Input() width: number;
 
   // Basemap
-  basemapSelector = ['world', 'countries'];
-  basemapProjection = geoEckert4();
+  basemapZoomLevels = [
+    // { selector: ['world', 'united states', 'states'], projection: 'albersUsa', label: 'United States', class: '' }
+  ];
+  basemapSelectedZoomLevel = 0;
   basemapDefaultColor = 'lightgray';
   // TODO other basemap fields
 

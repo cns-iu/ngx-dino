@@ -6,7 +6,7 @@ import { Observable, Subject } from 'rxjs';
 
 import {
   BoundField, DatumId, RawChangeSet,
-  chain as chainOp, map as mapOp, simpleField
+  chain as chainOp, combine as combineOp, map as mapOp, simpleField
 } from '@ngx-dino/core';
 import { BuiltinSymbolTypes, CoordinateSpaceOptions, Point } from '@ngx-dino/network';
 import { Bounds } from '../basemap/basemap.component';
@@ -64,6 +64,8 @@ export class GeomapComponent implements OnInit, OnChanges {
   @Input() nodeStream: Observable<RawChangeSet>;
   @Input() nodeIdField: BoundField<DatumId>;
   @Input() nodePositionField: BoundField<Point>;
+  @Input() nodeLatitudeField: BoundField<number>;
+  @Input() nodeLongitudeField: BoundField<number>;
   @Input() nodeSizeField: BoundField<number>;
   @Input() nodeSymbolField: BoundField<BuiltinSymbolTypes>;
   @Input() nodeColorField: BoundField<string>;
@@ -81,7 +83,11 @@ export class GeomapComponent implements OnInit, OnChanges {
   @Input() edgeStream: Observable<RawChangeSet>;
   @Input() edgeIdField: BoundField<DatumId>;
   @Input() edgeSourceField: BoundField<Point>;
+  @Input() edgeSourceLatitudeField: BoundField<number>;
+  @Input() edgeSourceLongitudeField: BoundField<number>;
   @Input() edgeTargetField: BoundField<Point>;
+  @Input() edgeTargetLatitudeField: BoundField<number>;
+  @Input() edgeTargetLongitudeField: BoundField<number>;
   @Input() edgeStrokeColorField: BoundField<string>;
   @Input() edgeStrokeWidthField: BoundField<number>;
   @Input() edgeTransparencyField: BoundField<number>;
@@ -102,6 +108,11 @@ export class GeomapComponent implements OnInit, OnChanges {
     this.basemapFeatureSelector.pipe(lookupFeatures()).subscribe(features => this.basemap = features);
   }
 
+  setBasemapSelectedZoomLevel(level: number): void {
+    this.basemapSelectedZoomLevel = level;
+    this.ngOnChanges({ basemapSelectedZoomLevel: {} as any });
+  }
+
   ngOnInit(): void {
     this.updateBasemap();
     this.checkAndUpdateProjectedField({}, true, 'node', 'position');
@@ -116,9 +127,20 @@ export class GeomapComponent implements OnInit, OnChanges {
       this.updateBasemap();
     }
 
-    this.checkAndUpdateProjectedField(changes, projectionUpdated, 'node', 'position');
-    this.checkAndUpdateProjectedField(changes, projectionUpdated, 'edge', 'source');
-    this.checkAndUpdateProjectedField(changes, projectionUpdated, 'edge', 'target');
+    setTimeout(() => {
+      this.nodeProjectedPositionField = this.checkAndGetProjectedField(
+        changes, projectionUpdated, this.nodeProjectedPositionField,
+        'nodePositionField', 'nodeLatitudeField', 'nodeLongitudeField'
+      );
+      this.edgeProjectedSourceField = this.checkAndGetProjectedField(
+        changes, projectionUpdated, this.edgeProjectedSourceField,
+        'edgeSourceField', 'edgeSourceLatitudeField', 'edgeSourceLongitudeField'
+      );
+      this.edgeProjectedTargetField = this.checkAndGetProjectedField(
+        changes, projectionUpdated, this.edgeProjectedTargetField,
+        'edgeTargetField', 'edgeTargetLatitudeField', 'edgeTargetLongitudeField'
+      );
+    }, 10);
   }
 
   onResize({ width: visWidth, height: visHeight }: { width: number, height: number }): void {
@@ -183,38 +205,30 @@ export class GeomapComponent implements OnInit, OnChanges {
     this.basemapProjection = isString(projection) ? lookupProjection(projection) : projection;
   }
 
-  private checkAndUpdateProjectedField(
-    changes: SimpleChanges, projectionUpdated: boolean,
-    prefix: 'node', field: 'position'
-  ): void;
-  private checkAndUpdateProjectedField(
-    changes: SimpleChanges, projectionUpdated: boolean,
-    prefix: 'edge', field: 'source' | 'target'
-  ): void;
-  private checkAndUpdateProjectedField(
-    changes: SimpleChanges, projectionUpdated: boolean,
-    prefix: 'node' | 'edge', field: 'position' | 'source' | 'target'
-  ): void {
-    const name = prefix + upperFirst(field) + 'Field';
-    const target = prefix + 'Projected' + upperFirst(field) + 'Field';
+  private checkAndGetProjectedField(
+    changes: SimpleChanges, force: boolean, old: BoundField<Point>,
+    posName: string, xName: string, yName: string
+  ): BoundField<Point> {
     const invertPoint = ([lat, long]: Point): Point => [long, lat];
+    const pos = this[posName];
+    const posWrappedOp = pos && pos.operator.wrapped;
+    const x = this[xName];
+    const y = this[yName];
+    const posChanged = posName in changes;
+    const xChanged = xName in changes;
+    const yChanged = yName in changes;
+    const hasPos = pos && (!('value' in posWrappedOp) || posWrappedOp['value'] != null);
 
-    if (name in changes || projectionUpdated) {
-      if (this[name]) {
-        const op = chainOp(
-          mapOp((this[name] as BoundField<Point>).getter),
-          // d3 projections expect [longitude, latitude], but our methods return [latitude, longitude]
-          // -> Invert order before calling d3 projections
-          mapOp(invertPoint),
-          mapOp(this.basemapProjection || invertPoint)
-        );
-        this[target] = simpleField<Point>({
-          label: 'Projected ' + name,
-          operator: op
-        }).getBoundField();
-      } else {
-        this[target] = undefined;
-      }
+    if (force || posChanged || (!hasPos && (xChanged || yChanged))) {
+      const posOp = pos && pos.operator;
+      const xOp = x && x.operator;
+      const yOp = y && y.operator;
+      const calcPosOp = posOp ? posOp : combineOp([xOp, yOp]);
+      const op = chainOp(calcPosOp, mapOp(invertPoint), mapOp(this.basemapProjection || invertPoint));
+      const field = simpleField({ label: 'Combined Projected Position', operator: op });
+      return field.getBoundField();
     }
+
+    return old;
   }
 }

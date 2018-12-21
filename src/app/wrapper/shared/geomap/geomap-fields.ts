@@ -10,6 +10,16 @@ export const nodePositionField = simpleField<[number, number]>({
   operator: access('lat_long')
 });
 
+export const nodeLatitudeField = simpleField<number>({
+  label: 'Node Latitude',
+  operator: access('lat_long[0]')
+});
+
+export const nodeLongitudeField = simpleField<number>({
+  label: 'Node Longitude',
+  operator: access('lat_long[1]')
+});
+
 export const nodeSizeField = simpleField<number>({
   label: 'Node Size',
   operator: access('size')

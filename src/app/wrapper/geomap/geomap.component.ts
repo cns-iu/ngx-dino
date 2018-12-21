@@ -33,7 +33,9 @@ export class GeomapComponent {
     map(RawChangeSet.fromArray)
   );
   nodeIdField: BoundField<DatumId> = fields.nodeIdField.getBoundField();
-  nodePositionField: BoundField<Point> = fields.nodePositionField.getBoundField();
+  nodePositionField: BoundField<Point> = undefined;
+  nodeLatitudeField: BoundField<number> = fields.nodeLatitudeField.getBoundField();
+  nodeLongitudeField: BoundField<number> = fields.nodeLongitudeField.getBoundField();
   nodeSizeField: BoundField<number> = fields.nodeSizeField.getBoundField();
   nodeSymbolField: BoundField<BuiltinSymbolTypes> = fields.nodeSymbolField.getBoundField();
   nodeColorField: BoundField<string> = fields.nodeColorField.getBoundField();

@@ -285,7 +285,8 @@ export class ScienceMapComponent implements OnInit, OnChanges, DoCheck {
     this.tooltipDiv.transition().style('opacity', .7)
         .style('visibility', 'visible');
 
-    this.tooltipDiv.html(this.dataService.subdIdToName[tooltipText].subd_name) // TODO generic content needed
+    tooltipText = this.dataService.subdIdToName[tooltipText] ? this.dataService.subdIdToName[tooltipText].subd_name : tooltipText;
+    this.tooltipDiv.html(tooltipText) // TODO generic content needed
         .style('left', d3Selection.event.x - 50 + 'px')
         .style('top',  d3Selection.event.y - 40 + 'px');
   }

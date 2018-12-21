@@ -3,7 +3,10 @@ import { Set } from 'immutable';
 import { conforms, debounce, filter } from 'lodash';
 import { Observable, Subscription } from 'rxjs';
 
-import { BoundField, ChangeSet, Datum, DatumId, RawChangeSet, idSymbol } from '@ngx-dino/core';
+import {
+  BoundField, ChangeSet, Datum, DatumId, RawChangeSet,
+  combine, idSymbol, simpleField
+} from '@ngx-dino/core';
 import { LayoutService } from '../shared/layout.service';
 import { NetworkService } from '../shared/network.service';
 import { BuiltinSymbolTypes, CoordinateSpaceOptions } from '../shared/options';
@@ -29,6 +32,8 @@ export class PureNetworkComponent implements OnInit, OnChanges {
   @Input() nodeStream: Observable<RawChangeSet>;
   @Input() nodeIdField: BoundField<DatumId>;
   @Input() nodePositionField: BoundField<Point>;
+  @Input() nodeXField: BoundField<number>;
+  @Input() nodeYField: BoundField<number>;
   @Input() nodeSizeField: BoundField<number>;
   @Input() nodeSymbolField: BoundField<BuiltinSymbolTypes>;
   @Input() nodeColorField: BoundField<string>;
@@ -45,7 +50,11 @@ export class PureNetworkComponent implements OnInit, OnChanges {
   @Input() edgeStream: Observable<RawChangeSet>;
   @Input() edgeIdField: BoundField<DatumId>;
   @Input() edgeSourceField: BoundField<Point>;
+  @Input() edgeSourceXField: BoundField<number>;
+  @Input() edgeSourceYField: BoundField<number>;
   @Input() edgeTargetField: BoundField<Point>;
+  @Input() edgeTargetXField: BoundField<number>;
+  @Input() edgeTargetYField: BoundField<number>;
   @Input() edgeStrokeField: BoundField<string>;
   @Input() edgeStrokeWidthField: BoundField<number>;
   @Input() edgeTransparencyField: BoundField<number>;
@@ -85,12 +94,14 @@ export class PureNetworkComponent implements OnInit, OnChanges {
     });
 
     this.service.nodes.subscribe((set) => {
-      const filtered = filter(this.applyChangeSet(set, this.allNodes), nodeConform) as any;
+      const nodes = this.debouncedLayoutArgs[0] || this.allNodes;
+      const filtered = filter(this.applyChangeSet(set, nodes), nodeConform) as any;
       this.layout(filtered);
     });
 
     this.service.edges.subscribe((set) => {
-      const filtered = filter(this.applyChangeSet(set, this.allEdges), edgeConform) as any;
+      const edges = this.debouncedLayoutArgs[1] || this.allEdges;
+      const filtered = filter(this.applyChangeSet(set, edges), edgeConform) as any;
       this.layout(undefined, filtered);
     });
 
@@ -116,11 +127,10 @@ export class PureNetworkComponent implements OnInit, OnChanges {
       this.debouncedLayoutArgs[0] = undefined;
       this.service.fetchNodes(
         this.nodeStream, this.nodeIdField,
-        this.nodePositionField, this.nodeSizeField,
-        this.nodeSymbolField, this.nodeColorField,
-        this.nodeStrokeField, this.nodeStrokeWidthField,
-        this.nodeTooltipField, this.nodeLabelField,
-        this.nodeLabelPositionField, this.nodeTransparencyField,
+        this.getPositionField(this.nodePositionField, this.nodeXField, this.nodeYField),
+        this.nodeSizeField, this.nodeSymbolField, this.nodeColorField,
+        this.nodeStrokeField, this.nodeStrokeWidthField, this.nodeTooltipField,
+        this.nodeLabelField, this.nodeLabelPositionField, this.nodeTransparencyField,
         this.strokeTransparencyField, this.nodePulseField
       );
     }, () => {
@@ -128,10 +138,9 @@ export class PureNetworkComponent implements OnInit, OnChanges {
       this.excludedNodes = [];
       this.debouncedLayoutArgs[0] = undefined;
       this.service.updateNodes(
-        this.nodePositionField, this.nodeSizeField,
-        this.nodeSymbolField, this.nodeColorField,
-        this.nodeStrokeField, this.nodeStrokeWidthField,
-        this.nodeTooltipField, this.nodeLabelField,
+        this.getPositionField(this.nodePositionField, this.nodeXField, this.nodeYField),
+        this.nodeSizeField, this.nodeSymbolField, this.nodeColorField, this.nodeStrokeField,
+        this.nodeStrokeWidthField, this.nodeTooltipField, this.nodeLabelField,
         this.nodeLabelPositionField, this.nodeTransparencyField,
         this.strokeTransparencyField, this.nodePulseField
       );
@@ -143,18 +152,18 @@ export class PureNetworkComponent implements OnInit, OnChanges {
       this.debouncedLayoutArgs[1] = undefined;
       this.service.fetchEdges(
         this.edgeStream, this.edgeIdField,
-        this.edgeSourceField, this.edgeTargetField,
-        this.edgeStrokeField, this.edgeStrokeWidthField,
-        this.edgeTransparencyField
+        this.getPositionField(this.edgeSourceField, this.edgeSourceXField, this.edgeSourceYField),
+        this.getPositionField(this.edgeTargetField, this.edgeTargetXField, this.edgeTargetYField),
+        this.edgeStrokeField, this.edgeStrokeWidthField, this.edgeTransparencyField
       );
     }, () => {
       this.edges = [];
       this.excludedEdges = [];
       this.debouncedLayoutArgs[1] = undefined;
       this.service.updateEdges(
-        this.edgeSourceField, this.edgeTargetField,
-        this.edgeStrokeField, this.edgeStrokeWidthField,
-        this.edgeTransparencyField
+        this.getPositionField(this.edgeSourceField, this.edgeSourceXField, this.edgeSourceYField),
+        this.getPositionField(this.edgeTargetField, this.edgeTargetXField, this.edgeTargetYField),
+        this.edgeStrokeField, this.edgeStrokeWidthField, this.edgeTransparencyField
       );
     });
 
@@ -181,10 +190,6 @@ export class PureNetworkComponent implements OnInit, OnChanges {
 
   onResize({width, height}: {width: number, height: number}): void {
     if (this.autoresize) {
-      // const wDiff = width - this.svgWidth;
-      // const hDiff = height - this.svgHeight;
-      // const newW = 0 < wDiff && wDiff < 25 ? this.svgWidth : width;
-      // const newH = 0 < hDiff && hDiff < 25 ? this.svgHeight : height;
       this.doResize(width, height);
     }
   }
@@ -242,5 +247,23 @@ export class PureNetworkComponent implements OnInit, OnChanges {
     this.debouncedLayoutArgs[0] = nodes || this.debouncedLayoutArgs[0];
     this.debouncedLayoutArgs[1] = edges || this.debouncedLayoutArgs[1];
     this.debouncedLayout();
+  }
+
+  private getPositionField(
+    position: BoundField<Point>, x: BoundField<number>, y: BoundField<number>
+  ): BoundField<Point> {
+    if (position) {
+      const wrapped = position.operator.wrapped;
+      // Test for !ConstantOperator(undefined | null)
+      if (!('value' in wrapped) || wrapped['value'] != null) {
+        return position;
+      }
+    }
+
+    const field = simpleField({
+      label: 'Combined Position',
+      operator: combine<any, Point>([x && x.operator, y && y.operator])
+    });
+    return field.getBoundField();
   }
 }

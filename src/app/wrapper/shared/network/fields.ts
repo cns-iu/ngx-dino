@@ -17,7 +17,19 @@ export const nodeIdField = simpleField({
 export const nodePositionField = simpleField({
   bfieldId: 'position',
   label: 'Node Position',
-  operator: access('position')
+  operator: constant(undefined)
+});
+
+export const nodeXField = simpleField({
+  bfieldId: 'x',
+  label: 'X Position',
+  operator: access('position[0]')
+});
+
+export const nodeYField = simpleField({
+  bfieldId: 'y',
+  label: 'Y Position',
+  operator: access('position[1]')
 });
 
 export const nodeSizeField = simpleField({

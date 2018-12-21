@@ -164,11 +164,6 @@ export class GeomapComponent implements OnInit, OnChanges {
     this.onResize({ width: this.visWidth, height: this.visHeight });
   }
 
-  setBasemapSelectedZoomLevel(level: number): void {
-    this.basemapSelectedZoomLevel = level;
-    this.ngOnChanges({ basemapSelectedZoomLevel: {} as any });
-  }
-
   private updateBasemap(): void {
     let { basemapZoomLevels, basemapSelectedZoomLevel } = this;
 
@@ -180,10 +175,11 @@ export class GeomapComponent implements OnInit, OnChanges {
     }
 
     const length = basemapZoomLevels.length;
-    const index = this.basemapSelectedZoomLevel = clamp(basemapSelectedZoomLevel, 0, length - 1);
+    const index = clamp(basemapSelectedZoomLevel, 0, length - 1);
     const { selector, projection } = basemapZoomLevels[index];
 
     this.basemapFeatureSelector.next(selector);
+    this.basemapSelectedZoomLevel = index;
     this.basemapProjection = isString(projection) ? lookupProjection(projection) : projection;
   }
 

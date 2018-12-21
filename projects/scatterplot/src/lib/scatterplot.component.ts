@@ -11,6 +11,7 @@ import {
 
 import { Observable, Subscription } from 'rxjs';
 
+import * as d3Format from 'd3-format';
 import * as d3Axis from 'd3-axis';
 import * as d3Selection from 'd3-selection';
 import 'd3-transition'; // This adds transition support to d3-selection
@@ -401,12 +402,20 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
     const yscale = this.yScale;
 
     if (this.gridlines) {  // update axis and gridlines according to new scale
+      /* don't format if range of numbers in data points falls within 'year' 1000 to 3000 */
+      const formatXaxis = d3Array.min(data, (d) => Number(d.x)) >= 1000 && d3Array.max(data, (d) => Number(d.x)) <= 3000 ?
+       d3Format.format('04d') : null;
+      const formatYaxis = d3Array.min(data, (d) => Number(d.y)) >= 1000 && d3Array.max(data, (d) => Number(d.y)) <= 3000 ?
+      d3Format.format('04d') : null;
+
       this.xAxis = d3Axis.axisBottom(this.xScale)
+        .tickFormat(formatXaxis)
         .tickSizeInner(-this.elementHeight)
         .tickSizeOuter(0)
         .tickPadding(10);
 
       this.yAxis = d3Axis.axisLeft(this.yScale)
+        .tickFormat(formatYaxis)
         .tickSizeInner(-this.elementWidth)
         .tickSizeOuter(0)
         .tickPadding(10);

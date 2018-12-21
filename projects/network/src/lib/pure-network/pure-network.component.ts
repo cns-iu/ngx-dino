@@ -94,12 +94,14 @@ export class PureNetworkComponent implements OnInit, OnChanges {
     });
 
     this.service.nodes.subscribe((set) => {
-      const filtered = filter(this.applyChangeSet(set, this.allNodes), nodeConform) as any;
+      const nodes = this.debouncedLayoutArgs[0] || this.allNodes;
+      const filtered = filter(this.applyChangeSet(set, nodes), nodeConform) as any;
       this.layout(filtered);
     });
 
     this.service.edges.subscribe((set) => {
-      const filtered = filter(this.applyChangeSet(set, this.allEdges), edgeConform) as any;
+      const edges = this.debouncedLayoutArgs[1] || this.allEdges;
+      const filtered = filter(this.applyChangeSet(set, edges), edgeConform) as any;
       this.layout(undefined, filtered);
     });
 

@@ -116,11 +116,9 @@ export class GeomapComponent implements OnInit, OnChanges {
       this.updateBasemap();
     }
 
-    setTimeout(() => {
-      this.checkAndUpdateProjectedField(changes, projectionUpdated, 'node', 'position');
-      this.checkAndUpdateProjectedField(changes, projectionUpdated, 'edge', 'source');
-      this.checkAndUpdateProjectedField(changes, projectionUpdated, 'edge', 'target');
-    }, 0);
+    this.checkAndUpdateProjectedField(changes, projectionUpdated, 'node', 'position');
+    this.checkAndUpdateProjectedField(changes, projectionUpdated, 'edge', 'source');
+    this.checkAndUpdateProjectedField(changes, projectionUpdated, 'edge', 'target');
   }
 
   onResize({ width: visWidth, height: visHeight }: { width: number, height: number }): void {

@@ -20,6 +20,8 @@ export class NetworkComponent {
   @Input() nodeStream: Observable<RawChangeSet>;
   @Input() nodeIdField: BoundField<DatumId>;
   @Input() nodePositionField: BoundField<Point>;
+  @Input() nodeXField: BoundField<number>;
+  @Input() nodeYField: BoundField<number>;
   @Input() nodeSizeField: BoundField<number>;
   @Input() nodeSymbolField: BoundField<BuiltinSymbolTypes>;
   @Input() nodeColorField: BoundField<string>;
@@ -36,7 +38,11 @@ export class NetworkComponent {
   @Input() edgeStream: Observable<RawChangeSet>;
   @Input() edgeIdField: BoundField<DatumId>;
   @Input() edgeSourceField: BoundField<Point>;
+  @Input() edgeSourceXField: BoundField<number>;
+  @Input() edgeSourceYField: BoundField<number>;
   @Input() edgeTargetField: BoundField<Point>;
+  @Input() edgeTargetXField: BoundField<number>;
+  @Input() edgeTargetYField: BoundField<number>;
   @Input() edgeStrokeField: BoundField<string>;
   @Input() edgeStrokeWidthField: BoundField<number>;
   @Input() edgeTransparencyField: BoundField<number>;

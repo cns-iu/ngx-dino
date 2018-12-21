@@ -2,26 +2,23 @@ import {
   Component, OnInit, ElementRef, Input, Output, DoCheck,
   EventEmitter, OnChanges, SimpleChanges, ViewChild, SimpleChange
 } from '@angular/core';
-
-import {
-  BoundField, RawChangeSet, Datum, idSymbol
-} from '@ngx-dino/core';
-
+import { BoundField, RawChangeSet, Datum, idSymbol, ChangeSet, DatumId } from '@ngx-dino/core';
+import { Set } from 'immutable';
+import { uniqBy } from 'lodash';
 import { Observable } from 'rxjs';
-
 import * as d3Selection from 'd3-selection';
 import { scaleLinear, scaleLog } from 'd3-scale';
 import * as d3Array from 'd3-array';
 import 'd3-transition';
 
 import { ScienceMapDataService } from './shared/science-map-data.service';
-import { Subdiscipline } from './shared/subdiscipline';
 
 
 @Component({
   selector: 'dino-science-map',
   templateUrl: './science-map.component.html',
-  styleUrls: ['./science-map.component.css']
+  styleUrls: ['./science-map.component.css'],
+  providers: [ScienceMapDataService]
 })
 export class ScienceMapComponent implements OnInit, OnChanges, DoCheck {
   @Input() margin = { top: 20, right: 15, bottom: 60, left: 60 };
@@ -81,20 +78,24 @@ export class ScienceMapComponent implements OnInit, OnChanges, DoCheck {
     this.initVisualization();
     this.createEdges();
     this.createLabels('white', 3);
-    this.createLabels('black', 1);
+    this.createLabels('#000007', 1);
 
-    this.dataService.subdisciplines.subscribe((data) => {
-      this.data = this.data.filter((e: Subdiscipline) => !data.remove
-        .some((obj: Datum<Subdiscipline>) => obj[idSymbol] === e.id)).concat(data.insert.toArray() as any);
-
-      data.update.forEach((el) => {
-        const index = this.data.findIndex((e) => e.id === el[1].id);
-        this.data[index] = Object.assign(this.data[index] || {}, <Subdiscipline>el[1]);
-      });
+    this.dataService.subdisciplines.subscribe((changes) => {
+      this.data = this.applyChangeSet(changes, this.data);
 
       this.setScales();
       this.createNodes();
     });
+  }
+
+  private applyChangeSet<T extends Datum>(set: ChangeSet<any>, data: T[]): T[] {
+    const removeIds = set.remove.map(rem => Number(rem[idSymbol]));
+    const replaceIds = set.replace.map(rep => Number(rep[idSymbol]));
+    const filteredIds = Set<DatumId>().merge(removeIds, replaceIds);
+    const filtered = data.filter(item => !filteredIds.has(Number(item[idSymbol])));
+    const appliedData = filtered.concat(set.insert.toArray() as T[], set.replace.toArray() as T[]);
+    const uniqueData = uniqBy(appliedData.reverse(), idSymbol).reverse();
+    return uniqueData;
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -126,7 +127,7 @@ export class ScienceMapComponent implements OnInit, OnChanges, DoCheck {
       this.initVisualization();
       this.createEdges();
       this.createLabels('white', 3);
-      this.createLabels('black', 1);
+      this.createLabels('#000007', 1);
       this.createNodes();
     }
   }
@@ -204,7 +205,9 @@ export class ScienceMapComponent implements OnInit, OnChanges, DoCheck {
       .attr('class', (d) => 'node subd_id' + d[idSymbol])
       .attr('fill', (d) => this.dataService.underlyingScimapData.disciplines.filter(
         (d2) => d2.disc_id === this.dataService.subdIdToDisc[d[idSymbol]].disc_id)[0].color)
-      .attr('stroke', 'black')
+      .attr('stroke', '#000007')
+      .attr('fill-opacity', 0.75)
+      .attr('stroke-opacity', 1)
       .attr('x', (d) => this.translateXScale(this.dataService.subdIdToPosition[d[idSymbol]].x))
       .attr('y', (d) => this.translateYScale(this.dataService.subdIdToPosition[d[idSymbol]].y))
       .attr('transform', (d) => 'translate('

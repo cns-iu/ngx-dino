@@ -115,9 +115,18 @@ export class GeomapComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.updateBasemap();
-    this.checkAndUpdateProjectedField({}, true, 'node', 'position');
-    this.checkAndUpdateProjectedField({}, true, 'edge', 'source');
-    this.checkAndUpdateProjectedField({}, true, 'edge', 'target');
+    this.nodeProjectedPositionField = this.checkAndGetProjectedField(
+      {}, true, this.nodeProjectedPositionField,
+      'nodePositionField', 'nodeLatitudeField', 'nodeLongitudeField'
+    );
+    this.edgeProjectedSourceField = this.checkAndGetProjectedField(
+      {}, true, this.edgeProjectedSourceField,
+      'edgeSourceField', 'edgeSourceLatitudeField', 'edgeSourceLongitudeField'
+    );
+    this.edgeProjectedTargetField = this.checkAndGetProjectedField(
+      {}, true, this.edgeProjectedTargetField,
+      'edgeTargetField', 'edgeTargetLatitudeField', 'edgeTargetLongitudeField'
+    );
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -127,20 +136,20 @@ export class GeomapComponent implements OnInit, OnChanges {
       this.updateBasemap();
     }
 
-    setTimeout(() => {
-      this.nodeProjectedPositionField = this.checkAndGetProjectedField(
-        changes, projectionUpdated, this.nodeProjectedPositionField,
-        'nodePositionField', 'nodeLatitudeField', 'nodeLongitudeField'
-      );
-      this.edgeProjectedSourceField = this.checkAndGetProjectedField(
-        changes, projectionUpdated, this.edgeProjectedSourceField,
-        'edgeSourceField', 'edgeSourceLatitudeField', 'edgeSourceLongitudeField'
-      );
-      this.edgeProjectedTargetField = this.checkAndGetProjectedField(
-        changes, projectionUpdated, this.edgeProjectedTargetField,
-        'edgeTargetField', 'edgeTargetLatitudeField', 'edgeTargetLongitudeField'
-      );
-    }, 10);
+    // setTimeout(() => {
+    this.nodeProjectedPositionField = this.checkAndGetProjectedField(
+      changes, projectionUpdated, this.nodeProjectedPositionField,
+      'nodePositionField', 'nodeLatitudeField', 'nodeLongitudeField'
+    );
+    this.edgeProjectedSourceField = this.checkAndGetProjectedField(
+      changes, projectionUpdated, this.edgeProjectedSourceField,
+      'edgeSourceField', 'edgeSourceLatitudeField', 'edgeSourceLongitudeField'
+    );
+    this.edgeProjectedTargetField = this.checkAndGetProjectedField(
+      changes, projectionUpdated, this.edgeProjectedTargetField,
+      'edgeTargetField', 'edgeTargetLatitudeField', 'edgeTargetLongitudeField'
+    );
+    // }, 10);
   }
 
   onResize({ width: visWidth, height: visHeight }: { width: number, height: number }): void {

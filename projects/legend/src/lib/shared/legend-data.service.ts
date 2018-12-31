@@ -30,7 +30,7 @@ export class LegendDataService {
   fetchData(
     nodeStream: Observable<RawChangeSet<any>>,
     nodeIdField: BoundField<number | string>,
-    nodeSizeField: BoundField<string>,
+    nodeSizeField: BoundField<string | number>,
     nodeColorField: BoundField<string|number>,
     categoryField: BoundField<string>,
 
@@ -40,14 +40,26 @@ export class LegendDataService {
   ): this {
     if (nodeStream && nodeIdField) {
       if (nodeSizeField) {
-        this.nodeLegendProcessor = this.processorService.createProcessor<Node & Datum<any>, any>(
-          nodeStream,
-          nodeIdField,
-          {
-            id: nodeIdField,
-            size: nodeSizeField
-          }
-        );
+        if (categoryField) {
+          this.nodeLegendProcessor = this.processorService.createProcessor<Node & Datum<any>, any>(
+            nodeStream,
+            nodeIdField,
+            {
+              id: nodeIdField,
+              size: nodeSizeField,
+              category: categoryField
+            }
+          );
+        } else {
+          this.nodeLegendProcessor = this.processorService.createProcessor<Node & Datum<any>, any>(
+            nodeStream,
+            nodeIdField,
+            {
+              id: nodeIdField,
+              size: nodeSizeField
+            }
+          );
+        }
       }
       if (nodeColorField) {
         if (categoryField) {

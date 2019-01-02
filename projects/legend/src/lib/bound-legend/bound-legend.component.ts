@@ -11,26 +11,24 @@ import * as d3Array from 'd3-array';
 
 import { Observable } from 'rxjs';
 import { LegendDataService } from '../shared/legend-data.service';
-import { SizeMapping } from '../shared/size-mapping';
 
 @Component({
-  selector: 'dino-start-legend',
-  templateUrl: './start-legend.component.html',
-  styleUrls: ['./start-legend.component.css'],
+  selector: 'dino-bound-legend',
+  templateUrl: './bound-legend.component.html',
+  styleUrls: ['./bound-legend.component.scss'],
   providers: [LegendDataService]
 })
-export class StartLegendComponent implements OnInit, OnChanges {
+export class BoundLegendComponent implements OnInit, OnChanges {
   @Input() dataStream: Observable<RawChangeSet<any>>;
 
   @Input() sizeField: BoundField<string | number>;
   @Input() idField: BoundField<number | string>;
   @Input() categoryField: BoundField<string>;
 
-  @Input() legendType: string;
+  @Input() boundLegendType: string;
 
-  @Input() margin: string; // format - 'top right bottom left'
 
-  minLabel = '0';
+  label = '0';
   changeLabels = false;
   data = [];
 
@@ -92,8 +90,9 @@ export class StartLegendComponent implements OnInit, OnChanges {
     }
   }
 
-  calculateBoundLabels(data: any) {
-    const min = Math.round(parseInt(d3Array.min(data, (d: any) => d.size), 10));
-    this.minLabel = (!isNaN(min)) ? min.toString() : '';
+  calculateBoundLabels(data: Datum[]) {
+    const label =  this.boundLegendType === 'start' ? Math.round(parseInt(d3Array.min(data, (d: any) => d.size), 10)) :
+     Math.round(parseInt(d3Array.max(data, (d: any) => d.size), 10));
+    this.label = (!isNaN(label)) ? label.toString() : '';
   }
 }

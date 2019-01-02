@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { StartLegendComponent } from './start-legend.component';
+import { BoundLegendComponent } from './bound-legend.component';
 
-describe('StartLegendComponent', () => {
-  let component: StartLegendComponent;
-  let fixture: ComponentFixture<StartLegendComponent>;
+describe('BoundLegendComponent', () => {
+  let component: BoundLegendComponent;
+  let fixture: ComponentFixture<BoundLegendComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ StartLegendComponent ]
+      declarations: [ BoundLegendComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(StartLegendComponent);
+    fixture = TestBed.createComponent(BoundLegendComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

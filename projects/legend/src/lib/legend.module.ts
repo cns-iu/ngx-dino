@@ -9,7 +9,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { ColorLegendComponent } from './color-legend/color-legend.component';
 import { NodeSizeLegendComponent } from './node-size-legend/node-size-legend.component';
 import { EdgeSizeLegendComponent } from './edge-size-legend/edge-size-legend.component';
-import { StartLegendComponent } from './start-legend/start-legend.component';
+import { BoundLegendComponent } from './bound-legend/bound-legend.component';
 
 @NgModule({
   imports: [
@@ -23,13 +23,13 @@ import { StartLegendComponent } from './start-legend/start-legend.component';
     ColorLegendComponent,
     NodeSizeLegendComponent,
     EdgeSizeLegendComponent,
-    StartLegendComponent
+    BoundLegendComponent
   ],
   exports: [
     ColorLegendComponent,
     NodeSizeLegendComponent,
     EdgeSizeLegendComponent,
-    StartLegendComponent
+    BoundLegendComponent
   ]
 })
 export class LegendModule { }

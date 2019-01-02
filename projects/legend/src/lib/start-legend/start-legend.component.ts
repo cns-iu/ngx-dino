@@ -26,15 +26,12 @@ export class StartLegendComponent implements OnInit, OnChanges {
   @Input() idField: BoundField<number | string>;
   @Input() categoryField: BoundField<string>;
 
-  @Input() sizeMapping: SizeMapping[] = [];
-
   @Input() legendType: string;
 
   @Input() margin: string; // format - 'top right bottom left'
 
   minLabel = '0';
-  midLabel = '0';
-  maxLabel = '0';
+  changeLabels = false;
   data = [];
 
   constructor(private dataService: LegendDataService) { }
@@ -57,30 +54,21 @@ export class StartLegendComponent implements OnInit, OnChanges {
           this.data[index] = el;
         }
       });
-
-      if (this.data.length > 0) {
-        if (this.legendType === 'quantitative') {
-          this.calculateBoundLabels(this.data);
-        } else if (this.legendType === 'qualitative') {
-            this.calculateSizeMapping();
-          }
+      if (this.changeLabels && this.data.length > 0) {
+        this.calculateBoundLabels(this.data);
       }
     });
    }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log('start changes', changes)
     if ('dataStream' in changes && this.dataStream) {
       this.data = [];
       this.updateStreamProcessor(false);
-    } else if ('sizeField' in changes) {
+    }
+    if ('sizeField' in changes) {
         this.updateStreamProcessor(true, this.sizeField);
-        if (this.legendType === 'quantitative') {
-          this.calculateBoundLabels(this.data);
-        } else if (this.legendType === 'qualitative') {
-            this.calculateSizeMapping();
-          }
-      }
+        this.changeLabels = true;
+    }
   }
 
   updateStreamProcessor(update = true, changedField?: BoundField<number | string>) {
@@ -105,35 +93,7 @@ export class StartLegendComponent implements OnInit, OnChanges {
   }
 
   calculateBoundLabels(data: any) {
-    console.log('start', data);
-    const max = Math.round(parseInt(d3Array.max(data, (d: any) => d.size), 10));
     const min = Math.round(parseInt(d3Array.min(data, (d: any) => d.size), 10));
-    const mid = Math.round((max + min) / 2);
-
-    this.maxLabel = (!isNaN(max)) ? max.toString() : '';
-    this.midLabel = (!isNaN(mid)) ? mid.toString() : '';
     this.minLabel = (!isNaN(min)) ? min.toString() : '';
   }
-
-  calculateSizeMapping() {
-    this.data.forEach((d) => {
-      if (d.category !== null) {
-        if (this.sizeMapping.length > 0) {
-          const index = this.sizeMapping.findIndex((m) => m.label === d.category);
-          if (index === -1) {
-            this.sizeMapping.push({
-              'label': d.category,
-              'size': d.size
-            });
-          }
-        } else {
-          this.sizeMapping.push({
-            'label': d.category,
-            'size': d.size
-          });
-        }
-      }
-    });
-  }
-
 }

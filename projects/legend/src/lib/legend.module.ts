@@ -10,6 +10,8 @@ import { ColorLegendComponent } from './color-legend/color-legend.component';
 import { NodeSizeLegendComponent } from './node-size-legend/node-size-legend.component';
 import { EdgeSizeLegendComponent } from './edge-size-legend/edge-size-legend.component';
 import { BoundLegendComponent } from './bound-legend/bound-legend.component';
+import { AreaSizeLegendComponent } from './area-size-legend/area-size-legend.component';
+import { StrokeWidthLegendComponent } from './stroke-width-legend/stroke-width-legend.component';
 
 @NgModule({
   imports: [
@@ -23,13 +25,17 @@ import { BoundLegendComponent } from './bound-legend/bound-legend.component';
     ColorLegendComponent,
     NodeSizeLegendComponent,
     EdgeSizeLegendComponent,
-    BoundLegendComponent
+    BoundLegendComponent,
+    AreaSizeLegendComponent,
+    StrokeWidthLegendComponent
   ],
   exports: [
     ColorLegendComponent,
     NodeSizeLegendComponent,
     EdgeSizeLegendComponent,
-    BoundLegendComponent
+    BoundLegendComponent,
+    AreaSizeLegendComponent,
+    StrokeWidthLegendComponent
   ]
 })
 export class LegendModule { }

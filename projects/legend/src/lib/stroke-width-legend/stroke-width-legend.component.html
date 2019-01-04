@@ -1,0 +1,20 @@
+<div class="dino-stroke-width-legend stroke-width-legend" mat-card-image>
+    <svg *ngIf="stats" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+      x="0px" y="0px" width="300px" height="120px" viewBox="0 0 300 120" preserveAspectRatio="xMidYMid meet">
+
+      <g transform="translate(10, 0)">
+          <g id="maxEdge">
+              <text transform="matrix(1 0 0 1 90 20)" text-anchor="start" font-size="13">{{ stats.max.label }}</text>
+              <line x1="0" y1="14" x2="80" y2="14" stroke="#000000" opacity="1" [attr.stroke-width]="stats.max.value"/>
+          </g>
+          <g id="midEdge">
+              <text transform="matrix(1 0 0 1 90 66)" text-anchor="start" font-size="13">{{ stats.median.label }}</text>
+              <line x1="0" y1="63" x2="80" y2="63" stroke="#000000" opacity="1" [attr.stroke-width]="stats.median.value"/>
+          </g>
+          <g id="minEdge">
+              <text transform="matrix(1 0 0 1 90 116)" text-anchor="start" font-size="13">{{ stats.min.label }}</text>
+              <line x1="0" y1="113" x2="80" y2="113" stroke="#000000" opacity="1" [attr.stroke-width]="stats.min.value"/>
+          </g>
+      </g>
+    </svg>
+</div>

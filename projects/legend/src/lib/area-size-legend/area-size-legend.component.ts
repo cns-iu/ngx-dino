@@ -41,14 +41,14 @@ export class AreaSizeLegendComponent implements OnInit, OnChanges {
   }
   private convertDataItem(dataItem: DataItem): DataItem {
     return Object.assign({}, dataItem, {
-      value: this.areaToRadius(dataItem.value)
+      value: this.areaToDiameter(dataItem.value)
     });
   }
-  private areaToRadius(value: string | number) {
+  private areaToDiameter(value: string | number) {
     if (!isNumber(value) || !isFinite(Number(value))) {
       return 0;
     } else {
-      return Math.sqrt(Number(value) / Math.PI);
+      return Math.sqrt(Number(value) / Math.PI) * 2;
     }
   }
 

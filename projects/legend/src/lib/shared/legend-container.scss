@@ -1,0 +1,46 @@
+.legend-container {
+  display: inline-block;
+
+  .legend-row {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    line-height: 1.5rem;
+
+    .mark {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .circle {
+        display: block;
+        height: 100%;
+        width: 100%;
+        border-radius: 50%;
+        border-width: 1px;
+        border-style: solid;
+        border-color: #000007;
+      }
+    
+      .line {
+        display: block;
+        width: 2rem;
+        background-color: #000007;
+      }
+
+      .rectangle {
+        display: block;
+        width: 14px;
+        height: 14px;
+        border: 0.2px solid #000007;
+      }
+    }
+
+    .label {
+      margin-left: .5rem;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+  }
+}

@@ -1,28 +1,22 @@
-<div class="dino-area-size-legend area-size-legend" mat-card-image>
-  <svg *ngIf="stats && stats.min !== stats.max" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-    width="300px" height="150px" viewBox="0 0 300 150" preserveAspectRatio="xMidYMid meet">
-    <g>
-      <circle class="maxNode" fill="none" stroke="#222" stroke-width="1" stroke-miterlimit="10" cx="30" cy="16" [attr.r]="stats.max.value" />
-      <circle class="midNode" fill="none" stroke="#222" stroke-width="1" stroke-miterlimit="10" cx="30" cy="76" [attr.r]="stats.median.value" />
-      <circle class="minNode" fill="none" stroke="#222" stroke-width="1" stroke-miterlimit="10" cx="30" cy="136" [attr.r]="stats.min.value" />
-      <g class="maxG" transform="translate(30, 16)">
-        <text transform="matrix(1 0 0 1 40 5)" text-anchor="start" fill="#222" font-size="13">{{ stats.max.label }}</text>
-      </g>
-      <g class="midG" transform="translate(30, 76)">
-        <text transform="matrix(1 0 0 1 40 5)" text-anchor="start" fill="#222" font-size="13">{{ stats.median.label }}</text>
-      </g>
-      <g class="minG" transform="translate(30, 136)">
-        <text transform="matrix(1 0 0 1 40 5)" text-anchor="start" fill="#222" font-size="13">{{ stats.min.label }}</text>
-      </g>
-    </g>
-  </svg>
-  <svg *ngIf="stats && stats.min === stats.max" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-    width="300px" height="70px" viewBox="0 0 300 70" preserveAspectRatio="xMidYMid meet">
-    <g>
-      <circle class="maxNode" fill="none" stroke="#222" stroke-width="1" stroke-miterlimit="10" cx="25" cy="46" [attr.r]="stats.min.value" />
-      <g class="maxG" transform="translate(25, 46)">
-        <text transform="matrix(1 0 0 1 40 5)" text-anchor="start" fill="#222" font-size="13">{{ stats.min.label }}</text>
-      </g>
-    </g>
-  </svg>
+<div class="dino-area-size-legend area-size-legend">
+  <div class="legend-container" *ngIf="stats">
+    <div class="legend-row">
+      <div class="mark" [style.width]="stats.max.value + 'px'">
+        <div class="circle" [style.width]="stats.max.value + 'px'" [style.height]="stats.max.value + 'px'"></div>
+      </div>
+      <div class="label" [title]="stats.max.label">{{ stats.max.label }}</div>
+    </div>
+    <div class="legend-row" *ngIf="stats && stats.min !== stats.max">
+      <div class="mark" [style.width]="stats.max.value + 'px'">
+        <div class="circle" [style.width]="stats.median.value + 'px'" [style.height]="stats.median.value + 'px'"></div>
+      </div>
+      <div class="label" [title]="stats.median.label">{{ stats.median.label }}</div>
+    </div>
+    <div class="legend-row" *ngIf="stats && stats.min !== stats.max">
+      <div class="mark" [style.width]="stats.max.value + 'px'">
+        <div class="circle" [style.width]="stats.min.value + 'px'" [style.height]="stats.min.value + 'px'"></div>
+      </div>
+      <div class="label" [title]="stats.min.label">{{ stats.min.label }}</div>
+    </div>
+  </div>
 </div>

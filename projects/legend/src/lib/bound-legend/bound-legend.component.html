@@ -113,8 +113,9 @@
         </g>
         </svg>
   </div>
-  <div class="bound-legend-label-container start-legend-label-container">
-      {{label}}
-    </div>
 
+  <div class="bound-legend-label-container start-legend-label-container" *ngIf="stats">
+    <span *ngIf="boundLegendType === 'start'">{{ stats.min.label }}</span>
+    <span *ngIf="boundLegendType === 'end'">{{ stats.max.label }}</span>
+  </div>
 </div> 

@@ -1,6 +1,6 @@
 {
     "name": "@ngx-dino/legend",
-    "version": "0.12.0",
+    "version": "0.12.1",
     "description": "Visualization framework and library for Angular 7+",
     "homepage": "https://github.com/cns-iu/ngx-dino",
     "bugs": "https://github.com/cns-iu/ngx-dino/issues",
@@ -29,4 +29,3 @@
         "@ngx-dino/core": ">=0.9.0 <1.0.0"
     }
 }
-

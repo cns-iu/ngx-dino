@@ -15,7 +15,7 @@ export class AreaSizeLegendComponent implements OnInit, OnChanges {
   @Input() dataStream: Observable<RawChangeSet<any>>;
 
   @Input() idField: BoundField<number | string>;
-  @Input() areaSizeField: BoundField<string>;
+  @Input() areaSizeField: BoundField<number>;
   @Input() inputField: BoundField<number | string>;
   @Input() labelField: BoundField<string>;
   @Input() orderField: BoundField<number>;

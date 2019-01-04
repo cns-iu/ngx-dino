@@ -14,7 +14,7 @@ export class StrokeWidthLegendComponent implements OnInit, OnChanges {
   @Input() dataStream: Observable<RawChangeSet<any>>;
 
   @Input() idField: BoundField<number | string>;
-  @Input() strokeWidthField: BoundField<string>;
+  @Input() strokeWidthField: BoundField<number>;
   @Input() inputField: BoundField<number | string>;
   @Input() labelField: BoundField<string>;
   @Input() orderField: BoundField<number>;

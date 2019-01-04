@@ -1,0 +1,23 @@
+<div class="dino-color-hue-legend color-hue-legend" mat-card-image>
+  <div class="qualitative-color-legend-container" *ngIf="legendType === 'qualitative' && items">
+    <div *ngFor="let item of items" class="legend-item">
+      <div class="rectangle" [style.background]="item.value"></div>
+      <div class="category">{{ item.label }}</div>
+    </div>
+  </div>
+
+  <div class="gradient-legend">
+    <div class="gradient-container" *ngIf="legendType === 'quantitative' && stats">
+        <div class="gradient-bar" 
+          [style.background]="linearGradient">
+        </div>
+        <div class="gradient-labels">
+            <div>{{ stats.max.label }}</div>
+            <div class="gradient-label-filler"></div>
+            <div>{{ stats.median.label }}</div>
+            <div class="gradient-label-filler"></div>
+            <div>{{ stats.min.label }}</div>
+        </div>
+    </div>
+  </div>
+</div>

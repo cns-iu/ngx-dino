@@ -1,12 +1,12 @@
 import { Component, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild } from '@angular/core';
 import { Map } from 'immutable';
-import { some } from 'lodash';
+import { isNil, some } from 'lodash';
 import { Observable, Subscription } from 'rxjs';
 
 import {
   BoundField, DatumId, DataProcessor, DataProcessorService, RawChangeSet, idSymbol
 } from '@ngx-dino/core';
-import * as defaultFields from '../shared/default-fields';
+import { createDefaultField, defaultStackOrderField } from '../shared/default-fields';
 import { Layout } from '../shared/layout';
 import { LabelPosition } from '../shared/types';
 
@@ -31,6 +31,16 @@ export class TemporalBargraphComponent implements OnChanges, OnDestroy {
   @Input() barLabelPositionField: BoundField<LabelPosition>;
   @Input() barTooltipField: BoundField<string>;
 
+  @Input() defaultBarWeight: number;
+  @Input() defaultBarColor: string;
+  @Input() defaultBarTransparency: number;
+  @Input() defaultBarStrokeColor: string;
+  @Input() defaultBarStrokeWidth: number;
+  @Input() defaultBarStrokeTransparency: number;
+  @Input() defaultBarLabel: string;
+  @Input() defaultBarLabelPosition: LabelPosition;
+  @Input() defaultBarTooltip: string;
+
   @Input() barSpacing: number;
 
   @ViewChild('tooltipElement') tooltipElement: HTMLDivElement;
@@ -42,6 +52,18 @@ export class TemporalBargraphComponent implements OnChanges, OnDestroy {
   constructor(private processorService: DataProcessorService) { }
 
   ngOnChanges(changes: SimpleChanges): void {
+    // Set defaults
+    this.setDefault('defaultBarWeight', 20);
+    this.setDefault('defaultBarColor', 'black');
+    this.setDefault('defaultBarTransparency', 0);
+    this.setDefault('defaultBarStrokeColor', 'black');
+    this.setDefault('defaultBarStrokeWidth', 0);
+    this.setDefault('defaultBarStrokeTransparency', 0);
+    this.setDefault('defaultBarLabel', '');
+    this.setDefault('defaultBarLabelPosition', 'center');
+    this.setDefault('defaultBarTooltip', '');
+    this.setDefault('barSpacing', 0);
+
     if ('barStream' in changes || 'barIdField' in changes) {
       this.reset();
       return;
@@ -51,7 +73,7 @@ export class TemporalBargraphComponent implements OnChanges, OnDestroy {
       this.layout.setBarSpacing(this.barSpacing);
     }
 
-    if (some(changes, (_value, key) => /^bar\w+Field$/.test(key))) {
+    if (this.detectFieldChange(changes) || this.detectDefaultChange(changes)) {
       this.updateProcessor();
     }
   }
@@ -59,23 +81,37 @@ export class TemporalBargraphComponent implements OnChanges, OnDestroy {
   ngOnDestroy(): void { this.cleanup(); }
   onResize(_width: number, height: number): void { this.layout.setHeight(height); }
 
+  private setDefault<K extends keyof this>(key: K, value: this[K]): void {
+    if (isNil(this[key])) {
+      this[key] = value;
+    }
+  }
+
+  private detectFieldChange(changes: SimpleChanges): boolean {
+    return some(changes, (_value, key) => /^bar\w+Field$/.test(key));
+  }
+
+  private detectDefaultChange(changes: SimpleChanges): boolean {
+    return some(changes, (_value, key) => {
+      const match = /^defaultBar(\w)(\w*)$/.exec(key);
+      const fieldKey = match && `bar${match[1].toUpperCase()}${match[2]}Field`;
+      return fieldKey && fieldKey in changes;
+    });
+  }
+
   private getBarFields(): any {
     const {
-      defaultWeightField, defaultStackOrderField,
-      defaultColorField, defaultTransparencyField,
-      defaultStrokeColorField, defaultStrokeWidthField,
-      defaultStrokeTransparencyField,
-      defaultLabelField, defaultLabelPositionField,
-      defaultTooltipField
-    } = defaultFields;
-    const {
       barStartField, barEndField,
-      barWeightField = defaultWeightField, barStackOrderField = defaultStackOrderField,
-      barColorField = defaultColorField, barTransparencyField = defaultTransparencyField,
-      barStrokeColorField = defaultStrokeColorField, barStrokeWidthField = defaultStrokeWidthField,
-      barStrokeTransparencyField = defaultStrokeTransparencyField,
-      barLabelField = defaultLabelField, barLabelPositionField = defaultLabelPositionField,
-      barTooltipField = defaultTooltipField
+      barWeightField = createDefaultField(this.defaultBarWeight),
+      barStackOrderField = defaultStackOrderField,
+      barColorField = createDefaultField(this.defaultBarColor),
+      barTransparencyField = createDefaultField(this.defaultBarTransparency),
+      barStrokeColorField = createDefaultField(this.defaultBarStrokeColor),
+      barStrokeWidthField = createDefaultField(this.defaultBarStrokeWidth),
+      barStrokeTransparencyField = createDefaultField(this.defaultBarStrokeTransparency),
+      barLabelField = createDefaultField(this.defaultBarLabel),
+      barLabelPositionField = createDefaultField(this.defaultBarLabelPosition),
+      barTooltipField = createDefaultField(this.defaultBarTooltip)
     } = this;
 
     if (!barStartField || !barEndField) {

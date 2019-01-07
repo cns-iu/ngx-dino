@@ -42,6 +42,7 @@ export class TemporalBargraphComponent implements OnChanges, OnDestroy {
   @Input() defaultBarTooltip: string;
 
   @Input() barSpacing: number;
+  @Input() barLabelMaxLength: number;
 
   @ViewChild('tooltipElement') tooltipElement: HTMLDivElement;
   layout = new Layout();
@@ -63,6 +64,7 @@ export class TemporalBargraphComponent implements OnChanges, OnDestroy {
     this.setDefault('defaultBarLabelPosition', 'center');
     this.setDefault('defaultBarTooltip', '');
     this.setDefault('barSpacing', 0);
+    this.setDefault('barLabelMaxLength', 10);
 
     if ('barStream' in changes || 'barIdField' in changes) {
       this.reset();

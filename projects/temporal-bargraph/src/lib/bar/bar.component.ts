@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { truncate } from 'lodash';
 
 import { Bar, LabelPosition } from '../shared/types';
 
@@ -24,6 +25,7 @@ function enableLabelPositionClass(position: LabelPosition = 'center'): object {
 })
 export class BarComponent {
   @Input() data: Bar;
+  @Input() labelMaxLength: number;
   @Input() tooltipElement: HTMLDivElement;
 
   get x(): string { return formatPercentage(this.data.start); }
@@ -33,13 +35,22 @@ export class BarComponent {
   get style(): object { return this.data.style; }
 
   get label(): string { return this.data.label; }
+  get truncatedLabel(): string { return truncate(this.label, { length: this.labelMaxLength }); }
+  get labelPosition(): LabelPosition { return this.data.labelPosition; }
   get labelClasses(): any { return enableLabelPositionClass(this.data.labelPosition); }
   get labelX(): string { return formatPercentage(this.getLabelXOffset()); }
   get labelY(): string { return formatPercentage(this.getLabelYOffset()); }
 
+  // NOTE: Assumes label !== undefined
+  shouldTruncateLabel(): boolean {
+    const truncPositions = ['left', 'right'];
+    const { label: { length }, labelMaxLength: maxLength, labelPosition: position } = this;
+    return maxLength !== undefined && length > maxLength && truncPositions.indexOf(position) !== -1;
+  }
+
   getLabelXOffset(): number {
     const { data: { start, end } } = this;
-    switch (this.data.labelPosition) {
+    switch (this.labelPosition) {
       case 'left': return start;
       case 'right': return end;
       default: return start + (end - start) / 2;
@@ -48,32 +59,31 @@ export class BarComponent {
 
   getLabelYOffset(): number {
     const { data: { weight, offset } } = this;
-    switch (this.data.labelPosition) {
+    switch (this.labelPosition) {
       case 'top': return offset;
       case 'bottom': return offset + weight;
       default: return offset + weight / 2;
     }
   }
 
-  showTooltip(event: any): void {
-    const el = this.tooltipElement;
-    const { x, y } = event;
-    if (!el || !this.data.tooltip) {
-      return;
-    }
-
-    el.textContent = this.data.tooltip;
-    el.style.left = `${x}px`;
-    el.style.top = `${y - 40}px`;
-    el.style.visibility = 'visible';
+  showTooltip(event: any): void { this.showTooltipImpl(event, this.data.tooltip); }
+  showLabelTooltip(event: any): void {
+    if (this.shouldTruncateLabel()) { this.showTooltipImpl(event, this.label); }
   }
 
   hideTooltip(): void {
     const el = this.tooltipElement;
-    if (!el) {
-      return;
-    }
+    if (el) { el.style.visibility = 'hidden'; }
+  }
 
-    el.style.visibility = 'hidden';
+  private showTooltipImpl(event: any, text: string): void {
+    const el = this.tooltipElement;
+    const { x, y } = event;
+    if (el && text) {
+      el.textContent = text;
+      el.style.left = `${x}px`;
+      el.style.top = `${y - 40}px`;
+      el.style.visibility = 'visible';
+    }
   }
 }

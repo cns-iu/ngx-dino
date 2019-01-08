@@ -1,6 +1,7 @@
-import { Component, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild } from '@angular/core';
-import { Map } from 'immutable';
-import { isNil, some } from 'lodash';
+import { Component, ElementRef, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild } from '@angular/core';
+import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
+import { Map as ImmutableMap } from 'immutable';
+import { get, isFunction, isNil, some } from 'lodash';
 import { Observable, Subscription } from 'rxjs';
 
 import {
@@ -44,13 +45,25 @@ export class TemporalBargraphComponent implements OnChanges, OnDestroy {
   @Input() barSpacing: number;
   @Input() barLabelMaxLength: number;
 
-  @ViewChild('tooltipElement') tooltipElement: HTMLDivElement;
+  @ViewChild('tooltipElement') tooltipElement: ElementRef;
+  @ViewChild('textSizeTest') textSizeTestElement: ElementRef;
+  readonly testText = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ,.';
+
   layout = new Layout();
+  margins = { left: 0, right: 0, top: 0, bottom: 0 };
+
+  get xscale(): number { return 1 - this.margins.left - this.margins.right; }
+  get yscale(): number { return .97 - this.margins.top - this.margins.bottom; }
+  get xoffset(): number { return this.margins.left; }
+  get yoffset(): number { return this.margins.top; }
 
   private barProcessor: DataProcessor<any, any>;
   private barSubscription: Subscription;
 
-  constructor(private processorService: DataProcessorService) { }
+  constructor(
+    private processorService: DataProcessorService,
+    private sanitizer: DomSanitizer
+  ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
     // Set defaults
@@ -81,12 +94,31 @@ export class TemporalBargraphComponent implements OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void { this.cleanup(); }
-  onResize(_width: number, height: number): void { this.layout.setHeight(height); }
+  onResize(width: number, height: number): void {
+    this.layout.setHeight(height);
+    this.updateMargins(width, height);
+  }
+
+  getMarksTransform(): SafeStyle {
+    const { xscale, xoffset } = this;
+    return this.scaleAndTranslate(xscale, 1, xoffset, 0);
+  }
+
+  getBarsTransform(): SafeStyle {
+    const { xscale, yscale, xoffset, yoffset } = this;
+    return this.scaleAndTranslate(xscale, yscale, xoffset, yoffset);
+  }
 
   private setDefault<K extends keyof this>(key: K, value: this[K]): void {
     if (isNil(this[key])) {
       this[key] = value;
     }
+  }
+
+  private scaleAndTranslate(sx: number, sy: number, dx: number, dy: number): SafeStyle {
+    const scale = `scale(${sx},${sy})`;
+    const translate = `translate(${100 * dx}%,${100 * dy}%)`;
+    return this.sanitizer.bypassSecurityTrustStyle(scale + ' ' + translate);
   }
 
   private detectFieldChange(changes: SimpleChanges): boolean {
@@ -159,9 +191,61 @@ export class TemporalBargraphComponent implements OnChanges, OnDestroy {
     this.barSubscription = subscription;
   }
 
-  updateProcessor(): void {
-    const fields = Map<any, any>(this.getBarFields());
+  private updateProcessor(): void {
+    const fields = ImmutableMap<any, any>(this.getBarFields());
     this.barProcessor.updateFields(fields.toKeyedSeq());
+  }
+
+  private updateMargins(width: number, height: number): void {
+    const { barLabelField, barLabelPositionField, defaultBarLabel, defaultBarLabelPosition } = this;
+    const el: SVGTextElement = get(this, ['textSizeTestElement', 'nativeElement']);
+    const hasLabels = barLabelField || defaultBarLabel;
+    const hasTestElement = el && isFunction(el.getBBox);
+
+    if (hasLabels && hasTestElement) {
+      const { width: textWidth, height: textHeight } = el.getBBox();
+      const textLength = this.testText.length;
+      const cwidth = textWidth / textLength / width;
+      const cheight = textHeight / height;
+      const labelPosition = barLabelPositionField ? 'unknown' : defaultBarLabelPosition;
+      this.updateMarginsFor(labelPosition, cwidth, cheight);
+    } else {
+      this.updateMarginsFor('center', 0, 0);
+    }
+  }
+
+  private updateMarginsFor(position: LabelPosition | 'unknown', cwidth: number, cheight: number): void {
+    const { barLabelMaxLength: maxLength } = this;
+    let left = 0, right = 0, top = 0, bottom = 0;
+    switch (position) {
+      case 'left':
+        left = maxLength * cwidth;
+        break;
+
+      case 'right':
+        right = maxLength * cwidth;
+        break;
+
+      case 'top':
+        top = cheight;
+        break;
+
+      case 'bottom':
+        bottom = cheight;
+        break;
+
+      case 'center':
+        break;
+
+      case 'unknown':
+        left = maxLength * cwidth;
+        right = maxLength * cwidth;
+        top = cheight;
+        bottom = cheight;
+        break;
+    }
+
+    this.margins = { left, right, top, bottom };
   }
 
   private reset(): void {
@@ -174,8 +258,6 @@ export class TemporalBargraphComponent implements OnChanges, OnDestroy {
 
   private cleanup(): void {
     this.barProcessor = undefined;
-    if (this.barSubscription) {
-      this.barSubscription.unsubscribe();
-    }
+    if (this.barSubscription) { this.barSubscription.unsubscribe(); }
   }
 }

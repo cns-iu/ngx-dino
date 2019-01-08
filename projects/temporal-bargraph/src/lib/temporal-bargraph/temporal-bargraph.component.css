@@ -10,8 +10,13 @@
     height: 100%;
 }
 
-.temporal-bargraph-bars {
-    transform: scale(1, 0.95);
+::ng-deep .bar-group-visualization {
+    overflow: visible;
+}
+
+.temporal-bargraph-visualization .text-size-test {
+    visibility: hidden !important;
+    white-space: nowrap !important;
 }
 
 .temporal-bargraph-tooltip {

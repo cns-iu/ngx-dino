@@ -10,6 +10,7 @@ import { Bar } from '../shared/types';
 })
 export class BarGroupComponent {
   @Input() bars: Bar[];
+  @Input() labelMaxLength: number;
   @Input() tooltipElement: HTMLDivElement;
 
   trackByBarOrder(index: number): number { return index; }

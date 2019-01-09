@@ -136,7 +136,6 @@ export class GeomapComponent implements OnInit, OnChanges {
       this.updateBasemap();
     }
 
-    // setTimeout(() => {
     this.nodeProjectedPositionField = this.checkAndGetProjectedField(
       changes, projectionUpdated, this.nodeProjectedPositionField,
       'nodePositionField', 'nodeLatitudeField', 'nodeLongitudeField'
@@ -149,7 +148,6 @@ export class GeomapComponent implements OnInit, OnChanges {
       changes, projectionUpdated, this.edgeProjectedTargetField,
       'edgeTargetField', 'edgeTargetLatitudeField', 'edgeTargetLongitudeField'
     );
-    // }, 10);
   }
 
   onResize({ width: visWidth, height: visHeight }: { width: number, height: number }): void {

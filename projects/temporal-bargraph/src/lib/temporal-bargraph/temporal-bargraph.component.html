@@ -2,8 +2,10 @@
     <div #tooltipElement class="temporal-bargraph-tooltip"></div>
     <div class="temporal-bargraph-wrapper" (dinoAutoResize)="onResize($event.width, $event.height)">
         <svg:svg class="temporal-bargraph-visualization">
-            <svg:g dino-tick-marks class="temporal-bargraph-ticks" [tickLabels]="layout.tickLabels"></svg:g>
-            <svg:g dino-bar-group class="temporal-bargraph-bars" [bars]="layout.bars" [tooltipElement]="tooltipElement"></svg:g>
+            <svg:g dino-tick-marks class="temporal-bargraph-ticks" [style.transform]="getMarksTransform()" [tickLabels]="layout.tickLabels"></svg:g>
+            <svg:g dino-bar-group class="temporal-bargraph-bars" [style.transform]="getBarsTransform()" [bars]="layout.bars" [labelMaxLength]="barLabelMaxLength" [tooltipElement]="tooltipElement"></svg:g>
+
+            <svg:text #textSizeTest class="text-size-test bar-label">{{ testText }}</svg:text>
         </svg:svg>
     </div>
 </div>

@@ -46,9 +46,9 @@ export class AreaSizeLegendComponent implements OnInit, OnChanges {
   }
   private areaToDiameter(value: string | number) {
     if (!isNumber(value) || !isFinite(Number(value))) {
-      return 0;
+      return 1;
     } else {
-      return Math.sqrt(Number(value) / Math.PI) * 2;
+      return Math.max(1, Math.sqrt(Number(value) / Math.PI) * 2);
     }
   }
 

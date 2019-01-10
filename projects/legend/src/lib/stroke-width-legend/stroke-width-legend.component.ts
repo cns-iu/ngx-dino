@@ -45,9 +45,9 @@ export class StrokeWidthLegendComponent implements OnInit, OnChanges {
   }
   private validStrokeWidth(value: string | number) {
     if (!isNumber(value) || !isFinite(Number(value)) || Number(value) < 0) {
-      return 0;
+      return 1;
     } else {
-      return Number(value);
+      return Math.max(1, Number(value));
     }
   }
 

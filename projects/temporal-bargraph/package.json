@@ -1,6 +1,6 @@
 {
     "name": "@ngx-dino/temporal-bargraph",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "description": "Visualization framework and library for Angular 7+",
     "homepage": "https://github.com/cns-iu/ngx-dino",
     "bugs": "https://github.com/cns-iu/ngx-dino/issues",

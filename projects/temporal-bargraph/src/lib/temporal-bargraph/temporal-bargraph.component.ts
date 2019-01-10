@@ -7,7 +7,7 @@ import { Observable, Subscription } from 'rxjs';
 import {
   BoundField, DatumId, DataProcessor, DataProcessorService, RawChangeSet, idSymbol
 } from '@ngx-dino/core';
-import { createDefaultField, defaultStackOrderField } from '../shared/default-fields';
+import { createDefaultField } from '../shared/default-fields';
 import { Layout } from '../shared/layout';
 import { LabelPosition } from '../shared/types';
 
@@ -60,6 +60,9 @@ export class TemporalBargraphComponent implements OnChanges, OnDestroy {
   private barProcessor: DataProcessor<any, any>;
   private barSubscription: Subscription;
 
+  private width = 0;
+  private height = 0;
+
   constructor(
     private processorService: DataProcessorService,
     private sanitizer: DomSanitizer
@@ -81,6 +84,7 @@ export class TemporalBargraphComponent implements OnChanges, OnDestroy {
 
     if ('barStream' in changes || 'barIdField' in changes) {
       this.reset();
+      this.updateMargins(this.width, this.height);
       return;
     }
 
@@ -88,13 +92,21 @@ export class TemporalBargraphComponent implements OnChanges, OnDestroy {
       this.layout.setBarSpacing(this.barSpacing);
     }
 
+    if ('barLabelMaxLength' in changes) {
+      this.updateMargins(this.width, this.height);
+    }
+
     if (this.detectFieldChange(changes) || this.detectDefaultChange(changes)) {
       this.updateProcessor();
+      this.updateMargins(this.width, this.height);
     }
   }
 
   ngOnDestroy(): void { this.cleanup(); }
   onResize(width: number, height: number): void {
+    this.width = width;
+    this.height = height;
+
     this.layout.setHeight(height);
     this.updateMargins(width, height);
   }
@@ -137,7 +149,7 @@ export class TemporalBargraphComponent implements OnChanges, OnDestroy {
     const {
       barStartField, barEndField,
       barWeightField = createDefaultField(this.defaultBarWeight),
-      barStackOrderField = defaultStackOrderField,
+      barStackOrderField = barStartField,
       barColorField = createDefaultField(this.defaultBarColor),
       barTransparencyField = createDefaultField(this.defaultBarTransparency),
       barStrokeColorField = createDefaultField(this.defaultBarStrokeColor),
@@ -216,7 +228,7 @@ export class TemporalBargraphComponent implements OnChanges, OnDestroy {
 
   private updateMarginsFor(position: LabelPosition | 'unknown', cwidth: number, cheight: number): void {
     const { barLabelMaxLength: maxLength } = this;
-    let left = 0, right = 0, top = 0, bottom = 0;
+    let left = 0, right = 0, top = cheight, bottom = 0;
     switch (position) {
       case 'left':
         left = maxLength * cwidth;
@@ -226,15 +238,8 @@ export class TemporalBargraphComponent implements OnChanges, OnDestroy {
         right = maxLength * cwidth;
         break;
 
-      case 'top':
-        top = cheight;
-        break;
-
       case 'bottom':
         bottom = cheight;
-        break;
-
-      case 'center':
         break;
 
       case 'unknown':
@@ -243,6 +248,10 @@ export class TemporalBargraphComponent implements OnChanges, OnDestroy {
         top = cheight;
         bottom = cheight;
         break;
+
+      case 'top': /* fallthrough */
+      case 'center':
+        break; // Do nothing
     }
 
     this.margins = { left, right, top, bottom };

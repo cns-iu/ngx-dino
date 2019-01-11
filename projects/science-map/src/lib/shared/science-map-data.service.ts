@@ -105,7 +105,7 @@ export class ScienceMapDataService {
       size: validField(subdisciplineSizeField),
       tooltipText: validField(tooltipTextField) || subdisciplineIdField
     };
-    Object.keys(fields).forEach(key => fields[key] === undefined && delete fields[key])
+    Object.keys(fields).forEach(key => fields[key] === undefined && delete fields[key]);
     return Map<string, BoundField<any>>(fields);
   }
 }

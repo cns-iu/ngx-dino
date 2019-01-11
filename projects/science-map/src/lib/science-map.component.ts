@@ -97,7 +97,7 @@ export class ScienceMapComponent implements OnInit, OnChanges, DoCheck {
     const filtered = data.filter(item => !filteredIds.has(Number(item[idSymbol])));
     const appliedData = filtered.concat(set.insert.toArray() as T[], set.replace.toArray() as T[]);
     const uniqueData = uniqBy(appliedData.reverse(), idSymbol).reverse();
-    
+
     // Only keep subdiscipline data with valid sizes
     const subdData = uniqueData.filter(item => this.dataService.subdIdToPosition.hasOwnProperty(item[idSymbol]));
     // Set default 'size' to zero

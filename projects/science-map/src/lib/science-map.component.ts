@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { BoundField, RawChangeSet, Datum, idSymbol, ChangeSet, DatumId } from '@ngx-dino/core';
 import { Set } from 'immutable';
-import { uniqBy } from 'lodash';
+import { uniqBy, isNil } from 'lodash';
 import { Observable } from 'rxjs';
 import * as d3Selection from 'd3-selection';
 import { scaleLinear, scaleLog } from 'd3-scale';
@@ -85,6 +85,8 @@ export class ScienceMapComponent implements OnInit, OnChanges, DoCheck {
 
       this.setScales();
       this.createNodes();
+      this.createLabels('white', 3);
+      this.createLabels('#000007', 1);
     });
   }
 
@@ -95,16 +97,20 @@ export class ScienceMapComponent implements OnInit, OnChanges, DoCheck {
     const filtered = data.filter(item => !filteredIds.has(Number(item[idSymbol])));
     const appliedData = filtered.concat(set.insert.toArray() as T[], set.replace.toArray() as T[]);
     const uniqueData = uniqBy(appliedData.reverse(), idSymbol).reverse();
-    return uniqueData;
+    
+    // Only keep subdiscipline data with valid sizes
+    const subdData = uniqueData.filter(item => this.dataService.subdIdToPosition.hasOwnProperty(item[idSymbol]));
+    // Set default 'size' to zero
+    subdData.forEach(item => item['size'] = item['size'] || 0);
+    return subdData;
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if ('dataStream' in changes && this.dataStream) {
+    if ('dataStream' in changes || 'idField' in changes) {
       this.data = [];
       this.updateStreamProcessor(false);
     } else if (Object.keys(changes).filter((k) => k.endsWith('Field')).length) {
-      this.updateStreamProcessor(); // TODO
-      // updateField(....)
+      this.updateStreamProcessor();
     }
     if ((!this.autoresize) && (('width' in changes) || ('height' in changes))) {
       this.resize(this.width, this.height);
@@ -126,9 +132,9 @@ export class ScienceMapComponent implements OnInit, OnChanges, DoCheck {
       this.setScales();
       this.initVisualization();
       this.createEdges();
+      this.createNodes();
       this.createLabels('white', 3);
       this.createLabels('#000007', 1);
-      this.createNodes();
     }
   }
 
@@ -144,16 +150,16 @@ export class ScienceMapComponent implements OnInit, OnChanges, DoCheck {
 
   updateStreamProcessor(update = true) {
     if (update) {
-      this.dataService.updateData(this.subdisciplineIdField, this.subdisciplineSizeField);
-    }
-
-    if (!update) {
-      this.dataService.fetchData(
-        this.dataStream,
-
+      this.dataService.updateData(
         this.subdisciplineIdField,
         this.subdisciplineSizeField,
-
+        this.tooltipTextField
+      );
+    } else {
+      this.dataService.fetchData(
+        this.dataStream,
+        this.subdisciplineIdField,
+        this.subdisciplineSizeField,
         this.tooltipTextField
       );
     }
@@ -245,7 +251,8 @@ export class ScienceMapComponent implements OnInit, OnChanges, DoCheck {
       .attr('stroke', strokeColor)
       .attr('stroke-width', strokeWidth)
       .attr('font-size', 17)
-      .attr('stroke-opacity', 1)
+      .attr('fill-opacity', 0.75)
+      .attr('stroke-opacity', 0.9)
       .attr('display', (d) => {
         if (((numUnclassified.length === 0) && (d.disc_id === -1)) || ((numMultidisciplinary.length === 0) && (d.disc_id === -2))) {
           return 'none';
@@ -277,7 +284,7 @@ export class ScienceMapComponent implements OnInit, OnChanges, DoCheck {
     const selection = this.svgContainer.selectAll('circle')
       .filter((d: any) => {
         if (d[idSymbol] === target.subd_id) {
-          tooltipText = d.tooltipText.toString();
+          tooltipText = d.tooltipText || target.subd_id;
           return true;
         }
       });

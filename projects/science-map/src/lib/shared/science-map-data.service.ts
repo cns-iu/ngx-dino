@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-
 import { Observable, BehaviorSubject, Subscription } from 'rxjs';
-
+import { Map } from 'immutable';
 import {
   RawChangeSet, BoundField, DataProcessorService,
   DataProcessor, Datum, ChangeSet
@@ -10,6 +9,16 @@ import {
 import { Subdiscipline } from './subdiscipline';
 import underlyingScimapData from './underlyingScimapData.data';
 
+export function validField(field: BoundField<any>): BoundField<any> {
+  if (field) {
+    const wrapped = field.operator.wrapped;
+    // Test for !ConstantOperator(undefined | null)
+    if (!('value' in wrapped) || wrapped['value'] != null) {
+      return field;
+    }
+  }
+  return undefined;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +39,7 @@ export class ScienceMapDataService {
   constructor(private processorService: DataProcessorService) {
     this.underlyingScimapData = underlyingScimapData;
     this.makeMappings();
-    }
+  }
 
   makeMappings() {
     this.subdIdToPosition = underlyingScimapData.nodes.reduce((map, n) => {
@@ -56,19 +65,15 @@ export class ScienceMapDataService {
 
   fetchData(
     stream: Observable<RawChangeSet<any>>,
-
     subdisciplineIdField: BoundField<number | string>,
     subdisciplineSizeField: BoundField<number | string>,
-
-    tooltipTextField: BoundField<number | string>
+    tooltipTextField?: BoundField<number | string>
   ): this {
+    const fields = this.getFields(subdisciplineIdField, subdisciplineSizeField, tooltipTextField);
     this.subdisciplineProcessor = this.processorService.createProcessor<Subdiscipline & Datum<any>, any>(
       stream,
       subdisciplineIdField,
-      {
-        size: subdisciplineSizeField,
-        tooltipText: tooltipTextField
-      }
+      fields.toJS()
     );
 
     if (this.streamSubscription) {
@@ -76,15 +81,31 @@ export class ScienceMapDataService {
     }
 
     this.streamSubscription = this.subdisciplineProcessor.asObservable().subscribe(
-      (change) => this.subdisciplineChange.next(change));
+      (change) => this.subdisciplineChange.next(change)
+    );
 
     return this;
   }
 
   updateData(
     subdisciplineIdField: BoundField<number | string>,
-    subdisciplineSizeField: BoundField<number | string>
+    subdisciplineSizeField: BoundField<number | string>,
+    tooltipTextField?: BoundField<number | string>
   ) {
-    this.subdisciplineProcessor.updateFields();
+    const fields = this.getFields(subdisciplineIdField, subdisciplineSizeField, tooltipTextField);
+    this.subdisciplineProcessor.updateFields(fields.toKeyedSeq());
+  }
+
+  private getFields(
+    subdisciplineIdField: BoundField<number | string>,
+    subdisciplineSizeField: BoundField<number | string>,
+    tooltipTextField?: BoundField<number | string>
+  ): Map<any, any> {
+    const fields = {
+      size: validField(subdisciplineSizeField),
+      tooltipText: validField(tooltipTextField) || subdisciplineIdField
+    };
+    Object.keys(fields).forEach(key => fields[key] === undefined && delete fields[key])
+    return Map<string, BoundField<any>>(fields);
   }
 }

@@ -1,35 +1,18 @@
-import {
-  Component,
-  ElementRef,
-  OnChanges,
-  OnInit,
-  Input,
-  SimpleChanges, SimpleChange,
-  DoCheck,
-  ViewChild, ViewEncapsulation
-} from '@angular/core';
-
+import { Component, ElementRef, OnChanges, OnInit, Input, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-
+import { Set } from 'immutable';
 import * as d3Format from 'd3-format';
 import * as d3Axis from 'd3-axis';
 import * as d3Selection from 'd3-selection';
 import 'd3-transition'; // This adds transition support to d3-selection
 import * as d3Array from 'd3-array';
-import {
-  scaleLinear, scalePoint
-} from 'd3-scale';
+import { scaleLinear, scalePoint } from 'd3-scale';
 import * as d3Shape from 'd3-shape';
-
-import {
-  BoundField,
-  RawChangeSet,
-  Datum,
-  idSymbol
-} from '@ngx-dino/core';
+import { BoundField, RawChangeSet, Datum, idSymbol, ChangeSet, DatumId } from '@ngx-dino/core';
 
 import { ScatterplotDataService } from './shared/scatterplot-data.service';
 import { Point } from './shared/point';
+import { uniqBy, isNil, orderBy } from 'lodash';
 
 @Component({
   selector: 'dino-scatterplot',
@@ -38,7 +21,7 @@ import { Point } from './shared/point';
   providers: [ScatterplotDataService],
   encapsulation: ViewEncapsulation.None
 })
-export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
+export class ScatterplotComponent implements OnInit, OnChanges {
   @Input() pointIdField: BoundField<number | string>;
   @Input() strokeColorField: BoundField<number | string>;
   @Input() xField: BoundField<number | string>;
@@ -58,6 +41,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
   @Input() dataStream: Observable<RawChangeSet<any>>;
 
   @Input() margin = { top: 20, right: 15, bottom: 60, left: 60 };
+  @Input() maxYAxisLabelWidth = 160;
 
   // Temporary change so that Geomap and Scatterplot are the same size.
   @Input() width = 955 - this.margin.left - this.margin.right;
@@ -106,6 +90,8 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
   xAxis: any; // d3Axis.Axis<any>;
   yAxis: any; // d3Axis.Axis<{}>;
 
+  maxYAxisTickWidth = 0;
+
   data: Point[] = [];
 
   tooltipDiv: any;
@@ -122,25 +108,11 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
       this.setScales([]);
       this.initVisualization();
     }
-    this.dataService.points.subscribe((data) => {
-      this.data = this.data.filter((e: Point) => !data.remove
-        .some((obj: Datum<Point>) => obj[idSymbol] === e.id)).concat(data.insert.toArray() as any);
-
-      data.update.forEach((el: any) => { // TODO typing for el
-        const index = this.data.findIndex((e) => e.id === el[idSymbol]);
-        if (index !== -1) {
-          this.data[index] = Object.assign(this.data[index] || {}, el as Point);
-        }
-      });
-
-      data.replace.forEach((el: any) => { // TODO typing for el
-        const index = this.data.findIndex((e) => e.id === el[idSymbol]);
-        if (index !== -1) {
-          this.data[index] = el as Point;
-        }
-      });
+    this.dataService.points.subscribe((changes) => {
+      this.data = this.applyChangeSet(changes, this.data);
 
       if (this.data.length > 0) {
+        this.updateMaxYAxisTickWidth();
         this.setScales(this.data);
         this.drawPlots(this.data);
         this.drawText(this.data);
@@ -148,8 +120,27 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
         if (this.showAxisIndicators) {
           this.updateAxisTexts();
         }
+      } else {
+        this.svgContainer.remove();
+        this.setScales([]);
+        this.initVisualization();
       }
     });
+  }
+
+  private applyChangeSet<T extends Datum>(set: ChangeSet<any>, data: T[]): T[] {
+    const removeIds = set.remove.map(rem => rem[idSymbol]);
+    const replaceIds = set.replace.map(rep => rep[idSymbol]);
+    const filteredIds = Set<DatumId>().merge(removeIds, replaceIds);
+    const filtered = data.filter(item => !filteredIds.has(item[idSymbol]));
+    const appliedData = filtered.concat(set.insert.toArray() as T[], set.replace.toArray() as T[]);
+    const uniqueData = uniqBy(appliedData.reverse(), idSymbol).reverse();
+
+    // Filter out bad/incomplete data (usually when not all fields are set yet)
+    const goodData = uniqueData.filter(item => !isNil(item[idSymbol]) && !isNil(item['x']) && !isNil(item['y']));
+    goodData.forEach(item => item['size'] = !isNil(item['size']) ? item['size'] : 28);
+    const orderedGoodData = orderBy(goodData, 'y', 'desc'); // Sort so 'y' axis is ordered
+    return orderedGoodData;
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -157,33 +148,37 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
       this.data = [];
       this.updateStreamProcessor(false);
     } else {
-        if (Object.keys(changes).find((k) => k.endsWith('Field')) !== undefined
-          && (!('xField' in changes) && !('yField' in changes))
-        ) {
-            const changedField =  changes[Object.keys(changes).find((k) => k.endsWith('Field'))].currentValue;
-            this.updateStreamProcessor(true, changedField);
-        }
+      if ('maxYAxisLabelWidth' in changes) {
+        this.updateMaxYAxisTickWidth();
+      }
 
-        if (('xField' in changes) || ('yField' in changes)) {
-          if (this.showAxisLabels) {
-            this.updateAxisLabels();
-          }
+      if (Object.keys(changes).find((k) => k.endsWith('Field')) !== undefined
+        && (!('xField' in changes) && !('yField' in changes))
+      ) {
+          const changedField =  changes[Object.keys(changes).find((k) => k.endsWith('Field'))].currentValue;
+          this.updateStreamProcessor(true, changedField);
+      }
 
-          const axis = Object.keys(changes)[0][0];
-          if (axis === 'x') {
-            this.updateStreamProcessor(true, changes.xField.currentValue, axis);
-          } else if (axis === 'y') {
-            this.updateStreamProcessor(true, changes.yField.currentValue, axis);
-          }
-
-          this.setScales(this.data);
-          this.drawPlots(this.data);
-        }
-
-        if ('showAxisLabels' in changes) {
+      if (('xField' in changes) || ('yField' in changes)) {
+        if (this.showAxisLabels) {
           this.updateAxisLabels();
         }
+
+        const axis = Object.keys(changes)[0][0];
+        if (axis === 'x') {
+          this.updateStreamProcessor(true, changes.xField.currentValue, axis);
+        } else if (axis === 'y') {
+          this.updateStreamProcessor(true, changes.yField.currentValue, axis);
+        }
+
+        this.setScales(this.data);
+        this.drawPlots(this.data);
       }
+
+      if ('showAxisLabels' in changes) {
+        this.updateAxisLabels();
+      }
+    }
 
     if ('xAxisArrow' in changes && this.xAxis) {
       this.xAxisGroup.select('path')
@@ -198,9 +193,6 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
     if ((!this.autoresize) && (('width' in changes) && ('height' in changes))) {
       this.resize(this.width, this.height);
     }
-  }
-
-  ngDoCheck() {
   }
 
   private resize(width: number, height: number): void {
@@ -266,6 +258,17 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
     }
   }
 
+  updateMaxYAxisTickWidth() {
+    // Estimate how much extra padding to use for Y-Axis text.
+    // TODO: Use font-metrics to compute the width more accurately
+    const oldMax = this.maxYAxisTickWidth;
+    this.maxYAxisTickWidth = Math.min(this.maxYAxisLabelWidth, d3Array.max(this.data, (d) => String(d.y).length * 4));
+    if (oldMax !== this.maxYAxisTickWidth) {
+      this.svgContainer.remove();
+      this.initVisualization();
+    }
+  }
+
   updateAxisLabels() {
     if (this.xField) {
       this.containerMain.select('.xAxisLabel').text(this.xField.label); // text label for the x axis
@@ -296,8 +299,8 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
       .attr('class', 'chart');
 
     this.containerMain = this.svgContainer.append('g')
-      .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')')
-      .attr('width', this.elementWidth)
+      .attr('transform', 'translate(' + (this.margin.left + this.maxYAxisTickWidth) + ',' + this.margin.top + ')')
+      .attr('width', this.elementWidth - this.maxYAxisTickWidth)
       .attr('height', this.elementHeight)
       .classed('svg-content-responsive', true)
       .attr('class', 'main');
@@ -353,7 +356,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
       .tickSizeOuter(0)
       .tickPadding(10);
     if (this.gridlines) {
-      this.yAxis.tickSizeInner(-this.elementWidth); // for y-gridlines
+      this.yAxis.tickSizeInner(-(this.elementWidth + this.maxYAxisTickWidth)); // for y-gridlines
     }
     this.yAxisGroup = this.containerMain.append('g')
       .attr('transform', 'translate(0,0)')
@@ -398,9 +401,6 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
 
   /********* This function draws points on the scatterplot ********/
   drawPlots(data: Point[]) {
-    const xscale = this.xScale;
-    const yscale = this.yScale;
-
     if (this.gridlines) {  // update axis and gridlines according to new scale
       /* don't format if range of numbers in data points falls within 'year' 1000 to 3000 */
       const formatXaxis = d3Array.min(data, (d) => Number(d.x)) >= 1000 && d3Array.max(data, (d) => Number(d.x)) <= 3000 ?
@@ -416,7 +416,7 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
 
       this.yAxis = d3Axis.axisLeft(this.yScale)
         .tickFormat(formatYaxis)
-        .tickSizeInner(-this.elementWidth)
+        .tickSizeInner(-(this.elementWidth + this.maxYAxisTickWidth))
         .tickSizeOuter(0)
         .tickPadding(10);
     }
@@ -433,7 +433,6 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
     }
 
     // Insert pulses
-
     const pulse = this.pulseG.selectAll('g')
       .data(data.filter((p) => p.pulse), (p) => p[idSymbol]);
 
@@ -579,14 +578,14 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
         this.xScale = scaleLinear();
         this.xAxis = d3Axis.axisBottom(this.xScale).tickSizeOuter(0);
         this.xScale.domain([d3Array.min(data, (d) => Number(d.x)), d3Array.max(data, (d) => Number(d.x))])
-          .range([0, this.elementWidth]);
+          .range([0, this.elementWidth - this.maxYAxisTickWidth]);
         break;
 
       case 'string':
         this.xScale = scalePoint();
         this.xAxis = d3Axis.axisBottom(this.xScale).tickSizeOuter(0);
         this.xScale.domain(data.map(el => el.x))
-          .range([0, this.elementWidth]);
+          .range([0, this.elementWidth - this.maxYAxisTickWidth]);
         break;
     }
 
@@ -614,17 +613,17 @@ export class ScatterplotComponent implements OnInit, OnChanges, DoCheck {
 
   onMouseOver(targetId: any) {
     let tooltipText = '';
-    const selection = this.svgContainer.selectAll('.plots')
+    this.svgContainer.selectAll('.plots')
       .filter((d: any) => {
         if (d[idSymbol] === targetId) {
-          if (this.enableTooltip) {
+          if (this.enableTooltip && d.tooltip) {
             tooltipText = d.tooltip.toString();
           }
           return true;
         }
       });
 
-    if (this.enableTooltip) {
+    if (this.enableTooltip && tooltipText) {
       this.tooltipDiv.transition().style('opacity', .7)
       .style('visibility', 'visible');
 

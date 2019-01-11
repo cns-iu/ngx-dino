@@ -1,4 +1,6 @@
-export interface Point {
+import { Datum } from '@ngx-dino/core';
+
+export class Point extends Datum<any> {
   id: string;
   x: number | string;
   y: number | string;

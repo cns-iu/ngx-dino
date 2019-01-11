@@ -16,5 +16,10 @@ export function interpolateNumericDomain(domain: number[]): number[] {
   const end = last(domain);
   const step = reduce(diffs, gcd);
 
+  // Temporary fix to handle huge domains
+  if ((end - start) / step > 50) {
+    return domain;
+  }
+
   return range(start, end + step, step);
 }

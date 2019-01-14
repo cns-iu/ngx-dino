@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { Observable } from 'rxjs';
-import { RawChangeSet, BoundField } from '@ngx-dino/core';
-import { SummaryDataService, SummaryStatistics, DataItem } from '../shared/summary-data.service';
-import { some, isNumber } from 'lodash';
+import { Observable, Subscription } from 'rxjs';
+import { RawChangeSet, BoundField, DataType } from '@ngx-dino/core';
+import { SummaryDataService, SummaryStatistics, DataItem, validField } from '../shared/summary-data.service';
+import { some, isNumber, orderBy } from 'lodash';
 
 
 @Component({
@@ -20,12 +20,16 @@ export class AreaSizeLegendComponent implements OnInit, OnChanges {
   @Input() labelField: BoundField<string>;
   @Input() orderField: BoundField<number>;
 
+  items: DataItem[];
   stats: SummaryStatistics;
+  legendType: 'quantitative' | 'qualitative';
+
+  private dataSubscription: Subscription;
 
   constructor(private summaryDataService: SummaryDataService) { }
 
   ngOnInit() {
-    this.summaryDataService.observeStatistics().subscribe(this.setStatistics.bind(this));
+    this.updateSubscription();
   }
 
   private setStatistics(stats: SummaryStatistics) {
@@ -38,6 +42,9 @@ export class AreaSizeLegendComponent implements OnInit, OnChanges {
         median: this.convertDataItem(stats.median)
       };
     }
+  }
+  private setItems(items: DataItem[]) {
+    this.items = orderBy(items.map(i => this.convertDataItem(i)), 'value', 'desc');
   }
   private convertDataItem(dataItem: DataItem): DataItem {
     return Object.assign({}, dataItem, {
@@ -52,7 +59,36 @@ export class AreaSizeLegendComponent implements OnInit, OnChanges {
     }
   }
 
+  private updateLegendType() {
+    const field = validField(this.inputField) || this.areaSizeField;
+    const oldLegendType = this.legendType;
+    if (field.dataType === DataType.Number) {
+      this.legendType = 'quantitative';
+    } else {
+      this.legendType = 'qualitative';
+    }
+    if (oldLegendType !== this.legendType) {
+      this.updateSubscription();
+    }
+  }
+  private updateSubscription() {
+    if (this.dataSubscription) {
+      this.dataSubscription.unsubscribe();
+    }
+    this.items = [];
+    this.stats = null;
+
+    if (this.legendType === 'quantitative') {
+      this.dataSubscription = this.summaryDataService.observeStatistics().subscribe(this.setStatistics.bind(this));
+    } else {
+      this.dataSubscription = this.summaryDataService.observeUniqueItems().subscribe(this.setItems.bind(this));
+    }
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
+    if ('areaSizeField' in changes || 'inputField' in changes) {
+      this.updateLegendType();
+    }
     if ('dataStream' in changes || 'idField' in changes) {
       this.createProcessor();
     } else if (some(changes, (_value, key) => /^\w+Field$/.test(key))) {

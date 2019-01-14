@@ -1,19 +1,28 @@
 <div class="dino-area-size-legend area-size-legend">
-  <div class="legend-container" *ngIf="stats">
+  <div class="qualitative-legend-wrapper legend-container" *ngIf="legendType === 'qualitative' && items">
+    <div *ngFor="let item of items" class="legend-row">
+        <div class="mark" [style.min-width]="items[0].value + 'px'">
+          <div class="circle" [style.width]="item.value + 'px'" [style.height]="item.value + 'px'"></div>
+        </div>
+        <div class="label" [title]="item.label">{{ item.label }}</div>
+    </div>
+  </div>
+
+  <div class="quantitative-legend-wrapper legend-container" *ngIf="legendType === 'quantitative' && stats">
     <div class="legend-row">
-      <div class="mark" [style.width]="stats.max.value + 'px'">
+      <div class="mark" [style.min-width]="stats.max.value + 'px'">
         <div class="circle" [style.width]="stats.max.value + 'px'" [style.height]="stats.max.value + 'px'"></div>
       </div>
       <div class="label" [title]="stats.max.label">{{ stats.max.label }}</div>
     </div>
-    <div class="legend-row" *ngIf="stats && stats.min !== stats.max">
-      <div class="mark" [style.width]="stats.max.value + 'px'">
+    <div class="legend-row" *ngIf="stats && stats.min.value !== stats.max.value">
+      <div class="mark" [style.min-width]="stats.max.value + 'px'">
         <div class="circle" [style.width]="stats.median.value + 'px'" [style.height]="stats.median.value + 'px'"></div>
       </div>
       <div class="label" [title]="stats.median.label">{{ stats.median.label }}</div>
     </div>
-    <div class="legend-row" *ngIf="stats && stats.min !== stats.max">
-      <div class="mark" [style.width]="stats.max.value + 'px'">
+    <div class="legend-row" *ngIf="stats && stats.min.value !== stats.max.value">
+      <div class="mark" [style.min-width]="stats.max.value + 'px'">
         <div class="circle" [style.width]="stats.min.value + 'px'" [style.height]="stats.min.value + 'px'"></div>
       </div>
       <div class="label" [title]="stats.min.label">{{ stats.min.label }}</div>

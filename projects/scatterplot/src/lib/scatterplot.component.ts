@@ -12,7 +12,7 @@ import { BoundField, RawChangeSet, Datum, idSymbol, ChangeSet, DatumId } from '@
 
 import { ScatterplotDataService } from './shared/scatterplot-data.service';
 import { Point } from './shared/point';
-import { uniqBy, isNil, orderBy } from 'lodash';
+import { uniqBy, isNil } from 'lodash';
 
 @Component({
   selector: 'dino-scatterplot',
@@ -139,8 +139,7 @@ export class ScatterplotComponent implements OnInit, OnChanges {
     // Filter out bad/incomplete data (usually when not all fields are set yet)
     const goodData = uniqueData.filter(item => !isNil(item[idSymbol]) && !isNil(item['x']) && !isNil(item['y']));
     goodData.forEach(item => item['size'] = !isNil(item['size']) ? item['size'] : 28);
-    const orderedGoodData = orderBy(goodData, 'y', 'desc'); // Sort so 'y' axis is ordered
-    return orderedGoodData;
+    return goodData;
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -584,7 +583,7 @@ export class ScatterplotComponent implements OnInit, OnChanges {
       case 'string':
         this.xScale = scalePoint();
         this.xAxis = d3Axis.axisBottom(this.xScale).tickSizeOuter(0);
-        this.xScale.domain(data.map(el => el.x))
+        this.xScale.domain(data.map(el => el.x).sort())
           .range([0, this.elementWidth - this.maxYAxisTickWidth]);
         break;
     }
@@ -601,7 +600,7 @@ export class ScatterplotComponent implements OnInit, OnChanges {
       case 'string':
         this.yScale = scalePoint();
         this.yAxis = d3Axis.axisLeft(this.yScale).tickSizeOuter(0);
-        this.yScale.domain(data.map(el => el.y))
+        this.yScale.domain(data.map(el => el.y).sort().reverse())
           .range([this.elementHeight, 0]);
         break;
     }

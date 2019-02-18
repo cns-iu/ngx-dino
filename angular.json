@@ -538,6 +538,41 @@
           }
         }
       }
+    },
+    "toolshed": {
+      "root": "projects/toolshed",
+      "sourceRoot": "projects/toolshed/src",
+      "projectType": "library",
+      "prefix": "dino",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/toolshed/tsconfig.lib.json",
+            "project": "projects/toolshed/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/toolshed/src/test.ts",
+            "tsConfig": "projects/toolshed/tsconfig.spec.json",
+            "karmaConfig": "projects/toolshed/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/toolshed/tsconfig.lib.json",
+              "projects/toolshed/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "dino-demo",

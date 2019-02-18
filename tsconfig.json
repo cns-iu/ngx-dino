@@ -77,6 +77,12 @@
       ],
       "@ngx-dino/temporal-bargraph/*": [
         "dist/temporal-bargraph/*"
+      ],
+      "toolshed": [
+        "dist/toolshed"
+      ],
+      "toolshed/*": [
+        "dist/toolshed/*"
       ]
     }
   }

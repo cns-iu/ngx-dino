@@ -10,9 +10,6 @@ export type OperatorFunction<Argument, Result> = (value: Argument) => Result;
 /**
  * `Operator` is a collection of unary `OperatorFunction`s that will be in sequence
  * whenever a value is evaluated.
- *
- * @template From Argument type for `Operator.get`.
- * @template To Result type of `Operator.get`.
  */
 export class Operator<From, To> extends Callable<[From], To> {
   /**

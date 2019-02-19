@@ -1,9 +1,6 @@
 
 /**
  * Objects implementing this interface are callable using function syntax.
- *
- * @template Arguments The types of the function's arguments.
- * @template Result The type of the function's return value.
  */
 export interface CallableInstance<Arguments extends any[], Result> extends CallableFunction {
   (...args: Arguments): Result; // tslint:disable-line:callable-types
@@ -79,8 +76,5 @@ _CallableConstructor.prototype = create(Function.prototype);
  *
  * Note: Since the class instances are functions they also have all properties and methods that functions have.
  * Therefore if `name` or `length` needs to be set use `Object.defineProperties`.
- *
- * @template Arguments The types of the function's arguments.
- * @template Result The type of the function's return value.
  */
 export const Callable: CallableConstructor = _CallableConstructor as any;

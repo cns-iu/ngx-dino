@@ -1,4 +1,15 @@
-import { flow as loFlow, forEach as loForEach, identity as loIdentity, isArray, Many, reduce as loReduce } from 'lodash';
+import {
+  cond as loCond,
+  constant as loConstant,
+  flow as loFlow,
+  forEach as loForEach,
+  identity as loIdentity,
+  isArray,
+  Many,
+  matches as loMatches,
+  reduce as loReduce,
+  stubTrue,
+} from 'lodash';
 
 import { Callable } from '../common/callable';
 
@@ -11,6 +22,15 @@ export type UnaryFunction<TArgument = any, TResult = any> = (value: TArgument) =
  * An `Operator` or an `UnaryFunction`.
  */
 export type OperatorOrFunction<TArgument = any, TResult = any> = Operator<TArgument, TResult> | UnaryFunction<TArgument, TResult>;
+
+/**
+ * `Operator`'s get implementation selector function.
+ */
+const getImplSelector = loCond<UnaryFunction[], UnaryFunction>([
+  [loMatches({ length: 0 }), loConstant(loIdentity)],
+  [loMatches({ length: 1 }), functions => functions[0]],
+  [stubTrue, loFlow]
+]);
 
 /**
  * `Operator` is a collection of `UnaryFunction`s that will be invoked in sequence
@@ -35,20 +55,9 @@ export class Operator<TArgument, TResult> extends Callable<[TArgument], TResult>
   constructor(...functions: Many<OperatorOrFunction>[]) {
     super('getImpl');
 
-    const funcs = this.functions = normalize(functions);
-    switch (funcs.length) {
-      case 0:
-        this.getImpl = loIdentity;
-        break;
-
-      case 1:
-        this.getImpl = funcs[0];
-        break;
-
-      default:
-        this.getImpl = loFlow(funcs);
-        break;
-    }
+    const normFunctions = normalize(functions);
+    this.functions = normFunctions;
+    this.getImpl = getImplSelector(normFunctions);
   }
 
   /**

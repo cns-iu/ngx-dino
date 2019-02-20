@@ -13,35 +13,6 @@ export type UnaryFunction<TArgument, TResult> = (value: TArgument) => TResult;
 export type OperatorOrFunction<TArgument, TResult> = Operator<TArgument, TResult> | UnaryFunction<TArgument, TResult>;
 
 /**
- * Normalizes an array of `Operator`s, `UnaryFunction`s, or arrays of such into an array of `UnaryFunction`s.
- *
- * @param functions The mixed type array.
- * @returns A readonly array of `UnaryFunction`s.
- */
-function normalize(functions: Many<OperatorOrFunction<any, any>>[]): UnaryFunction<any, any>[] {
-  type Accumulator = UnaryFunction<any, any>[];
-  type Item = Many<OperatorOrFunction<any, any>>;
-
-  function append(acc: Accumulator, item: OperatorOrFunction<any, any>): void {
-    if (item instanceof Operator) {
-      acc.push.apply(acc, item.functions);
-    } else {
-      acc.push(item);
-    }
-  }
-
-  return loReduce(functions, (acc: Accumulator, item: Item): Accumulator => {
-    if (isArray(item)) {
-      loForEach(item, (subitem: OperatorOrFunction<any, any>): void => append(acc, subitem));
-    } else {
-      append(acc, item as OperatorOrFunction<any, any>);
-    }
-
-    return acc;
-  }, []);
-}
-
-/**
  * `Operator` is a collection of `UnaryFunction`s that will be invoked in sequence
  * whenever a value is evaluated.
  */
@@ -119,4 +90,33 @@ export class Operator<TArgument, TResult> extends Callable<[TArgument], TResult>
   protected lift<TArgument1, TResult1>(functions: UnaryFunction<any, any>[]): Operator<TArgument1, TResult1> {
     return new Operator<TArgument1, TResult1>(functions);
   }
+}
+
+/**
+ * Normalizes an array of `Operator`s, `UnaryFunction`s, or arrays of such into an array of `UnaryFunction`s.
+ *
+ * @param functions The mixed type array.
+ * @returns A array of `UnaryFunction`s.
+ */
+function normalize(functions: Many<OperatorOrFunction<any, any>>[]): UnaryFunction<any, any>[] {
+  type Accumulator = UnaryFunction<any, any>[];
+  type Item = Many<OperatorOrFunction<any, any>>;
+
+  function append(acc: Accumulator, item: OperatorOrFunction<any, any>): void {
+    if (item instanceof Operator) {
+      acc.push.apply(acc, item.functions);
+    } else {
+      acc.push(item);
+    }
+  }
+
+  return loReduce(functions, (acc: Accumulator, item: Item): Accumulator => {
+    if (isArray(item)) {
+      loForEach(item, (subitem: OperatorOrFunction<any, any>): void => append(acc, subitem));
+    } else {
+      append(acc, item as OperatorOrFunction<any, any>);
+    }
+
+    return acc;
+  }, []);
 }

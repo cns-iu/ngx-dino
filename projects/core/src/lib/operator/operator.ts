@@ -5,12 +5,12 @@ import { Callable } from '../common/callable';
 /**
  * A unary function type.
  */
-export type UnaryFunction<TArgument, TResult> = (value: TArgument) => TResult;
+export type UnaryFunction<TArgument = any, TResult = any> = (value: TArgument) => TResult;
 
 /**
  * An `Operator` or an `UnaryFunction`.
  */
-export type OperatorOrFunction<TArgument, TResult> = Operator<TArgument, TResult> | UnaryFunction<TArgument, TResult>;
+export type OperatorOrFunction<TArgument = any, TResult = any> = Operator<TArgument, TResult> | UnaryFunction<TArgument, TResult>;
 
 /**
  * `Operator` is a collection of `UnaryFunction`s that will be invoked in sequence
@@ -32,7 +32,7 @@ export class Operator<TArgument, TResult> extends Callable<[TArgument], TResult>
    *
    * @param functions Functions that will be invoked on `get`.
    */
-  constructor(...functions: Many<OperatorOrFunction<any, any>>[]) {
+  constructor(...functions: Many<OperatorOrFunction>[]) {
     super('getImpl');
 
     const funcs = this.functions = normalize(functions);
@@ -76,7 +76,7 @@ export class Operator<TArgument, TResult> extends Callable<[TArgument], TResult>
    * @param ops The `OperatorOrFunction`s to add.
    * @returns The new `Operator` instance.
    */
-  pipe<TResult1>(...ops: Many<OperatorOrFunction<any, any>>[]): this | Operator<TResult, TResult1> {
+  pipe<TResult1>(...ops: Many<OperatorOrFunction>[]): this | Operator<TResult, TResult1> {
     const functions = normalize(ops);
     return functions.length === 0 ? this : this.lift<TResult, TResult1>(this.functions.concat(functions));
   }
@@ -87,7 +87,7 @@ export class Operator<TArgument, TResult> extends Callable<[TArgument], TResult>
    * @param functions The functions for the new `Operator`.
    * @returns A new `Operator` instance with the same class as `this`.
    */
-  protected lift<TArgument1, TResult1>(functions: UnaryFunction<any, any>[]): Operator<TArgument1, TResult1> {
+  protected lift<TArgument1, TResult1>(functions: UnaryFunction[]): Operator<TArgument1, TResult1> {
     return new Operator<TArgument1, TResult1>(functions);
   }
 }
@@ -98,11 +98,8 @@ export class Operator<TArgument, TResult> extends Callable<[TArgument], TResult>
  * @param functions The mixed type array.
  * @returns A array of `UnaryFunction`s.
  */
-function normalize(functions: Many<OperatorOrFunction<any, any>>[]): UnaryFunction<any, any>[] {
-  type Accumulator = UnaryFunction<any, any>[];
-  type Item = Many<OperatorOrFunction<any, any>>;
-
-  function append(acc: Accumulator, item: OperatorOrFunction<any, any>): void {
+function normalize(functions: Many<OperatorOrFunction>[]): UnaryFunction[] {
+  function append(acc: UnaryFunction[], item: OperatorOrFunction): void {
     if (item instanceof Operator) {
       acc.push.apply(acc, item.functions);
     } else {
@@ -110,11 +107,11 @@ function normalize(functions: Many<OperatorOrFunction<any, any>>[]): UnaryFuncti
     }
   }
 
-  return loReduce(functions, (acc: Accumulator, item: Item): Accumulator => {
+  return loReduce(functions, (acc: UnaryFunction[], item: Many<OperatorOrFunction>): UnaryFunction[] => {
     if (isArray(item)) {
-      loForEach(item, (subitem: OperatorOrFunction<any, any>): void => append(acc, subitem));
+      loForEach(item, (subitem: OperatorOrFunction): void => append(acc, subitem));
     } else {
-      append(acc, item as OperatorOrFunction<any, any>);
+      append(acc, item as OperatorOrFunction);
     }
 
     return acc;

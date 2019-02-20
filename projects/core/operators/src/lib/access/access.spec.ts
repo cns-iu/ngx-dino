@@ -1,3 +1,4 @@
+import { Operator } from '@ngx-dino/core';
 import { access } from './access';
 
 describe('Operators', () => {
@@ -6,14 +7,14 @@ describe('Operators', () => {
   const obj = { [path]: value };
 
   describe('access(path)', () => {
-    const accessor = access(path);
+    const operator = access(path);
 
-    it('returns an OperatorFunction', () => {
-      expect(accessor).toEqual(jasmine.any(Function));
+    it('returns an Operator', () => {
+      expect(operator).toEqual(jasmine.any(Operator));
     });
 
-    describe('returned OperatorFunction', () => {
-      const result = accessor(obj);
+    describe('returned Operator', () => {
+      const result = operator(obj);
 
       it('returns the value at specified path', () => {
         expect(result).toEqual(value);
@@ -23,11 +24,11 @@ describe('Operators', () => {
 
   describe('access(path, defaultValue)', () => {
     const defaultValue = 11;
-    const accessor = access(path, defaultValue);
+    const operator = access(path, defaultValue);
 
-    describe('returned OperatorFunction', () => {
+    describe('returned Operator', () => {
       it('returns the default value if the specified path does not exist', () => {
-        expect(accessor({ })).toEqual(defaultValue);
+        expect(operator({ })).toEqual(defaultValue);
       });
     });
   });

@@ -1,4 +1,4 @@
-import { OperatorFunction } from '@ngx-dino/core';
+import { Operator } from '@ngx-dino/core';
 
 import { map } from './map';
 
@@ -7,23 +7,23 @@ describe('Operators', () => {
   describe('map(mapper)', () => {
     const mapperResult = 'abc';
     let mapper: jasmine.Spy;
-    let opfun: OperatorFunction<any, any>;
+    let operator: Operator<any, any>;
 
     beforeEach(() => {
       mapper = jasmine.createSpy().and.returnValue(mapperResult);
-      opfun = map(mapper);
+      operator = map(mapper);
     });
 
-    it('returns an OperatorFunction', () => {
-      expect(opfun).toEqual(jasmine.any(Function));
+    it('returns an Operator', () => {
+      expect(operator).toEqual(jasmine.any(Function));
     });
 
-    describe('returned OperatorFunction', () => {
+    describe('returned Operator', () => {
       const value = 123;
       let result: any;
 
       beforeEach(() => {
-        result = opfun(value);
+        result = operator(value);
       });
 
       it('calls the mapper function', () => {

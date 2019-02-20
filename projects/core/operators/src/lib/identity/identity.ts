@@ -1,8 +1,8 @@
-import { OperatorFunction } from '@ngx-dino/core';
+import { Operator } from '@ngx-dino/core';
 
 /**
- * Returns an identity `OperatorFunction`.
+ * Returns the identity `Operator`.
  */
-export function identity<T = any>(): OperatorFunction<T, T> {
-  return (value: T): T => value;
+export function identity<T = any>(): Operator<T, T> {
+  return new Operator();
 }

@@ -1,17 +1,19 @@
+import { Operator } from '@ngx-dino/core';
+
 import { constant } from './constant';
 
 describe('Operators', () => {
   describe('constant(value)', () => {
     const value = [5, 6, 7, 'eight'];
-    const opfun = constant(value);
+    const operator = constant(value);
 
-    it('returns an OperatorFunction', () => {
-      expect(opfun).toEqual(jasmine.any(Function));
+    it('returns an Operator', () => {
+      expect(operator).toEqual(jasmine.any(Operator));
     });
 
-    describe('returned OperatorFunction', () => {
+    describe('returned Operator', () => {
       it('returns the constant value', () => {
-        expect(opfun('anything')).toBe(value);
+        expect(operator('anything')).toBe(value);
       });
     });
   });

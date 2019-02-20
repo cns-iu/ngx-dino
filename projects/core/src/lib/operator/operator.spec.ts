@@ -106,24 +106,13 @@ describe('Operator', () => {
         expect(() => operator(0)).not.toThrow();
       });
 
-      describe('delegate calls to .get(value)', () => {
-        const spyResult = 0;
+      describe('is equivalent to .get(value)', () => {
         const value = 1;
-        let result: any;
-        let spy: jasmine.Spy;
+        const getResult = operator.get(value);
+        const result = operator(value);
 
-        beforeEach(() => {
-          spy = spyOn(operator, 'get').and.returnValue(spyResult);
-
-          result = operator(value);
-        });
-
-        it('is called with the same value', () => {
-          expect(spy).toHaveBeenCalledWith(value);
-        });
-
-        it('forwards the result', () => {
-          expect(result).toEqual(spyResult);
+        it('has the same result', () => {
+          expect(result).toEqual(getResult);
         });
       });
     });

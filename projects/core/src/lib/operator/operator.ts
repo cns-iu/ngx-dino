@@ -1,69 +1,122 @@
-import { isArray, reduce } from 'lodash';
+import { flow as loFlow, forEach as loForEach, identity as loIdentity, isArray, Many, reduce as loReduce } from 'lodash';
 
 import { Callable } from '../common/callable';
 
 /**
  * A unary function type.
  */
-export type OperatorFunction<Argument, Result> = (value: Argument) => Result;
+export type UnaryFunction<TArgument, TResult> = (value: TArgument) => TResult;
 
 /**
- * `Operator` is a collection of unary `OperatorFunction`s that will be in sequence
+ * An `Operator` or an `UnaryFunction`.
+ */
+export type OperatorOrFunction<TArgument, TResult> = Operator<TArgument, TResult> | UnaryFunction<TArgument, TResult>;
+
+/**
+ * Normalizes an array of `Operator`s, `UnaryFunction`s, or arrays of such into an array of `UnaryFunction`s.
+ *
+ * @param functions The mixed type array.
+ * @returns A readonly array of `UnaryFunction`s.
+ */
+function normalize(functions: Many<OperatorOrFunction<any, any>>[]): UnaryFunction<any, any>[] {
+  type Accumulator = UnaryFunction<any, any>[];
+  type Item = Many<OperatorOrFunction<any, any>>;
+
+  function append(acc: Accumulator, item: OperatorOrFunction<any, any>): void {
+    if (item instanceof Operator) {
+      acc.push.apply(acc, item.functions);
+    } else {
+      acc.push(item);
+    }
+  }
+
+  return loReduce(functions, (acc: Accumulator, item: Item): Accumulator => {
+    if (isArray(item)) {
+      loForEach(item, (subitem: OperatorOrFunction<any, any>): void => append(acc, subitem));
+    } else {
+      append(acc, item as OperatorOrFunction<any, any>);
+    }
+
+    return acc;
+  }, []);
+}
+
+/**
+ * `Operator` is a collection of `UnaryFunction`s that will be invoked in sequence
  * whenever a value is evaluated.
  */
-export class Operator<From, To> extends Callable<[From], To> {
+export class Operator<TArgument, TResult> extends Callable<[TArgument], TResult> {
   /**
-   * An array of `OperatorFunction`s that will be invoke (in order) on calls.
+   * An array of `UnaryFunction`s that will be invoke (in order) on calls to `get`.
    */
-  readonly functions: ReadonlyArray<OperatorFunction<any, any>>;
+  readonly functions: ReadonlyArray<UnaryFunction<any, any>>;
 
   /**
-   * Constructs a new `Operator` instance from an array of `OperatorFunction`s.
+   * Optimized implementation of `get`.
+   */
+  private readonly getImpl: UnaryFunction<TArgument, TResult>;
+
+  /**
+   * Creates an new instance of `Operator`.
    *
-   * @param [functions] `OperatorFunction`s for this `Operator`.
+   * @param functions Functions that will be invoked on `get`.
    */
-  constructor(functions?: ReadonlyArray<OperatorFunction<any, any>>);
+  constructor(...functions: Many<OperatorOrFunction<any, any>>[]) {
+    super('getImpl');
 
-  /**
-   * Constructs a new `Operator` instance from zero or more `OperatorFunction`s.
-   *
-   * @param functions Zero or more `OperatorFunction`s for this `Operator`.
-   */
-  constructor(...functions: OperatorFunction<any, any>[]);
+    const funcs = this.functions = normalize(functions);
+    switch (funcs.length) {
+      case 0:
+        this.getImpl = loIdentity;
+        break;
 
-  constructor(...functions: any[]) {
-    super('get'); // NOTE: Possible optimization opportunity. Delegate to different impl depending on # functions.
-    this.functions = functions.length === 1 && isArray(functions[0]) ? functions[0] : functions;
+      case 1:
+        this.getImpl = funcs[0];
+        break;
+
+      default:
+        this.getImpl = loFlow(funcs);
+        break;
+    }
   }
 
   /**
-   * Passes provided value through each of this `Operator`'s `OperatorFunction`s and
+   * Passes provided value through each of this `Operator`'s `UnaryFunction`s and
    * returns the result.
    *
    * @param value The value to process.
-   * @returns The result of passing value through each `OperatorFunction`.
+   * @returns The result of passing value through each `UnaryFunction`.
    */
-  get(value: From): To {
-    return reduce(this.functions, (current, fun) => fun(current), value);
-  }
+  get(value: TArgument): TResult { return this.getImpl(value); }
 
   // tslint:disable:max-line-length
   pipe(): this;
-  pipe<T1>(op: OperatorFunction<From, T1>): Operator<From, T1>;
-  pipe<T1, T2>(op1: OperatorFunction<From, T1>, op2: OperatorFunction<T1, T2>): Operator<From, T2>;
-  pipe<T1, T2, T3>(op1: OperatorFunction<From, T1>, op2: OperatorFunction<T1, T2>, op3: OperatorFunction<T2, T3>): Operator<From, T3>;
-  pipe<T1, T2, T3, T4>(op1: OperatorFunction<From, T1>, op2: OperatorFunction<T1, T2>, op3: OperatorFunction<T2, T3>, op4: OperatorFunction<T3, T4>): Operator<From, T4>;
-  pipe<T1, T2, T3, T4, T5>(op1: OperatorFunction<From, T1>, op2: OperatorFunction<T1, T2>, op3: OperatorFunction<T2, T3>, op4: OperatorFunction<T3, T4>, op5: OperatorFunction<T4, T5>): Operator<From, T5>;
-  pipe<T1, T2, T3, T4, T5, T6>(op1: OperatorFunction<From, T1>, op2: OperatorFunction<T1, T2>, op3: OperatorFunction<T2, T3>, op4: OperatorFunction<T3, T4>, op5: OperatorFunction<T4, T5>, op6: OperatorFunction<T5, T6>): Operator<From, T6>;
+  pipe<T1>(op: OperatorOrFunction<TResult, T1>): Operator<TResult, T1>;
+  pipe<T1, T2>(op1: OperatorOrFunction<TResult, T1>, op2: OperatorOrFunction<T1, T2>): Operator<TResult, T2>;
+  pipe<T1, T2, T3>(op1: OperatorOrFunction<TResult, T1>, op2: OperatorOrFunction<T1, T2>, op3: OperatorOrFunction<T2, T3>): Operator<TResult, T3>;
+  pipe<T1, T2, T3, T4>(op1: OperatorOrFunction<TResult, T1>, op2: OperatorOrFunction<T1, T2>, op3: OperatorOrFunction<T2, T3>, op4: OperatorOrFunction<T3, T4>): Operator<TResult, T4>;
+  pipe<T1, T2, T3, T4, T5>(op1: OperatorOrFunction<TResult, T1>, op2: OperatorOrFunction<T1, T2>, op3: OperatorOrFunction<T2, T3>, op4: OperatorOrFunction<T3, T4>, op5: OperatorOrFunction<T4, T5>): Operator<TResult, T5>;
+  pipe<T1, T2, T3, T4, T5, T6>(op1: OperatorOrFunction<TResult, T1>, op2: OperatorOrFunction<T1, T2>, op3: OperatorOrFunction<T2, T3>, op4: OperatorOrFunction<T3, T4>, op5: OperatorOrFunction<T4, T5>, op6: OperatorOrFunction<T5, T6>): Operator<TResult, T6>;
   // tslint:enable:max-line-length
 
   /**
-   * Creates a new `Operator` with the passed `OperatorFunction`s added to the existing functions array.
+   * Creates a new `Operator` with the passed `OperatorOrFunction`s added to the existing functions array.
    *
-   * @param ops The `OperatorFunction`s to add.
+   * @param ops The `OperatorOrFunction`s to add.
    * @returns The new `Operator` instance.
    */
-  pipe<NewTo>(...ops: OperatorFunction<any, any>[]): Operator<From, NewTo> {
-    return ops.length > 0 ? new Operator(this.functions.concat(ops)) : this as Operator<From, any>;
+  pipe<TResult1>(...ops: Many<OperatorOrFunction<any, any>>[]): this | Operator<TResult, TResult1> {
+    const functions = normalize(ops);
+    return functions.length === 0 ? this : this.lift<TResult, TResult1>(this.functions.concat(functions));
+  }
+
+  /**
+   * Creates a new `Operator` subclass instance.
+   *
+   * @param functions The functions for the new `Operator`.
+   * @returns A new `Operator` instance with the same class as `this`.
+   */
+  protected lift<TArgument1, TResult1>(functions: UnaryFunction<any, any>[]): Operator<TArgument1, TResult1> {
+    return new Operator<TArgument1, TResult1>(functions);
   }
 }

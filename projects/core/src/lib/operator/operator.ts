@@ -71,12 +71,12 @@ export class Operator<TArgument, TResult> extends Callable<[TArgument], TResult>
 
   // tslint:disable:max-line-length
   pipe(): this;
-  pipe<T1>(op: OperatorOrFunction<TResult, T1>): Operator<TResult, T1>;
-  pipe<T1, T2>(op1: OperatorOrFunction<TResult, T1>, op2: OperatorOrFunction<T1, T2>): Operator<TResult, T2>;
-  pipe<T1, T2, T3>(op1: OperatorOrFunction<TResult, T1>, op2: OperatorOrFunction<T1, T2>, op3: OperatorOrFunction<T2, T3>): Operator<TResult, T3>;
-  pipe<T1, T2, T3, T4>(op1: OperatorOrFunction<TResult, T1>, op2: OperatorOrFunction<T1, T2>, op3: OperatorOrFunction<T2, T3>, op4: OperatorOrFunction<T3, T4>): Operator<TResult, T4>;
-  pipe<T1, T2, T3, T4, T5>(op1: OperatorOrFunction<TResult, T1>, op2: OperatorOrFunction<T1, T2>, op3: OperatorOrFunction<T2, T3>, op4: OperatorOrFunction<T3, T4>, op5: OperatorOrFunction<T4, T5>): Operator<TResult, T5>;
-  pipe<T1, T2, T3, T4, T5, T6>(op1: OperatorOrFunction<TResult, T1>, op2: OperatorOrFunction<T1, T2>, op3: OperatorOrFunction<T2, T3>, op4: OperatorOrFunction<T3, T4>, op5: OperatorOrFunction<T4, T5>, op6: OperatorOrFunction<T5, T6>): Operator<TResult, T6>;
+  pipe<T1>(op: Many<OperatorOrFunction<TResult, T1>>): Operator<TResult, T1>;
+  pipe<T1, T2>(op1: Many<OperatorOrFunction<TResult, T1>>, op2: Many<OperatorOrFunction<T1, T2>>): Operator<TResult, T2>;
+  pipe<T1, T2, T3>(op1: Many<OperatorOrFunction<TResult, T1>>, op2: Many<OperatorOrFunction<T1, T2>>, op3: Many<OperatorOrFunction<T2, T3>>): Operator<TResult, T3>;
+  pipe<T1, T2, T3, T4>(op1: Many<OperatorOrFunction<TResult, T1>>, op2: Many<OperatorOrFunction<T1, T2>>, op3: Many<OperatorOrFunction<T2, T3>>, op4: Many<OperatorOrFunction<T3, T4>>): Operator<TResult, T4>;
+  pipe<T1, T2, T3, T4, T5>(op1: Many<OperatorOrFunction<TResult, T1>>, op2: Many<OperatorOrFunction<T1, T2>>, op3: Many<OperatorOrFunction<T2, T3>>, op4: Many<OperatorOrFunction<T3, T4>>, op5: Many<OperatorOrFunction<T4, T5>>): Operator<TResult, T5>;
+  pipe<T1, T2, T3, T4, T5, T6>(op1: Many<OperatorOrFunction<TResult, T1>>, op2: Many<OperatorOrFunction<T1, T2>>, op3: Many<OperatorOrFunction<T2, T3>>, op4: Many<OperatorOrFunction<T3, T4>>, op5: Many<OperatorOrFunction<T4, T5>>, op6: Many<OperatorOrFunction<T5, T6>>): Operator<TResult, T6>;
   // tslint:enable:max-line-length
 
   /**

@@ -454,8 +454,8 @@ export class ScatterplotComponent implements OnInit, OnChanges {
     pulse.exit().remove();
 
     // Insert items
-    const plots = this.mainG.selectAll('.plots')
-      .data(data, (d: Point) => d[idSymbol]);
+    const plots = this.mainG.selectAll<SVGElement, Point[]>('.plots')
+      .data(data, (d) => d[idSymbol]);
 
     plots
       .attr('d', d3Shape.symbol()

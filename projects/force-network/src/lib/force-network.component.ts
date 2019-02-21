@@ -1,27 +1,16 @@
-import {
-  Component,
-  OnInit,
-  ElementRef,
-  Input,
-  OnChanges,
-  SimpleChanges,
-  SimpleChange
-} from '@angular/core';
-
-import { BoundField, RawChangeSet, idSymbol, Datum } from '@ngx-dino/core';
-
-import { Observable } from 'rxjs';
-
-import * as d3Selection from 'd3-selection';
-import * as d3Force from 'd3-force';
-import { scaleLinear } from 'd3-scale';
-import * as d3Array from 'd3-array';
-import * as d3Drag from 'd3-drag';
 import 'd3-transition';
 
-import { Node, Link } from './shared/network';
+import { Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { BoundField, Datum, idSymbol, RawChangeSet, ChangeSet } from '@ngx-dino/core';
+import * as d3Array from 'd3-array';
+import * as d3Drag from 'd3-drag';
+import * as d3Force from 'd3-force';
+import { ScaleLinear, scaleLinear } from 'd3-scale';
+import * as d3Selection from 'd3-selection';
+import { Observable } from 'rxjs';
+
 import { ForceNetworkDataService } from './shared/force-network-data.service';
-import { transition } from 'd3-transition';
+import { Link, Node } from './shared/network';
 
 @Component({
   selector: 'dino-force-network',
@@ -75,27 +64,27 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
   private elementWidth = 0;
   private elementHeight = 0;
 
-  private parentNativeElement: any;
+  private parentNativeElement: HTMLElement;
   private svgContainer: d3Selection.Selection<d3Selection.BaseType, any, HTMLElement, undefined>;
 
   private simulation: any; // TODO typings
 
-  private nodes: any; // TODO typings
+  private nodes: d3Selection.Selection<SVGCircleElement, any, SVGElement, any>; // TODO typings
   private links: any; // TODO typings
   private labels: any; // TODO typings
 
-  private nodeSizeScale: any; // TODO typings
-  private labelSizeScale: any; // TODO typings
-  private linkSizeScale: any; // TODO typings
+  private nodeSizeScale: ScaleLinear<number, number>;
+  private labelSizeScale: ScaleLinear<number, number>;
+  private linkSizeScale: ScaleLinear<number, number>;
 
-  private nodeColorScale: any; // TODO typings
-  private linkColorScale: any; // TODO typings
+  private nodeColorScale: ScaleLinear<string, string>;
+  private linkColorScale: ScaleLinear<string, string>;
 
-  private transparencyScale: any; // TODO typings
+  private transparencyScale: ScaleLinear<number, number>;
 
   private radius = 15; // default radius
 
-  private tooltipDiv: any;
+  private tooltipDiv: d3Selection.Selection<HTMLElement, {}, HTMLElement, any>;
 
   private nodesData = [];
   private linksData = [];
@@ -110,12 +99,11 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
       this.setScales();
       this.initVisualization();
     }
-    this.dataService.nodes.subscribe((data) => {
+    this.dataService.nodes.subscribe((data: ChangeSet<Node>) => {
       this.nodesData = this.nodesData.filter((e: Node) => !data.remove
         .some((obj: Datum<Node>) => obj[idSymbol] === e.id)).concat(data.insert.toArray());
-
-      data.update.forEach((el) => {
-        const index = this.nodesData.findIndex((e) => e.id === el[1].id);
+      data.update.forEach((el: Datum<Partial<Node>>) => {
+        const index = this.nodesData.findIndex((e: Node) => e.id === el[1].id);
         this.nodesData[index] = Object.assign(this.nodesData[index] || {}, <Node>el[1]);
       });
       if (this.nodesData.length) {
@@ -124,12 +112,12 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
       }
     });
 
-    this.dataService.links.subscribe((data) => {
+    this.dataService.links.subscribe((data: ChangeSet<Link>) => {
       this.linksData = this.linksData.filter((e: Node) => !data.remove
         .some((obj: Datum<Link>) => obj[idSymbol] === e.id)).concat(data.insert.toArray());
 
-      data.update.forEach((el) => {
-        const index = this.linksData.findIndex((e) => e.id === el[1].id);
+      data.update.forEach((el: Datum<Partial<Link>>) => {
+        const index = this.linksData.findIndex((e: Link) => e.id === el[1].id);
         this.linksData[index] = Object.assign(this.linksData[index] || {}, <Link>el[1]);
       });
 
@@ -145,7 +133,7 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
       this.nodesData = [];
       this.linksData = [];
       this.updateStreamProcessor(false);
-    } else if (Object.keys(changes).filter((k) => k.endsWith('Field')).length) {
+    } else if (Object.keys(changes).filter((k: string) => k.endsWith('Field')).length) {
       this.updateStreamProcessor();
     }
 
@@ -175,7 +163,7 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
     this.drawPlots();
   }
 
-  onResize({width, height}: {width: number, height: number}): void {
+  onResize({ width, height }: { width: number, height: number }): void {
     if (this.autoresize) {
       this.resize(width, height);
     }
@@ -213,44 +201,44 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
   setScales() {
     this.nodeSizeScale = scaleLinear()
       .domain([
-        d3Array.min(this.nodesData, (d) => Number(d.size)),
-        d3Array.max(this.nodesData, (d) => Number(d.size))
+        d3Array.min(this.nodesData, (d: Node) => Number(d.size)),
+        d3Array.max(this.nodesData, (d: Node) => Number(d.size))
       ])
       .range(this.nodeSizeRange);
 
     this.labelSizeScale = scaleLinear()
       .domain([
-        d3Array.min(this.nodesData, (d) => Number(d[this.labelSizeField])),
-        d3Array.max(this.nodesData, (d) => Number(d[this.labelSizeField]))
+        d3Array.min(this.nodesData, (d: Node) => Number(d[this.labelSizeField])),
+        d3Array.max(this.nodesData, (d: Node) => Number(d[this.labelSizeField]))
       ])
       .range(this.labelSizeRange);
 
     this.nodeColorScale = scaleLinear<string>()
       .domain([
-        d3Array.min(this.nodesData, (d) => d.color),
-        d3Array.max(this.nodesData, (d) => d.color)
+        d3Array.min(this.nodesData, (d: Node) => d.color),
+        d3Array.max(this.nodesData, (d: Node) => d.color)
       ])
       .range(this.nodeColorRange);
 
     this.linkSizeScale = scaleLinear()
       .domain([
-        d3Array.min(this.linksData, (d) => d.size),
-        d3Array.max(this.linksData, (d) => d.size)
+        d3Array.min(this.linksData, (d: Link) => d.size),
+        d3Array.max(this.linksData, (d: Link) => d.size)
       ])
       .range(this.linkSizeRange);
 
     this.linkColorScale = scaleLinear<string>()
       .domain([
-        d3Array.min(this.linksData, (d) => Number(d[this.linkColorField])),
-        d3Array.max(this.linksData, (d) => Number(d[this.linkColorField])) / 2,
-        d3Array.max(this.linksData, (d) => Number(d[this.linkColorField]))
+        d3Array.min(this.linksData, (d: Link) => Number(d[this.linkColorField])),
+        d3Array.max(this.linksData, (d: Link) => Number(d[this.linkColorField])) / 2,
+        d3Array.max(this.linksData, (d: Link) => Number(d[this.linkColorField]))
       ])
-    .range(this.linkColorRange);
+      .range(this.linkColorRange);
 
     this.transparencyScale = scaleLinear()
       .domain([0, 1])
       .range([1, 0]);
-    }
+  }
 
   initVisualization() {
     const container = d3Selection.select(this.parentNativeElement)
@@ -283,73 +271,75 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
   }
 
   drawPlots() {
-    this.nodes = this.nodes.data(this.nodesData, (d) => d[idSymbol]);
-    this.nodes.transition().attr('r', (d) => this.nodeSizeScale(d.size))
-      .attr('fill', (d) => this.nodeColorScale(d.color))
-      .attr('opacity', (d) => this.transparencyScale(d.nodeTransparency))
-      .attr('stroke-opacity', (d) => this.transparencyScale(d.strokeTransparency));
+    this.nodes = this.nodes.data(this.nodesData, (d: Node) => d[idSymbol]);
+    this.nodes.transition().attr('r', (d: Node) => this.nodeSizeScale(d.size))
+      .attr('fill', (d: Node) => this.nodeColorScale(d.color))
+      .attr('opacity', (d: Node) => this.transparencyScale(d.nodeTransparency))
+      .attr('stroke-opacity', (d: Node) => this.transparencyScale(d.strokeTransparency));
 
     this.nodes.exit().remove();
     this.nodes = this.nodes.enter().append('circle')
-      .attr('fill', (d) => this.nodeColorScale(d.color))
-      .attr('opacity', (d) => this.transparencyScale(d.nodeTransparency))
-      .attr('r', (d) => this.nodeSizeScale(d.size)).merge(this.nodes)
-      .attr('stroke-opacity', (d) => this.transparencyScale(d.strokeTransparency))
+      .attr('fill', (d: Node) => this.nodeColorScale(d.color))
+      .attr('opacity', (d: Node) => this.transparencyScale(d.nodeTransparency))
+      .attr('r', (d: Node) => this.nodeSizeScale(d.size)).merge(this.nodes)
+      .attr('stroke-opacity', (d: Node) => this.transparencyScale(d.strokeTransparency))
       .call(d3Drag.drag()
-      .on('start', this.dragstarted.bind(this))
-      .on('drag', this.dragged.bind(this))
-      .on('end', this.dragended.bind(this)));
+        .on('start', this.dragstarted.bind(this))
+        .on('drag', this.dragged.bind(this))
+        .on('end', this.dragended.bind(this)));
 
-    this.nodes.on('mouseover', (d) => this.onMouseOver(d[idSymbol]));
-    this.nodes.on('mouseout', (d) => this.onMouseOut(d[idSymbol]));
+    this.nodes.on('mouseover', (d: Node) => this.onMouseOver(d[idSymbol]));
+    this.nodes.on('mouseout', (d: Node) => this.onMouseOut(d[idSymbol]));
 
-    this.links = this.links.data(this.linksData, (d) => d.id);
+    this.links = this.links.data(this.linksData, (d: Link) => d.id);
 
     this.links.transition()
-      .attr('stroke-width', (d) => this.linkSizeScale(d.size))
-      .attr('stroke', (d) => this.linkColorScale(
+      .attr('stroke-width', (d: Link) => this.linkSizeScale(d.size))
+      .attr('stroke', (d: Link) => this.linkColorScale(
         d[this.linkColorField]) === undefined ? 'black' : this.linkColorScale(d[this.linkColorField]))
-      .attr('opacity', (d) => isNaN(this.transparencyScale(d.linkTransparency)) ? 1 : this.transparencyScale(d.linkTransparency));
+      .attr('opacity', (d: Link) => isNaN(this.transparencyScale(d.linkTransparency)) ? 1 : this.transparencyScale(d.linkTransparency));
     this.links.exit().remove();
     this.links = this.links.enter().append('line').merge(this.links)
-      .attr('stroke-width', (d) => isNaN(this.linkSizeScale(d.size)) ? 1 : this.linkSizeScale(d.size))
-      .attr('stroke', (d) => this.linkColorScale(
+      .attr('stroke-width', (d: Link) => isNaN(this.linkSizeScale(d.size)) ? 1 : this.linkSizeScale(d.size))
+      .attr('stroke', (d: Link) => this.linkColorScale(
         d[this.linkColorField]) === undefined ? 'black' : this.linkColorScale(d[this.linkColorField]))
-      .attr('opacity', (d) => isNaN(this.transparencyScale(d.linkTransparency)) ?
+      .attr('opacity', (d: Link) => isNaN(this.transparencyScale(d.linkTransparency)) ?
         1 : this.transparencyScale(d.linkTransparency));
 
 
-    this.labels = this.svgContainer.selectAll('text').data(this.nodesData, (d) => d[idSymbol]);
+    this.labels = this.svgContainer.selectAll('text').data(this.nodesData, (d: Node) => d[idSymbol]);
     this.labels.transition()
-      .style('font-size', (d) => isNaN(this.labelSizeScale(d[this.labelSizeField])) ? 16 : this.labelSizeScale(d[this.labelSizeField]))
+      .style('font-size', (d: Node) =>
+      isNaN(this.labelSizeScale(d[this.labelSizeField])) ? 16 : this.labelSizeScale(d[this.labelSizeField]))
       .attr('dx', 15) // label position encoding is not supported yet
       .attr('dy', 10);
     this.labels.exit().remove();
     this.labels = this.labels.enter().append('text')
-      .text((d) => d[idSymbol])
-      .style('font-size', (d) => isNaN(this.labelSizeScale(d[this.labelSizeField])) ? 16 : this.labelSizeScale(d[this.labelSizeField]))
+      .text((d: Node) => d[idSymbol])
+      .style('font-size', (d: Node) =>
+      isNaN(this.labelSizeScale(d[this.labelSizeField])) ? 16 : this.labelSizeScale(d[this.labelSizeField]))
       .attr('dx', 15) // label position encoding is not supported yet
       .attr('dy', 10);
 
     this.simulation.nodes(this.nodesData);
 
-    const validLinks = this.linksData.filter((link) => this.nodesData.findIndex((node) => node[idSymbol] === link[idSymbol]) > -1);
+    const validLinks = this.linksData.filter((link) => this.nodesData.findIndex((node: Node) => node[idSymbol] === link[idSymbol]) > -1);
     this.simulation.force('link').links(validLinks);
 
     this.simulation.alpha(1).restart();
   }
 
   ticked() {
-    this.nodes.attr('cx', (d) => d.x = Math.max(this.radius, Math.min(this.elementWidth - this.radius, d.x)))
-      .attr('cy', (d) => d.y = Math.max(this.radius, Math.min(this.elementHeight - this.radius, d.y)));
+    this.nodes.attr('cx', (d: Node) => d.x = Math.max(this.radius, Math.min(this.elementWidth - this.radius, d.x)))
+      .attr('cy', (d: Node) => d.y = Math.max(this.radius, Math.min(this.elementHeight - this.radius, d.y)));
 
-    this.svgContainer.selectAll('text').attr('x', (d: any) => d.x)
-      .attr('y', (d: any) => d.y);
+    this.svgContainer.selectAll('text').attr('x', (d: Node) => d.x)
+      .attr('y', (d: Node) => d.y);
 
-    this.links.attr('x1', (d) => d.source.x)
-      .attr('y1', (d) => d.source.y)
-      .attr('x2', (d) => d.target.x)
-      .attr('y2', (d) => d.target.y);
+    this.links.attr('x1', (d: Link) => d.source.x)
+      .attr('y1', (d: Link) => d.source.y)
+      .attr('x2', (d: Link) => d.target.x)
+      .attr('y2', (d: Link) => d.target.y);
 
     if (!this.runSimulation) {
       this.simulation.stop();
@@ -359,7 +349,7 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
   onMouseOver(targetID: any) {
     let tooltipText = '';
     const selection = this.svgContainer.selectAll('circle')
-      .filter((d: any) => {
+      .filter((d: Link) => {
         if (d[idSymbol] === targetID) {
           tooltipText = d.tooltipText.toString();
           return true;
@@ -372,47 +362,47 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
 
       this.tooltipDiv.html(tooltipText)
         .style('left', d3Selection.event.x - 50 + 'px')
-        .style('top',  d3Selection.event.y - 40 + 'px');
+        .style('top', d3Selection.event.y - 40 + 'px');
     }
   }
 
-  onMouseOut(targetID: any) {
+  onMouseOut(targetID: string | number) {
     const selection = this.svgContainer.selectAll('circle')
-      .filter((d: any) => d[idSymbol] === targetID);
+      .filter((d: Node) => d[idSymbol] === targetID);
 
-    selection.transition().attr('r', (d: any) => this.nodeSizeScale(d.size));
+    selection.transition().attr('r', (d: Node) => this.nodeSizeScale(d.size));
 
 
     const textSelection = this.svgContainer.selectAll('text')
-      .filter((d: any) => d.id === targetID);
+      .filter((d: Node) => d.id === targetID);
 
-    textSelection.transition().style('font-size', (d) => isNaN(
+    textSelection.transition().style('font-size', (d: Node) => isNaN(
       this.labelSizeScale(d[this.labelSizeField])) ? '16px' : this.labelSizeScale(d[this.labelSizeField]))
-    .attr('dx', 15)
-    .attr('dy', 10);
+      .attr('dx', 15)
+      .attr('dy', 10);
 
     if (this.enableTooltip) {
       this.tooltipDiv.style('opacity', 0)
-      .style('visibility', 'hidden');
+        .style('visibility', 'hidden');
     }
   }
 
-  dragstarted(d) {
+  dragstarted(d: Node) {
     if (!d3Selection.event.active) {
       this.simulation.alphaTarget(0.3)
-      .restart();
+        .restart();
     }
 
     d.fx = d.x;
     d.fy = d.y;
   }
 
-  dragged(d) {
+  dragged(d: Node) {
     d.fx = d3Selection.event.x;
     d.fy = d3Selection.event.y;
   }
 
-  dragended(d) {
+  dragended(d: Node) {
     if (!d3Selection.event.active) {
       this.simulation.alphaTarget(0);
     }

@@ -9,4 +9,6 @@ export class Point extends Datum<any> {
   size: string;
   stroke: string;
   pulse: boolean;
+  transparency: number;
+  strokeTransparency: number;
 }

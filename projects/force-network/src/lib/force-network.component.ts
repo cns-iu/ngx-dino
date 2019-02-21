@@ -69,9 +69,9 @@ export class ForceNetworkComponent implements OnInit, OnChanges {
 
   private simulation: any; // TODO typings
 
-  private nodes: d3Selection.Selection<SVGCircleElement, any, SVGElement, any>; // TODO typings
-  private links: any; // TODO typings
-  private labels: any; // TODO typings
+  private nodes: d3Selection.Selection<SVGCircleElement, any, SVGElement, any>;
+  private links: d3Selection.Selection<SVGLineElement, any, SVGElement, any>;
+  private labels: d3Selection.Selection<d3Selection.BaseType, any, d3Selection.BaseType, any>;
 
   private nodeSizeScale: ScaleLinear<number, number>;
   private labelSizeScale: ScaleLinear<number, number>;

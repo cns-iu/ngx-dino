@@ -25,7 +25,7 @@ const { create, defineProperties, getPrototypeOf, setPrototypeOf } = Object;
  * @returns The function.
  */
 function getFunctionFor(self: Function, proto: any, property: PropertyKey): Function {
-  const func: any = self[property];
+  const func: Function = (self as any)[property];
 
   if (typeof func !== 'function') {
     throw new TypeError(`this[${String(property)}] of class ${proto.constructor.name} is not a function`);

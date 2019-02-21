@@ -27,7 +27,7 @@ describe('Callable', () => {
       let spy: jasmine.Spy;
 
       beforeEach(() => {
-        spy = callable[property] = jasmine.createSpy()
+        spy = (callable as any)[property] = jasmine.createSpy()
           .and.returnValue(result) // Return result on normal calls
           .withArgs(...throwArgs).and.throwError(throwMessage); // Throw on special arguments
 

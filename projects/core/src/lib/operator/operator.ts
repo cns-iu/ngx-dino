@@ -1,14 +1,14 @@
 import {
   cond as loCond,
   constant as loConstant,
+  flatMapDepth as loFlatMapDepth,
   flow as loFlow,
-  forEach as loForEach,
   identity as loIdentity,
   isArray,
+  isFunction,
   Many,
   matches as loMatches,
-  reduce as loReduce,
-  stubTrue,
+  stubTrue as loStubTrue,
 } from 'lodash';
 
 import { Callable } from '../common/callable';
@@ -29,7 +29,7 @@ export type OperatorOrFunction<TArgument = any, TResult = any> = Operator<TArgum
 const getImplSelector = loCond<UnaryFunction[], UnaryFunction>([
   [loMatches({ length: 0 }), loConstant(loIdentity)],
   [loMatches({ length: 1 }), functions => functions[0]],
-  [stubTrue, loFlow]
+  [loStubTrue, loFlow]
 ]);
 
 /**
@@ -102,27 +102,21 @@ export class Operator<TArgument, TResult> extends Callable<[TArgument], TResult>
 }
 
 /**
+ * `normalize`'s flattening selector function.
+ */
+const normalizeSelector = loCond<Many<OperatorOrFunction>, UnaryFunction[]>([
+  [isFunction, (func: UnaryFunction) => [func]],
+  [op => op instanceof Operator, (op: Operator<any, any>) => op.functions as UnaryFunction[]],
+  [isArray, normalize as (array: OperatorOrFunction[]) => UnaryFunction[]],
+  [loStubTrue, arg => { throw new TypeError(`Invalid Operator argument: ${arg}`); }]
+]);
+
+/**
  * Normalizes an array of `Operator`s, `UnaryFunction`s, or arrays of such into an array of `UnaryFunction`s.
  *
  * @param functions The mixed type array.
  * @returns A array of `UnaryFunction`s.
  */
 function normalize(functions: Many<OperatorOrFunction>[]): UnaryFunction[] {
-  function append(acc: UnaryFunction[], item: OperatorOrFunction): void {
-    if (item instanceof Operator) {
-      acc.push.apply(acc, item.functions);
-    } else {
-      acc.push(item);
-    }
-  }
-
-  return loReduce(functions, (acc: UnaryFunction[], item: Many<OperatorOrFunction>): UnaryFunction[] => {
-    if (isArray(item)) {
-      loForEach(item, (subitem: OperatorOrFunction): void => append(acc, subitem));
-    } else {
-      append(acc, item as OperatorOrFunction);
-    }
-
-    return acc;
-  }, []);
+  return loFlatMapDepth(functions, normalizeSelector, 2);
 }

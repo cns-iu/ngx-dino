@@ -1,7 +1,7 @@
 import 'd3-transition';
 
 import { Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { BoundField, Datum, idSymbol, RawChangeSet, ChangeSet } from '@ngx-dino/core';
+import { BoundField, ChangeSet, Datum, idSymbol, RawChangeSet } from '@ngx-dino/core';
 import * as d3Array from 'd3-array';
 import * as d3Drag from 'd3-drag';
 import * as d3Force from 'd3-force';

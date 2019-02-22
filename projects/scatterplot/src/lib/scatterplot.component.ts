@@ -6,13 +6,14 @@ import * as d3Axis from 'd3-axis';
 import * as d3Selection from 'd3-selection';
 import 'd3-transition'; // This adds transition support to d3-selection
 import * as d3Array from 'd3-array';
-import { scaleLinear, scalePoint } from 'd3-scale';
+import { scaleLinear, scalePoint, ScaleLinear, ScalePoint } from 'd3-scale';
 import * as d3Shape from 'd3-shape';
 import { BoundField, RawChangeSet, Datum, idSymbol, ChangeSet, DatumId } from '@ngx-dino/core';
 
 import { ScatterplotDataService } from './shared/scatterplot-data.service';
 import { Point } from './shared/point';
 import { uniqBy, isNil } from 'lodash';
+import { Transition } from 'd3-transition';
 
 @Component({
   selector: 'dino-scatterplot',
@@ -75,8 +76,8 @@ export class ScatterplotComponent implements OnInit, OnChanges {
   xAxisGroup: d3Selection.Selection<d3Selection.BaseType, any, d3Selection.BaseType, undefined>;
   yAxisGroup: d3Selection.Selection<d3Selection.BaseType, any, d3Selection.BaseType, undefined>;
 
-  xScale: any; // d3Axis.AxisScale<any> couldn't figure out domain and range definition
-  yScale: any; // d3Axis.AxisScale<any>
+  xScale: unknown; // d3Axis.AxisScale<any> couldn't figure out domain and range definition
+  yScale: unknown; // d3Axis.AxisScale<any>
 
   transparencyScale: any;
   // x & y labels are field labels  - not drawnq over the axes
@@ -84,17 +85,17 @@ export class ScatterplotComponent implements OnInit, OnChanges {
   yAxisLabel = ''; // defaults
 
   // x & y text are svg elements with text drawn over the axes denoting the type of axis.
-  xAxisText: any;
-  yAxisText: any;
+  xAxisText: d3Selection.Selection<d3Selection.BaseType, any, HTMLElement, undefined>;
+  yAxisText: d3Selection.Selection<d3Selection.BaseType, any, HTMLElement, undefined>;
 
-  xAxis: any; // d3Axis.Axis<any>;
-  yAxis: any; // d3Axis.Axis<{}>;
+  xAxis: d3Axis.Axis<d3Axis.AxisDomain>; // d3Axis.Axis<any>;
+  yAxis: d3Axis.Axis<d3Axis.AxisDomain>; // d3Axis.Axis<{}>;
 
   maxYAxisTickWidth = 0;
 
   data: Point[] = [];
 
-  tooltipDiv: any;
+  tooltipDiv: d3Selection.Selection<HTMLElement, {}, HTMLElement, any>;
 
   private elementWidth = 0;
   private elementHeight = 0;
@@ -278,12 +279,15 @@ export class ScatterplotComponent implements OnInit, OnChanges {
   }
 
   updateAxisTexts() {
-    this.xAxisText.attr('transform', 'translate(' + (this.xScale(this.xScale.domain()[0]) + 10) + ' ,' +
-      (this.yScale(this.yScale.domain()[0]) - 15) + ')');
+    this.xAxisText.attr('transform', 'translate(' +
+    ((<d3Axis.AxisScale<d3Axis.AxisDomain>>this.xScale)((<d3Axis.AxisScale<d3Axis.AxisDomain>>this.xScale).domain()[0]) + 10) + ' ,' +
+      ((<d3Axis.AxisScale<d3Axis.AxisDomain>>this.yScale)((<d3Axis.AxisScale<d3Axis.AxisDomain>>this.yScale).domain()[0]) - 15) + ')');
     this.xAxisText.attr('visibility', 'visible');
 
-    this.yAxisText.attr('transform', 'translate(' + (this.xScale(this.xScale.domain()[0]) - 15) + ' ,' +
-      (this.yScale(this.yScale.domain()[0]) - 10) + ') rotate(-90)');
+    this.yAxisText.attr('transform', 'translate(' +
+    ((<d3Axis.AxisScale<d3Axis.AxisDomain>>this.xScale)((<d3Axis.AxisScale<d3Axis.AxisDomain>>this.xScale).domain()[0]) - 15) + ' ,' +
+      ((<d3Axis.AxisScale<d3Axis.AxisDomain>>this.yScale)((<d3Axis.AxisScale<d3Axis.AxisDomain>>this.yScale).domain()[0]) - 10)
+      + ') rotate(-90)');
     this.yAxisText.attr('visibility', 'visible');
   }
 
@@ -337,7 +341,7 @@ export class ScatterplotComponent implements OnInit, OnChanges {
       .text(this.yAxisLabel);
 
     // draw the x axis
-    this.xAxis = d3Axis.axisBottom(this.xScale)
+    this.xAxis = d3Axis.axisBottom(this.xScale as d3Axis.AxisScale<d3Axis.AxisDomain>)
       .tickSizeOuter(0)
       .tickPadding(10);
     if (this.gridlines) {
@@ -351,7 +355,7 @@ export class ScatterplotComponent implements OnInit, OnChanges {
       .attr('marker-end', this.xAxisArrow ? 'url(#arrowhead)' : null);
 
     // draw the y axis
-    this.yAxis = d3Axis.axisLeft(this.yScale)
+    this.yAxis = d3Axis.axisLeft(this.yScale as d3Axis.AxisScale<d3Axis.AxisDomain>)
       .tickSizeOuter(0)
       .tickPadding(10);
     if (this.gridlines) {
@@ -407,21 +411,22 @@ export class ScatterplotComponent implements OnInit, OnChanges {
       const formatYaxis = d3Array.min(data, (d) => Number(d.y)) >= 1000 && d3Array.max(data, (d) => Number(d.y)) <= 3000 ?
       d3Format.format('04d') : null;
 
-      this.xAxis = d3Axis.axisBottom(this.xScale)
+      this.xAxis = d3Axis.axisBottom(this.xScale as d3Axis.AxisScale<d3Axis.AxisDomain>)
         .tickFormat(formatXaxis)
         .tickSizeInner(-this.elementHeight)
         .tickSizeOuter(0)
         .tickPadding(10);
 
-      this.yAxis = d3Axis.axisLeft(this.yScale)
+      this.yAxis = d3Axis.axisLeft(this.yScale as d3Axis.AxisScale<d3Axis.AxisDomain>)
         .tickFormat(formatYaxis)
         .tickSizeInner(-(this.elementWidth + this.maxYAxisTickWidth))
         .tickSizeOuter(0)
         .tickPadding(10);
     }
 
-    this.xAxisGroup.transition().call(this.xAxis);  // Update X-Axis
-    this.yAxisGroup.transition().call(this.yAxis);  // Update Y-Axis
+    this.xAxisGroup.transition()
+    .call(() => this.xAxis);  // Update X-Axis
+    this.yAxisGroup.transition().call(() => this.yAxis);  // Update Y-Axis
 
     if (this.gridlines) { // set color and opacity of updated gridlines
       this.setGridlineProperties();
@@ -498,16 +503,16 @@ export class ScatterplotComponent implements OnInit, OnChanges {
         .data(data, (d: Point) => d.id);
 
       labels.transition().duration(500)
-        .attr('x', (d) => this.xScale(d.x) + 12)
-        .attr('y', (d) => this.yScale(d.y) + 14)
+        .attr('x', (d) => (<d3Axis.AxisScale<d3Axis.AxisDomain>>this.xScale)(d.x) + 12)
+        .attr('y', (d) => (<d3Axis.AxisScale<d3Axis.AxisDomain>>this.yScale)(d.y) + 14)
         .text((d) => '(' + d.shape + ')')
         .attr('font-size', '8px');
 
       labels.enter().append('text')
         .data(data)
         .attr('class', 'label')
-        .attr('x', (d) => this.xScale(d.x) + 12)
-        .attr('y', (d) => this.yScale(d.y) + 14)
+        .attr('x', (d) => (<d3Axis.AxisScale<d3Axis.AxisDomain>>this.xScale)(d.x) + 12)
+        .attr('y', (d) => (<d3Axis.AxisScale<d3Axis.AxisDomain>>this.yScale)(d.y) + 14)
         .text((d) => '(' + d.shape + ')')
         .attr('font-size', '8px');
 
@@ -534,7 +539,7 @@ export class ScatterplotComponent implements OnInit, OnChanges {
 }
 
   /**** This function draws the shape encoded on the data ****/
-  selectShape(d) {
+  selectShape(d: Point) {
     switch (d.shape) {
       case 'circle': return d3Shape.symbolCircle;
       case 'square': return d3Shape.symbolSquare;
@@ -565,7 +570,8 @@ export class ScatterplotComponent implements OnInit, OnChanges {
         break;
     }
 
-    return `translate(${this.xScale(d.x)},${this.yScale(d.y)})` +
+    return `translate(${(<d3Axis.AxisScale<d3Axis.AxisDomain>>this.xScale)(d.x)},
+    ${(<d3Axis.AxisScale<d3Axis.AxisDomain>>this.yScale)(d.y)})` +
       `rotate(${rotation})`;
   }
 
@@ -575,15 +581,16 @@ export class ScatterplotComponent implements OnInit, OnChanges {
       default:
       case 'number':
         this.xScale = scaleLinear();
-        this.xAxis = d3Axis.axisBottom(this.xScale).tickSizeOuter(0);
-        this.xScale.domain([d3Array.min(data, (d) => Number(d.x)), d3Array.max(data, (d) => Number(d.x))])
+        this.xAxis = d3Axis.axisBottom(<d3Axis.AxisScale<d3Axis.AxisDomain>>this.xScale).tickSizeOuter(0);
+        (<ScaleLinear<number, number>>this.xScale).domain([d3Array.min(data, (d: Point) => Number(d.x)),
+           d3Array.max(data, (d: Point) => Number(d.x))])
           .range([0, this.elementWidth - this.maxYAxisTickWidth]);
         break;
 
       case 'string':
         this.xScale = scalePoint();
-        this.xAxis = d3Axis.axisBottom(this.xScale).tickSizeOuter(0);
-        this.xScale.domain(data.map(el => el.x).sort())
+        this.xAxis = d3Axis.axisBottom((<d3Axis.AxisScale<d3Axis.AxisDomain>>this.xScale)).tickSizeOuter(0);
+        (<ScalePoint<string>>this.xScale).domain(data.map(el => el.x).sort() as ReadonlyArray<string>)
           .range([0, this.elementWidth - this.maxYAxisTickWidth]);
         break;
     }
@@ -592,15 +599,16 @@ export class ScatterplotComponent implements OnInit, OnChanges {
       default:
       case 'number':
         this.yScale = scaleLinear();
-        this.yAxis = d3Axis.axisLeft(this.yScale).tickSizeOuter(0);
-        this.yScale.domain([d3Array.min(data, (d) => Number(d.y)), d3Array.max(data, (d) => Number(d.y))])
+        this.yAxis = d3Axis.axisLeft(<d3Axis.AxisScale<d3Axis.AxisDomain>>this.yScale).tickSizeOuter(0);
+        (<ScaleLinear<number, number>>this.yScale).domain([d3Array.min(data,
+           (d: Point) => Number(d.y)), d3Array.max(data, (d: Point) => Number(d.y))])
           .range([this.elementHeight, 0]);
         break;
 
       case 'string':
         this.yScale = scalePoint();
-        this.yAxis = d3Axis.axisLeft(this.yScale).tickSizeOuter(0);
-        this.yScale.domain(data.map(el => el.y).sort().reverse())
+        this.yAxis = d3Axis.axisLeft(<d3Axis.AxisScale<d3Axis.AxisDomain>>this.yScale).tickSizeOuter(0);
+        (<ScalePoint<string>>this.yScale).domain(data.map(el => el.y).sort().reverse() as ReadonlyArray<string>)
           .range([this.elementHeight, 0]);
         break;
     }

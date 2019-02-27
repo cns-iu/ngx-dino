@@ -6,7 +6,9 @@ export class Point extends Datum<any> {
   y: number | string;
   color: string;
   shape: string;
-  size: string;
+  size: string | number;
   stroke: string;
   pulse: boolean;
+  transparency: number;
+  strokeTransparency: number;
 }

@@ -1,18 +1,19 @@
-import { Component, ElementRef, OnChanges, OnInit, Input, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
-import { Set } from 'immutable';
-import * as d3Format from 'd3-format';
-import * as d3Axis from 'd3-axis';
-import * as d3Selection from 'd3-selection';
-import 'd3-transition'; // This adds transition support to d3-selection
-import * as d3Array from 'd3-array';
-import { scaleLinear, scalePoint } from 'd3-scale';
-import * as d3Shape from 'd3-shape';
-import { BoundField, RawChangeSet, Datum, idSymbol, ChangeSet, DatumId } from '@ngx-dino/core';
+import 'd3-transition';
 
-import { ScatterplotDataService } from './shared/scatterplot-data.service';
+import { Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
+import { BoundField, ChangeSet, Datum, DatumId, idSymbol, RawChangeSet } from '@ngx-dino/core';
+import * as d3Array from 'd3-array';
+import * as d3Axis from 'd3-axis';
+import * as d3Format from 'd3-format';
+import { ScaleLinear, scaleLinear, ScalePoint, scalePoint } from 'd3-scale';
+import * as d3Selection from 'd3-selection';
+import * as d3Shape from 'd3-shape';
+import { Set } from 'immutable';
+import { isNil, uniqBy } from 'lodash';
+import { Observable, Subscription } from 'rxjs';
+
 import { Point } from './shared/point';
-import { uniqBy, isNil } from 'lodash';
+import { ScatterplotDataService } from './shared/scatterplot-data.service';
 
 @Component({
   selector: 'dino-scatterplot',
@@ -75,26 +76,26 @@ export class ScatterplotComponent implements OnInit, OnChanges {
   xAxisGroup: d3Selection.Selection<d3Selection.BaseType, any, d3Selection.BaseType, undefined>;
   yAxisGroup: d3Selection.Selection<d3Selection.BaseType, any, d3Selection.BaseType, undefined>;
 
-  xScale: any; // d3Axis.AxisScale<any> couldn't figure out domain and range definition
-  yScale: any; // d3Axis.AxisScale<any>
+  xScale: unknown;
+  yScale: unknown;
 
-  transparencyScale: any;
+  transparencyScale: ScaleLinear<number, number>;
   // x & y labels are field labels  - not drawnq over the axes
   xAxisLabel = ''; // defaults
   yAxisLabel = ''; // defaults
 
   // x & y text are svg elements with text drawn over the axes denoting the type of axis.
-  xAxisText: any;
-  yAxisText: any;
+  xAxisText: d3Selection.Selection<d3Selection.BaseType, any, HTMLElement, undefined>;
+  yAxisText: d3Selection.Selection<d3Selection.BaseType, any, HTMLElement, undefined>;
 
-  xAxis: any; // d3Axis.Axis<any>;
-  yAxis: any; // d3Axis.Axis<{}>;
+  xAxis: d3Axis.Axis<d3Axis.AxisDomain>;
+  yAxis: d3Axis.Axis<d3Axis.AxisDomain>;
 
   maxYAxisTickWidth = 0;
 
   data: Point[] = [];
 
-  tooltipDiv: any;
+  tooltipDiv: d3Selection.Selection<HTMLDivElement, {}, HTMLDivElement, any>;
 
   private elementWidth = 0;
   private elementHeight = 0;
@@ -180,13 +181,11 @@ export class ScatterplotComponent implements OnInit, OnChanges {
     }
 
     if ('xAxisArrow' in changes && this.xAxis) {
-      this.xAxisGroup.select('path')
-        .attr('marker-end', this.xAxisArrow ? 'url(#arrowhead)' : null);
+      this.xAxisGroup.select('path').attr('marker-end', this.xAxisArrow ? 'url(#arrowhead)' : null);
     }
 
     if ('yAxisArrow' in changes && this.yAxis) {
-      this.yAxisGroup.select('path')
-        .attr('marker-end', this.yAxisArrow ? 'url(#arrowhead)' : null);
+      this.yAxisGroup.select('path').attr('marker-end', this.yAxisArrow ? 'url(#arrowhead)' : null);
     }
 
     if ((!this.autoresize) && (('width' in changes) && ('height' in changes))) {
@@ -251,7 +250,6 @@ export class ScatterplotComponent implements OnInit, OnChanges {
         this.strokeTransparencyField,
         this.pulseField,
 
-
         (this.enableTooltip) ? this.tooltipTextField : undefined
       );
     }
@@ -261,7 +259,7 @@ export class ScatterplotComponent implements OnInit, OnChanges {
     // Estimate how much extra padding to use for Y-Axis text.
     // TODO: Use font-metrics to compute the width more accurately
     const oldMax = this.maxYAxisTickWidth;
-    this.maxYAxisTickWidth = Math.min(this.maxYAxisLabelWidth, d3Array.max(this.data, (d) => String(d.y).length * 4));
+    this.maxYAxisTickWidth = Math.min(this.maxYAxisLabelWidth, d3Array.max(this.data, (d: Point) => String(d.y).length * 4));
     if (oldMax !== this.maxYAxisTickWidth) {
       this.svgContainer.remove();
       this.initVisualization();
@@ -278,12 +276,15 @@ export class ScatterplotComponent implements OnInit, OnChanges {
   }
 
   updateAxisTexts() {
-    this.xAxisText.attr('transform', 'translate(' + (this.xScale(this.xScale.domain()[0]) + 10) + ' ,' +
-      (this.yScale(this.yScale.domain()[0]) - 15) + ')');
+    this.xAxisText.attr('transform', 'translate(' +
+    ((<d3Axis.AxisScale<d3Axis.AxisDomain>>this.xScale)((<d3Axis.AxisScale<d3Axis.AxisDomain>>this.xScale).domain()[0]) + 10) + ' ,' +
+      ((<d3Axis.AxisScale<d3Axis.AxisDomain>>this.yScale)((<d3Axis.AxisScale<d3Axis.AxisDomain>>this.yScale).domain()[0]) - 15) + ')');
     this.xAxisText.attr('visibility', 'visible');
 
-    this.yAxisText.attr('transform', 'translate(' + (this.xScale(this.xScale.domain()[0]) - 15) + ' ,' +
-      (this.yScale(this.yScale.domain()[0]) - 10) + ') rotate(-90)');
+    this.yAxisText.attr('transform', 'translate(' +
+    ((<d3Axis.AxisScale<d3Axis.AxisDomain>>this.xScale)((<d3Axis.AxisScale<d3Axis.AxisDomain>>this.xScale).domain()[0]) - 15) + ' ,' +
+      ((<d3Axis.AxisScale<d3Axis.AxisDomain>>this.yScale)((<d3Axis.AxisScale<d3Axis.AxisDomain>>this.yScale).domain()[0]) - 10)
+      + ') rotate(-90)');
     this.yAxisText.attr('visibility', 'visible');
   }
 
@@ -299,68 +300,39 @@ export class ScatterplotComponent implements OnInit, OnChanges {
 
     this.containerMain = this.svgContainer.append('g')
       .attr('transform', 'translate(' + (this.margin.left + this.maxYAxisTickWidth) + ',' + this.margin.top + ')')
-      .attr('width', this.elementWidth - this.maxYAxisTickWidth)
-      .attr('height', this.elementHeight)
-      .classed('svg-content-responsive', true)
-      .attr('class', 'main');
+      .attr('width', this.elementWidth - this.maxYAxisTickWidth).attr('height', this.elementHeight)
+      .classed('svg-content-responsive', true).attr('class', 'main');
 
     // Add arrow marker for axes
     this.svgContainer.append('defs').append('marker')
-      .attr('id', 'arrowhead')
-      .attr('viewBox', '0 0 10 10')
-      .attr('refX', 5)
-      .attr('refY', 5)
-      .attr('markerWidth', 10)
-      .attr('markerHeight', 10)
-      .attr('orient', 'auto')
-      .append('path')
-      .attr('transform', 'rotate(-90, 5, 5)')
+      .attr('id', 'arrowhead').attr('viewBox', '0 0 10 10').attr('refX', 5).attr('refY', 5).attr('markerWidth', 10)
+      .attr('markerHeight', 10).attr('orient', 'auto').append('path').attr('transform', 'rotate(-90, 5, 5)')
       .attr('d', 'M 0 0 L 5 10 L 10 0 z');
 
     // text label for the x-axis
-    this.containerMain.append('text')
-      .attr('transform',
-        'translate(' + (this.elementWidth / 2) + ' ,' +
-        (this.elementHeight + this.margin.top + 20) + ')')
-      .attr('class', 'xAxisLabel')
-      .style('text-anchor', 'middle')
-      .text(this.xAxisLabel);
+    this.containerMain.append('text').attr('transform', 'translate(' + (this.elementWidth / 2) + ' ,' +
+    (this.elementHeight + this.margin.top + 20) + ')').attr('class', 'xAxisLabel').style('text-anchor', 'middle').text(this.xAxisLabel);
 
     // text label for the y-axis
-    this.containerMain.append('text')
-      .attr('transform', 'rotate(-90)')
-      .attr('y', 0 - this.margin.left)
-      .attr('x', 0 - (this.elementHeight / 2))
-      .attr('dy', '1em')
-      .attr('class', 'yAxisLabel')
-      .style('text-anchor', 'middle')
-      .text(this.yAxisLabel);
+    this.containerMain.append('text').attr('transform', 'rotate(-90)').attr('y', 0 - this.margin.left)
+      .attr('x', 0 - (this.elementHeight / 2)).attr('dy', '1em').attr('class', 'yAxisLabel')
+      .style('text-anchor', 'middle').text(this.yAxisLabel);
 
     // draw the x axis
-    this.xAxis = d3Axis.axisBottom(this.xScale)
-      .tickSizeOuter(0)
-      .tickPadding(10);
+    this.xAxis = d3Axis.axisBottom(this.xScale as d3Axis.AxisScale<d3Axis.AxisDomain>).tickSizeOuter(0).tickPadding(10);
     if (this.gridlines) {
       this.xAxis.tickSizeInner(-this.elementHeight); // for x-gridlines
     }
-    this.xAxisGroup = this.containerMain.append('g')
-      .attr('transform', 'translate(0,' + this.elementHeight + ')')
-      .attr('class', 'xAxis')
-      .call(this.xAxis);
-    this.xAxisGroup.select('path')
-      .attr('marker-end', this.xAxisArrow ? 'url(#arrowhead)' : null);
+    this.xAxisGroup = this.containerMain.append('g').attr('transform', 'translate(0,' + this.elementHeight + ')')
+    .attr('class', 'xAxis').call(this.xAxis);
+    this.xAxisGroup.select('path').attr('marker-end', this.xAxisArrow ? 'url(#arrowhead)' : null);
 
     // draw the y axis
-    this.yAxis = d3Axis.axisLeft(this.yScale)
-      .tickSizeOuter(0)
-      .tickPadding(10);
+    this.yAxis = d3Axis.axisLeft(this.yScale as d3Axis.AxisScale<d3Axis.AxisDomain>).tickSizeOuter(0).tickPadding(10);
     if (this.gridlines) {
       this.yAxis.tickSizeInner(-(this.elementWidth + this.maxYAxisTickWidth)); // for y-gridlines
     }
-    this.yAxisGroup = this.containerMain.append('g')
-      .attr('transform', 'translate(0,0)')
-      .attr('class', 'yAxis')
-      .call(this.yAxis);
+    this.yAxisGroup = this.containerMain.append('g').attr('transform', 'translate(0,0)').attr('class', 'yAxis').call(this.yAxis);
     this.yAxisGroup.select('path')
       .attr('marker-end', this.yAxisArrow ? 'url(#arrowhead)' : null);
 
@@ -371,21 +343,13 @@ export class ScatterplotComponent implements OnInit, OnChanges {
     if (this.showAxisIndicators) {
       // draw the text over axes
       this.xAxisText = this.containerMain.append('g');
-      this.xAxisText.append('rect')
-        .attr('x', 0).attr('y', 0)
-        .attr('width', 50). attr('height', 20).attr('fill', 'white');
-      this.xAxisText.append('text').text('X axis')
-        .attr('x', 5).attr('y', 20)
-        .attr('dy', '0.1em').attr('fill', 'black');
+      this.xAxisText.append('rect').attr('x', 0).attr('y', 0).attr('width', 50). attr('height', 20).attr('fill', 'white');
+      this.xAxisText.append('text').text('X axis').attr('x', 5).attr('y', 20).attr('dy', '0.1em').attr('fill', 'black');
       this.xAxisText.attr('visibility', 'hidden');
 
       this.yAxisText = this.containerMain.append('g');
-      this.yAxisText.append('rect')
-        .attr('x', 0).attr('y', 10)
-        .attr('width', 50). attr('height', 20).attr('fill', 'white');
-      this.yAxisText.append('text').text('Y axis')
-        .attr('x', 5).attr('y', 20)
-        .attr('dy', '0.1em').attr('fill', 'black');
+      this.yAxisText.append('rect').attr('x', 0).attr('y', 10).attr('width', 50). attr('height', 20).attr('fill', 'white');
+      this.yAxisText.append('text').text('Y axis').attr('x', 5).attr('y', 20).attr('dy', '0.1em').attr('fill', 'black');
       this.yAxisText.attr('visibility', 'hidden');
     }
 
@@ -393,8 +357,7 @@ export class ScatterplotComponent implements OnInit, OnChanges {
     this.mainG = this.containerMain.append('g');
 
     if (this.enableTooltip) {
-      this.tooltipDiv = d3Selection.select(this.parentNativeElement)
-        .select('.plotContainer').select('.tooltip');
+      this.tooltipDiv = d3Selection.select(this.parentNativeElement).select('.plotContainer').select('.tooltip');
     }
   }
 
@@ -407,21 +370,16 @@ export class ScatterplotComponent implements OnInit, OnChanges {
       const formatYaxis = d3Array.min(data, (d) => Number(d.y)) >= 1000 && d3Array.max(data, (d) => Number(d.y)) <= 3000 ?
       d3Format.format('04d') : null;
 
-      this.xAxis = d3Axis.axisBottom(this.xScale)
-        .tickFormat(formatXaxis)
-        .tickSizeInner(-this.elementHeight)
-        .tickSizeOuter(0)
-        .tickPadding(10);
+      this.xAxis = d3Axis.axisBottom(this.xScale as d3Axis.AxisScale<d3Axis.AxisDomain>)
+        .tickFormat(formatXaxis).tickSizeInner(-this.elementHeight).tickSizeOuter(0).tickPadding(10);
 
-      this.yAxis = d3Axis.axisLeft(this.yScale)
-        .tickFormat(formatYaxis)
-        .tickSizeInner(-(this.elementWidth + this.maxYAxisTickWidth))
-        .tickSizeOuter(0)
-        .tickPadding(10);
+      this.yAxis = d3Axis.axisLeft(this.yScale as d3Axis.AxisScale<d3Axis.AxisDomain>)
+        .tickFormat(formatYaxis).tickSizeInner(-(this.elementWidth + this.maxYAxisTickWidth)).tickSizeOuter(0).tickPadding(10);
     }
 
-    this.xAxisGroup.transition().call(this.xAxis);  // Update X-Axis
-    this.yAxisGroup.transition().call(this.yAxis);  // Update Y-Axis
+    /* for usage of call () , please refer - https://github.com/d3/d3-transition#transition_call */
+    this.xAxisGroup.transition().call(() => this.xAxis);  // Update X-Axis
+    this.yAxisGroup.transition().call(() => this.yAxis);  // Update Y-Axis
 
     if (this.gridlines) { // set color and opacity of updated gridlines
       this.setGridlineProperties();
@@ -432,61 +390,39 @@ export class ScatterplotComponent implements OnInit, OnChanges {
     }
 
     // Insert pulses
-    const pulse = this.pulseG.selectAll('g')
-      .data(data.filter((p) => p.pulse), (p) => p[idSymbol]);
+    const pulse = this.pulseG.selectAll('g').data(data.filter((p: Point) => p.pulse), (p) => p[idSymbol]);
 
-    pulse.attr('transform', (d) => this.shapeTransform(d))
-      .selectAll('.pulsing')
-      .attr('d', d3Shape.symbol()
-        .size((d) => <number>2 * d.size)
-        .type((d) => this.selectShape(d)))
-      .attr('stroke', (d: any) => d.color === '#ffffff' ? '#000000' : d.stroke);
+    pulse.attr('transform', (d) => this.shapeTransform(d)).selectAll('.pulsing').attr('d', d3Shape.symbol().size((d) => <number>2 * d.size)
+        .type((d: Point) => this.selectShape(d))).attr('stroke', (d: Point) => d.color === '#ffffff' ? '#000000' : d.stroke);
 
-    pulse.enter().append('g')
-      .attr('transform', (d) => this.shapeTransform(d))
-      .append('path')
-      .classed('pulsing', true)
-      .attr('d', d3Shape.symbol()
-        .size((d) => <number>2 * d.size)
-        .type((d) => this.selectShape(d)))
-      .attr('stroke', (d) => d.color === '#ffffff' ? '#000000' : d.stroke);
+    pulse.enter().append('g').attr('transform', (d: Point) => this.shapeTransform(d)).append('path').classed('pulsing', true)
+    .attr('d', d3Shape.symbol().size((d: Point) => 2 * (<number>d.size)).type((d: Point) => this.selectShape(d)))
+      .attr('stroke', (d: Point) => d.color === '#ffffff' ? '#000000' : d.stroke);
 
     pulse.exit().remove();
 
     // Insert items
-    const plots = this.mainG.selectAll('.plots')
-      .data(data, (d: Point) => d[idSymbol]);
+    const plots = this.mainG.selectAll<SVGElement, Point[]>('.plots').data(data, (d) => d[idSymbol]);
 
     plots
-      .attr('d', d3Shape.symbol()
-        .size((d) => d.size as number)
-        .type((d) => this.selectShape(d)))
-      .attr('stroke', (d) => d.color === '#ffffff' ? '#000000' : d.stroke)
-      .attr('stroke-width', 1)
-      .attr('transform', (d) => this.shapeTransform(d))
-      .attr('fill', (d) => d.color)
-      .attr('fill-opacity', (d) => this.transparencyScale(d.transparency))
-      .attr('stroke-opacity', (d) => this.transparencyScale(d.strokeTransparency));
+      .attr('d', d3Shape.symbol().size((d: Point) => d.size as number).type((d: Point) => this.selectShape(d)))
+      .attr('stroke', (d: Point) => d.color === '#ffffff' ? '#000000' : d.stroke).attr('stroke-width', 1)
+      .attr('transform', (d: Point) => this.shapeTransform(d)).attr('fill', (d: Point) => d.color)
+      .attr('fill-opacity', (d: Point) => this.transparencyScale(d.transparency))
+      .attr('stroke-opacity', (d: Point) => this.transparencyScale(d.strokeTransparency));
 
     plots.enter().append('path')
-      .data(data)
-      .attr('class', 'plots')
-      .attr('fill-opacity', (d) => this.transparencyScale(d.transparency))
-      .attr('stroke-opacity', (d) => this.transparencyScale(d.strokeTransparency))
-      .attr('id', (d) => d[idSymbol])
-      .attr('d', d3Shape.symbol()
-        .size((d) => d.size as number)
-        .type((d) => this.selectShape(d)))
-      .attr('transform', (d) => this.shapeTransform(d))
-      .attr('fill', (d) => d.color)
-      .attr('stroke', (d) => d.color === '#ffffff' ? '#000000' : d.stroke)
-      .attr('stroke-width', 1);
+      .data(data).attr('class', 'plots').attr('fill-opacity', (d: Point) => this.transparencyScale(d.transparency))
+      .attr('stroke-opacity', (d: Point) => this.transparencyScale(d.strokeTransparency)).attr('id', (d) => d[idSymbol])
+      .attr('d', d3Shape.symbol().size((d: Point) => d.size as number).type((d: Point) => this.selectShape(d)))
+      .attr('transform', (d: Point) => this.shapeTransform(d)).attr('fill', (d: Point) => d.color)
+      .attr('stroke', (d: Point) => d.color === '#ffffff' ? '#000000' : d.stroke).attr('stroke-width', 1);
 
     this.svgContainer.selectAll('.plots')
-      .on('mouseover', (d) => this.onMouseOver(d[idSymbol]));
+      .on('mouseover', (d: Point) => this.onMouseOver(d[idSymbol]));
 
     this.svgContainer.selectAll('.plots')
-      .on('mouseout', (d) => this.onMouseOut(d[idSymbol]));
+      .on('mouseout', (d: Point) => this.onMouseOut(d[idSymbol]));
 
     plots.exit().remove();
   }
@@ -494,21 +430,18 @@ export class ScatterplotComponent implements OnInit, OnChanges {
   /**** This function draws text next to each plot with info about it ****/
   drawText(data: Point[], enabled = false) {
     if (enabled) {
-      const labels = this.mainG.selectAll('.label')
-        .data(data, (d: Point) => d.id);
+      const labels = this.mainG.selectAll('.label').data(data, (d: Point) => d.id);
 
       labels.transition().duration(500)
-        .attr('x', (d) => this.xScale(d.x) + 12)
-        .attr('y', (d) => this.yScale(d.y) + 14)
-        .text((d) => '(' + d.shape + ')')
+        .attr('x', (d: Point) => (<d3Axis.AxisScale<d3Axis.AxisDomain>>this.xScale)(d.x) + 12)
+        .attr('y', (d: Point) => (<d3Axis.AxisScale<d3Axis.AxisDomain>>this.yScale)(d.y) + 14).text((d: Point) => '(' + d.shape + ')')
         .attr('font-size', '8px');
 
       labels.enter().append('text')
         .data(data)
         .attr('class', 'label')
-        .attr('x', (d) => this.xScale(d.x) + 12)
-        .attr('y', (d) => this.yScale(d.y) + 14)
-        .text((d) => '(' + d.shape + ')')
+        .attr('x', (d: Point) => (<d3Axis.AxisScale<d3Axis.AxisDomain>>this.xScale)(d.x) + 12)
+        .attr('y', (d: Point) => (<d3Axis.AxisScale<d3Axis.AxisDomain>>this.yScale)(d.y) + 14).text((d: Point) => '(' + d.shape + ')')
         .attr('font-size', '8px');
 
       labels.exit().remove();
@@ -517,24 +450,18 @@ export class ScatterplotComponent implements OnInit, OnChanges {
 
   setGridlineProperties() {
      // color axes first
-    this.svgContainer.select('.xAxis > g:first-of-type').select('line')
-      .attr('stroke', 'black')
-      .attr('stroke-opacity', 1);
+    this.svgContainer.select('.xAxis > g:first-of-type').select('line').attr('stroke', 'black').attr('stroke-opacity', 1);
 
-    this.svgContainer.select('.yAxis > g:first-of-type').select('line')
-      .attr('stroke', 'black')
-      .attr('stroke-opacity', 1);
+    this.svgContainer.select('.yAxis > g:first-of-type').select('line').attr('stroke', 'black').attr('stroke-opacity', 1);
 
     // color gridlines after coloring axes
-    this.svgContainer.selectAll('.tick line')
-      .attr('stroke', this.gridlinesColor)
-      .attr('stroke-opacity', this.gridlinesOpacity);
+    this.svgContainer.selectAll('.tick line').attr('stroke', this.gridlinesColor).attr('stroke-opacity', this.gridlinesOpacity);
 
     this.svgContainer.select('.yAxis > g:first-of-type').select('line').style('display', 'none');
 }
 
   /**** This function draws the shape encoded on the data ****/
-  selectShape(d) {
+  selectShape(d: Point) {
     switch (d.shape) {
       case 'circle': return d3Shape.symbolCircle;
       case 'square': return d3Shape.symbolSquare;
@@ -550,7 +477,7 @@ export class ScatterplotComponent implements OnInit, OnChanges {
   }
 
   /**** This function applies a transform to the shape encoded on the data ****/
-  shapeTransform(d) {
+  shapeTransform(d: Point) {
     let rotation = 0;
 
     switch (d.shape) {
@@ -565,8 +492,8 @@ export class ScatterplotComponent implements OnInit, OnChanges {
         break;
     }
 
-    return `translate(${this.xScale(d.x)},${this.yScale(d.y)})` +
-      `rotate(${rotation})`;
+    return `translate(${(<d3Axis.AxisScale<d3Axis.AxisDomain>>this.xScale)(d.x)},
+    ${(<d3Axis.AxisScale<d3Axis.AxisDomain>>this.yScale)(d.y)})` + `rotate(${rotation})`;
   }
 
   /**** This function sets scales on x and y axes based on fields selected *****/
@@ -575,16 +502,16 @@ export class ScatterplotComponent implements OnInit, OnChanges {
       default:
       case 'number':
         this.xScale = scaleLinear();
-        this.xAxis = d3Axis.axisBottom(this.xScale).tickSizeOuter(0);
-        this.xScale.domain([d3Array.min(data, (d) => Number(d.x)), d3Array.max(data, (d) => Number(d.x))])
-          .range([0, this.elementWidth - this.maxYAxisTickWidth]);
+        this.xAxis = d3Axis.axisBottom(<d3Axis.AxisScale<d3Axis.AxisDomain>>this.xScale).tickSizeOuter(0);
+        (<ScaleLinear<number, number>>this.xScale).domain([d3Array.min(data, (d: Point) => Number(d.x)),
+           d3Array.max(data, (d: Point) => Number(d.x))]).range([0, this.elementWidth - this.maxYAxisTickWidth]);
         break;
 
       case 'string':
         this.xScale = scalePoint();
-        this.xAxis = d3Axis.axisBottom(this.xScale).tickSizeOuter(0);
-        this.xScale.domain(data.map(el => el.x).sort())
-          .range([0, this.elementWidth - this.maxYAxisTickWidth]);
+        this.xAxis = d3Axis.axisBottom((<d3Axis.AxisScale<d3Axis.AxisDomain>>this.xScale)).tickSizeOuter(0);
+        (<ScalePoint<string>>this.xScale).domain(data.map(el => el.x).sort() as ReadonlyArray<string>)
+        .range([0, this.elementWidth - this.maxYAxisTickWidth]);
         break;
     }
 
@@ -592,16 +519,16 @@ export class ScatterplotComponent implements OnInit, OnChanges {
       default:
       case 'number':
         this.yScale = scaleLinear();
-        this.yAxis = d3Axis.axisLeft(this.yScale).tickSizeOuter(0);
-        this.yScale.domain([d3Array.min(data, (d) => Number(d.y)), d3Array.max(data, (d) => Number(d.y))])
-          .range([this.elementHeight, 0]);
+        this.yAxis = d3Axis.axisLeft(<d3Axis.AxisScale<d3Axis.AxisDomain>>this.yScale).tickSizeOuter(0);
+        (<ScaleLinear<number, number>>this.yScale).domain([d3Array.min(data,
+          (d: Point) => Number(d.y)), d3Array.max(data, (d: Point) => Number(d.y))]).range([this.elementHeight, 0]);
         break;
 
       case 'string':
         this.yScale = scalePoint();
-        this.yAxis = d3Axis.axisLeft(this.yScale).tickSizeOuter(0);
-        this.yScale.domain(data.map(el => el.y).sort().reverse())
-          .range([this.elementHeight, 0]);
+        this.yAxis = d3Axis.axisLeft(<d3Axis.AxisScale<d3Axis.AxisDomain>>this.yScale).tickSizeOuter(0);
+        (<ScalePoint<string>>this.yScale).domain(data.map(el => el.y).sort().reverse() as ReadonlyArray<string>)
+        .range([this.elementHeight, 0]);
         break;
     }
 
@@ -612,8 +539,7 @@ export class ScatterplotComponent implements OnInit, OnChanges {
 
   onMouseOver(targetId: any) {
     let tooltipText = '';
-    this.svgContainer.selectAll('.plots')
-      .filter((d: any) => {
+    this.svgContainer.selectAll('.plots').filter((d: any) => {
         if (d[idSymbol] === targetId) {
           if (this.enableTooltip && d.tooltip) {
             tooltipText = d.tooltip.toString();
@@ -623,26 +549,20 @@ export class ScatterplotComponent implements OnInit, OnChanges {
       });
 
     if (this.enableTooltip && tooltipText) {
-      this.tooltipDiv.transition().style('opacity', .7)
-      .style('visibility', 'visible');
+      this.tooltipDiv.transition().style('opacity', .7).style('visibility', 'visible');
 
       this.tooltipDiv.html(tooltipText)
-      .style('left', d3Selection.event.x - 50 + 'px')
-      .style('top',  d3Selection.event.y - 40 + 'px');
+      .style('left', d3Selection.event.x - 50 + 'px').style('top',  d3Selection.event.y - 40 + 'px');
     }
   }
 
   onMouseOut(targetId: any) {
-    const selection = this.svgContainer.selectAll('.plots')
-    .filter((d: any) => d[idSymbol] === targetId);
+    const selection = this.svgContainer.selectAll('.plots').filter((d: Point) => d[idSymbol] === targetId);
 
-    selection.transition().attr('d', d3Shape.symbol()
-    .size((d) => d.size as number)
-    .type((d) => this.selectShape(d)));
+    selection.transition().attr('d', d3Shape.symbol().size((d: Point) => d.size as number).type((d: Point) => this.selectShape(d)));
 
     if (this.enableTooltip) {
-      this.tooltipDiv.style('opacity', 0)
-      .style('visibility', 'hidden');
+      this.tooltipDiv.style('opacity', 0).style('visibility', 'hidden');
     }
   }
 }

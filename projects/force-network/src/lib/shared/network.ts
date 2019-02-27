@@ -6,12 +6,17 @@ export interface Node {
 
 export interface Link {
   id: string;
-  source: string;
-  target: string;
+  source: Position;
+  target: Position;
   [prop: string]: any;
 }
 
 export interface Graph {
   nodes: Node[];
   edges: Link[];
+}
+
+export interface Position {
+  x: number;
+  y: number;
 }

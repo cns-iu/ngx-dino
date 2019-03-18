@@ -569,6 +569,7 @@
             "main": "projects/toolshed/src/test.ts",
             "tsConfig": "projects/toolshed/tsconfig.spec.json",
             "karmaConfig": "projects/toolshed/karma.conf.js",
+            "watch": false,
             "codeCoverage": true
           }
         },

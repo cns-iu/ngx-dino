@@ -1,7 +1,7 @@
 # @ngx-dino
 
 [![NPM Version](https://img.shields.io/npm/v/@ngx-dino/core.svg)](https://www.npmjs.com/package/@ngx-dino/core)
-[![Shipping faster with ZenHub](https://raw.githubusercontent.com/ZenHubIO/support/master/zenhub-badge.png)](https://app.zenhub.com/workspace/o/cns-iu/ngx-dino)
+[![Shipping faster with ZenHub](https://img.shields.io/badge/Shipping_faster_with-ZenHub-5e60ba.svg?style=flat-square)](https://app.zenhub.com/workspace/o/cns-iu/ngx-dino)
 [![Build Status](https://travis-ci.com/cns-iu/ngx-dino.svg?branch=master)](https://travis-ci.com/cns-iu/ngx-dino)
 [![GitHub last commit](https://img.shields.io/github/last-commit/cns-iu/ngx-dino.svg)](https://github.com/cns-iu/ngx-dino/commits/master)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](LICENSE)

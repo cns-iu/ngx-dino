@@ -5,6 +5,10 @@ sudo: required
 dist: trusty
 addons:
   chrome: stable
+  sonarcloud:
+  organization: "$SONAR_KEY"
+  token:
+    secure: "$SONAR_TOKEN"
 cache: npm
 branches:
   only:
@@ -23,6 +27,7 @@ jobs:
     - npm run lint
     - npm run build:libs-release
     - npm test
+    - sonar-scanner -X
   - stage: deploy
     name: Deploy demo to GitHub Pages
     if: branch = master

@@ -6,10 +6,10 @@
             [strokeDashArrayField]="basemapStrokeDashArrayField" [strokeTransparencyField]="basemapStrokeTransparencyField" [defaultColor]="basemapDefaultColor" [defaultTransparency]="basemapDefaultTransparency" [defaultStrokeColor]="basemapDefaultStrokeColor"
             [defaultStrokeWidth]="basemapDefaultStrokeWidth" [defaultStrokeDashArray]="basemapDefaultStrokeDashArray" [defaultStrokeTransparency]="basemapDefaultStrokeTransparency" (boundsChanged)="onBoundsChange($event)">
         </svg:g>
-        <svg:g dino-pure-network class="network" [style.transform]="networkTransform" [autoresize]="false" [width]="networkWidth" [height]="networkHeight" [nodeStream]="nodeStream" [nodeIdField]="nodeIdField" [nodePositionField]="nodeProjectedPositionField" [nodeSizeField]="nodeSizeField"
+        <svg:svg dino-pure-network class="network" [attr.viewBox]="networkViewBox" [autoresize]="false" [width]="networkWidth" [height]="networkHeight" [nodeStream]="nodeStream" [nodeIdField]="nodeIdField" [nodePositionField]="nodeProjectedPositionField" [nodeSizeField]="nodeSizeField"
             [nodeSymbolField]="nodeSymbolField" [nodeColorField]="nodeColorField" [nodeStrokeField]="nodeStrokeColorField" [nodeStrokeWidthField]="nodeStrokeWidthField" [nodeTooltipField]="nodeTooltipField" [nodeLabelField]="nodeLabelField" [nodeLabelPositionField]="nodeLabelPositionField"
             [nodeTransparencyField]="nodeTransparencyField" [strokeTransparencyField]="nodeStrokeTransparencyField" [nodePulseField]="nodePulseField" [edgeStream]="edgeStream" [edgeIdField]="edgeIdField" [edgeSourceField]="edgeProjectedSourceField" [edgeTargetField]="edgeProjectedTargetField"
             [edgeStrokeField]="edgeStrokeColorField" [edgeStrokeWidthField]="edgeStrokeWidthField" [edgeTransparencyField]="edgeTransparencyField" [tooltipElement]="tooltipElement" [coordinateSpace]="coordinateSpace" [adjustMargins]="false">
-        </svg:g>
+        </svg:svg>
     </svg:svg>
 </div>

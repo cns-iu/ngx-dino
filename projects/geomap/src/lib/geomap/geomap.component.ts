@@ -100,7 +100,7 @@ export class GeomapComponent implements OnInit, OnChanges {
   // Other network properties
   networkWidth = 0;
   networkHeight = 0;
-  networkTransform: string;
+  networkViewBox: string;
   coordinateSpace: CoordinateSpaceOptions;
 
 
@@ -154,24 +154,14 @@ export class GeomapComponent implements OnInit, OnChanges {
     const { basemapWidth, basemapHeight } = this;
     const wscale = visWidth / basemapWidth;
     const hscale = .95 * visHeight / basemapHeight;
-    let networkWidth = visWidth;
-    let networkHeight = .95 * visHeight;
-    let networkWidthOffset = 0;
-    let networkHeightOffset = 0;
-
-    if (wscale >= hscale) {
-      networkWidth = basemapWidth * hscale;
-      networkWidthOffset = (visWidth - networkWidth) / 2;
-    } else {
-      networkHeight = basemapHeight * wscale;
-      networkHeightOffset = (.95 * visHeight - networkHeight) / 2;
-    }
+    let networkWidth = wscale >= hscale ? basemapWidth * hscale : visWidth;
+    let networkHeight = wscale >= hscale ? .95 * visHeight : basemapHeight * wscale;
 
     this.visWidth = visWidth;
     this.visHeight = visHeight;
     this.networkWidth = networkWidth;
     this.networkHeight = networkHeight;
-    this.networkTransform = `translate(${networkWidthOffset}px, ${networkHeightOffset}px)`;
+    this.networkViewBox = `0,0,${networkWidth},${networkHeight}`;
   }
 
   onBoundsChange({ x, y, width, height }: Bounds): void {

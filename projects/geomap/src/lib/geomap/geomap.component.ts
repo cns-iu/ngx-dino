@@ -154,8 +154,8 @@ export class GeomapComponent implements OnInit, OnChanges {
     const { basemapWidth, basemapHeight } = this;
     const wscale = visWidth / basemapWidth;
     const hscale = .95 * visHeight / basemapHeight;
-    let networkWidth = wscale >= hscale ? basemapWidth * hscale : visWidth;
-    let networkHeight = wscale >= hscale ? .95 * visHeight : basemapHeight * wscale;
+    const networkWidth = wscale >= hscale ? basemapWidth * hscale : visWidth;
+    const networkHeight = wscale >= hscale ? .95 * visHeight : basemapHeight * wscale;
 
     this.visWidth = visWidth;
     this.visHeight = visHeight;

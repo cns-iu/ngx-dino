@@ -22,7 +22,8 @@ export class GeomapComponent {
     // { selector: ['world', 'united states', 'states'], projection: 'albersUsa', label: 'United States', class: '' }
   ];
   basemapSelectedZoomLevel = 0;
-  basemapDefaultColor = 'lightgray';
+  basemapDefaultColor = 'white';
+  basemapDefaultStrokeColor = '#bebebe';
   // TODO other basemap fields
 
   // Nodes

@@ -1,7 +1,7 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild, Output, EventEmitter } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
-import { BoundField, DatumId, RawChangeSet } from '@ngx-dino/core';
+import { BoundField, DatumId, RawChangeSet, NgxDinoEvent } from '@ngx-dino/core';
 import { BuiltinSymbolTypes, CoordinateSpaceOptions } from '../shared/options';
 import { Point } from '../shared/utility';
 
@@ -49,6 +49,10 @@ export class NetworkComponent {
 
   // Other inputs
   @Input() coordinateSpace: CoordinateSpaceOptions;
+
+  // Outputs
+  @Output() nodeClick = new EventEmitter<NgxDinoEvent>();
+  @Output() edgeClick = new EventEmitter<NgxDinoEvent>();
 
   // Tooltip element
   @ViewChild('tooltipElement') tooltipElement: HTMLDivElement;

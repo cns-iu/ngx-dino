@@ -1,12 +1,28 @@
 <svg [attr.width]="svgWidth" [attr.height]="svgHeight">
   <!-- Edges -->
-  <svg:g dino-network-edge *ngFor="let edge of edges; trackBy: trackById" [source]="edge.csource" [target]="edge.ctarget" [stroke]="edge.stroke" [strokeWidth]="edge.strokeWidth" [transparency]="edge.transparency" />
+  <svg:g dino-network-edge *ngFor="let edge of edges; trackBy: trackById" [source]="edge.csource"
+         [target]="edge.ctarget" [stroke]="edge.stroke" [strokeWidth]="edge.strokeWidth"
+         [transparency]="edge.transparency" (click)="edgeClicked(edge, $event)">
+  </svg:g>
 
   <!-- Nodes -->
   <ng-container *ngFor="let node of nodes; trackBy: trackById">
-      <svg:g dino-network-node *ngIf="!node.labelPosition" [data]="node" [position]="node.cposition" [size]="node.size" [symbol]="node.symbol" [color]="node.color" [stroke]="node.stroke" [strokeTransparency]="node.strokeTransparency" [strokeWidth]="node.strokeWidth" [transparency]="node.transparency" [tooltip]="node.tooltip" [tooltipElement]="tooltipElement" [label]="node.label" [labelPosition]="node.labelPosition" [pulse]="node.pulse" />
+    <svg:g dino-network-node *ngIf="!node.labelPosition" [data]="node" [position]="node.cposition" [size]="node.size"
+           [symbol]="node.symbol" [color]="node.color" [stroke]="node.stroke"
+           [strokeTransparency]="node.strokeTransparency" [strokeWidth]="node.strokeWidth"
+           [transparency]="node.transparency" [tooltip]="node.tooltip" [tooltipElement]="tooltipElement"
+           [label]="node.label" [labelPosition]="node.labelPosition" [pulse]="node.pulse"
+           (click)="nodeClicked(node, $event)">
+    </svg:g>
   </ng-container>
+  <!-- Nodes with labels are placed after (on top) of unlabeled nodes -->
   <ng-container *ngFor="let node of nodes; trackBy: trackById">
-      <svg:g dino-network-node *ngIf="node.labelPosition" [data]="node" [position]="node.cposition" [size]="node.size" [symbol]="node.symbol" [color]="node.color" [stroke]="node.stroke" [strokeTransparency]="node.strokeTransparency" [strokeWidth]="node.strokeWidth" [transparency]="node.transparency" [tooltip]="node.tooltip" [tooltipElement]="tooltipElement" [label]="node.label" [labelPosition]="node.labelPosition" [pulse]="node.pulse" />
+    <svg:g dino-network-node *ngIf="node.labelPosition" [data]="node" [position]="node.cposition" [size]="node.size"
+           [symbol]="node.symbol" [color]="node.color" [stroke]="node.stroke"
+           [strokeTransparency]="node.strokeTransparency" [strokeWidth]="node.strokeWidth"
+           [transparency]="node.transparency" [tooltip]="node.tooltip" [tooltipElement]="tooltipElement"
+           [label]="node.label" [labelPosition]="node.labelPosition" [pulse]="node.pulse"
+           (click)="nodeClicked(node, $event)">
+    </svg:g>
   </ng-container>
 </svg>

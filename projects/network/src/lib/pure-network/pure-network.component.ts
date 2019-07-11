@@ -1,12 +1,20 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import {
+  BoundField,
+  ChangeSet,
+  combine,
+  Datum,
+  DatumId,
+  idSymbol,
+  NgxDinoEvent,
+  RawChangeSet,
+  rawDataSymbol,
+  simpleField,
+} from '@ngx-dino/core';
 import { Set } from 'immutable';
 import { conforms, debounce, filter } from 'lodash';
 import { Observable, Subscription } from 'rxjs';
 
-import {
-  BoundField, ChangeSet, Datum, DatumId, RawChangeSet,
-  combine, idSymbol, simpleField
-} from '@ngx-dino/core';
 import { LayoutService } from '../shared/layout.service';
 import { NetworkService } from '../shared/network.service';
 import { BuiltinSymbolTypes, CoordinateSpaceOptions } from '../shared/options';
@@ -64,6 +72,10 @@ export class PureNetworkComponent implements OnInit, OnChanges {
   @Input() adjustMargins = true;
   @Input() tooltipElement: HTMLDivElement;
   @Input() resize: Observable<{ width: number, height: number }>;
+
+  // Events
+  @Output() nodeClick = new EventEmitter<NgxDinoEvent>();
+  @Output() edgeClick = new EventEmitter<NgxDinoEvent>();
 
   svgWidth: number;
   svgHeight: number;
@@ -192,6 +204,14 @@ export class PureNetworkComponent implements OnInit, OnChanges {
     if (this.autoresize) {
       this.doResize(width, height);
     }
+  }
+
+  nodeClicked(node: Node, event: Event): void {
+    this.nodeClick.emit(new NgxDinoEvent(event, node[rawDataSymbol], node, this));
+  }
+
+  edgeClicked(edge: Edge, event: Event): void {
+    this.edgeClick.emit(new NgxDinoEvent(event, edge[rawDataSymbol], edge, this));
   }
 
   private doResize(width: number, height: number): void {

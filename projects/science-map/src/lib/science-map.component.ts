@@ -282,6 +282,13 @@ export class ScienceMapComponent implements OnInit, OnChanges {
 
   onMouseOver(target: SubdisciplineDatum) {
     let tooltipText = '';
+    this.svgContainer.selectAll('circle')
+      .filter((d: any) => {
+        if (d[idSymbol] === target[idSymbol]) {
+          tooltipText = d.tooltipText || target[idSymbol];
+          return true;
+        }
+      });
 
     this.tooltipDiv.transition().style('opacity', .7)
         .style('visibility', 'visible');

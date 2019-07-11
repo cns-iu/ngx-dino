@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject, Subscription } from 'rxjs';
+import { BoundField, ChangeSet, DataProcessor, DataProcessorService, Datum, RawChangeSet } from '@ngx-dino/core';
 import { Map } from 'immutable';
-import {
-  RawChangeSet, BoundField, DataProcessorService,
-  DataProcessor, Datum, ChangeSet
-} from '@ngx-dino/core';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
 import { Subdiscipline } from './subdiscipline';
 import underlyingScimapData from './underlyingScimapData.data';

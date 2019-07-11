@@ -1,17 +1,26 @@
-import {
-  Component, OnInit, ElementRef, Input, Output, DoCheck,
-  EventEmitter, OnChanges, SimpleChanges, ViewChild, SimpleChange
-} from '@angular/core';
-import { BoundField, RawChangeSet, Datum, idSymbol, ChangeSet, DatumId } from '@ngx-dino/core';
-import { Set } from 'immutable';
-import { uniqBy, isNil } from 'lodash';
-import { Observable } from 'rxjs';
-import * as d3Selection from 'd3-selection';
-import { scaleLinear, scaleLog } from 'd3-scale';
-import * as d3Array from 'd3-array';
 import 'd3-transition';
 
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
+import { BoundField, ChangeSet, Datum, DatumId, idSymbol, NgxDinoEvent, RawChangeSet, rawDataSymbol } from '@ngx-dino/core';
+import { extent, mean } from 'd3-array';
+import { ScaleContinuousNumeric, scaleLinear, scaleLog } from 'd3-scale';
+import * as d3Selection from 'd3-selection';
+import { Set } from 'immutable';
+import { uniqBy } from 'lodash';
+import { Observable } from 'rxjs';
+
 import { ScienceMapDataService } from './shared/science-map-data.service';
+import { SubdisciplineDatum } from './shared/subdiscipline';
 
 
 @Component({
@@ -20,47 +29,40 @@ import { ScienceMapDataService } from './shared/science-map-data.service';
   styleUrls: ['./science-map.component.css'],
   providers: [ScienceMapDataService]
 })
-export class ScienceMapComponent implements OnInit, OnChanges, DoCheck {
+export class ScienceMapComponent implements OnInit, OnChanges {
   @Input() margin = { top: 20, right: 15, bottom: 60, left: 60 };
   @Input() width = window.innerWidth - this.margin.left - this.margin.right; // initializing width for map container
   @Input() height = window.innerHeight - this.margin.top - this.margin.bottom; // initializing height for map container
   @Input() autoresize = false;
 
   @Input() subdisciplineSizeField: BoundField<string>;
-  @Input() subdisciplineIdField: BoundField<number|string>;
+  @Input() subdisciplineIdField: BoundField<DatumId>;
 
   @Input() dataStream: Observable<RawChangeSet<any>>;
 
   @Input() enableTooltip = false;
-  @Input() tooltipTextField: BoundField<number|string>;
+  @Input() tooltipTextField: BoundField<DatumId>;
 
   @Input() nodeSizeRange = [2, 18];
   @Input() minPositionX = 0;
   @Input() minPositionY = -20;
 
-  @Output() nodeClicked = new EventEmitter<any>();
+  @Output() nodeClick = new EventEmitter<NgxDinoEvent>();
 
   @ViewChild('scienceMapContainer') scienceMapElement: ElementRef;
 
-  private svgContainer: d3Selection.Selection<d3Selection.BaseType, any, HTMLElement, undefined>;
-  private parentNativeElement: any;
+  private svgContainer: d3Selection.Selection<SVGSVGElement, any, HTMLDivElement, any>;
+  private parentNativeElement: HTMLElement;
 
-  private nodes: any = [];
-  private labels: any = [];
+  private nodes: d3Selection.Selection<SVGCircleElement, SubdisciplineDatum, SVGElement, any>;
+  private links: d3Selection.Selection<SVGLineElement, SubdisciplineDatum, SVGElement, any>;
 
-  private links: any;
+  private translateXScale: ScaleContinuousNumeric<number, number>;
+  private translateYScale: ScaleContinuousNumeric<number, number>;
+  private nodeSizeScale: (value: number) => number;
 
-  private translateXScale: any;
-  private translateYScale: any;
-  private nodeSizeScale: any;
-
-  private subdIdToPosition: any;
-  private subdIdToDisc: any;
-  private discIdToColor: any;
-  private subdIdToName: any;
-
-  private tooltipDiv: any;
-  private data: any[] = [];
+  private tooltipDiv: d3Selection.Selection<HTMLDivElement, any, HTMLDivElement, any>;
+  private data: SubdisciplineDatum[] = [];
 
   private defaultNodeSize = 4;
 
@@ -69,8 +71,8 @@ export class ScienceMapComponent implements OnInit, OnChanges, DoCheck {
 
   // private zoom = d3Zoom.zoom().scaleExtent([1, 10]).on('zoom', this.zoomed);
 
-  constructor(private element: ElementRef, private dataService: ScienceMapDataService) {
-    this.parentNativeElement = element.nativeElement; // to get native parent element of this component
+  constructor(element: ElementRef, private dataService: ScienceMapDataService) {
+    this.parentNativeElement = element.nativeElement;
   }
 
   ngOnInit() {
@@ -117,9 +119,6 @@ export class ScienceMapComponent implements OnInit, OnChanges, DoCheck {
     }
   }
 
-  ngDoCheck() {
-  }
-
   resize(width: number, height: number): void {
     if (width !== this.elementWidth || height !== this.elementHeight) {
       this.elementWidth = width;
@@ -138,7 +137,7 @@ export class ScienceMapComponent implements OnInit, OnChanges, DoCheck {
     }
   }
 
-  doResize({width, height}: {width: number, height: number}): void {
+  doResize({ width, height }: { width: number, height: number }): void {
     if (this.autoresize) {
       const wDiff = width - this.elementWidth;
       const hDiff = height - this.elementHeight;
@@ -167,24 +166,24 @@ export class ScienceMapComponent implements OnInit, OnChanges, DoCheck {
 
   setScales() {
     this.translateXScale = scaleLinear()
-      .domain(d3Array.extent(this.dataService.underlyingScimapData.nodes, (d: any) => <number>d.x))
+      .domain(extent(this.dataService.underlyingScimapData.nodes, (d: any) => <number>d.x))
       .range([this.margin.left, this.elementWidth - this.margin.right]);
 
     this.translateYScale = scaleLinear()
-      .domain(d3Array.extent(this.dataService.underlyingScimapData.nodes, (d: any) => <number>d.y))
+      .domain(extent(this.dataService.underlyingScimapData.nodes, (d: any) => <number>d.y))
       .range([this.elementHeight - this.margin.top, this.margin.bottom]);
 
     const nodeSizeScale = scaleLog()
-      .domain(d3Array.extent(this.data, (d: any) => Math.max(1, parseInt(d.size, 10))))
+      .domain(extent(this.data, (d: any) => Math.max(1, parseInt(d.size, 10))))
       .range(this.nodeSizeRange);
 
-    this.nodeSizeScale = (value) => nodeSizeScale(value < 1 ? 1 : value);
+    this.nodeSizeScale = (value: number) => nodeSizeScale(value < 1 ? 1 : value);
   }
 
   initVisualization() {
     // initializing svg container
     const container = d3Selection.select(this.parentNativeElement)
-      .select('.science-map-container');
+      .select<HTMLDivElement>('.science-map-container');
 
     this.svgContainer = container.append('svg')
       .attr('width', this.elementWidth)
@@ -197,8 +196,8 @@ export class ScienceMapComponent implements OnInit, OnChanges, DoCheck {
   }
 
   createNodes() {
-    this.nodes = this.svgContainer.selectAll('circle')
-      .data<any>(this.data, (d) => d[idSymbol]);
+    this.nodes = this.svgContainer.selectAll<SVGCircleElement, SubdisciplineDatum>('circle')
+      .data(this.data, ((d: SubdisciplineDatum) => d[idSymbol]) as any);
 
     this.nodes.attr('r', (d) => this.nodeSizeScale(d.size));
 
@@ -219,14 +218,12 @@ export class ScienceMapComponent implements OnInit, OnChanges, DoCheck {
       .attr('transform', (d) => 'translate('
         + this.translateXScale(this.dataService.subdIdToPosition[d[idSymbol]].x)
         + ',' + this.translateYScale(this.dataService.subdIdToPosition[d[idSymbol]].y) + ')')
-      .on('click', (d) => this.nodeClicked.emit(this.dataForSubdiscipline(<number>d[idSymbol])))
-      .on('mouseover', (d) => this.enableTooltip ? this.onMouseOver(this.dataForSubdiscipline(<number>d[idSymbol])) : null)
-      .on('mouseout', (d) => this.onMouseOut(this.dataForSubdiscipline(<number>d[idSymbol])));
+      .on('click', (d) => this.nodeClicked(d, d3Selection.event))
+      .on('mouseover', (d) => this.enableTooltip ? this.onMouseOver(d) : null)
+      .on('mouseout', (d) => this.onMouseOut(d));
   }
 
-  createLabels(
-    strokeColor: string,
-    strokeWidth: number) {
+  createLabels(strokeColor: string, strokeWidth: number) {
     const numUnclassified = this.data.filter((entry) => entry[idSymbol] === -1);
     const numMultidisciplinary = this.data.filter((entry) => entry[idSymbol] === -2);
 
@@ -237,7 +234,7 @@ export class ScienceMapComponent implements OnInit, OnChanges, DoCheck {
       .attr('class', 'label')
       .attr('text-anchor', (d) => {
         const x = this.translateXScale(d.x);
-        const m = d3Array.mean(this.translateXScale.range());
+        const m = mean(this.translateXScale.range());
         if (x > m) {
           return 'end';
         } else if (x < m) {
@@ -279,15 +276,12 @@ export class ScienceMapComponent implements OnInit, OnChanges, DoCheck {
       .attr('y2', (d) => this.translateYScale(this.dataService.subdIdToPosition[d.subd_id2].y));
   }
 
-  onMouseOver(target: any) {
+  nodeClicked(data: SubdisciplineDatum, event: Event): void {
+    this.nodeClick.emit(new NgxDinoEvent(event, data[rawDataSymbol], data, this));
+  }
+
+  onMouseOver(target: SubdisciplineDatum) {
     let tooltipText = '';
-    const selection = this.svgContainer.selectAll('circle')
-      .filter((d: any) => {
-        if (d[idSymbol] === target.subd_id) {
-          tooltipText = d.tooltipText || target.subd_id;
-          return true;
-        }
-      });
 
     this.tooltipDiv.transition().style('opacity', .7)
         .style('visibility', 'visible');
@@ -298,9 +292,9 @@ export class ScienceMapComponent implements OnInit, OnChanges, DoCheck {
         .style('top',  d3Selection.event.y - 40 + 'px');
   }
 
-  onMouseOut(target: any) {
+  onMouseOut(target: SubdisciplineDatum) {
     const selection = this.svgContainer.selectAll('circle')
-      .filter((d: any) => d[idSymbol] === target.subd_id);
+      .filter((d: any) => d[idSymbol] === target[idSymbol]);
     selection.transition().attr('r', (d: any) => this.nodeSizeScale(d.size) || this.defaultNodeSize);
 
     this.tooltipDiv.style('opacity', 0)
@@ -309,22 +303,5 @@ export class ScienceMapComponent implements OnInit, OnChanges, DoCheck {
 
   zoomed() {
     console.log('zooooomed!!');
-  }
-
-  dataForSubdiscipline(id: number): any {
-    const result = {
-      subd_id: id,
-      subd_name: this.dataService.subdIdToName[id].subd_name,
-      disc_name: undefined
-    };
-
-    const {disc_id} = this.dataService.subdIdToDisc[id];
-    const {disc_name} = (this.dataService.underlyingScimapData.disciplines as any[]).find(
-      (d) => d.disc_id === disc_id
-    );
-
-    result.disc_name = disc_name;
-
-    return result;
   }
 }

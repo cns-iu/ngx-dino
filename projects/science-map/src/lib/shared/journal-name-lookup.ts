@@ -1,4 +1,4 @@
-import { chain, map, lookup, Operator } from '@ngx-dino/core';
+import { chain, lookup, map, Operator } from '@ngx-dino/core';
 
 import journalNameToIdLookup from '../data/journalNameToId.data';
 import { normalizeJournalName } from './normalize-journal-name';

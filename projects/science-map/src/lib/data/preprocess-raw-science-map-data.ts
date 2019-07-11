@@ -1,6 +1,6 @@
-const fs = require('fs');
-import { getNameTable, getIssnTable, getIdTable } from './raw-science-map-operators';
+import { getIdTable, getIssnTable, getNameTable } from './raw-science-map-operators';
 
+const fs = require('fs');
 function writeJSON(outputFile: string, obj: any) {
   fs.writeFileSync(outputFile, JSON.stringify(obj, null, 0), 'utf8');
 }

@@ -1,4 +1,4 @@
-import { chain, map, lookup, Operator } from '@ngx-dino/core';
+import { chain, lookup, map, Operator } from '@ngx-dino/core';
 
 import issnToJournIdLookup from '../data/issnToJournIdLookup.data';
 import { normalizeIssn } from './normalize-issn';

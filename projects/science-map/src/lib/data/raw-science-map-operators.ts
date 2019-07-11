@@ -1,10 +1,9 @@
+import { access, chain, combine, lookup, map, Operator } from '@ngx-dino/core';
 import { Map } from 'immutable';
 import * as libXLSX from 'xlsx';
 
-import { Operator, access, chain, combine, lookup, map } from '@ngx-dino/core';
-
-import { normalizeJournalName } from '../shared/normalize-journal-name';
 import { normalizeIssn } from '../shared/normalize-issn';
+import { normalizeJournalName } from '../shared/normalize-journal-name';
 
 // Types and interfaces
 export interface NameTableValue {

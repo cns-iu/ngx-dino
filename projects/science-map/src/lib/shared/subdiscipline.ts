@@ -8,4 +8,5 @@ export interface Subdiscipline {
 export interface SubdisciplineDatum extends Datum<any> {
   size: number;
   tooltipText: string;
+  subdisciplineName: string;
 }

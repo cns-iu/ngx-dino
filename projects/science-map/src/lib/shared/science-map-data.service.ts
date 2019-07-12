@@ -1,5 +1,15 @@
 import { Injectable } from '@angular/core';
-import { BoundField, ChangeSet, DataProcessor, DataProcessorService, Datum, RawChangeSet } from '@ngx-dino/core';
+import {
+  BoundField,
+  chain,
+  ChangeSet,
+  DataProcessor,
+  DataProcessorService,
+  Datum,
+  map,
+  RawChangeSet,
+  simpleField,
+} from '@ngx-dino/core';
 import { Map } from 'immutable';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
@@ -100,7 +110,14 @@ export class ScienceMapDataService {
   ): Map<any, any> {
     const fields = {
       size: validField(subdisciplineSizeField),
-      tooltipText: validField(tooltipTextField) || subdisciplineIdField
+      tooltipText: validField(tooltipTextField),
+      subdisciplineName: simpleField({
+        bfieldId: 'subd_name', label: 'Subdiscipline name',
+        operator: chain(subdisciplineIdField.operator, map(id => {
+          const item = this.subdIdToName[id];
+          return item && item.subd_name;
+        }))
+      }).getBoundField()
     };
     Object.keys(fields).forEach(key => fields[key] === undefined && delete fields[key]);
     return Map<string, BoundField<any>>(fields);

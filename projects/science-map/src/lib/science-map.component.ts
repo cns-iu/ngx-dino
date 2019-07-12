@@ -281,20 +281,11 @@ export class ScienceMapComponent implements OnInit, OnChanges {
   }
 
   onMouseOver(target: SubdisciplineDatum) {
-    let tooltipText = '';
-    this.svgContainer.selectAll('circle')
-      .filter((d: any) => {
-        if (d[idSymbol] === target[idSymbol]) {
-          tooltipText = d.tooltipText || target[idSymbol];
-          return true;
-        }
-      });
+    const tooltip = target.tooltipText || target.subdisciplineName;
 
     this.tooltipDiv.transition().style('opacity', .7)
         .style('visibility', 'visible');
-
-    tooltipText = this.dataService.subdIdToName[tooltipText] ? this.dataService.subdIdToName[tooltipText].subd_name : tooltipText;
-    this.tooltipDiv.html(tooltipText) // TODO generic content needed
+    this.tooltipDiv.html(tooltip)
         .style('left', d3Selection.event.x - 50 + 'px')
         .style('top',  d3Selection.event.y - 40 + 'px');
   }

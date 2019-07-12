@@ -1,5 +1,5 @@
 <svg:g *ngIf="isValid()" [attr.transform]="centerTranslate()">
-    <svg:text *ngIf="hasLabel()" [attr.dx]="labelDx" [attr.dy]="labelDy" [style.text-anchor]="labelAnchor" [style.alignment-baseline]="labelBaseline">
+    <svg:text *ngIf="hasLabel()" class="label" [attr.dx]="labelDx" [attr.dy]="labelDy" [style.text-anchor]="labelAnchor" [style.alignment-baseline]="labelBaseline">
         {{ label }}
     </svg:text>
     <svg:path *ngIf="pulse" class="pulsing" [attr.d]="shape"></svg:path>

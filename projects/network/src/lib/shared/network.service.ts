@@ -1,19 +1,28 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject, Subscription } from 'rxjs';
-import { Map } from 'immutable';
 import {
-  BoundField, ChangeSet, DataProcessor, DataProcessorService, DatumId, RawChangeSet,
-  constant, map, simpleField
+  BoundField,
+  ChangeSet,
+  constant,
+  DataProcessor,
+  DataProcessorService,
+  DatumId,
+  map,
+  RawChangeSet,
+  simpleField,
 } from '@ngx-dino/core';
+import { Map } from 'immutable';
+import { stubArray } from 'lodash';
+import { Observable, Subject, Subscription } from 'rxjs';
+
+import { BuiltinSymbolTypes } from './options';
 import { Edge, Node } from './types';
 import { Point } from './utility';
-import { BuiltinSymbolTypes } from './options';
 
-const cposition = simpleField({ label: '', operator: map(() => Array(2)) }).getBoundField();
+const cposition = simpleField({ label: '', operator: map(stubArray) }).getBoundField();
 const csize = simpleField({ label: '', operator: constant(0) }).getBoundField();
 
-const csource = simpleField({ label: '', operator: map(() => Array(2)) }).getBoundField();
-const ctarget = simpleField({ label: '', operator: map(() => Array(2)) }).getBoundField();
+const csource = simpleField({ label: '', operator: map(stubArray) }).getBoundField();
+const ctarget = simpleField({ label: '', operator: map(stubArray) }).getBoundField();
 
 @Injectable({
   providedIn: 'root'

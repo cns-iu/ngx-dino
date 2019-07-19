@@ -6,23 +6,11 @@
   </svg:g>
 
   <!-- Nodes -->
-  <ng-container *ngFor="let node of nodes; trackBy: trackById">
-    <svg:g dino-network-node *ngIf="!node.labelPosition" [data]="node" [position]="node.cposition" [size]="node.size"
-           [symbol]="node.symbol" [color]="node.color" [stroke]="node.stroke"
-           [strokeTransparency]="node.strokeTransparency" [strokeWidth]="node.strokeWidth"
-           [transparency]="node.transparency" [tooltip]="node.tooltip" [tooltipElement]="tooltipElement"
-           [label]="node.label" [labelPosition]="node.labelPosition" [pulse]="node.pulse"
-           (click)="nodeClicked(node, $event)">
-    </svg:g>
-  </ng-container>
-  <!-- Nodes with labels are placed after (on top) of unlabeled nodes -->
-  <ng-container *ngFor="let node of nodes; trackBy: trackById">
-    <svg:g dino-network-node *ngIf="node.labelPosition" [data]="node" [position]="node.cposition" [size]="node.size"
-           [symbol]="node.symbol" [color]="node.color" [stroke]="node.stroke"
-           [strokeTransparency]="node.strokeTransparency" [strokeWidth]="node.strokeWidth"
-           [transparency]="node.transparency" [tooltip]="node.tooltip" [tooltipElement]="tooltipElement"
-           [label]="node.label" [labelPosition]="node.labelPosition" [pulse]="node.pulse"
-           (click)="nodeClicked(node, $event)">
-    </svg:g>
-  </ng-container>
+  <svg:g dino-network-node *ngFor="let node of nodes; trackBy: trackById" [data]="node" [position]="node.cposition"
+         [size]="node.size" [symbol]="node.symbol" [color]="node.color" [stroke]="node.stroke"
+         [strokeTransparency]="node.strokeTransparency" [strokeWidth]="node.strokeWidth"
+         [transparency]="node.transparency" [tooltip]="node.tooltip" [tooltipElement]="tooltipElement"
+         [label]="node.label" [labelPosition]="node.labelPosition" [pulse]="node.pulse"
+         (click)="nodeClicked(node, $event)">
+  </svg:g>
 </svg>

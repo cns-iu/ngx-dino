@@ -11,8 +11,7 @@ import {
   rawDataSymbol,
   simpleField,
 } from '@ngx-dino/core';
-import { Set } from 'immutable';
-import { conforms, debounce, filter } from 'lodash';
+import { conforms, debounce, differenceBy, filter } from 'lodash';
 import { Observable, Subscription } from 'rxjs';
 
 import { LayoutService } from '../shared/layout.service';
@@ -196,7 +195,7 @@ export class PureNetworkComponent implements OnInit, OnChanges {
     }
   }
 
-  trackById(index: number, item: Datum): DatumId {
+  trackById(_index: number, item: Datum): DatumId {
     return item[idSymbol];
   }
 
@@ -255,12 +254,11 @@ export class PureNetworkComponent implements OnInit, OnChanges {
   }
 
   private applyChangeSet<T extends Datum>(set: ChangeSet<any>, data: T[]): T[] {
-    const removeIds = set.remove.map(rem => rem[idSymbol]);
-    const replaceIds = set.replace.map(rep => rep[idSymbol]);
-    const filteredIds = Set<DatumId>().merge(removeIds, replaceIds);
-    const filtered = data.filter(item => !filteredIds.has(item[idSymbol]));
+    const result = differenceBy(data, set.remove.toArray(), set.replace.toArray(), idSymbol);
+    set.insert.forEach(item => result.push(item as T));
+    set.replace.forEach(item => result.push(item as T));
 
-    return filtered.concat(set.insert.toArray() as T[], set.replace.toArray() as T[]);
+    return result;
   }
 
   private layout(nodes?: Node[], edges?: Edge[]): void {

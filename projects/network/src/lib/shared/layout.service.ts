@@ -1,5 +1,19 @@
 import { Injectable } from '@angular/core';
-import { clamp, constant, get, inRange, isFunction, maxBy, partition } from 'lodash';
+import {
+  assignWith,
+  clamp,
+  forEach,
+  get,
+  inRange,
+  isFinite,
+  isFunction,
+  maxBy,
+  partition,
+  PropertyPath,
+  sortBy,
+  toPath,
+} from 'lodash';
+
 import { CoordinateSpace, CoordinateSpaceOptions, DynamicCoordinateSpace } from './options';
 import { Edge, Node } from './types';
 import { normalizeRange } from './utility';
@@ -34,7 +48,7 @@ function createExcludeFilter(
 ): (value: number) => boolean {
   const overflowKey = (prop + 'Overflow') as 'xOverflow' | 'yOverflow';
   if (space.type === 'dynamic' || space[overflowKey] === 'clamp') {
-    return () => true;
+    return isFinite;
   }
 
   const { min = 0, max = viewMax } = normalizeRange(space[prop]) || {};
@@ -54,14 +68,8 @@ function createCoordinateNormalizer(
 }
 
 function resetProperties<T>(array: T[], props: { [P in keyof T]?: T[P] | (() => T[P]) }): void {
-  const propArray: [string, () => any][] = [];
-  Object.keys(props).forEach(key => {
-    const value = props[key];
-    const factory = isFunction(value) ? value : constant(value);
-    propArray.push([key, factory]);
-  });
-
-  array.forEach(item => propArray.forEach(([p, factory]) => item[p] = factory()));
+  const customizer = (_objValue: any, value: any) => isFunction(value) ? value() : value;
+  forEach(array, item => assignWith(item, props, customizer));
 }
 
 function normalizeViewSpace(
@@ -82,16 +90,20 @@ function normalizeViewSpace(
   }
 }
 
-function rangeOf(values: number[]): [number, number] {
-  return values.reduce(([min, max], value): [number, number] => {
-   if (value < min) {
-     return [value, max];
-   } else if (value > max) {
-     return [min, value];
-   } else {
-     return [min, max];
-   }
-  }, [Infinity, -Infinity] as [number, number]);
+function rangeOf(objects: any[], path: PropertyPath): [number, number] {
+  const normPath = toPath(path);
+  let min = Infinity;
+  let max = -Infinity;
+  for (const obj of objects) {
+    const value: number = get(obj, normPath);
+    if (value < min) {
+      min = value;
+    } else if (value > max) {
+      max = value;
+    }
+  }
+
+  return [min, max];
 }
 
 function spaceRange(
@@ -100,13 +112,13 @@ function spaceRange(
 ): [number, number] {
   if (space.type === 'dynamic') {
     const pointIndex = prop === 'x' ? 0 : 1;
-    const [nmin, nmax] = rangeOf(nodes.map(node => node.position[pointIndex]));
+    const [nmin, nmax] = rangeOf(nodes, ['position', pointIndex]);
     if (edges.length === 0) {
       return [nmin, nmax];
     }
 
-    const [esmin, esmax] = rangeOf(edges.map(edge => edge.source[pointIndex]));
-    const [etmin, etmax] = rangeOf(edges.map(edge => edge.target[pointIndex]));
+    const [esmin, esmax] = rangeOf(edges, ['source', pointIndex]);
+    const [etmin, etmax] = rangeOf(edges, ['target', pointIndex]);
     return [Math.min(nmin, esmin, etmin), Math.max(nmax, esmax, etmax)];
   } else if (space[prop] === undefined) {
     return [0, viewMax];
@@ -177,7 +189,8 @@ export class LayoutService {
     });
 
     return {
-      nodes: includedNodes, edges: includedEdges,
+      nodes: sortBy(includedNodes, node => !!node.labelPosition),
+      edges: includedEdges,
       excludedNodes, excludedEdges
     };
   }

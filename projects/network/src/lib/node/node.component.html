@@ -1,4 +1,4 @@
-<svg:g *ngIf="isValid()" [attr.transform]="centerTranslate()">
+<svg:g [attr.transform]="centerTranslate()">
     <svg:text *ngIf="hasLabel()" class="label" [attr.dx]="labelDx" [attr.dy]="labelDy" [style.text-anchor]="labelAnchor" [style.alignment-baseline]="labelBaseline">
         {{ label }}
     </svg:text>

@@ -4,6 +4,7 @@ import { pipe } from './pipe';
 
 function empty() {}
 
+describe('operators', () => {
 describe('pipe(op1, op2, ...)', () => {
   it('returns an Operator', () => {
     expect(isOperator(pipe())).toBeTruthy();
@@ -13,4 +14,5 @@ describe('pipe(op1, op2, ...)', () => {
     const op = pipe(empty);
     expect(op.functions).toEqual([empty]);
   });
+});
 });

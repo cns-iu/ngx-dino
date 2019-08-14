@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
-import { CoreComponent } from './core.component';
+
 import { AutoResizeDirective } from './directives/auto-resize/auto-resize.directive';
 
 @NgModule({
   imports: [],
-  declarations: [CoreComponent, AutoResizeDirective],
-  exports: [CoreComponent, AutoResizeDirective]
+  declarations: [AutoResizeDirective],
+  exports: [AutoResizeDirective]
 })
 export class CoreModule { }

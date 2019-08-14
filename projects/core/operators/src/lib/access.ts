@@ -13,6 +13,13 @@ export function access<TObj extends object, TKey1 extends keyof TObj, TKey2 exte
 export function access(path: PropertyPath, defaultValue?: any): Operator<unknown, unknown>;
 // tslint:enable:max-line-length
 
+/**
+ * Creates an `Operator` that accesses the value at a specific path when called.
+ *
+ * @param path The property path to the value.
+ * @param defaultValue The default value returned when any part of the path is missing.
+ * @returns The value at the path or the default value.
+ */
 export function access(path: PropertyPath, defaultValue?: any): Operator<unknown, unknown> {
   return new Operator(obj => get(obj, path, defaultValue));
 }

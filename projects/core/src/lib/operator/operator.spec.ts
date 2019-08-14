@@ -1,4 +1,4 @@
-import { Operator } from './operator';
+import { isOperator, Operator } from './operator';
 
 describe('Operator', () => {
   describe('new Operator()', () => {
@@ -138,5 +138,45 @@ describe('Operator', () => {
         expect(operator2.functions).toEqual(operator1.functions.concat([fun1]));
       });
     });
+  });
+});
+
+describe('isOperator(obj)', () => {
+  it('is truthy for Operators', () => {
+    const op = new Operator();
+    expect(isOperator(op)).toBeTruthy();
+  });
+
+  it('is falsy for undefined', () => {
+    expect(isOperator(undefined)).toBeFalsy();
+  });
+
+  it('is falsy for null', () => {
+    expect(isOperator(null)).toBeFalsy();
+  });
+
+  it('is falsy for booleans', () => {
+    expect(isOperator(false)).toBeFalsy();
+    expect(isOperator(true)).toBeFalsy();
+  });
+
+  it('is falsy for numbers', () => {
+    expect(isOperator(0)).toBeFalsy();
+    expect(isOperator(1)).toBeFalsy();
+    expect(isOperator(-1)).toBeFalsy();
+    expect(isOperator(Infinity)).toBeFalsy();
+    expect(isOperator(NaN)).toBeFalsy();
+  });
+
+  it('is falsy for strings', () => {
+    expect(isOperator('')).toBeFalsy();
+    expect(isOperator('test')).toBeFalsy();
+  });
+
+  it('is falsy for objects', () => {
+    expect(isOperator({})).toBeFalsy();
+    expect(isOperator({ prop: 'value' })).toBeFalsy();
+    expect(isOperator([])).toBeFalsy();
+    expect(isOperator([1, 2])).toBeFalsy();
   });
 });

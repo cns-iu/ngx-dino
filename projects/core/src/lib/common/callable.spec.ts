@@ -48,6 +48,11 @@ describe('Callable', () => {
       it('returns a new instance', () => {
         expect(new Callable2('f', { resolve: 'immediate' })).toBeTruthy();
       });
+
+      it('resolves the delegate in the Callable constructor', () => {
+        const instance = new Callable2('f', { resolve: 'immediate' });
+        expect(() => instance()).not.toThrow();
+      });
     });
 
     describe('when options.resolve === once', () => {
@@ -62,6 +67,19 @@ describe('Callable', () => {
       it('returns a new instance', () => {
         expect(new Callable2('f', { resolve: 'once' })).toBeTruthy();
       });
+
+      it('resolves the delegate on the first invocation', () => {
+        const spy1 = jasmine.createSpy();
+        const spy2 = jasmine.createSpy();
+        const instance = new Callable2('f', { resolve: 'once' });
+        instance.f = spy1;
+        instance();
+        instance.f = spy2;
+        instance();
+
+        expect(spy1).toHaveBeenCalledTimes(2);
+        expect(spy2).not.toHaveBeenCalled();
+      });
     });
 
     describe('when options.resolve === lazy', () => {
@@ -75,6 +93,19 @@ describe('Callable', () => {
 
       it('returns a new instance', () => {
         expect(new Callable2('f', { resolve: 'lazy' })).toBeTruthy();
+      });
+
+      it('resolves the delegate on each invocation', () => {
+        const spy1 = jasmine.createSpy();
+        const spy2 = jasmine.createSpy();
+        const instance = new Callable2('f', { resolve: 'lazy' });
+        instance.f = spy1;
+        instance();
+        instance.f = spy2;
+        instance();
+
+        expect(spy1).toHaveBeenCalledTimes(1);
+        expect(spy2).toHaveBeenCalledTimes(1);
       });
     });
   });
@@ -128,6 +159,11 @@ describe('Callable', () => {
     it('exists', () => {
       const instance = new Callable(empty);
       expect(instance.name).toBeDefined();
+    });
+
+    it('has special handling when the property is the empty string', () => {
+      const instance = new Callable('');
+      expect(instance.name).toContain(`['']`);
     });
   });
 

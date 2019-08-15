@@ -1,6 +1,6 @@
 import { cond, constant, flatMapDepth, flow, identity, isArray, isFunction, Many, matches, stubTrue } from 'lodash';
 
-import { Callable } from '../common/callable';
+import { Callable } from '../common';
 
 /** An unary function type. */
 export type UnaryFunction<TArg = any, TRes = any> = (value: TArg) => TRes;
@@ -51,7 +51,9 @@ export class Operator<TArg, TRes> extends Callable<[TArg], TRes> {
   constructor(...functions: Many<OperatorOrFunction>[]) {
     let norm: UnaryFunction[];
 
-    super(getImplSelector(norm = normalize(functions)));
+    // Oddly istanbul thinks there is a branch here!
+    // It is likely due to Typescript's transplilation.
+    super(getImplSelector(norm = normalize(functions))) /* istanbul ignore next */;
     this.functions = norm;
   }
 
@@ -114,6 +116,7 @@ export class Operator<TArg, TRes> extends Callable<[TArg], TRes> {
    *
    * @deprecated Call operator directly.
    */
+  /* istanbul ignore next */
   get getter(): UnaryFunction<TArg, TRes> {
     return this;
   }
@@ -125,6 +128,7 @@ export class Operator<TArg, TRes> extends Callable<[TArg], TRes> {
    * @param other Another value.
    * @returns True if other === this.
    */
+  /* istanbul ignore next */
   equals(other: any): boolean {
     return this === other;
   }
@@ -135,6 +139,7 @@ export class Operator<TArg, TRes> extends Callable<[TArg], TRes> {
    * @deprecated Support for hash code will be dropped in the future.
    * @returns The hash code.
    */
+  /* istanbul ignore next */
   hashCode(): number {
     return 0;
   }

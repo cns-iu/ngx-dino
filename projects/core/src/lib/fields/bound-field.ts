@@ -40,6 +40,7 @@ export class BoundField<T> {
    * @param other Another value.
    * @returns True if other === this.
    */
+  /* istanbul ignore next */
   equals(other: any): boolean {
     return this === other;
   }
@@ -50,6 +51,7 @@ export class BoundField<T> {
    * @deprecated Support for hash code will be dropped in the future.
    * @returns The hash code.
    */
+  /* istanbul ignore next */
   hashCode(): number {
     return 0;
   }

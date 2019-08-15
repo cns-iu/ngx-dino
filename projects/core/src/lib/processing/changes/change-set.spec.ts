@@ -2,7 +2,7 @@ import { List } from 'immutable';
 
 import immutableEqualityTester from '../../test-utility/equality/immutable';
 
-import { access } from '../../operators/methods/extracting/access';
+import { access } from '../../operators/access';
 import { simpleField } from '../../fields';
 import { Datum } from '../datums';
 import { RawChangeSet } from './raw-change-set';

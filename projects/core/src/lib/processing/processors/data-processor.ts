@@ -1,12 +1,11 @@
-import { Observable, Subject, merge } from 'rxjs';
+import { Collection, Map, Seq } from 'immutable';
+import { bind, defaults } from 'lodash';
+import { merge, Observable, Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
-import { Collection, Seq, Map } from 'immutable';
-import { bind, defaults } from 'lodash';
-
 import { BoundField } from '../../fields';
-import { DatumId, Datum, idSymbol, rawDataSymbol } from '../datums';
-import { ChangeSet, CachedChangeStream } from '../changes';
+import { CachedChangeStream, ChangeSet } from '../changes';
+import { Datum, DatumId, idSymbol, rawDataSymbol } from '../datums';
 import { DatumProcessor } from './datum-processor';
 
 

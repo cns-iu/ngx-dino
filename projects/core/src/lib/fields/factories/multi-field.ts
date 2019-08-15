@@ -1,9 +1,8 @@
-import { Seq } from 'immutable';
+import { mapValues } from 'lodash';
 
-import { Operator } from '../../operators';
-import { chain } from '../../operators/methods/grouping/chain';
-
-import { FieldArgs, Field } from '../field';
+import { Operator } from '../../operator';
+import { pipe } from '../../operators';
+import { Field, FieldArgs } from '../field';
 
 
 export interface MultiFieldArgs<T, F = any> extends FieldArgs<T, F> {
@@ -19,13 +18,13 @@ export interface PostOperationArg<F, T> {
 
 
 export function multiField<T>(args: MultiFieldArgs<T>): Field<T> {
-  const mapping = Seq.Keyed<string, Operator<any, T>>(args.mapping);
+  const mapping = args.mapping;
   const defaultId = args.defaultId;
-  const defaultOperator = defaultId && mapping.get(defaultId);
+  const defaultOperator = defaultId && mapping[defaultId];
   const defaultSeq = defaultOperator ? {
     [Field.defaultSymbol]: defaultOperator
   } : {};
-  const newMapping = mapping.concat(defaultSeq).toSeq();
+  const newMapping = { ...mapping, ...defaultSeq };
   const newArgs = {...args, mapping: newMapping};
 
   return new Field(newArgs);
@@ -44,8 +43,7 @@ export function prePostMultiField(
   args: PreOperationArg<any> & PostOperationArg<any, any> & MultiFieldArgs<any>
 ): Field<any> {
   const {pre, post, mapping} = args;
-  const newMapping = Seq.Keyed<string, Operator<any, any>>(mapping)
-    .map((op) => chain(pre, op, post)).toSeq();
+  const newMapping = mapValues(mapping, op => pipe(pre, op, post));
   const newArgs = {...args, mapping: newMapping};
 
   return multiField(newArgs);

@@ -1,12 +1,6 @@
-import { Map } from 'immutable';
-
-import immutableEqualityTester from '../test-utility/equality/immutable';
-import oneOfMatchers from '../test-utility/matchers/one-of';
-
-import { constant } from '../operators/methods/generating/constant';
-
-import { DataType, Field } from './field';
+import { constant } from '../operators';
 import { BoundField } from './bound-field';
+import { DataType, Field } from './field';
 
 
 describe('fields', () => {
@@ -24,15 +18,6 @@ describe('Field', () => {
     [Field.defaultSymbol]: defaultOp
   };
   const fullField = new Field({id, label, dataType, mapping});
-
-
-  beforeEach(() => {
-    // Add equality testers
-    jasmine.addCustomEqualityTester(immutableEqualityTester);
-
-    // Add matchers
-    jasmine.addMatchers(oneOfMatchers);
-  });
 
 
   describe('#defaultSymbol', () => {
@@ -72,35 +57,13 @@ describe('Field', () => {
 
 
   describe('.mapping', () => {
-    it('is a Immutable.Map', () => {
-      expect(emptyField.mapping).toEqual(jasmine.any(Map));
-    });
-
-    it('has the keys provided', () => {
-      const keys = fullField.mapping.keySeq().toArray();
-      expect(keys).toEqual(jasmine.arrayContaining([
-        bfid, Field.defaultSymbol
-      ]));
-    });
-
-    it('has BoundField values', () => {
-      fullField.mapping.forEach((value) => {
-        expect(value).toEqual(jasmine.any(BoundField));
-      });
-    });
-
-    it('has BoundField values containing the provided operators', () => {
-      const ops = [op, defaultOp];
-      fullField.mapping.forEach((value) => {
-        expect(value.operator).toBeOneOf(ops);
-      });
-    });
+    // TODO
   });
 
 
   describe('.getBoundFieldIds()', () => {
     beforeEach(() => {
-      this.bfids = fullField.getBoundFieldIds().toArray();
+      this.bfids = fullField.getBoundFieldIds();
     });
 
     it('returns a sequence of BoundField ids', () => {
@@ -124,26 +87,6 @@ describe('Field', () => {
 
     it('returns the default when called without an id', () => {
       expect(fullField.getBoundField()).toEqual(jasmine.any(BoundField));
-    });
-  });
-
-
-  describe('.equals(other)', () => {
-    const fieldEquiv = new Field({id, label, dataType, mapping});
-    const fieldDiffId = new Field({id: 'another', label, dataType, mapping});
-    const fieldDiffLabel = new Field({id, label: 'abc', dataType, mapping});
-
-
-    it('is true if equal dataType and mapping', () => {
-      expect(fullField).toEqual(fieldEquiv);
-    });
-
-    it('is compared regardless of id', () => {
-      expect(fullField).toEqual(fieldDiffId);
-    });
-
-    it('is compared regardless of label', () => {
-      expect(fullField).toEqual(fieldDiffLabel);
     });
   });
 });

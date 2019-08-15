@@ -1,15 +1,5 @@
-export { Flags, State, BaseOperator, BaseCache } from './base';
-export { Operator } from './operator';
-export { Operand } from './operand';
-
-export { access } from './methods/extracting/access';
-export { identity } from './methods/extracting/identity';
-export { lookup } from './methods/extracting/lookup';
-
-export { autoId } from './methods/generating/auto-id';
-export { constant } from './methods/generating/constant';
-
-export { chain } from './methods/grouping/chain';
-export { combine } from './methods/grouping/combine';
-
-export { map } from './methods/transforming/map';
+export { access, access as pick } from './access';
+export { combine } from './combine';
+export { constant } from './constant';
+export { map } from './map';
+export { pipe, pipe as chain } from './pipe';

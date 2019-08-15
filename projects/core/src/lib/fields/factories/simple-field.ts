@@ -1,6 +1,4 @@
-import { Seq } from 'immutable';
-
-import { Operator } from '../../operators';
+import { Operator } from '../../operator';
 import { BaseFieldArgs, Field } from '../field';
 
 
@@ -13,10 +11,7 @@ export interface SimpleFieldArgs<T> extends BaseFieldArgs {
 export function simpleField<T>(args: SimpleFieldArgs<T>): Field<T> {
   const {bfieldId, operator} = args;
   const bidSeq = bfieldId ? {[bfieldId]: operator} : {};
-  const mapping = Seq.Keyed<string, Operator<any, T>>({
-    [Field.defaultSymbol]: operator
-  }).concat(bidSeq).toSeq();
-  const newArgs = {...args, mapping};
+  const newArgs = { ...args, mapping: { ...bidSeq, [Field.defaultSymbol]: operator } };
 
   return new Field(newArgs);
 }

@@ -1,6 +1,6 @@
-import { access } from '../../operators/methods/extracting/access';
 import { simpleField } from '../../fields';
-import { DatumId, isDatumId, extractId } from './datum-id';
+import { access } from '../../operators';
+import { DatumId, extractId, isDatumId } from './datum-id';
 
 
 describe('processing', () => {

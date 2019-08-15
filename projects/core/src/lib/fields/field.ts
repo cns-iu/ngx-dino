@@ -1,11 +1,6 @@
-import { Seq, List, Map } from 'immutable';
-import { uniqueId } from 'lodash';
+import { forEach, uniqueId } from 'lodash';
 
-import {
-  State, ImmutableValue, stringCompare, toStringHelper
-} from '../common';
-import { Operator } from '../operators';
-
+import { Operator } from '../operator';
 import { BoundField } from './bound-field';
 
 
@@ -23,28 +18,21 @@ export interface BaseFieldArgs {
   dataType?: DataType;
 }
 
-export type FieldMappingArg<T, F = any> =
-  Seq<string, Operator<F, T>> |
-  Iterable<[string, Operator<F, T>]> |
-  {[id: string]: Operator<F, T>};
-
-export interface FieldArgs<T, F = any> extends BaseFieldArgs {
-  mapping: FieldMappingArg<T, F>;
+export interface FieldArgs<TRes, TArg = any> extends BaseFieldArgs {
+  mapping: { [id: string]: Operator<TArg, TRes> };
 }
 
 
-export class Field<T> extends ImmutableValue {
+export class Field<T> {
   static defaultSymbol = '__ngx-dino-field-default__';
 
   readonly id: string;
   readonly label: string;
   readonly dataType: DataType;
-  readonly mapping: Map<string, BoundField<T>>;
+  readonly mapping: { [id: string]: BoundField<T> } = { };
 
   constructor(args: FieldArgs<T>) {
-    super();
-
-    let operatorMapping: FieldMappingArg<T>;
+    let operatorMapping: { [id: string]: Operator<any, T> };
     ({
       id: this.id = uniqueId('field_'),
       label: this.label,
@@ -52,59 +40,53 @@ export class Field<T> extends ImmutableValue {
       mapping: operatorMapping
     } = args);
 
-    this.mapping = Seq.Keyed<string, Operator<any, T>>(operatorMapping)
-      .map((op, id) => new (BoundField as any)(id, this, op)).toMap();
-
-    // Bind the default to a BoundField with an equivalent Operator if possible
-    if (this.mapping.has(Field.defaultSymbol)) {
-      const op = this.mapping.get(Field.defaultSymbol).operator;
-      const equiv = this.mapping.find((bf, key) => {
-        return bf.operator.equals(op) && key !== Field.defaultSymbol;
-      });
-
-      if (equiv !== undefined) {
-        this.mapping = this.mapping.set(Field.defaultSymbol, equiv);
-      }
-    }
+    forEach(operatorMapping, (op, id) => {
+      this.mapping[id] = new BoundField(id, this, op);
+    });
   }
 
 
   // Public interface
-  getBoundFieldIds(): Seq.Indexed<string> {
-    return this.mapping
-      .keySeq()
-      .filter((id) => id !== Field.defaultSymbol)
-      .valueSeq();
+  getBoundFieldIds(): string[] {
+    return Object.keys(this.mapping).filter(id => id !== Field.defaultSymbol);
   }
 
   getBoundField(id: string = Field.defaultSymbol): BoundField<T> {
-    return this.mapping.get(id);
+    return this.mapping[id];
   }
 
 
   // toString
   toString(): string {
-    const operators = Seq.Keyed(
-      this.mapping
-        .filter((_value, key) => key !== Field.defaultSymbol)
-        .map((bf) => bf.operator)
-        .entrySeq()
-        .sort(([k1], [k2]) => stringCompare(k1, k2))
-    );
-    const keywords = Seq.Keyed<string, any>([
-      ['id', this.id],
-      ['label', this.label],
-      ['dataType', this.dataType],
-      ['mapping', operators]
-    ]);
-
-    return toStringHelper('Field', keywords);
+    const ids = this.getBoundFieldIds().filter(id => id !== Field.defaultSymbol);
+    const data = [
+      `id: ${this.id}`,
+      `label: ${this.label}`,
+      `dataType: ${this.dataType}`,
+      `boundIds: (${ids.join(' ')})`
+    ];
+    return `Field<${data.join(', ')}>`;
   }
 
 
-  // ImmutableValue implementation
-  protected getState(): State {
-    const operatorMap = this.mapping.map((bf) => bf.operator);
-    return List.of<any>(this.dataType, operatorMap);
+  /**
+   * Equals operator.
+   *
+   * @deprecated Support for comparing `Field`s will be dropped in the future.
+   * @param other Another value.
+   * @returns True if other === this.
+   */
+  equals(other: any): boolean {
+    return this === other;
+  }
+
+  /**
+   * Hashs code.
+   *
+   * @deprecated Support for hash code will be dropped in the future.
+   * @returns The hash code.
+   */
+  hashCode(): number {
+    return 0;
   }
 }

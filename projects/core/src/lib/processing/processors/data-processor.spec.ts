@@ -1,14 +1,12 @@
-import { Observable, Subject, merge, of } from 'rxjs';
-
 import { List, Map } from 'immutable';
+import { merge, of, Subject } from 'rxjs';
 
+import { simpleField } from '../../fields';
+import { constant } from '../../operators/constant';
 import immutableEqualityTester from '../../test-utility/equality/immutable';
 import oneOfMatchers from '../../test-utility/matchers/one-of';
-
-import { constant } from '../../operators/methods/generating/constant';
-import { simpleField } from '../../fields';
+import { CachedChangeStream, ChangeSet } from '../changes';
 import { Datum } from '../datums';
-import { ChangeSet, CachedChangeStream } from '../changes';
 import { DataProcessor } from './data-processor';
 
 

@@ -1,5 +1,5 @@
+import { Datum, idSymbol, isDatum, rawDataSymbol } from './datum';
 import { isDatumId } from './datum-id';
-import { Datum, isDatum, idSymbol, rawDataSymbol } from './datum';
 
 
 describe('processing', () => {

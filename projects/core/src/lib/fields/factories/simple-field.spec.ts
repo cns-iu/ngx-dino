@@ -1,9 +1,5 @@
-import immutableEqualityTester from '../../test-utility/equality/immutable';
-
-import { constant } from '../../operators/methods/generating/constant';
-
+import { constant } from '../../operators';
 import { DataType, Field } from '../field';
-import { BoundField } from '../bound-field';
 import { simpleField } from './simple-field';
 
 
@@ -16,12 +12,6 @@ describe('simpleField', () => {
   const bfid = 'foo';
   const operator = constant(123);
   const field = simpleField({id, label, dataType, bfieldId: bfid, operator});
-
-
-  beforeEach(() => {
-    // Add equality testers
-    jasmine.addCustomEqualityTester(immutableEqualityTester);
-  });
 
 
   it('returns a Field', () => {
@@ -51,10 +41,6 @@ describe('simpleField', () => {
 
     it('returns undefined if no bfieldId was specified in the simpleField arguments', () => {
       expect(noBfidIdBfield).toBeUndefined();
-    });
-
-    it('returns the same BoundField as the default', () => {
-      expect(bfield).toEqual(defaultBfield);
     });
   });
 });

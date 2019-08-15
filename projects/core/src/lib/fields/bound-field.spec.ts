@@ -1,10 +1,7 @@
-import immutableEqualityTester from '../test-utility/equality/immutable';
-
-import { Operator } from '../operators';
-import { constant } from '../operators/methods/generating/constant';
-
-import { DataType, BaseFieldArgs, Field } from './field';
+import { Operator } from '../operator';
+import { constant } from '../operators';
 import { BoundField } from './bound-field';
+import { BaseFieldArgs, DataType, Field } from './field';
 
 
 function makeBoundField<T>(
@@ -27,12 +24,6 @@ describe('BoundField', () => {
   const {field, bound} = makeBoundField(id, op, {label, dataType});
 
 
-  beforeEach(() => {
-    // Add equality testers
-    jasmine.addCustomEqualityTester(immutableEqualityTester);
-  });
-
-
   describe('.id', () => {
     it('is the same as the mapping key', () => {
       expect(bound.id).toBe(id);
@@ -42,7 +33,7 @@ describe('BoundField', () => {
 
   describe('.field', () => {
     it('is the containing field', () => {
-      expect(bound.field.mapping.toArray()).toContain(bound);
+      expect(bound.field).toEqual(field);
     });
   });
 
@@ -70,13 +61,12 @@ describe('BoundField', () => {
 
   describe('.get(data, cache)', () => {
     const data = 1234;
-    const cache: any = {};
     const resultData = 'zxc';
 
 
     beforeEach(() => {
-      this.spy = spyOn(bound.operator, 'get').and.returnValue(resultData);
-      this.result = bound.get(data, cache);
+      this.spy = spyOn(bound, 'operator').and.returnValue(resultData);
+      this.result = bound.get(data);
     });
 
 
@@ -85,7 +75,7 @@ describe('BoundField', () => {
     });
 
     it('forward arguments to Operator#get', () => {
-      expect(this.spy).toHaveBeenCalledWith(data, cache);
+      expect(this.spy).toHaveBeenCalledWith(data);
     });
 
     it('returns the result from Operator#get', () => {
@@ -96,18 +86,7 @@ describe('BoundField', () => {
 
   describe('.getter', () => {
     it('returns Operator#getter', () => {
-      expect(bound.getter).toBe(bound.operator.getter);
-    });
-  });
-
-
-  describe('.equals(other)', () => {
-    const {field: fieldEquiv, bound: boundEquiv} = makeBoundField(id, op, {
-      label, dataType
-    });
-
-    it('equals a BoundField from an equivalent Field', () => {
-      expect(bound).toEqual(boundEquiv);
+      expect(bound.getter).toBe(bound.operator);
     });
   });
 });

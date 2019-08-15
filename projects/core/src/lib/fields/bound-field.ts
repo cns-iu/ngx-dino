@@ -1,21 +1,15 @@
-import { Seq, List } from 'immutable';
-
-import { State, ImmutableValue, toStringHelper } from '../common';
-import { BaseCache, Operator } from '../operators';
+import { Operator } from '../operator';
 
 // Do NOT use DataType or Field as values! Will cause circular dependency.
 // Allowed to be used as types.
 import { DataType, Field } from './field';
 
-
-export class BoundField<T> extends ImmutableValue {
-  private constructor(
+export class BoundField<T> {
+  constructor(
     readonly id: string,
     readonly field: Field<T>,
     readonly operator: Operator<any, T>
-  ) {
-    super();
-  }
+  ) { }
 
 
   // Forward accesses/calls to field and operator
@@ -27,28 +21,36 @@ export class BoundField<T> extends ImmutableValue {
     return this.field.dataType;
   }
 
-  get(data: any, cache?: BaseCache): T {
-    return this.operator.get(data, cache);
+  get(data: any): T {
+    return this.operator(data);
   }
 
   get getter(): (data: any) => T {
-    return this.operator.getter;
+    return this.operator;
   }
 
-
-  // toString
   toString(): string {
-    const keywords = Seq.Keyed<string, any>([
-      ['id', this.id],
-      ['field', this.field]
-    ]);
-
-    return toStringHelper('BoundField', keywords);
+    return `BoundField<id: ${this.id}, field: ${this.field.id}>`;
   }
 
+  /**
+   * Equals operator.
+   *
+   * @deprecated Support for comparing `BoundField`s will be dropped in the future.
+   * @param other Another value.
+   * @returns True if other === this.
+   */
+  equals(other: any): boolean {
+    return this === other;
+  }
 
-  // ImmutableValue implementation
-  protected getState(): State {
-    return List.of<any>(this.id, this.field);
+  /**
+   * Hashs code.
+   *
+   * @deprecated Support for hash code will be dropped in the future.
+   * @returns The hash code.
+   */
+  hashCode(): number {
+    return 0;
   }
 }

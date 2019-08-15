@@ -1,8 +1,8 @@
 import { Collection, Seq } from 'immutable';
-import { curry, CurriedFunction2 } from 'lodash';
+import { curry } from 'lodash';
 
 import { BoundField } from '../../fields';
-import { DatumId, Datum, extractId } from '../datums';
+import { Datum, DatumId, extractId } from '../datums';
 import { RawChangeSet } from './raw-change-set';
 
 

@@ -1,10 +1,8 @@
 import { Map } from 'immutable';
 
-import immutableEqualityTester from '../../test-utility/equality/immutable';
-
-import { constant } from '../../operators/methods/generating/constant';
 import { simpleField } from '../../fields';
-import { BoundField } from '../../fields';
+import { constant } from '../../operators/constant';
+import immutableEqualityTester from '../../test-utility/equality/immutable';
 import { Datum } from '../datums';
 import { DatumProcessor } from './datum-processor';
 

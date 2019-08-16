@@ -3,9 +3,9 @@ import { cloneDeepWith } from 'lodash';
 import { isOperator, Operator } from '../operator';
 
 /** Resolves a combine spec. Replaces all `Operator`s with their result types. */
-export type ResolveSpec<T> =
+export type ResolvedSpec<T> =
   T extends Operator<unknown, infer TRes> ? TRes :
-    T extends object ? { [TKey in keyof T]: ResolveSpec<T[TKey]> } : T;
+    T extends object ? { [TKey in keyof T]: ResolvedSpec<T[TKey]> } : T;
 
 /**
  * Deeply clones a spec while calling and replacing `Operator`s with their results.
@@ -14,7 +14,7 @@ export type ResolveSpec<T> =
  * @param data The data used to evaluate each `Operator`.
  * @returns The evaluated clone object.
  */
-function deepCloneReplace<TSpec>(spec: TSpec, data: any): ResolveSpec<TSpec> {
+function deepCloneReplace<TSpec>(spec: TSpec, data: any): ResolvedSpec<TSpec> {
   const remove: [object, PropertyKey][] = [];
   const clone = cloneDeepWith(spec, (value: any, key: PropertyKey, obj: any): any => {
     if (isOperator(value)) {
@@ -27,8 +27,8 @@ function deepCloneReplace<TSpec>(spec: TSpec, data: any): ResolveSpec<TSpec> {
   return clone;
 }
 
-export function combine<TArg, TRes>(op: Operator<TArg, TRes>): Operator<TArg, TRes>;
-export function combine<TSpec>(spec: TSpec): Operator<unknown, ResolveSpec<TSpec>>;
+export function combine<TSpec>(spec: TSpec): Operator<unknown, ResolvedSpec<TSpec>>;
+export function combine<TArg, TRes>(op: Operator<TArg, TRes> | any): Operator<TArg, TRes>;
 
 /**
  * Creates an `Operator` that evaluates all nested `Operator`s and produces a new object with the same structure.
@@ -36,8 +36,8 @@ export function combine<TSpec>(spec: TSpec): Operator<unknown, ResolveSpec<TSpec
  * @param spec The nested spec object.
  * @returns An object with all `Operator`s evaluated.
  */
-export function combine<TSpec>(spec: TSpec): Operator<unknown, ResolveSpec<TSpec>> {
-  if (isOperator<unknown, ResolveSpec<TSpec>>(spec)) {
+export function combine<TSpec>(spec: TSpec): Operator<unknown, ResolvedSpec<TSpec>> {
+  if (isOperator<unknown, ResolvedSpec<TSpec>>(spec)) {
     return spec;
   }
 

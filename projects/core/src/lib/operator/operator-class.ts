@@ -114,10 +114,20 @@ export class Operator<TArg, TRes> extends Callable<[TArg], TRes> {
   /**
    * Returns this.
    *
+   * @deprecated Base operator does not exist anymore.
+   */
+  /* istanbul ignore next */
+  get wrapped(): this {
+    return this;
+  }
+
+  /**
+   * Returns this.
+   *
    * @deprecated Call operator directly.
    */
   /* istanbul ignore next */
-  get getter(): UnaryFunction<TArg, TRes> {
+  get getter(): this {
     return this;
   }
 

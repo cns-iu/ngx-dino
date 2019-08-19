@@ -8,11 +8,11 @@ export function lookup<TKey extends PropertyKey, TVal>(mapping: Record<TKey, TVa
 export function lookup<TKey extends PropertyKey, TVal, TDef>(mapping: Record<TKey, TVal>, defaultValue: TDef): Operator<TKey, TVal | TDef>;
 
 /**
+ * Creates an `Operator` that will look up values in a provided mapping.
  *
- *
- * @param mapping
- * @param defaultValue
- * @returns
+ * @param mapping The mapping object.
+ * @param defaultValue Value returned if a key does not exist in the mapping.
+ * @returns The looked up value or the default value.
  */
 export function lookup<TMap, TDef>(
   mapping: TMap, defaultValue?: TDef

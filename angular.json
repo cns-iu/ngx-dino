@@ -149,9 +149,9 @@
           },
           "configurations": {
             "production": {
-              "project": "projects/core/ng-package.prod.json"
-            ,              "tsConfig": "projects/core/tsconfig.lib.prod.json"
-}
+              "project": "projects/core/ng-package.prod.json",
+              "tsConfig": "projects/core/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -192,9 +192,9 @@
           },
           "configurations": {
             "production": {
-              "project": "projects/datatable/ng-package.prod.json"
-            ,              "tsConfig": "projects/datatable/tsconfig.lib.prod.json"
-}
+              "project": "projects/datatable/ng-package.prod.json",
+              "tsConfig": "projects/datatable/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -235,9 +235,9 @@
           },
           "configurations": {
             "production": {
-              "project": "projects/force-network/ng-package.prod.json"
-            ,              "tsConfig": "projects/force-network/tsconfig.lib.prod.json"
-}
+              "project": "projects/force-network/ng-package.prod.json",
+              "tsConfig": "projects/force-network/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -278,9 +278,9 @@
           },
           "configurations": {
             "production": {
-              "project": "projects/geomap/ng-package.prod.json"
-            ,              "tsConfig": "projects/geomap/tsconfig.lib.prod.json"
-}
+              "project": "projects/geomap/ng-package.prod.json",
+              "tsConfig": "projects/geomap/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -322,9 +322,9 @@
           },
           "configurations": {
             "production": {
-              "project": "projects/legend/ng-package.prod.json"
-            ,              "tsConfig": "projects/legend/tsconfig.lib.prod.json"
-}
+              "project": "projects/legend/ng-package.prod.json",
+              "tsConfig": "projects/legend/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -365,9 +365,9 @@
           },
           "configurations": {
             "production": {
-              "project": "projects/scatterplot/ng-package.prod.json"
-            ,              "tsConfig": "projects/scatterplot/tsconfig.lib.prod.json"
-}
+              "project": "projects/scatterplot/ng-package.prod.json",
+              "tsConfig": "projects/scatterplot/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -408,9 +408,9 @@
           },
           "configurations": {
             "production": {
-              "project": "projects/science-map/ng-package.prod.json"
-            ,              "tsConfig": "projects/science-map/tsconfig.lib.prod.json"
-}
+              "project": "projects/science-map/ng-package.prod.json",
+              "tsConfig": "projects/science-map/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -452,9 +452,9 @@
           },
           "configurations": {
             "production": {
-              "project": "projects/vega-util/ng-package.prod.json"
-            ,              "tsConfig": "projects/vega-util/tsconfig.lib.prod.json"
-}
+              "project": "projects/vega-util/ng-package.prod.json",
+              "tsConfig": "projects/vega-util/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -495,9 +495,9 @@
           },
           "configurations": {
             "production": {
-              "project": "projects/network/ng-package.prod.json"
-            ,              "tsConfig": "projects/network/tsconfig.lib.prod.json"
-}
+              "project": "projects/network/ng-package.prod.json",
+              "tsConfig": "projects/network/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -538,9 +538,9 @@
           },
           "configurations": {
             "production": {
-              "project": "projects/temporal-bargraph/ng-package.prod.json"
-            ,              "tsConfig": "projects/temporal-bargraph/tsconfig.lib.prod.json"
-}
+              "project": "projects/temporal-bargraph/ng-package.prod.json",
+              "tsConfig": "projects/temporal-bargraph/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -578,13 +578,13 @@
           "options": {
             "tsConfig": "projects/toolshed/tsconfig.lib.json",
             "project": "projects/toolshed/ng-package.json"
-          }
-        ,          "configurations": {
+          },
+          "configurations": {
             "production": {
               "tsConfig": "projects/toolshed/tsconfig.lib.prod.json"
             }
           }
-},
+        },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
@@ -614,6 +614,7 @@
   "cli": {
     "warnings": {
       "typescriptMismatch": false
-    }
+    },
+    "analytics": "a67feb1c-4894-4be2-9032-6156f381300d"
   }
 }

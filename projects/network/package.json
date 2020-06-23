@@ -1,6 +1,6 @@
 {
     "name": "@ngx-dino/network",
-    "version": "0.15.2",
+    "version": "0.16.0",
     "description": "Visualization framework and library for Angular 7+",
     "homepage": "https://github.com/cns-iu/ngx-dino",
     "bugs": "https://github.com/cns-iu/ngx-dino/issues",

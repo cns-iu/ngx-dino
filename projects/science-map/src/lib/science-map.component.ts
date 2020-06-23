@@ -49,7 +49,7 @@ export class ScienceMapComponent implements OnInit, OnChanges {
 
   @Output() nodeClick = new EventEmitter<NgxDinoEvent>();
 
-  @ViewChild('scienceMapContainer') scienceMapElement: ElementRef;
+  @ViewChild('scienceMapContainer', { static: true }) scienceMapElement: ElementRef;
 
   private svgContainer: d3Selection.Selection<SVGSVGElement, any, HTMLDivElement, any>;
   private parentNativeElement: HTMLElement;

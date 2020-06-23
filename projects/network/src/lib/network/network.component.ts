@@ -55,7 +55,7 @@ export class NetworkComponent {
   @Output() edgeClick = new EventEmitter<NgxDinoEvent>();
 
   // Tooltip element
-  @ViewChild('tooltipElement') tooltipElement: HTMLDivElement;
+  @ViewChild('tooltipElement', { static: true }) tooltipElement: HTMLDivElement;
 
   // Resizing
   resize = new Subject<{ width: number, height: number}>();

@@ -7,7 +7,7 @@ import { AutoResizeResetEvent } from '@ngx-dino/core';
   styleUrls: ['./home.component.sass']
 })
 export class HomeComponent implements OnInit {
-  @ViewChild('tabs') tabs: any;
+  @ViewChild('tabs', { static: true }) tabs: any;
 
   openState = true;
   tabIndex = 0;

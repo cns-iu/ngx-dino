@@ -45,8 +45,8 @@ export class TemporalBargraphComponent implements OnChanges, OnDestroy {
   @Input() barSpacing: number;
   @Input() barLabelMaxLength: number;
 
-  @ViewChild('tooltipElement') tooltipElement: ElementRef;
-  @ViewChild('textSizeTest') textSizeTestElement: ElementRef;
+  @ViewChild('tooltipElement', { static: true }) tooltipElement: ElementRef;
+  @ViewChild('textSizeTest', { static: true }) textSizeTestElement: ElementRef;
   readonly testText = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ,.';
 
   layout = new Layout();

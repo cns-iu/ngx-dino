@@ -61,7 +61,7 @@ export class ScatterplotComponent implements OnInit, OnChanges {
   @Input() showAxisIndicators = false; // Toggle texts over axes indicating the type of axis
   @Input() showAxisLabels = false;
 
-  @ViewChild('plotContainer') scatterplotElement: ElementRef;
+  @ViewChild('plotContainer', { static: true }) scatterplotElement: ElementRef;
 
   // This is the better way, but is inconsistent with geomap
   // @Input() width = window.innerWidth - this.margin.left - this.margin.right - 300; // initializing width for map container

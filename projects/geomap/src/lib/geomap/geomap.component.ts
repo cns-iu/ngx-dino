@@ -95,7 +95,7 @@ export class GeomapComponent implements OnInit, OnChanges {
   edgeProjectedTargetField: BoundField<Point>;
 
   // Tooltip element
-  @ViewChild('tooltipElement') tooltipElement: HTMLDivElement;
+  @ViewChild('tooltipElement', { static: true }) tooltipElement: HTMLDivElement;
 
   // Other network properties
   networkWidth = 0;

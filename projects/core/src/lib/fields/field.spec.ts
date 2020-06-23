@@ -8,7 +8,7 @@ import { constant } from '../operators/methods/generating/constant';
 import { DataType, Field } from './field';
 import { BoundField } from './bound-field';
 
-
+(function () {
 describe('fields', () => {
 describe('Field', () => {
   const emptyField = new Field({label: '', mapping: {}});
@@ -148,3 +148,4 @@ describe('Field', () => {
   });
 });
 });
+}).call({});

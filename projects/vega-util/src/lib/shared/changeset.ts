@@ -70,7 +70,7 @@ export interface RawVegaChangeSet<T> {
 // Vega `changeset` wrapper class
 // NOTE: `instanceof` does NOT work for this class
 export class VegaChangeSet<T>
-  extends (vega.changeset as { new(): RawVegaChangeSet<any> })
+  extends (vega.changeset as new () => RawVegaChangeSet<any> )
   implements RawVegaChangeSet<T> {
   constructor() {
     return super() as any;

@@ -1,17 +1,16 @@
-import { Observable, Subject, merge, of } from 'rxjs';
-
 import { List, Map } from 'immutable';
+import { of, Subject } from 'rxjs';
+import { mergeAll } from 'rxjs/operators';
 
+import { simpleField } from '../../fields';
+import { constant } from '../../operators/methods/generating/constant';
 import immutableEqualityTester from '../../test-utility/equality/immutable';
 import oneOfMatchers from '../../test-utility/matchers/one-of';
-
-import { constant } from '../../operators/methods/generating/constant';
-import { simpleField } from '../../fields';
+import { CachedChangeStream, ChangeSet } from '../changes';
 import { Datum } from '../datums';
-import { ChangeSet, CachedChangeStream } from '../changes';
 import { DataProcessor } from './data-processor';
 
-
+(function() {
 describe('processing', () => {
 describe('processors', () => {
 describe('DataProcessor', () => {
@@ -27,7 +26,7 @@ describe('DataProcessor', () => {
     this.change2 = new ChangeSet(List.of(new Datum(1)));
     this.dataStream = of(this.change1, this.change2);
     this.emitStream = new Subject();
-    this.stream = merge(this.dataStream, this.emitStream);
+    this.stream = of(this.dataStream, this.emitStream).pipe(mergeAll());
     this.rawCached = new CachedChangeStream(this.stream);
     this.bfield1 = simpleField({
       label: 'test0',
@@ -77,3 +76,4 @@ describe('DataProcessor', () => {
 });
 });
 });
+}).call({});

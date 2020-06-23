@@ -17,7 +17,7 @@ function makeUpdaters<T, CK extends string, SK extends string>(
   })) as any;
 }
 
-
+(function () {
 describe('processing', () => {
 describe('changes', () => {
 describe('ChangeCache', () => {
@@ -186,3 +186,4 @@ describe('ChangeCache', () => {
 });
 });
 });
+}).call({});

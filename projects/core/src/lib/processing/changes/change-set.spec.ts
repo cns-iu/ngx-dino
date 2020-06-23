@@ -8,7 +8,7 @@ import { Datum } from '../datums';
 import { RawChangeSet } from './raw-change-set';
 import { ChangeSet } from './change-set';
 
-
+(function () {
 describe('processing', () => {
 describe('changes', () => {
 describe('ChangeSet', () => {
@@ -87,3 +87,4 @@ describe('ChangeSet', () => {
 });
 });
 });
+}).call({});

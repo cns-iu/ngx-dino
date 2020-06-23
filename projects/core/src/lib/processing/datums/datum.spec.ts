@@ -1,7 +1,7 @@
 import { isDatumId } from './datum-id';
 import { Datum, isDatum, idSymbol, rawDataSymbol } from './datum';
 
-
+(function () {
 describe('processing', () => {
 describe('datums', () => {
   const id = 'abc123';
@@ -68,3 +68,4 @@ describe('isDatum', () => {
 });
 });
 });
+}).call({});

@@ -1,6 +1,6 @@
 import { RawChangeSet } from './raw-change-set';
 
-
+(function () {
 describe('processing', () => {
 describe('changes', () => {
 describe('RawChangeSet', () => {
@@ -70,3 +70,4 @@ describe('RawChangeSet', () => {
 });
 });
 });
+}).call({});

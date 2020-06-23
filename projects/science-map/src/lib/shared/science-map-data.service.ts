@@ -49,24 +49,24 @@ export class ScienceMapDataService {
   }
 
   makeMappings() {
-    this.subdIdToPosition = underlyingScimapData.nodes.reduce((map, n) => {
-      map[n.subd_id] = {x: n.x, y: n.y};
-      return map;
+    this.subdIdToPosition = underlyingScimapData.nodes.reduce((obj, n) => {
+      obj[n.subd_id] = {x: n.x, y: n.y};
+      return obj;
     }, {});
 
-    this.subdIdToDisc = underlyingScimapData.nodes.reduce((map, n) => {
-      map[n.subd_id] = {disc_id: n.disc_id};
-      return map;
+    this.subdIdToDisc = underlyingScimapData.nodes.reduce((obj, n) => {
+      obj[n.subd_id] = {disc_id: n.disc_id};
+      return obj;
     }, {});
 
-    this.subdIdToName = underlyingScimapData.nodes.reduce((map, n) => {
-      map[n.subd_id] = {subd_name: n.subd_name};
-      return map;
+    this.subdIdToName = underlyingScimapData.nodes.reduce((obj, n) => {
+      obj[n.subd_id] = {subd_name: n.subd_name};
+      return obj;
     }, {});
 
-    this.discIdToColor = underlyingScimapData.disciplines.reduce((map, d) => {
-      map[d.disc_id] = d.color;
-      return map;
+    this.discIdToColor = underlyingScimapData.disciplines.reduce((obj, d) => {
+      obj[d.disc_id] = d.color;
+      return obj;
     }, {});
   }
 

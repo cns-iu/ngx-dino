@@ -23,6 +23,7 @@ export interface SummaryStatistics {
 
 export function validField(field: BoundField<any>): BoundField<any> {
   if (field) {
+    // tslint:disable-next-line: deprecation
     const wrapped = field.operator.wrapped;
     // Test for !ConstantOperator(undefined | null)
     if (!('value' in wrapped) || wrapped['value'] != null) {

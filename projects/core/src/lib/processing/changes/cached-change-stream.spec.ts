@@ -1,16 +1,14 @@
-import { Subject, merge, of } from 'rxjs';
-import { last } from 'rxjs/operators';
-
 import { List } from 'immutable';
+import { of, Subject } from 'rxjs';
+import { last, mergeAll } from 'rxjs/operators';
 
 import immutableEqualityTester from '../../test-utility/equality/immutable';
 import oneOfMatchers from '../../test-utility/matchers/one-of';
-
-import { Datum } from '../datums';
 import { ChangeSet } from '../changes';
+import { Datum } from '../datums';
 import { CachedChangeStream } from './cached-change-stream';
 
-
+(function () {
 describe('processing', () => {
 describe('changes', () => {
 describe('CachedChangeStream', () => {
@@ -26,7 +24,7 @@ describe('CachedChangeStream', () => {
     this.change2 = new ChangeSet(List.of(new Datum(1)));
     this.dataStream = of(this.change1, this.change2);
     this.emitStream = new Subject();
-    this.stream = merge(this.dataStream, this.emitStream);
+    this.stream = of(this.dataStream, this.emitStream).pipe(mergeAll());
     this.cached = new CachedChangeStream(this.stream);
     this.outStream = this.cached.asObservable();
   });
@@ -90,3 +88,4 @@ describe('CachedChangeStream', () => {
 });
 });
 });
+}).call({});

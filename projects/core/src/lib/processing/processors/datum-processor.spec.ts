@@ -9,6 +9,7 @@ import { Datum } from '../datums';
 import { DatumProcessor } from './datum-processor';
 
 
+(function () {
 describe('processing', () => {
 describe('processors', () => {
 describe('DatumProcessor', () => {
@@ -57,3 +58,4 @@ describe('DatumProcessor', () => {
 });
 });
 });
+}).call({});

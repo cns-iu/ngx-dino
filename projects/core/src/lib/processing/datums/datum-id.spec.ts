@@ -2,7 +2,7 @@ import { access } from '../../operators/methods/extracting/access';
 import { simpleField } from '../../fields';
 import { DatumId, isDatumId, extractId } from './datum-id';
 
-
+(function () {
 describe('processing', () => {
 describe('datums', () => {
 describe('isDatumId', () => {
@@ -56,3 +56,4 @@ describe('extractId', () => {
 });
 });
 });
+}).call({});

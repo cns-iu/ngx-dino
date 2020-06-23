@@ -17,7 +17,7 @@ function makeBoundField<T>(
   return {field, bound};
 }
 
-
+(function () {
 describe('fields', () => {
 describe('BoundField', () => {
   const id = 'a-bound-field';
@@ -112,3 +112,4 @@ describe('BoundField', () => {
   });
 });
 });
+}).call({});

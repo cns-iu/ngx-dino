@@ -2,9 +2,7 @@ import { BaseOperator } from '../base';
 import { Operator } from '../operator';
 
 
-export interface Constructor<In, Out> {
-  new (...args: any[]): BaseOperator<In, Out>;
-}
+export type Constructor<In, Out> = new (...args: any[]) => BaseOperator<In, Out>;
 
 export function createRaw<In, Out>(
   type: Constructor<In, Out>, ...args: any[]
